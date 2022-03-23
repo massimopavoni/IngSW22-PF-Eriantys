@@ -1,4 +1,4 @@
-package it.polimi.ingsw.xxx.launcher;
+package it.polimi.ingsw.javangers.launcher;
 
 
 import org.junit.jupiter.api.Test;
