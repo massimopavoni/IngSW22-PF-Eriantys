@@ -1,4 +1,4 @@
-package it.polimi.ingsw.javangers.launcher;
+package it.polimi.ingsw.javangers.server.launcher;
 
 /**
  * Hello world!
