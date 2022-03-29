@@ -4,7 +4,7 @@ package it.polimi.ingsw.javangers.server.launcher;
  * Hello world!
  *
  */
-public class App
+public class ServerLauncher
 {
     public static void main( String[] args )
     {
