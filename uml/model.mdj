@@ -1263,7 +1263,7 @@
 											"top": 172,
 											"width": 338.9541015625,
 											"height": 13,
-											"text": "TokenContainer"
+											"text": "TokenContainer<C>"
 										},
 										{
 											"_type": "LabelView",
@@ -1420,7 +1420,7 @@
 											"top": 263,
 											"width": 338.9541015625,
 											"height": 13,
-											"text": "+grabTokens(condition: Object): List<TokenColor>",
+											"text": "+grabTokens(condition: C): List<TokenColor>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2655,7 +2655,7 @@
 											"top": 763,
 											"width": 335,
 											"height": 13,
-											"text": "-studentsBag: TokenContainer",
+											"text": "-studentsBag: StudentsBag",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2672,7 +2672,7 @@
 											"top": 778,
 											"width": 335,
 											"height": 13,
-											"text": "-cloudsList: List<TokenContainer>",
+											"text": "-cloudsList: List<Cloud>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2757,7 +2757,7 @@
 											"top": 846,
 											"width": 335,
 											"height": 13,
-											"text": "+getStudentsBag(): TokenContainer",
+											"text": "+getStudentsBag(): StudentsBag",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2774,7 +2774,7 @@
 											"top": 861,
 											"width": 335,
 											"height": 13,
-											"text": "+getClouds(): List<TokenContainer>",
+											"text": "+getClouds(): List<Cloud>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -14379,7 +14379,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/xZGudK9l5kQ="
 									},
-									"name": "TokenContainer",
+									"name": "TokenContainer<C>",
 									"stereotype": "abstract",
 									"attributes": [
 										{
@@ -14484,7 +14484,7 @@
 														"$ref": "AAAAAAF/wFb8lIAiHN0="
 													},
 													"name": "condition",
-													"type": "Object"
+													"type": "C"
 												}
 											],
 											"isAbstract": true
@@ -14950,7 +14950,7 @@
 									"name": "studentsBag",
 									"visibility": "private",
 									"type": {
-										"$ref": "AAAAAAF/wFYWhHqg0+w="
+										"$ref": "AAAAAAF/f0aBysofV7M="
 									}
 								},
 								{
@@ -14961,7 +14961,7 @@
 									},
 									"name": "cloudsList",
 									"visibility": "private",
-									"type": "List<TokenContainer>"
+									"type": "List<Cloud>"
 								}
 							],
 							"operations": [
@@ -15039,7 +15039,7 @@
 												"$ref": "AAAAAAF/xaQ63yojkeM="
 											},
 											"type": {
-												"$ref": "AAAAAAF/wFYWhHqg0+w="
+												"$ref": "AAAAAAF/f0aBysofV7M="
 											},
 											"direction": "return"
 										}
@@ -15059,7 +15059,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/xaR3YCrUVLQ="
 											},
-											"type": "List<TokenContainer>",
+											"type": "List<Cloud>",
 											"direction": "return"
 										}
 									]
