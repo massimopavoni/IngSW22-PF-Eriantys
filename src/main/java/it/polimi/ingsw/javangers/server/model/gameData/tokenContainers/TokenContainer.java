@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  */
 public abstract class TokenContainer {
     /**
-     * List of all the tokens in the container
+     * List of all the tokens in the container.
      */
     protected List<TokenColor> tokensList;
 
