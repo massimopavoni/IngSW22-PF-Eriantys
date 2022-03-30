@@ -73,7 +73,9 @@ public class Island extends TokenContainer<List<TokenColor>> {
     @Override
     public List<TokenColor> grabTokens(List<TokenColor> tokens) {
         if (this.tokensList.containsAll(tokens)) {
-            this.tokensList.removeAll(tokens);
+            for (TokenColor token : tokens) {
+                this.tokensList.remove(token);
+            }
             return tokens;
         }
         return null;
