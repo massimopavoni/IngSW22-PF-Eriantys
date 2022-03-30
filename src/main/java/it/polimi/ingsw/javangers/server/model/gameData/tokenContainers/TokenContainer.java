@@ -9,8 +9,10 @@ import java.util.stream.Collectors;
 
 /**
  * Class representing a container of tokens.
+ *
+ * @param <C> type of condition for grabbing tokens
  */
-public abstract class TokenContainer {
+public abstract class TokenContainer<C> {
     /**
      * List of all the tokens in the container.
      */
@@ -56,5 +58,5 @@ public abstract class TokenContainer {
      * @param condition condition to grab tokens
      * @return list of grabbed tokens
      */
-    public abstract List<TokenColor> grabTokens(Object condition);
+    public abstract List<TokenColor> grabTokens(C condition);
 }
