@@ -1671,7 +1671,7 @@
 											"top": 491,
 											"width": 335,
 											"height": 13,
-											"text": "+setTowerColor(towers: Pair<TowerColor, Integer>): void",
+											"text": "+setTowers(towers: Pair<TowerColor, Integer>): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14591,7 +14591,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/f0Xxssn1tLs="
 											},
-											"name": "setTowerColor",
+											"name": "setTowers",
 											"parameters": [
 												{
 													"_type": "UMLParameter",
