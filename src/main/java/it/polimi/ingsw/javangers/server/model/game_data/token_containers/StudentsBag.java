@@ -2,36 +2,42 @@ package it.polimi.ingsw.javangers.server.model.game_data.token_containers;
 
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class StudentsBag extends TokenContainer {
+/**
+ * Class representing a container of students.
+ */
+public class StudentsBag extends TokenContainer<Integer> {
+
+    private final Random random;
 
     /**
      * Constructor for studentsBag initializing tokensList according to
      * the input parameter Map studentsPerColor.
+     *
+     * @param studentsPerColor map with token colors as keys and number of occurrences as values
      */
     public StudentsBag(Map<TokenColor, Integer> studentsPerColor) {
         super();
-        for (TokenColor t :
+        this.random = new Random();
+        for (TokenColor color :
                 TokenColor.values()) {
-            if (studentsPerColor.get(t) != null) {
-                for (int i = 0; i < studentsPerColor.get(t); i++) {
-                    tokensList.add(t);
-                }
-            }
+            this.tokensList = Collections.nCopies(studentsPerColor.get(color), color);
         }
     }
 
     /**
-     * Grab specified tokens list from studentsBag.
+     * Grab casual tokens from studentsBag.
      *
-     * @param condition condition to grab tokens
-     * @return list of grabbed tokens
+     * @param amountOfTokens that need to be grab casually
+     * @return list of casual grabbed tokens or an empty list if amountOfTokens is zero.
      */
     @Override
-    public List<TokenColor> grabTokens(Object condition) {
-        //To do...
-        return null;
+    public List<TokenColor> grabTokens(Integer amountOfTokens) {
+        List<TokenColor> tokens = new ArrayList<>();
+        for (int i = 0; i < amountOfTokens; i++) {
+            tokens.add(this.tokensList.remove(random.nextInt(this.tokensList.size())));
+        }
+        return tokens;
     }
 }
