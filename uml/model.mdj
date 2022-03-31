@@ -63,7 +63,7 @@
 											"top": 54,
 											"width": 1687,
 											"height": 13,
-											"text": "gameData"
+											"text": "game_data"
 										},
 										{
 											"_type": "LabelView",
@@ -200,9 +200,9 @@
 											"font": "Arial;13;0",
 											"left": -1064,
 											"top": 560,
-											"width": 98.2490234375,
+											"width": 103.32080078125,
 											"height": 13,
-											"text": "(from gameData)"
+											"text": "(from game_data)"
 										},
 										{
 											"_type": "LabelView",
@@ -441,7 +441,7 @@
 											"top": 195,
 											"width": 119,
 											"height": 13,
-											"text": "YellowElf",
+											"text": "YELLOW_ELF",
 											"horizontalAlignment": 0
 										},
 										{
@@ -458,7 +458,7 @@
 											"top": 210,
 											"width": 119,
 											"height": 13,
-											"text": "BlueUnicorn",
+											"text": "BLUE_UNICORN",
 											"horizontalAlignment": 0
 										},
 										{
@@ -475,7 +475,7 @@
 											"top": 225,
 											"width": 119,
 											"height": 13,
-											"text": "GreenFrog",
+											"text": "GREEN_FROG",
 											"horizontalAlignment": 0
 										},
 										{
@@ -492,7 +492,7 @@
 											"top": 240,
 											"width": 119,
 											"height": 13,
-											"text": "RedDragon",
+											"text": "RED_DRAGON",
 											"horizontalAlignment": 0
 										},
 										{
@@ -509,7 +509,7 @@
 											"top": 255,
 											"width": 119,
 											"height": 13,
-											"text": "PinkFairy",
+											"text": "PINK_FAIRY",
 											"horizontalAlignment": 0
 										}
 									],
@@ -730,7 +730,7 @@
 											"top": 195,
 											"width": 119,
 											"height": 13,
-											"text": "None",
+											"text": "NONE",
 											"horizontalAlignment": 0
 										},
 										{
@@ -747,7 +747,7 @@
 											"top": 210,
 											"width": 119,
 											"height": 13,
-											"text": "White",
+											"text": "WHITE",
 											"horizontalAlignment": 0
 										},
 										{
@@ -764,7 +764,7 @@
 											"top": 225,
 											"width": 119,
 											"height": 13,
-											"text": "Black",
+											"text": "BLACK",
 											"horizontalAlignment": 0
 										},
 										{
@@ -781,7 +781,7 @@
 											"top": 240,
 											"width": 119,
 											"height": 13,
-											"text": "Gray",
+											"text": "GRAY",
 											"horizontalAlignment": 0
 										}
 									],
@@ -1002,7 +1002,7 @@
 											"top": 331,
 											"width": 111,
 											"height": 13,
-											"text": "Druid",
+											"text": "DRUID",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1019,7 +1019,7 @@
 											"top": 346,
 											"width": 111,
 											"height": 13,
-											"text": "King",
+											"text": "KING",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1036,7 +1036,7 @@
 											"top": 361,
 											"width": 111,
 											"height": 13,
-											"text": "Witch",
+											"text": "WITCH",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1053,7 +1053,7 @@
 											"top": 376,
 											"width": 111,
 											"height": 13,
-											"text": "Sensei",
+											"text": "SENSEI",
 											"horizontalAlignment": 0
 										}
 									],
@@ -1137,7 +1137,7 @@
 											"top": 126,
 											"width": 1159,
 											"height": 13,
-											"text": "tokenContainers"
+											"text": "token_containers"
 										},
 										{
 											"_type": "LabelView",
@@ -1149,9 +1149,9 @@
 											"font": "Arial;13;0",
 											"left": -408,
 											"top": -1560,
-											"width": 98.2490234375,
+											"width": 103.32080078125,
 											"height": 13,
-											"text": "(from gameData)"
+											"text": "(from game_data)"
 										},
 										{
 											"_type": "LabelView",
@@ -1275,9 +1275,9 @@
 											"font": "Arial;13;0",
 											"left": 1216,
 											"top": 2616,
-											"width": 132.93896484375,
+											"width": 137.28076171875,
 											"height": 13,
-											"text": "(from tokenContainers)"
+											"text": "(from token_containers)"
 										},
 										{
 											"_type": "LabelView",
@@ -1543,9 +1543,9 @@
 											"font": "Arial;13;0",
 											"left": 744,
 											"top": 2208,
-											"width": 132.93896484375,
+											"width": 137.28076171875,
 											"height": 13,
-											"text": "(from tokenContainers)"
+											"text": "(from token_containers)"
 										},
 										{
 											"_type": "LabelView",
@@ -1828,9 +1828,9 @@
 											"font": "Arial;13;0",
 											"left": 1632,
 											"top": 1904,
-											"width": 132.93896484375,
+											"width": 137.28076171875,
 											"height": 13,
-											"text": "(from tokenContainers)"
+											"text": "(from token_containers)"
 										},
 										{
 											"_type": "LabelView",
@@ -2007,9 +2007,9 @@
 											"font": "Arial;13;0",
 											"left": 1328,
 											"top": 2752,
-											"width": 132.93896484375,
+											"width": 137.28076171875,
 											"height": 13,
-											"text": "(from tokenContainers)"
+											"text": "(from token_containers)"
 										},
 										{
 											"_type": "LabelView",
@@ -2186,9 +2186,9 @@
 											"font": "Arial;13;0",
 											"left": 432,
 											"top": 2832,
-											"width": 132.93896484375,
+											"width": 137.28076171875,
 											"height": 13,
-											"text": "(from tokenContainers)"
+											"text": "(from token_containers)"
 										},
 										{
 											"_type": "LabelView",
@@ -2365,9 +2365,9 @@
 											"font": "Arial;13;0",
 											"left": 1704,
 											"top": 2752,
-											"width": 132.93896484375,
+											"width": 137.28076171875,
 											"height": 13,
-											"text": "(from tokenContainers)"
+											"text": "(from token_containers)"
 										},
 										{
 											"_type": "LabelView",
@@ -2544,9 +2544,9 @@
 											"font": "Arial;13;0",
 											"left": 1032,
 											"top": 1584,
-											"width": 98.2490234375,
+											"width": 103.32080078125,
 											"height": 13,
-											"text": "(from gameData)"
+											"text": "(from game_data)"
 										},
 										{
 											"_type": "LabelView",
@@ -2897,9 +2897,9 @@
 											"font": "Arial;13;0",
 											"left": -976,
 											"top": 1424,
-											"width": 98.2490234375,
+											"width": 103.32080078125,
 											"height": 13,
-											"text": "(from gameData)"
+											"text": "(from game_data)"
 										},
 										{
 											"_type": "LabelView",
@@ -3199,9 +3199,9 @@
 											"font": "Arial;13;0",
 											"left": -544,
 											"top": 1920,
-											"width": 98.2490234375,
+											"width": 103.32080078125,
 											"height": 13,
-											"text": "(from gameData)"
+											"text": "(from game_data)"
 										},
 										{
 											"_type": "LabelView",
@@ -3467,9 +3467,9 @@
 											"font": "Arial;13;0",
 											"left": 2056,
 											"top": 2264,
-											"width": 98.2490234375,
+											"width": 103.32080078125,
 											"height": 13,
-											"text": "(from gameData)"
+											"text": "(from game_data)"
 										},
 										{
 											"_type": "LabelView",
@@ -3718,9 +3718,9 @@
 											"font": "Arial;13;0",
 											"left": 1160,
 											"top": 1104,
-											"width": 98.2490234375,
+											"width": 103.32080078125,
 											"height": 13,
-											"text": "(from gameData)"
+											"text": "(from game_data)"
 										},
 										{
 											"_type": "LabelView",
@@ -6511,7 +6511,7 @@
 											"top": 1166,
 											"width": 1687,
 											"height": 13,
-											"text": "gameMechanics"
+											"text": "game_mechanics"
 										},
 										{
 											"_type": "LabelView",
@@ -6642,9 +6642,9 @@
 											"font": "Arial;13;0",
 											"left": -2584,
 											"top": 2032,
-											"width": 132.92626953125,
+											"width": 140.15625,
 											"height": 13,
-											"text": "(from gameMechanics)"
+											"text": "(from game_mechanics)"
 										},
 										{
 											"_type": "LabelView",
@@ -7222,7 +7222,7 @@
 											"top": 1494,
 											"width": 959,
 											"height": 13,
-											"text": "playerActions"
+											"text": "player_actions"
 										},
 										{
 											"_type": "LabelView",
@@ -7234,9 +7234,9 @@
 											"font": "Arial;13;0",
 											"left": -320,
 											"top": -296,
-											"width": 132.92626953125,
+											"width": 140.15625,
 											"height": 13,
-											"text": "(from gameMechanics)"
+											"text": "(from game_mechanics)"
 										},
 										{
 											"_type": "LabelView",
@@ -7362,9 +7362,9 @@
 											"font": "Arial;13;0",
 											"left": -2888,
 											"top": 1792,
-											"width": 116.30810546875,
+											"width": 122.09716796875,
 											"height": 13,
-											"text": "(from playerActions)"
+											"text": "(from player_actions)"
 										},
 										{
 											"_type": "LabelView",
@@ -7560,9 +7560,9 @@
 											"font": "Arial;13;0",
 											"left": -3120,
 											"top": 1792,
-											"width": 116.30810546875,
+											"width": 122.09716796875,
 											"height": 13,
-											"text": "(from playerActions)"
+											"text": "(from player_actions)"
 										},
 										{
 											"_type": "LabelView",
@@ -7739,9 +7739,9 @@
 											"font": "Arial;13;0",
 											"left": -3400,
 											"top": 1792,
-											"width": 116.30810546875,
+											"width": 122.09716796875,
 											"height": 13,
-											"text": "(from playerActions)"
+											"text": "(from player_actions)"
 										},
 										{
 											"_type": "LabelView",
@@ -7918,9 +7918,9 @@
 											"font": "Arial;13;0",
 											"left": -4040,
 											"top": 2032,
-											"width": 116.30810546875,
+											"width": 122.09716796875,
 											"height": 13,
-											"text": "(from playerActions)"
+											"text": "(from player_actions)"
 										},
 										{
 											"_type": "LabelView",
@@ -8097,9 +8097,9 @@
 											"font": "Arial;13;0",
 											"left": -4360,
 											"top": 2032,
-											"width": 116.30810546875,
+											"width": 122.09716796875,
 											"height": 13,
-											"text": "(from playerActions)"
+											"text": "(from player_actions)"
 										},
 										{
 											"_type": "LabelView",
@@ -8276,9 +8276,9 @@
 											"font": "Arial;13;0",
 											"left": -4640,
 											"top": 2032,
-											"width": 116.30810546875,
+											"width": 122.09716796875,
 											"height": 13,
-											"text": "(from playerActions)"
+											"text": "(from player_actions)"
 										},
 										{
 											"_type": "LabelView",
@@ -8456,9 +8456,9 @@
 											"font": "Arial;13;0",
 											"left": -840,
 											"top": -640,
-											"width": 116.30810546875,
+											"width": 122.09716796875,
 											"height": 13,
-											"text": "(from playerActions)"
+											"text": "(from player_actions)"
 										},
 										{
 											"_type": "LabelView",
@@ -9231,9 +9231,9 @@
 											"font": "Arial;13;0",
 											"left": -56,
 											"top": 3976,
-											"width": 132.92626953125,
+											"width": 140.15625,
 											"height": 13,
-											"text": "(from gameMechanics)"
+											"text": "(from game_mechanics)"
 										},
 										{
 											"_type": "LabelView",
@@ -9567,9 +9567,9 @@
 											"font": "Arial;13;0",
 											"left": 968,
 											"top": 672,
-											"width": 132.92626953125,
+											"width": 140.15625,
 											"height": 13,
-											"text": "(from gameMechanics)"
+											"text": "(from game_mechanics)"
 										},
 										{
 											"_type": "LabelView",
@@ -10587,7 +10587,7 @@
 											"top": 1846,
 											"width": 743,
 											"height": 13,
-											"text": "characterCardsEffects"
+											"text": "character_cards_effects"
 										},
 										{
 											"_type": "LabelView",
@@ -10599,9 +10599,9 @@
 											"font": "Arial;13;0",
 											"left": -96,
 											"top": -176,
-											"width": 132.92626953125,
+											"width": 140.15625,
 											"height": 13,
-											"text": "(from gameMechanics)"
+											"text": "(from game_mechanics)"
 										},
 										{
 											"_type": "LabelView",
@@ -10716,9 +10716,9 @@
 											"font": "Arial;13;0",
 											"left": 152,
 											"top": -128,
-											"width": 166.638671875,
+											"width": 176.76953125,
 											"height": 13,
-											"text": "(from characterCardsEffects)"
+											"text": "(from character_cards_effects)"
 										},
 										{
 											"_type": "LabelView",
@@ -10933,9 +10933,9 @@
 											"font": "Arial;13;0",
 											"left": 824,
 											"top": -48,
-											"width": 166.638671875,
+											"width": 176.76953125,
 											"height": 13,
-											"text": "(from characterCardsEffects)"
+											"text": "(from character_cards_effects)"
 										},
 										{
 											"_type": "LabelView",
@@ -11216,9 +11216,9 @@
 											"font": "Arial;13;0",
 											"left": 184,
 											"top": 96,
-											"width": 166.638671875,
+											"width": 176.76953125,
 											"height": 13,
-											"text": "(from characterCardsEffects)"
+											"text": "(from character_cards_effects)"
 										},
 										{
 											"_type": "LabelView",
@@ -13839,7 +13839,7 @@
 											"font": "Arial;13;1",
 											"left": 1189,
 											"top": 1646,
-											"width": 191,
+											"width": 247,
 											"height": 13,
 											"text": "enums"
 										},
@@ -13874,7 +13874,7 @@
 									"font": "Arial;13;0",
 									"left": 1184,
 									"top": 1639,
-									"width": 201,
+									"width": 257,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAF/0VjzV82oGow="
@@ -13899,7 +13899,7 @@
 							"containerChangeable": true,
 							"left": 1184,
 							"top": 1624,
-							"width": 201,
+							"width": 257,
 							"height": 209,
 							"nameCompartment": {
 								"$ref": "AAAAAAF/0VjzV82n1a0="
@@ -13934,7 +13934,7 @@
 											"font": "Arial;13;0",
 											"left": 1213,
 											"top": 1677,
-											"width": 143,
+											"width": 199,
 											"height": 13,
 											"text": "«enumeration»"
 										},
@@ -13947,7 +13947,7 @@
 											"font": "Arial;13;1",
 											"left": 1213,
 											"top": 1692,
-											"width": 143,
+											"width": 199,
 											"height": 13,
 											"text": "PlayerAction"
 										},
@@ -13982,7 +13982,7 @@
 									"font": "Arial;13;0",
 									"left": 1208,
 									"top": 1672,
-									"width": 153,
+									"width": 209,
 									"height": 38,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAF/0VkwENN2kaw="
@@ -14083,9 +14083,9 @@
 											"font": "Arial;13;0",
 											"left": 1213,
 											"top": 1715,
-											"width": 143,
+											"width": 199,
 											"height": 13,
-											"text": "FillClouds",
+											"text": "FILL_CLOUDS",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14100,9 +14100,9 @@
 											"font": "Arial;13;0",
 											"left": 1213,
 											"top": 1730,
-											"width": 143,
+											"width": 199,
 											"height": 13,
-											"text": "PlayAssistantCard",
+											"text": "PLAY_ASSISTANT_CARD",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14117,9 +14117,9 @@
 											"font": "Arial;13;0",
 											"left": 1213,
 											"top": 1745,
-											"width": 143,
+											"width": 199,
 											"height": 13,
-											"text": "MoveStudents",
+											"text": "MOVE_STUDENTS",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14134,9 +14134,9 @@
 											"font": "Arial;13;0",
 											"left": 1213,
 											"top": 1760,
-											"width": 143,
+											"width": 199,
 											"height": 13,
-											"text": "MoveMotherNature",
+											"text": "MOVE_MOTHER_NATURE",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14151,9 +14151,9 @@
 											"font": "Arial;13;0",
 											"left": 1213,
 											"top": 1775,
-											"width": 143,
+											"width": 199,
 											"height": 13,
-											"text": "ChooseCloud",
+											"text": "CHOOSE_CLOUD",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14168,16 +14168,16 @@
 											"font": "Arial;13;0",
 											"left": 1213,
 											"top": 1790,
-											"width": 143,
+											"width": 199,
 											"height": 13,
-											"text": "ActivateCharacterCard",
+											"text": "ACTIVATE_CHARACTER_CARD",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1208,
 									"top": 1710,
-									"width": 153,
+									"width": 209,
 									"height": 98
 								}
 							],
@@ -14188,7 +14188,7 @@
 							"containerChangeable": true,
 							"left": 1208,
 							"top": 1672,
-							"width": 153,
+							"width": 209,
 							"height": 136,
 							"nameCompartment": {
 								"$ref": "AAAAAAF/0VkwENN1hgY="
@@ -14219,7 +14219,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "gameData",
+					"name": "game_data",
 					"ownedElements": [
 						{
 							"_type": "UMLPackage",
@@ -14243,7 +14243,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/f0qmyMsKLHs="
 											},
-											"name": "YellowElf"
+											"name": "YELLOW_ELF"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14251,7 +14251,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/f0qmyMsKLHs="
 											},
-											"name": "BlueUnicorn"
+											"name": "BLUE_UNICORN"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14259,7 +14259,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/f0qmyMsKLHs="
 											},
-											"name": "GreenFrog"
+											"name": "GREEN_FROG"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14267,7 +14267,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/f0qmyMsKLHs="
 											},
-											"name": "RedDragon"
+											"name": "RED_DRAGON"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14275,7 +14275,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/f0qmyMsKLHs="
 											},
-											"name": "PinkFairy"
+											"name": "PINK_FAIRY"
 										}
 									]
 								},
@@ -14293,7 +14293,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/rW4JAxnRNqI="
 											},
-											"name": "None"
+											"name": "NONE"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14301,7 +14301,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/rW4JAxnRNqI="
 											},
-											"name": "White"
+											"name": "WHITE"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14309,7 +14309,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/rW4JAxnRNqI="
 											},
-											"name": "Black"
+											"name": "BLACK"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14317,7 +14317,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/rW4JAxnRNqI="
 											},
-											"name": "Gray"
+											"name": "GRAY"
 										}
 									]
 								},
@@ -14335,7 +14335,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wkZzNT7F5+A="
 											},
-											"name": "Druid"
+											"name": "DRUID"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14343,7 +14343,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wkZzNT7F5+A="
 											},
-											"name": "King"
+											"name": "KING"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14351,7 +14351,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wkZzNT7F5+A="
 											},
-											"name": "Witch"
+											"name": "WITCH"
 										},
 										{
 											"_type": "UMLEnumerationLiteral",
@@ -14359,7 +14359,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wkZzNT7F5+A="
 											},
-											"name": "Sensei"
+											"name": "SENSEI"
 										}
 									]
 								}
@@ -14371,7 +14371,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF/xXfGFhyQBzs="
 							},
-							"name": "tokenContainers",
+							"name": "token_containers",
 							"ownedElements": [
 								{
 									"_type": "UMLClass",
@@ -15825,7 +15825,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "gameMechanics",
+					"name": "game_mechanics",
 					"ownedElements": [
 						{
 							"_type": "UMLClass",
@@ -16041,7 +16041,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF/xaHwlghWs+o="
 							},
-							"name": "playerActions",
+							"name": "player_actions",
 							"ownedElements": [
 								{
 									"_type": "UMLClass",
@@ -16921,7 +16921,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF/xaHwlghWs+o="
 							},
-							"name": "characterCardsEffects",
+							"name": "character_cards_effects",
 							"ownedElements": [
 								{
 									"_type": "UMLClass",
@@ -17469,7 +17469,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/0VkwD9Nynx8="
 									},
-									"name": "FillClouds"
+									"name": "FILL_CLOUDS"
 								},
 								{
 									"_type": "UMLEnumerationLiteral",
@@ -17477,7 +17477,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/0VkwD9Nynx8="
 									},
-									"name": "PlayAssistantCard"
+									"name": "PLAY_ASSISTANT_CARD"
 								},
 								{
 									"_type": "UMLEnumerationLiteral",
@@ -17485,7 +17485,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/0VkwD9Nynx8="
 									},
-									"name": "MoveStudents"
+									"name": "MOVE_STUDENTS"
 								},
 								{
 									"_type": "UMLEnumerationLiteral",
@@ -17493,7 +17493,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/0VkwD9Nynx8="
 									},
-									"name": "MoveMotherNature"
+									"name": "MOVE_MOTHER_NATURE"
 								},
 								{
 									"_type": "UMLEnumerationLiteral",
@@ -17501,7 +17501,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/0VkwD9Nynx8="
 									},
-									"name": "ChooseCloud"
+									"name": "CHOOSE_CLOUD"
 								},
 								{
 									"_type": "UMLEnumerationLiteral",
@@ -17509,7 +17509,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/0VkwD9Nynx8="
 									},
-									"name": "ActivateCharacterCard"
+									"name": "ACTIVATE_CHARACTER_CARD"
 								}
 							]
 						}
