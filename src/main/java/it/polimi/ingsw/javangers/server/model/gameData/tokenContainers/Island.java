@@ -34,7 +34,7 @@ public class Island extends TokenContainer<List<TokenColor>> {
      * @return pair of tower color and amount
      */
     public Pair<TowerColor, Integer> getTowers() {
-        return new Pair<>(towers.getValue0(), towers.getValue1());
+        return new Pair<>(this.towers.getValue0(), this.towers.getValue1());
     }
 
     /**
