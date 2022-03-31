@@ -4,6 +4,7 @@ import it.polimi.ingsw.javangers.server.model.gameData.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.gameData.enums.TowerColor;
 import org.javatuples.Pair;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class Island extends TokenContainer<List<TokenColor>> {
      */
     public Island() {
         super();
-        this.towers = new Pair<>(TowerColor.None, 0);
+        this.towers = new Pair<>(TowerColor.NONE, 0);
         this.enabled = true;
     }
 
@@ -40,7 +41,7 @@ public class Island extends TokenContainer<List<TokenColor>> {
     /**
      * Set towers pair color and amount.
      *
-     * @param towers paid of tower color and amount
+     * @param towers pair of tower color and amount
      */
     public void setTowers(Pair<TowerColor, Integer> towers) {
         this.towers = towers;
@@ -78,6 +79,6 @@ public class Island extends TokenContainer<List<TokenColor>> {
             }
             return tokens;
         }
-        return null;
+        return Collections.emptyList();
     }
 }

@@ -7,17 +7,17 @@ public enum WizardType {
     /**
      * Druid wizard.
      */
-    Druid,
+    DRUID,
     /**
      * King wizard.
      */
-    King,
+    KING,
     /**
      * Witch wizard.
      */
-    Witch,
+    WITCH,
     /**
      * Sensei wizard.
      */
-    Sensei
+    SENSEI
 }

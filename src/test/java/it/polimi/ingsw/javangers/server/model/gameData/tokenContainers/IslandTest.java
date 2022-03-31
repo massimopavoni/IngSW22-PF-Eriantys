@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +28,7 @@ class IslandTest {
                 () -> assertNotNull(island.getTokens()),
                 () -> assertTrue(island.getTokens().isEmpty()),
                 () -> assertNotNull(island.getTowers()),
-                () -> assertEquals(TowerColor.None, island.getTowers().getValue0()),
+                () -> assertEquals(TowerColor.NONE, island.getTowers().getValue0()),
                 () -> assertEquals(0, island.getTowers().getValue1()),
                 () -> assertTrue(island.isEnabled())
         );
@@ -37,16 +38,16 @@ class IslandTest {
     @DisplayName("Test getTowers for towers deep copy")
     void getTowers() {
         Pair<TowerColor, Integer> towers = island.getTowers();
-        towers = towers.setAt0(TowerColor.White);
+        towers = towers.setAt0(TowerColor.WHITE);
         assertNotSame(towers, island.getTowers());
     }
 
     @Test
     @DisplayName("Test setTowers for changing towers pair")
     void setTowers() {
-        island.setTowers(new Pair<>(TowerColor.White, 1));
+        island.setTowers(new Pair<>(TowerColor.WHITE, 1));
         assertAll(
-                () -> assertEquals(TowerColor.White, island.getTowers().getValue0()),
+                () -> assertEquals(TowerColor.WHITE, island.getTowers().getValue0()),
                 () -> assertEquals(1, island.getTowers().getValue1())
         );
     }
@@ -67,21 +68,21 @@ class IslandTest {
     @Test
     @DisplayName("Test grabTokens for selected tokens")
     void grabTokens() {
-        island.addTokens(Arrays.asList(TokenColor.RedDragon, TokenColor.RedDragon,
-                TokenColor.BlueUnicorn, TokenColor.BlueUnicorn));
-        List<TokenColor> grabbed = island.grabTokens(Arrays.asList(TokenColor.RedDragon, TokenColor.BlueUnicorn));
-        List<TokenColor> notGrabbed = island.grabTokens(Arrays.asList(TokenColor.RedDragon, TokenColor.GreenFrog));
+        island.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON,
+                TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
+        List<TokenColor> grabbed = island.grabTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
+        List<TokenColor> notGrabbed = island.grabTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.GREEN_FROG));
         assertAll(
                 () -> assertEquals(2, grabbed.size()),
-                () -> assertEquals(TokenColor.RedDragon, grabbed.get(0)),
-                () -> assertEquals(TokenColor.BlueUnicorn, grabbed.get(1)),
+                () -> assertEquals(TokenColor.RED_DRAGON, grabbed.get(0)),
+                () -> assertEquals(TokenColor.BLUE_UNICORN, grabbed.get(1)),
                 () -> assertEquals(2, island.getTokens().size()),
-                () -> assertEquals(TokenColor.RedDragon, island.getTokens().get(0)),
-                () -> assertEquals(TokenColor.BlueUnicorn, island.getTokens().get(1)),
-                () -> assertNull(notGrabbed),
+                () -> assertEquals(TokenColor.RED_DRAGON, island.getTokens().get(0)),
+                () -> assertEquals(TokenColor.BLUE_UNICORN, island.getTokens().get(1)),
+                () -> assertSame(Collections.emptyList(), notGrabbed),
                 () -> assertEquals(2, island.getTokens().size()),
-                () -> assertEquals(TokenColor.RedDragon, island.getTokens().get(0)),
-                () -> assertEquals(TokenColor.BlueUnicorn, island.getTokens().get(1))
+                () -> assertEquals(TokenColor.RED_DRAGON, island.getTokens().get(0)),
+                () -> assertEquals(TokenColor.BLUE_UNICORN, island.getTokens().get(1))
         );
     }
 }

@@ -21,7 +21,7 @@ public abstract class TokenContainer<C> {
     /**
      * Base constructor for inherited token containers, creates tokens list as empty ArrayList.
      */
-    public TokenContainer() {
+    protected TokenContainer() {
         this.tokensList = new ArrayList<>();
     }
 

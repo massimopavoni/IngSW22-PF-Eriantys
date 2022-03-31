@@ -7,17 +7,17 @@ public enum TowerColor {
     /**
      * No tower.
      */
-    None,
+    NONE,
     /**
      * White tower.
      */
-    White,
+    WHITE,
     /**
      * Black tower.
      */
-    Black,
+    BLACK,
     /**
      * Gray tower.
      */
-    Gray
+    GRAY
 }

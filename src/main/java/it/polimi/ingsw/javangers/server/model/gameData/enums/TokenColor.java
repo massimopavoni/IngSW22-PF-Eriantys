@@ -7,21 +7,21 @@ public enum TokenColor {
     /**
      * Yellow token.
      */
-    YellowElf,
+    YELLOW_ELF,
     /**
      * Blue token.
      */
-    BlueUnicorn,
+    BLUE_UNICORN,
     /**
      * Green token.
      */
-    GreenFrog,
+    GREEN_FROG,
     /**
      * Red token.
      */
-    RedDragon,
+    RED_DRAGON,
     /**
      * Pink token.
      */
-    PinkFairy
+    PINK_FAIRY
 }
