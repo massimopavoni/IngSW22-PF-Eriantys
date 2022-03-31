@@ -15,3 +15,5 @@ target/
 .metadata
 # ignore DS_Store and files starting with ._ (for Mac)
 .DS_Store
+# ignore sonarqube scan script for local instance
+maven-sonarqube-scanner.sh
