@@ -1,4 +1,4 @@
-package it.polimi.ingsw.javangers.server.model.gameData.enums;
+package it.polimi.ingsw.javangers.server.model.game_data.enums;
 
 /**
  * Enumeration of the different types of wizards available to players.

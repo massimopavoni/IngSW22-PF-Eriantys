@@ -1,6 +1,6 @@
-package it.polimi.ingsw.javangers.server.model.gameData.tokenContainers;
+package it.polimi.ingsw.javangers.server.model.game_data.token_containers;
 
-import it.polimi.ingsw.javangers.server.model.gameData.enums.TokenColor;
+import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 
 import java.util.ArrayList;
 import java.util.List;

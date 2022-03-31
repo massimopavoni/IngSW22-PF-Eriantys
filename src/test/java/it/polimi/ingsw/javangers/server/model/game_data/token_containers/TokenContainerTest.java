@@ -1,6 +1,6 @@
-package it.polimi.ingsw.javangers.server.model.gameData.tokenContainers;
+package it.polimi.ingsw.javangers.server.model.game_data.token_containers;
 
-import it.polimi.ingsw.javangers.server.model.gameData.enums.TokenColor;
+import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
