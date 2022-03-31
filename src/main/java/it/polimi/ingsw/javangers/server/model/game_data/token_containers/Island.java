@@ -69,7 +69,7 @@ public class Island extends TokenContainer<List<TokenColor>> {
      * Grab specified tokens list from island.
      *
      * @param tokens list of tokens to grab
-     * @return list of grabbed tokens or null if island does not contain requested tokens
+     * @return list of grabbed tokens or an empty list if island does not contain requested tokens
      */
     @Override
     public List<TokenColor> grabTokens(List<TokenColor> tokens) {
