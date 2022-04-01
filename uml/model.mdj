@@ -3078,7 +3078,7 @@
 											"top": 641,
 											"width": 279,
 											"height": 13,
-											"text": "+popIsland(index: byte): Island",
+											"text": "+popIsland(index: int): Island",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15240,7 +15240,7 @@
 												"$ref": "AAAAAAF/wgtVScVdarI="
 											},
 											"name": "index",
-											"type": "byte"
+											"type": "int"
 										},
 										{
 											"_type": "UMLParameter",
