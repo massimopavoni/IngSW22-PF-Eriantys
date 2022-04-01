@@ -39,7 +39,7 @@ class IslandTest {
     void getTowers() {
         Pair<TowerColor, Integer> towers = island.getTowers();
         towers = towers.setAt0(TowerColor.WHITE);
-        assertNotSame(towers, island.getTowers());
+        assertNotEquals(towers, island.getTowers());
     }
 
     @Test
@@ -79,7 +79,7 @@ class IslandTest {
                 () -> assertEquals(2, island.getTokens().size()),
                 () -> assertEquals(TokenColor.RED_DRAGON, island.getTokens().get(0)),
                 () -> assertEquals(TokenColor.BLUE_UNICORN, island.getTokens().get(1)),
-                () -> assertSame(Collections.emptyList(), notGrabbed),
+                () -> assertEquals(Collections.emptyList(), notGrabbed),
                 () -> assertEquals(2, island.getTokens().size()),
                 () -> assertEquals(TokenColor.RED_DRAGON, island.getTokens().get(0)),
                 () -> assertEquals(TokenColor.BLUE_UNICORN, island.getTokens().get(1))

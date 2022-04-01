@@ -30,7 +30,7 @@ class TokenContainerTest {
         container.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
         List<TokenColor> tokens = container.getTokens();
         tokens.add(TokenColor.BLUE_UNICORN);
-        assertNotSame(tokens, container.getTokens());
+        assertNotEquals(tokens, container.getTokens());
     }
 
     @Test
