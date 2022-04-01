@@ -3,25 +3,24 @@ package it.polimi.ingsw.javangers.server.model.game_data.token_containers;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Class representing a container of tokens.
- *
- * @param <C> type of condition for grabbing tokens
  */
-public abstract class TokenContainer<C> {
+public class TokenContainer {
     /**
      * List of all the tokens in the container.
      */
-    protected List<TokenColor> tokensList;
+    private final List<TokenColor> tokensList;
 
     /**
-     * Base constructor for inherited token containers, creates tokens list as empty ArrayList.
+     * Constructor for token container, creates tokens list as empty ArrayList.
      */
-    protected TokenContainer() {
+    public TokenContainer() {
         this.tokensList = new ArrayList<>();
     }
 
@@ -53,10 +52,19 @@ public abstract class TokenContainer<C> {
     }
 
     /**
-     * Grab tokens from container with class specific condition and logic.
+     * Extract tokens from container with class specific function logic.
      *
-     * @param condition condition to grab tokens
-     * @return list of grabbed tokens
+     * @param tokens tokens to be extracted
+     * @return list of extracted tokens
      */
-    public abstract List<TokenColor> grabTokens(C condition);
+    public List<TokenColor> extractTokens(List<TokenColor> tokens) {
+        List<TokenColor> tokensCopy = getTokens();
+        for (TokenColor token : tokens) {
+            if (!tokensCopy.contains(token)) return Collections.emptyList();
+            tokensCopy.remove(token);
+        }
+        for (TokenColor token : tokens)
+            this.tokensList.remove(token);
+        return tokens;
+    }
 }

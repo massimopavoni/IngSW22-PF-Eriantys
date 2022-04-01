@@ -6,49 +6,81 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TokenContainerTest {
-    TokenContainer<Void> container;
+    TokenContainer tokenContainer;
 
     @BeforeEach
     void setUp() {
-        container = new TokenContainer<Void>() {
-            @Override
-            public List<TokenColor> grabTokens(Void condition) {
-                return null;
-            }
-        };
+        tokenContainer = new TokenContainer();
     }
 
     @Test
     @DisplayName("Test getTokens for tokensList deep copy")
-    void getTokens() {
-        container.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
-        List<TokenColor> tokens = container.getTokens();
+    void getTokens_deepCopy() {
+        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
+        List<TokenColor> tokens = tokenContainer.getTokens();
         tokens.add(TokenColor.BLUE_UNICORN);
-        assertNotEquals(tokens, container.getTokens());
+        assertNotEquals(tokens, tokenContainer.getTokens());
     }
 
     @Test
     @DisplayName("Test getColorCounts for correct counts")
-    void getColorCounts() {
-        container.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
-        Map<TokenColor, Integer> colorCounts = container.getColorCounts();
+    void getColorCounts_correctCount() {
+        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
+        Map<TokenColor, Integer> colorCounts = tokenContainer.getColorCounts();
         assertEquals(2, colorCounts.get(TokenColor.RED_DRAGON));
     }
 
     @Test
     @DisplayName("Test addTokens for adding tokens to tokensList")
-    void addTokens() {
-        container.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
+    void addTokens_correctList() {
+        List<TokenColor> tokens = Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON);
+        tokenContainer.addTokens(tokens);
         assertAll(
-                () -> assertEquals(2, container.getTokens().size()),
-                () -> assertEquals(TokenColor.RED_DRAGON, container.getTokens().get(0)),
-                () -> assertEquals(TokenColor.RED_DRAGON, container.getTokens().get(1))
+                () -> assertEquals(2, tokenContainer.getTokens().size()),
+                () -> assertEquals(tokens, tokenContainer.getTokens())
+        );
+    }
+
+    @Test
+    @DisplayName("Test extractTokens only specified tokens")
+    void extractTokens_onlySpecifiedTokens() {
+        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON,
+                TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
+        List<TokenColor> tokens = tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
+        assertAll(
+                () -> assertEquals(2, tokens.size()),
+                () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokens),
+                () -> assertEquals(2, tokenContainer.getTokens().size()),
+                () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokenContainer.getTokens())
+        );
+    }
+
+    @Test
+    @DisplayName("Test extractTokens returning empty if cardinality wrong")
+    void extractTokens_wrongCardinality() {
+        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
+        List<TokenColor> tokens = tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
+        assertAll(
+                () -> assertEquals(Collections.emptyList(), tokens),
+                () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokenContainer.getTokens())
+        );
+    }
+
+    @Test
+    @DisplayName("Test extractTokens returning empty list if tokens not present")
+    void extractTokens_notPresent() {
+        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
+        List<TokenColor> tokens = tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.GREEN_FROG));
+        assertAll(
+                () -> assertEquals(Collections.emptyList(), tokens),
+                () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokenContainer.getTokens())
         );
     }
 }
