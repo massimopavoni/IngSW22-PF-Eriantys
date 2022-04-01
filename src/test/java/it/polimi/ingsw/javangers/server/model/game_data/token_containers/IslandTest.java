@@ -1,15 +1,10 @@
 package it.polimi.ingsw.javangers.server.model.game_data.token_containers;
 
-import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,8 +24,7 @@ class IslandTest {
                 () -> assertNotNull(island.getTokenContainer().getTokens()),
                 () -> assertTrue(island.getTokenContainer().getTokens().isEmpty()),
                 () -> assertNotNull(island.getTowers()),
-                () -> assertEquals(TowerColor.NONE, island.getTowers().getValue0()),
-                () -> assertEquals(0, island.getTowers().getValue1()),
+                () -> assertEquals(new Pair<>(TowerColor.NONE, 0), island.getTowers()),
                 () -> assertTrue(island.isEnabled())
         );
     }
@@ -47,10 +41,7 @@ class IslandTest {
     @DisplayName("Test setTowers for changing towers pair")
     void setTowers_changePair() {
         island.setTowers(new Pair<>(TowerColor.WHITE, 1));
-        assertAll(
-                () -> assertEquals(TowerColor.WHITE, island.getTowers().getValue0()),
-                () -> assertEquals(1, island.getTowers().getValue1())
-        );
+        assertEquals(new Pair<>(TowerColor.WHITE, 1), island.getTowers());
     }
 
     @Test

@@ -51,14 +51,12 @@ class TokenContainerTest {
     @Test
     @DisplayName("Test extractTokens only specified tokens")
     void extractTokens_onlySpecifiedTokens() {
-        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON,
-                TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
+        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN,
+                TokenColor.GREEN_FROG, TokenColor.PINK_FAIRY));
         List<TokenColor> tokens = tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         assertAll(
-                () -> assertEquals(2, tokens.size()),
                 () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokens),
-                () -> assertEquals(2, tokenContainer.getTokens().size()),
-                () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokenContainer.getTokens())
+                () -> assertEquals(Arrays.asList(TokenColor.GREEN_FROG, TokenColor.PINK_FAIRY), tokenContainer.getTokens())
         );
     }
 
