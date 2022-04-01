@@ -42,15 +42,15 @@ public class StudentsBag {
     /**
      * Grab random tokens from bag.
      *
-     * @param amountOfTokens number of tokens to grab
+     * @param amount number of tokens to grab
      * @return list of randomly grabbed tokens or an empty list if parameter is zero
      */
-    public List<TokenColor> grabTokens(int amountOfTokens) {
+    public List<TokenColor> grabTokens(int amount) {
         List<TokenColor> tokens = new ArrayList<>();
         List<TokenColor> tokensCopy = this.tokenContainer.getTokens();
-        while (amountOfTokens > 0) {
+        while (amount > 0) {
             tokens.add(tokensCopy.get(random.nextInt(this.tokenContainer.getTokens().size())));
-            amountOfTokens--;
+            amount--;
         }
         return this.tokenContainer.extractTokens(tokens);
     }
