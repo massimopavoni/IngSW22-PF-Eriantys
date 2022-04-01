@@ -20,8 +20,7 @@ public class StudentsBag extends TokenContainer<Integer> {
     public StudentsBag(Map<TokenColor, Integer> studentsPerColor) {
         super();
         this.random = new Random();
-        for (TokenColor color :
-                TokenColor.values()) {
+        for (TokenColor color : TokenColor.values()) {
             this.tokensList = Collections.nCopies(studentsPerColor.get(color), color);
         }
     }
@@ -35,8 +34,9 @@ public class StudentsBag extends TokenContainer<Integer> {
     @Override
     public List<TokenColor> grabTokens(Integer amountOfTokens) {
         List<TokenColor> tokens = new ArrayList<>();
-        for (int i = 0; i < amountOfTokens; i++) {
+        while (amountOfTokens > 0) {
             tokens.add(this.tokensList.remove(random.nextInt(this.tokensList.size())));
+            amountOfTokens--;
         }
         return tokens;
     }
