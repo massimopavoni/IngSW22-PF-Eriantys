@@ -52,7 +52,6 @@ public class StudentsBag {
             tokens.add(tokensCopy.get(random.nextInt(this.tokenContainer.getTokens().size())));
             amountOfTokens--;
         }
-        this.tokenContainer.extractTokens(tokens);
-        return tokens;
+        return this.tokenContainer.extractTokens(tokens);
     }
 }

@@ -37,7 +37,6 @@ public class Cloud {
      */
     public List<TokenColor> grabTokens() {
         List<TokenColor> tokens = new ArrayList<>(this.tokenContainer.getTokens());
-        this.tokenContainer.extractTokens(tokens);
-        return tokens;
+        return this.tokenContainer.extractTokens(tokens);
     }
 }
