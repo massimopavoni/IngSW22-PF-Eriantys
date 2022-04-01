@@ -21,6 +21,12 @@ class TokenContainerTest {
     }
 
     @Test
+    @DisplayName("Test constructor")
+    void TokenContainer_constructor() {
+        assertNotNull(tokenContainer.getTokens());
+    }
+
+    @Test
     @DisplayName("Test getTokens for tokensList deep copy")
     void getTokens_deepCopy() {
         tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));

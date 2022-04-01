@@ -21,7 +21,6 @@ class IslandTest {
     void Island_constructor() {
         assertAll(
                 () -> assertNotNull(island.getTokenContainer()),
-                () -> assertNotNull(island.getTokenContainer().getTokens()),
                 () -> assertTrue(island.getTokenContainer().getTokens().isEmpty()),
                 () -> assertNotNull(island.getTowers()),
                 () -> assertEquals(new Pair<>(TowerColor.NONE, 0), island.getTowers()),
