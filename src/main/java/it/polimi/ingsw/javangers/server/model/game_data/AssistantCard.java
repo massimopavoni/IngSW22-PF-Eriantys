@@ -36,7 +36,7 @@ public class AssistantCard {
      * @return name of the card
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -45,7 +45,7 @@ public class AssistantCard {
      * @return value of the card
      */
     public int getValue() {
-        return value;
+        return this.value;
     }
 
     /**
@@ -54,6 +54,6 @@ public class AssistantCard {
      * @return mother nature steps limit of the card
      */
     public int getSteps() {
-        return steps;
+        return this.steps;
     }
 }

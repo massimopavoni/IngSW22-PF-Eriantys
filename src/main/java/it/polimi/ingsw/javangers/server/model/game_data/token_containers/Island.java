@@ -35,7 +35,7 @@ public class Island {
      * @return token container instance
      */
     public TokenContainer getTokenContainer() {
-        return tokenContainer;
+        return this.tokenContainer;
     }
 
     /**
@@ -62,7 +62,7 @@ public class Island {
      * @return enabled flag
      */
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
     /**

@@ -27,7 +27,7 @@ public class Cloud {
      * @return token container instance
      */
     public TokenContainer getTokenContainer() {
-        return tokenContainer;
+        return this.tokenContainer;
     }
 
     /**
