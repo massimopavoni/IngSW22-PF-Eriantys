@@ -1984,7 +1984,7 @@
 											"top": 467,
 											"width": 263,
 											"height": 13,
-											"text": "+grabTokens(amount: int): List<TokenColor>",
+											"text": "+grabTokens(number: int): List<TokenColor>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3073,7 +3073,7 @@
 											"top": 837,
 											"width": 343,
 											"height": 13,
-											"text": "-ownerStudentsAmount: int",
+											"text": "-ownerStudentsNumber: int",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3124,7 +3124,7 @@
 											"top": 875,
 											"width": 343,
 											"height": 13,
-											"text": "+getOwnerStudentsAmount(): int",
+											"text": "+getOwnerStudentsNumber(): int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3141,7 +3141,7 @@
 											"top": 890,
 											"width": 343,
 											"height": 13,
-											"text": "+setOwner(username: String, studentsAmount: int): void",
+											"text": "+setOwner(username: String, studentsNumber: int): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3847,7 +3847,7 @@
 											"top": 865,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "+setTowersAmount(amount: int): void",
+											"text": "+setTowersNumber(towersNumber: int): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -8476,7 +8476,7 @@
 											"top": 1285,
 											"width": 503,
 											"height": 13,
-											"text": "-playersAmount: int",
+											"text": "-playersNumber: int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -8629,7 +8629,7 @@
 											"top": 1413,
 											"width": 503,
 											"height": 13,
-											"text": "+getPlayersAmount(): int",
+											"text": "+getPlayerNumber(): int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -8646,7 +8646,7 @@
 											"top": 1428,
 											"width": 503,
 											"height": 13,
-											"text": "+setPlayersAmount(playersAmount: int): void",
+											"text": "+setPlayersNumber(playersNumber: int): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15077,7 +15077,7 @@
 													"_parent": {
 														"$ref": "AAAAAAF/5rI++25aH2g="
 													},
-													"name": "amount",
+													"name": "number",
 													"type": "int"
 												},
 												{
@@ -15664,7 +15664,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/rV+Zfg3W2yA="
 									},
-									"name": "ownerStudentsAmount",
+									"name": "ownerStudentsNumber",
 									"visibility": "private",
 									"type": "int"
 								}
@@ -15695,7 +15695,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/rV+Zfg3W2yA="
 									},
-									"name": "getOwnerStudentsAmount",
+									"name": "getOwnerStudentsNumber",
 									"parameters": [
 										{
 											"_type": "UMLParameter",
@@ -15731,7 +15731,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wEU+MQB3Uy4="
 											},
-											"name": "studentsAmount",
+											"name": "studentsNumber",
 											"type": "int"
 										},
 										{
@@ -16120,7 +16120,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f0mnUMrImCo="
 									},
-									"name": "setTowersAmount",
+									"name": "setTowersNumber",
 									"parameters": [
 										{
 											"_type": "UMLParameter",
@@ -16128,7 +16128,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wLAZhIRnbc4="
 											},
-											"name": "amount",
+											"name": "towersNumber",
 											"type": "int"
 										},
 										{
@@ -16966,7 +16966,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f1MN2stu7/s="
 									},
-									"name": "playersAmount",
+									"name": "playersNumber",
 									"visibility": "private",
 									"type": "int"
 								},
@@ -17061,7 +17061,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f1MN2stu7/s="
 									},
-									"name": "getPlayersAmount",
+									"name": "getPlayerNumber",
 									"parameters": [
 										{
 											"_type": "UMLParameter",
@@ -17080,7 +17080,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f1MN2stu7/s="
 									},
-									"name": "setPlayersAmount",
+									"name": "setPlayersNumber",
 									"parameters": [
 										{
 											"_type": "UMLParameter",
@@ -17088,7 +17088,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/1SRADkDoklo="
 											},
-											"name": "playersAmount",
+											"name": "playersNumber",
 											"type": "int"
 										},
 										{
