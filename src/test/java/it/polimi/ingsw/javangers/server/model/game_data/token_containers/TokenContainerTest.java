@@ -66,7 +66,7 @@ class TokenContainerTest {
     }
 
     @Test
-    @DisplayName("Test extractTokens returning empty if cardinality wrong")
+    @DisplayName("Test extractTokens throws IllegalArgumentException if cardinality wrong")
     void extractTokens_wrongCardinality() {
         tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         assertAll(
@@ -77,7 +77,7 @@ class TokenContainerTest {
     }
 
     @Test
-    @DisplayName("Test extractTokens returning empty list if tokens not present")
+    @DisplayName("Test extractTokens throws IllegalArgumentException if tokens not present")
     void extractTokens_notPresent() {
         tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         assertAll(
