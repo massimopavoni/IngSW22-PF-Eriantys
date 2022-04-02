@@ -3847,7 +3847,7 @@
 											"top": 865,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "+setTowersNumber(number: int): void",
+											"text": "+setTowersNumber(towersNumber: int): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -8646,7 +8646,7 @@
 											"top": 1428,
 											"width": 503,
 											"height": 13,
-											"text": "+setPlayersNumber(number: int): void",
+											"text": "+setPlayersNumber(playersNumber: int): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16128,7 +16128,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wLAZhIRnbc4="
 											},
-											"name": "number",
+											"name": "towersNumber",
 											"type": "int"
 										},
 										{
@@ -17088,7 +17088,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/1SRADkDoklo="
 											},
-											"name": "number",
+											"name": "playersNumber",
 											"type": "int"
 										},
 										{
