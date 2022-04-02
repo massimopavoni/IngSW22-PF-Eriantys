@@ -2,7 +2,10 @@ package it.polimi.ingsw.javangers.server.model.game_data.token_containers;
 
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Class representing a container of students.
@@ -13,7 +16,7 @@ public class StudentsBag {
      */
     private final TokenContainer tokenContainer;
     /**
-     * Random instance for this game's bag.
+     * Random number generator.
      */
     private final Random random;
 
@@ -25,9 +28,8 @@ public class StudentsBag {
     public StudentsBag(Map<TokenColor, Integer> studentsPerColor) {
         this.tokenContainer = new TokenContainer();
         this.random = new Random();
-        for (TokenColor color : TokenColor.values()) {
-            this.tokenContainer.addTokens(Collections.nCopies(studentsPerColor.get(color), color));
-        }
+        for (Map.Entry<TokenColor, Integer> entry : studentsPerColor.entrySet())
+            this.tokenContainer.addTokens(Collections.nCopies(entry.getValue(), entry.getKey()));
     }
 
     /**
@@ -36,7 +38,7 @@ public class StudentsBag {
      * @return token container instance
      */
     public TokenContainer getTokenContainer() {
-        return tokenContainer;
+        return this.tokenContainer;
     }
 
     /**
@@ -44,14 +46,15 @@ public class StudentsBag {
      *
      * @param amount number of tokens to grab
      * @return list of randomly grabbed tokens or an empty list if parameter is zero
+     * @throws IllegalArgumentException if parameter is negative, zero or greater than number of tokens in bag
      */
-    public List<TokenColor> grabTokens(int amount) {
-        List<TokenColor> tokens = new ArrayList<>();
+    public List<TokenColor> grabTokens(int amount) throws IllegalArgumentException {
         List<TokenColor> tokensCopy = this.tokenContainer.getTokens();
-        while (amount > 0) {
-            tokens.add(tokensCopy.get(random.nextInt(this.tokenContainer.getTokens().size())));
-            amount--;
-        }
+        if (amount < 1 || amount > tokensCopy.size()) throw new IllegalArgumentException("Invalid amount of tokens");
+        // Shuffle copy
+        Collections.shuffle(tokensCopy, this.random);
+        // Get amount number of tokens from token container list
+        List<TokenColor> tokens = tokensCopy.subList(0, amount);
         return this.tokenContainer.extractTokens(tokens);
     }
 }

@@ -16,13 +16,14 @@ public class Teacher {
     /**
      * Constructor for teacher, initializing owner username and students amount.
      *
-     * @param ownerUsername the owner of teacher
+     * @param ownerUsername       the owner of teacher
      * @param ownerStudentsAmount number of students owned
      */
     public Teacher(String ownerUsername, Integer ownerStudentsAmount) {
         this.ownerUsername = ownerUsername;
         this.ownerStudentsAmount = ownerStudentsAmount;
     }
+
     /**
      * Get owner username.
      *
@@ -31,18 +32,20 @@ public class Teacher {
     public String getOwnerUsername() {
         return this.ownerUsername;
     }
+
     /**
      * Get number of students owned.
      *
      * @return number of students owned
      */
     public int getOwnerStudentsAmount() {
-        return this.ownerStudentsAmount;}
+        return this.ownerStudentsAmount;
+    }
 
     /**
      * Set teacher owner.
      *
-     * @param ownerUsername new owner username
+     * @param ownerUsername       new owner username
      * @param ownerStudentsAmount new number of students owned
      */
     public void setOwner(String ownerUsername, int ownerStudentsAmount) {
