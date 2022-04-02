@@ -12,7 +12,7 @@ public class Island {
      */
     private final TokenContainer tokenContainer;
     /**
-     * Pair of tower color and amount.
+     * Pair of tower color and number.
      */
     private Pair<TowerColor, Integer> towers;
     /**
@@ -41,16 +41,16 @@ public class Island {
     /**
      * Get a copy of the towers pair.
      *
-     * @return pair of tower color and amount
+     * @return pair of tower color and number
      */
     public Pair<TowerColor, Integer> getTowers() {
         return new Pair<>(this.towers.getValue0(), this.towers.getValue1());
     }
 
     /**
-     * Set towers pair color and amount.
+     * Set towers pair color and number.
      *
-     * @param towers pair of tower color and amount
+     * @param towers pair of tower color and number
      */
     public void setTowers(Pair<TowerColor, Integer> towers) {
         this.towers = towers;

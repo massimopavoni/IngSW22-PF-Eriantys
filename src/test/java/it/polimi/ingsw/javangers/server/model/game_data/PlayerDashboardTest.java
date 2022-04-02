@@ -65,13 +65,13 @@ class PlayerDashboardTest {
     }
 
     @Test
-    @DisplayName("Test setTowersAmount for changing towers amount")
-    void setTowersAmount_changePair() throws IOException {
+    @DisplayName("Test setTowersNumber for changing towers number")
+    void setTowersNumber_changePair() throws IOException {
         playerDashboard = new PlayerDashboard(
                 "/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
                 WizardType.DRUID, new Pair<>(TowerColor.WHITE, 8), 1);
         TowerColor previousTowerColor = playerDashboard.getTowers().getValue0();
-        playerDashboard.setTowersAmount(6);
+        playerDashboard.setTowersNumber(6);
         assertAll(
                 () -> assertEquals(previousTowerColor, playerDashboard.getTowers().getValue0()),
                 () -> assertEquals(6, playerDashboard.getTowers().getValue1())

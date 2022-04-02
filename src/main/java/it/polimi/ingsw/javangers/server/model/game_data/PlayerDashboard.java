@@ -51,7 +51,7 @@ public class PlayerDashboard {
      *
      * @param assistantCardResourceLocation resource location of assistant cards json file
      * @param cardsBack                     wizard type of cards' back
-     * @param towers                        initial towers pair, dependent on players amount
+     * @param towers                        initial towers pair, dependent on players number
      * @param coinsNumber                   initial coins number
      * @throws IOException          if json parsing fails for some reason (stack trace can be examined)
      * @throws NullPointerException if provided resource location cannot be used (non-existing or null)
@@ -122,19 +122,19 @@ public class PlayerDashboard {
     /**
      * Get a copy of the dashboard towers pair.
      *
-     * @return pair of tower color and amount
+     * @return pair of tower color and number
      */
     public Pair<TowerColor, Integer> getTowers() {
         return new Pair<>(this.towers.getValue0(), this.towers.getValue1());
     }
 
     /**
-     * Set amount of towers, without changing the color.
+     * Set number of towers, without changing the color.
      *
-     * @param amount new amount of towers
+     * @param towersNumber new number of towers
      */
-    public void setTowersAmount(int amount) {
-        this.towers = this.towers.setAt1(amount);
+    public void setTowersNumber(int towersNumber) {
+        this.towers = this.towers.setAt1(towersNumber);
     }
 
     /**
@@ -147,9 +147,9 @@ public class PlayerDashboard {
     }
 
     /**
-     * Set amount of coins available to the player.
+     * Set number of coins available to the player.
      *
-     * @param coinsNumber new amount of coins
+     * @param coinsNumber new number of coins
      */
     public void setCoinsNumber(int coinsNumber) {
         this.coinsNumber = coinsNumber;
