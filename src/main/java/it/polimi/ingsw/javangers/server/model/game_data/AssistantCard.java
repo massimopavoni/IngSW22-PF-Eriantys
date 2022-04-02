@@ -1,5 +1,8 @@
 package it.polimi.ingsw.javangers.server.model.game_data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Class representing an assistant card.
  */
@@ -13,6 +16,7 @@ public class AssistantCard {
      */
     private final int value;
     /**
+     * d
      * The mother nature steps limit of the card.
      */
     private final int steps;
@@ -24,7 +28,8 @@ public class AssistantCard {
      * @param value value of the card
      * @param steps mother nature steps limit of the card
      */
-    public AssistantCard(String name, int value, int steps) {
+    @JsonCreator
+    public AssistantCard(@JsonProperty("name")String name, @JsonProperty("value")int value, @JsonProperty("steps")int steps) {
         this.name = name;
         this.value = value;
         this.steps = steps;

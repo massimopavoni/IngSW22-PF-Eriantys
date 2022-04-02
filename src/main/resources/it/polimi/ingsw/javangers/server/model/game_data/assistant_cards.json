@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Cheetah",
+    "value": 1,
+    "steps": 1
+  },
+  {
+    "name": "Ostrich",
+    "value": 2,
+    "steps": 1
+  },
+  {
+    "name": "Cat",
+    "value": 3,
+    "steps": 2
+  },
+  {
+    "name": "Eagle",
+    "value": 4,
+    "steps": 2
+  },
+  {
+    "name": "Fox",
+    "value": 5,
+    "steps": 3
+  },
+  {
+    "name": "Snake",
+    "value": 6,
+    "steps": 3
+  },
+  {
+    "name": "Octopus",
+    "value": 7,
+    "steps": 4
+  },
+  {
+    "name": "Dog",
+    "value": 8,
+    "steps": 4
+  },
+  {
+    "name": "Elephant",
+    "value": 9,
+    "steps": 5
+  },
+  {
+    "name": "Turtle",
+    "value": 10,
+    "steps": 5
+  }
+]
