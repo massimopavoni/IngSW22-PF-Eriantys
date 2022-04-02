@@ -3745,7 +3745,7 @@
 											"top": 775,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "+getEntrance(): null",
+											"text": "+getEntrance(): TokenContainer",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3762,7 +3762,7 @@
 											"top": 790,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "+getHall(): null",
+											"text": "+getHall(): TokenContainer",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16008,7 +16008,9 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wLBg54W2YeM="
 											},
-											"type": "",
+											"type": {
+												"$ref": "AAAAAAF/wFYWhHqg0+w="
+											},
 											"direction": "return"
 										}
 									]
@@ -16027,7 +16029,9 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wLLEM62wdbQ="
 											},
-											"type": "",
+											"type": {
+												"$ref": "AAAAAAF/wFYWhHqg0+w="
+											},
 											"direction": "return"
 										}
 									]
