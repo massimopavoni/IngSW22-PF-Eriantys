@@ -9,19 +9,19 @@ public class Teacher {
      */
     private String ownerUsername;
     /**
-     * Students amount of current teacher owner.
+     * Students number of current teacher owner.
      */
-    private int ownerStudentsAmount;
+    private int ownerStudentsNumber;
 
     /**
-     * Constructor for teacher, initializing owner username and students amount.
+     * Constructor for teacher, initializing owner username and students number.
      *
      * @param ownerUsername       the owner of teacher
-     * @param ownerStudentsAmount number of students owned
+     * @param ownerStudentsNumber number of students owned
      */
-    public Teacher(String ownerUsername, Integer ownerStudentsAmount) {
+    public Teacher(String ownerUsername, Integer ownerStudentsNumber) {
         this.ownerUsername = ownerUsername;
-        this.ownerStudentsAmount = ownerStudentsAmount;
+        this.ownerStudentsNumber = ownerStudentsNumber;
     }
 
     /**
@@ -38,18 +38,18 @@ public class Teacher {
      *
      * @return number of students owned
      */
-    public int getOwnerStudentsAmount() {
-        return this.ownerStudentsAmount;
+    public int getOwnerStudentsNumber() {
+        return this.ownerStudentsNumber;
     }
 
     /**
      * Set teacher owner.
      *
      * @param ownerUsername       new owner username
-     * @param ownerStudentsAmount new number of students owned
+     * @param ownerStudentsNumber new number of students owned
      */
-    public void setOwner(String ownerUsername, int ownerStudentsAmount) {
+    public void setOwner(String ownerUsername, int ownerStudentsNumber) {
         this.ownerUsername = ownerUsername;
-        this.ownerStudentsAmount = ownerStudentsAmount;
+        this.ownerStudentsNumber = ownerStudentsNumber;
     }
 }
