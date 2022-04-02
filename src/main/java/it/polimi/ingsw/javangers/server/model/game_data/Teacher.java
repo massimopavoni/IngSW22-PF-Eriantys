@@ -4,11 +4,17 @@ package it.polimi.ingsw.javangers.server.model.game_data;
  * Class representing a Teachers.
  */
 public class Teacher {
+    /**
+     * Username of current teacher owner.
+     */
     private String ownerUsername;
+    /**
+     * Students amount of current teacher owner.
+     */
     private int ownerStudentsAmount;
 
     /**
-     * Constructor for Teacher, assign ownerUsername and ownerStudentsAmount.
+     * Constructor for teacher, initializing owner username and students amount.
      *
      * @param ownerUsername the owner of teacher
      * @param ownerStudentsAmount number of students owned
@@ -18,9 +24,9 @@ public class Teacher {
         this.ownerStudentsAmount = ownerStudentsAmount;
     }
     /**
-     * Get owner Username.
+     * Get owner username.
      *
-     * @return name of the owner
+     * @return owner username
      */
     public String getOwnerUsername() {
         return this.ownerUsername;
@@ -34,10 +40,10 @@ public class Teacher {
         return this.ownerStudentsAmount;}
 
     /**
-     * Set Teacher Owner.
+     * Set teacher owner.
      *
-     * @param ownerUsername
-     * @param ownerStudentsAmount
+     * @param ownerUsername new owner username
+     * @param ownerStudentsAmount new number of students owned
      */
     public void setOwner(String ownerUsername, int ownerStudentsAmount) {
         this.ownerUsername = ownerUsername;
