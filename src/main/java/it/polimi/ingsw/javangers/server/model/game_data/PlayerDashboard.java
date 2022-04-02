@@ -131,10 +131,10 @@ public class PlayerDashboard {
     /**
      * Set number of towers, without changing the color.
      *
-     * @param number new number of towers
+     * @param towersNumber new number of towers
      */
-    public void setTowersNumber(int number) {
-        this.towers = this.towers.setAt1(number);
+    public void setTowersNumber(int towersNumber) {
+        this.towers = this.towers.setAt1(towersNumber);
     }
 
     /**
