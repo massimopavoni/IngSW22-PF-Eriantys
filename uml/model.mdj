@@ -3575,7 +3575,7 @@
 											"top": 662,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "-entrance: Entrance",
+											"text": "-entrance: TokenContainer",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3592,7 +3592,7 @@
 											"top": 677,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "-hall: Hall",
+											"text": "-hall: TokenContainer",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3711,7 +3711,7 @@
 											"top": 775,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "+getEntrance(): Entrance",
+											"text": "+getEntrance(): null",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3728,7 +3728,7 @@
 											"top": 790,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "+getHall(): Hall",
+											"text": "+getHall(): null",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15862,7 +15862,7 @@
 									"name": "entrance",
 									"visibility": "private",
 									"type": {
-										"$ref": "AAAAAAF/wFGymDMJW/U="
+										"$ref": "AAAAAAF/wFYWhHqg0+w="
 									}
 								},
 								{
@@ -15874,7 +15874,7 @@
 									"name": "hall",
 									"visibility": "private",
 									"type": {
-										"$ref": "AAAAAAF/wGgRILJbUgY="
+										"$ref": "AAAAAAF/wFYWhHqg0+w="
 									}
 								},
 								{
@@ -15945,9 +15945,6 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wLBg54W2YeM="
 											},
-											"type": {
-												"$ref": "AAAAAAF/wFGymDMJW/U="
-											},
 											"direction": "return"
 										}
 									]
@@ -15965,9 +15962,6 @@
 											"_id": "AAAAAAF/wLTkoK5rGx8=",
 											"_parent": {
 												"$ref": "AAAAAAF/wLLEM62wdbQ="
-											},
-											"type": {
-												"$ref": "AAAAAAF/wGgRILJbUgY="
 											},
 											"direction": "return"
 										}
