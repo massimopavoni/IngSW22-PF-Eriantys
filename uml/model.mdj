@@ -3660,7 +3660,7 @@
 											"top": 707,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "-discardPile: List<AssistantCard>",
+											"text": "-discardedAssistantCardsList: List<AssistantCard>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15956,7 +15956,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f0mnUMrImCo="
 									},
-									"name": "discardPile",
+									"name": "discardedAssistantCardsList",
 									"visibility": "private",
 									"type": "List<AssistantCard>"
 								},
@@ -16008,6 +16008,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wLBg54W2YeM="
 											},
+											"type": "",
 											"direction": "return"
 										}
 									]
@@ -16026,6 +16027,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wLLEM62wdbQ="
 											},
+											"type": "",
 											"direction": "return"
 										}
 									]
