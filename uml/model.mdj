@@ -3796,7 +3796,7 @@
 											"top": 820,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "+getDiscardPile(): List<AssistantCard>",
+											"text": "+getDiscardedAssistantCards(): List<AssistantCard>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16061,7 +16061,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f0mnUMrImCo="
 									},
-									"name": "getDiscardPile",
+									"name": "getDiscardedAssistantCards",
 									"parameters": [
 										{
 											"_type": "UMLParameter",
