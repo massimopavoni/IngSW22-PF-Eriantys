@@ -1,7 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_data;
 
 /**
- * Class representing a Teachers.
+ * Class representing a teacher.
  */
 public class Teacher {
     /**
