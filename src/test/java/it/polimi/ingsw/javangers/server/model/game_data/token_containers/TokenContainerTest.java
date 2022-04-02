@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -70,9 +69,9 @@ class TokenContainerTest {
     @DisplayName("Test extractTokens returning empty if cardinality wrong")
     void extractTokens_wrongCardinality() {
         tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
-        List<TokenColor> tokens = tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
         assertAll(
-                () -> assertEquals(Collections.emptyList(), tokens),
+                () -> assertThrowsExactly(IllegalArgumentException.class,
+                        () -> tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON)), "Token not in container"),
                 () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokenContainer.getTokens())
         );
     }
@@ -81,9 +80,9 @@ class TokenContainerTest {
     @DisplayName("Test extractTokens returning empty list if tokens not present")
     void extractTokens_notPresent() {
         tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
-        List<TokenColor> tokens = tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.GREEN_FROG));
         assertAll(
-                () -> assertEquals(Collections.emptyList(), tokens),
+                () -> assertThrowsExactly(IllegalArgumentException.class,
+                        () -> tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.GREEN_FROG)), "Token not in container"),
                 () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokenContainer.getTokens())
         );
     }

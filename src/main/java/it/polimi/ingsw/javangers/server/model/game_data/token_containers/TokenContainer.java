@@ -3,7 +3,6 @@ package it.polimi.ingsw.javangers.server.model.game_data.token_containers;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,15 +55,15 @@ public class TokenContainer {
      *
      * @param tokens tokens to be extracted
      * @return list of extracted tokens
+     * @throws IllegalArgumentException if one or more of the tokens to be extracted are not in container
      */
-    public List<TokenColor> extractTokens(List<TokenColor> tokens) {
+    public List<TokenColor> extractTokens(List<TokenColor> tokens) throws IllegalArgumentException {
         List<TokenColor> tokensCopy = getTokens();
         for (TokenColor token : tokens) {
-            if (!tokensCopy.contains(token)) return Collections.emptyList();
+            if (!tokensCopy.contains(token)) throw new IllegalArgumentException("Token not in container");
             tokensCopy.remove(token);
         }
-        for (TokenColor token : tokens)
-            this.tokensList.remove(token);
+        tokens.forEach(this.tokensList::remove);
         return tokens;
     }
 }
