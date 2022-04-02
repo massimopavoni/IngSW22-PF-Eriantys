@@ -3847,7 +3847,7 @@
 											"top": 865,
 											"width": 327.6533203125,
 											"height": 13,
-											"text": "+setTowers(towers: Pair<TowerColor, Integer>): void",
+											"text": "+setTowersAmount(amount: int): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16120,7 +16120,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f0mnUMrImCo="
 									},
-									"name": "setTowers",
+									"name": "setTowersAmount",
 									"parameters": [
 										{
 											"_type": "UMLParameter",
@@ -16128,8 +16128,8 @@
 											"_parent": {
 												"$ref": "AAAAAAF/wLAZhIRnbc4="
 											},
-											"name": "towers",
-											"type": "Pair<TowerColor, Integer>"
+											"name": "amount",
+											"type": "int"
 										},
 										{
 											"_type": "UMLParameter",
