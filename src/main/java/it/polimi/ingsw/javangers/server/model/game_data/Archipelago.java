@@ -7,37 +7,37 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Class representing an Archipelago.
+ * Class representing the archipelago.
  */
 public class Archipelago {
     /**
-     * List of all island in Archipelago.
+     * List of all islands.
      */
-    private final List<Island> islandList;
+    private final List<Island> islandsList;
     /**
-     * mather nature position in Archipelago.
+     * Mother nature position in archipelago.
      */
     private int motherNaturePosition;
 
     /**
-     * Constructor for Archipelago, initializing island list and add the amount of island.
+     * Constructor for Archipelago, initializing islands list and add the number of islands.
      */
-    public Archipelago(int amountOfIsland) {
-        this.islandList = new ArrayList<>();
-        this.islandList.addAll(Collections.nCopies(amountOfIsland, new Island()));
+    public Archipelago(int numberOfIslands) {
+        this.islandsList = new ArrayList<>();
+        this.islandsList.addAll(Collections.nCopies(numberOfIslands, new Island()));
     }
 
     /**
-     * Get a copy of the island list.
+     * Get a shallow copy of the islands list.
      *
-     * @return list of island
+     * @return list of islands
      */
-    public List<Island> getIslandList() {
-        return new ArrayList<>(this.islandList);
+    public List<Island> getIslandsList() {
+        return new ArrayList<>(this.islandsList);
     }
 
     /**
-     * Get the position of mother nature in the island list.
+     * Get the position of mother nature in the islands list.
      *
      * @return position of mother nature
      */
@@ -46,31 +46,31 @@ public class Archipelago {
     }
 
     /**
-     * Set the position of mother nature in the island list.
+     * Set the position of mother nature in the islands list.
      *
-     * @param motherNaturePosition mother nature position to set
+     * @param motherNaturePosition new mother nature position
      */
     public void setMotherNaturePosition(int motherNaturePosition) {
         this.motherNaturePosition = motherNaturePosition;
     }
 
     /**
-     * Get the island from the island list.
+     * Pop an island from the islands list.
      *
-     * @param index the island to select
-     * @return selected island
+     * @param index index of island to pop
+     * @return popped island
      */
     public Island popIsland(int index) {
-        return this.islandList.remove(index);
+        return this.islandsList.remove(index);
     }
 
     /**
-     * Set the island in the island list.
+     * Insert an island in the islands list.
      *
-     * @param island the island to insert
-     * @param index  the position to set
+     * @param island island to insert
+     * @param index  insertion index
      */
     public void insertIsland(Island island, int index) {
-        this.islandList.add(index, island);
+        this.islandsList.add(index, island);
     }
 }
