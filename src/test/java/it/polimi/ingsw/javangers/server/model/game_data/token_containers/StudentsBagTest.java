@@ -4,7 +4,6 @@ import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,81 +14,64 @@ class StudentsBagTest {
     StudentsBag studentsBag;
 
     @Test
-    @DisplayName("Test constructor")
-    void StudentsBag_constructor() {
+    @DisplayName("Test constructor with illegal number of student of color")
+    void StudentsBag_illegalMapConstructor() {
         Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
         studentsPerColor.put(TokenColor.RED_DRAGON, 5);
+        studentsPerColor.put(TokenColor.BLUE_UNICORN, -5);
+        assertThrowsExactly(IllegalArgumentException.class, () -> new StudentsBag(studentsPerColor), "Invalid number of students per color");
+    }
+
+    @Test
+    @DisplayName("Test correct constructor")
+    void StudentsBag_correctConstructor() {
+        Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
+        studentsPerColor.put(TokenColor.RED_DRAGON, 5);
+        studentsPerColor.put(TokenColor.BLUE_UNICORN, 3);
         studentsBag = new StudentsBag(studentsPerColor);
         assertAll(
                 () -> assertNotNull(studentsBag.getTokenContainer()),
-                () -> assertEquals(Collections.nCopies(5, TokenColor.RED_DRAGON), studentsBag.getTokenContainer().getTokens()),
-                () -> assertNotEquals(Collections.nCopies(4, TokenColor.RED_DRAGON), studentsBag.getTokenContainer().getTokens()),
-                () -> assertNotEquals(Collections.nCopies(6, TokenColor.RED_DRAGON), studentsBag.getTokenContainer().getTokens()),
-                () -> assertNotEquals(Collections.nCopies(5, TokenColor.BLUE_UNICORN), studentsBag.getTokenContainer().getTokens())
+                () -> assertEquals(new HashMap<TokenColor, Integer>() {{
+                                       put(TokenColor.RED_DRAGON, 5);
+                                       put(TokenColor.BLUE_UNICORN, 3);
+                                   }},
+                        studentsBag.getTokenContainer().getColorCounts())
         );
     }
 
     @Test
-    @DisplayName("Test grabTokens extract a correctly number of tokens from tokensList")
-    void grabTokens_numberOfExtraction() {
+    @DisplayName("Test grabTokens for correct remaining tokens")
+    void grabTokens_correctRemaining() {
         Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
         studentsPerColor.put(TokenColor.RED_DRAGON, 2);
         studentsPerColor.put(TokenColor.PINK_FAIRY, 4);
         studentsPerColor.put(TokenColor.BLUE_UNICORN, 3);
-        int amout = 6;
         studentsBag = new StudentsBag(studentsPerColor);
-        List<TokenColor> grabbedTokens = studentsBag.grabTokens(amout);
-        assertAll(
-                () -> assertEquals(studentsBag.getTokenContainer().getTokens().size(), (9 - amout)),
-                () -> assertTrue(grabbedTokens.contains(TokenColor.PINK_FAIRY))
-        );
-
+        List<TokenColor> remainingTokens = studentsBag.getTokenContainer().getTokens();
+        List<TokenColor> grabbedTokens = studentsBag.grabTokens(6);
+        grabbedTokens.forEach(remainingTokens::remove);
+        assertEquals(remainingTokens, studentsBag.getTokenContainer().getTokens());
     }
 
     @Test
-    @DisplayName("Test grabTokens modify the initial list")
-    void grabTokens_InitialList() {
-        Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
-        studentsPerColor.put(TokenColor.RED_DRAGON, 1);
-        studentsPerColor.put(TokenColor.PINK_FAIRY, 2);
-        studentsPerColor.put(TokenColor.BLUE_UNICORN, 1);
-        studentsBag = new StudentsBag(studentsPerColor);
-        List<TokenColor> prevList = studentsBag.getTokenContainer().getTokens();
-        List<TokenColor> grabbedTokens = studentsBag.grabTokens(2);
-        assertAll(
-                () -> assertNotEquals(prevList, grabbedTokens)
-        );
-
-    }
-
-    @Test
-    @DisplayName("Test grabTokens throws IllegalArgumentException if amount is < 1")
+    @DisplayName("Test grabTokens throws IllegalArgumentException if number is less than 1")
     void grabTokens_notPresent() {
         Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
         studentsPerColor.put(TokenColor.RED_DRAGON, 1);
         studentsPerColor.put(TokenColor.PINK_FAIRY, 2);
         studentsPerColor.put(TokenColor.BLUE_UNICORN, 1);
         studentsBag = new StudentsBag(studentsPerColor);
-        assertAll(
-                () -> assertThrowsExactly(IllegalArgumentException.class,
-                        () -> studentsBag.grabTokens(0), "Invalid amount of tokens: amount < 1")
-        );
-
+        assertThrowsExactly(IllegalArgumentException.class, () -> studentsBag.grabTokens(0), "Invalid number of tokens");
     }
 
     @Test
-    @DisplayName("Test grabTokens throws IllegalArgumentException if amount is > tokens.size()")
+    @DisplayName("Test grabTokens throws IllegalArgumentException if number is more than available tokens")
     void grabTokens_notEnoughToken() {
         Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
         studentsPerColor.put(TokenColor.RED_DRAGON, 1);
         studentsPerColor.put(TokenColor.PINK_FAIRY, 2);
         studentsPerColor.put(TokenColor.BLUE_UNICORN, 1);
         studentsBag = new StudentsBag(studentsPerColor);
-        assertAll(
-                () -> assertThrowsExactly(IllegalArgumentException.class,
-                        () -> studentsBag.grabTokens(5), "Invalid amount of tokens: amount > tokens.size()")
-        );
-
+        assertThrowsExactly(IllegalArgumentException.class, () -> studentsBag.grabTokens(5), "Invalid number of tokens");
     }
-
 }

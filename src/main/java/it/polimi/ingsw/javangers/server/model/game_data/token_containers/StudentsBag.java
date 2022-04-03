@@ -28,8 +28,10 @@ public class StudentsBag {
     public StudentsBag(Map<TokenColor, Integer> studentsPerColor) {
         this.tokenContainer = new TokenContainer();
         this.random = new Random();
-        for (Map.Entry<TokenColor, Integer> entry : studentsPerColor.entrySet())
+        for (Map.Entry<TokenColor, Integer> entry : studentsPerColor.entrySet()) {
+            if (entry.getValue() < 1) throw new IllegalArgumentException("Invalid number of students per color");
             this.tokenContainer.addTokens(Collections.nCopies(entry.getValue(), entry.getKey()));
+        }
     }
 
     /**
