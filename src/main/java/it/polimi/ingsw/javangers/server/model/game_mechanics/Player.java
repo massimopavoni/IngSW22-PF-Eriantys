@@ -41,8 +41,8 @@ public class Player {
      * @param username
      * @return action used
      */
-    public boolean executeAction(GameState gamestate, String username) {
-        return action.doAction(gamestate, username);
+    public void executeAction(GameState gamestate, String username) {
+         this.action.doAction(gamestate, username);
     }
 
     /**
