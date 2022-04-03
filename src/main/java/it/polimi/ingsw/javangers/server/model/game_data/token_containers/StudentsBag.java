@@ -20,7 +20,6 @@ public class StudentsBag {
      */
     private final Random random;
 
-
     /**
      * Constructor for studentsBag initializing token container (according to students per color map) and random instance.
      *
