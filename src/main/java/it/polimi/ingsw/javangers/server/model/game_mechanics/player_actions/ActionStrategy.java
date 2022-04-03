@@ -3,15 +3,14 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 
 /**
- * Player actions interface.
+ * Player action strategy interface.
  */
-public interface  ActionStrategy {
+public interface ActionStrategy {
     /**
-     * Action the player performs.
+     * Prototype method actions implementation.
      *
-     * @param gameState status of the game
-     * @param username nickname of the player
+     * @param gameState game state instance
+     * @param username player username
      */
     void doAction(GameState gameState, String username);
-
 }
