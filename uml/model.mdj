@@ -3249,7 +3249,7 @@
 											},
 											"font": "Arial;13;1",
 											"left": 1389,
-											"top": 972,
+											"top": 999,
 											"width": 181.060546875,
 											"height": 13,
 											"text": "AssistantCard"
@@ -3284,7 +3284,7 @@
 									],
 									"font": "Arial;13;0",
 									"left": 1384,
-									"top": 965,
+									"top": 992,
 									"width": 191.060546875,
 									"height": 25,
 									"stereotypeLabel": {
@@ -3312,23 +3312,6 @@
 									"subViews": [
 										{
 											"_type": "UMLAttributeView",
-											"_id": "AAAAAAF/6eurs/eTTC8=",
-											"_parent": {
-												"$ref": "AAAAAAF/rU0gStwY4fU="
-											},
-											"model": {
-												"$ref": "AAAAAAF/6eurg/eQ+pg="
-											},
-											"font": "Arial;13;0",
-											"left": 1389,
-											"top": 995,
-											"width": 181.060546875,
-											"height": 13,
-											"text": "-name: String",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
 											"_id": "AAAAAAF/rbfwKHP4wxk=",
 											"_parent": {
 												"$ref": "AAAAAAF/rU0gStwY4fU="
@@ -3338,7 +3321,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1389,
-											"top": 1010,
+											"top": 1022,
 											"width": 181.060546875,
 											"height": 13,
 											"text": "-value: int",
@@ -3355,7 +3338,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1389,
-											"top": 1025,
+											"top": 1037,
 											"width": 181.060546875,
 											"height": 13,
 											"text": "-steps: int",
@@ -3364,9 +3347,9 @@
 									],
 									"font": "Arial;13;0",
 									"left": 1384,
-									"top": 990,
+									"top": 1017,
 									"width": 191.060546875,
-									"height": 53
+									"height": 38
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -3380,23 +3363,6 @@
 									"subViews": [
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAF/6ev8Lf3EjfE=",
-											"_parent": {
-												"$ref": "AAAAAAF/rU0gStwZrEg="
-											},
-											"model": {
-												"$ref": "AAAAAAF/6ev8E/3Bl+4="
-											},
-											"font": "Arial;13;0",
-											"left": 1389,
-											"top": 1048,
-											"width": 181.060546875,
-											"height": 13,
-											"text": "+getName(): String",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
 											"_id": "AAAAAAF/wk9ZNYB/Xck=",
 											"_parent": {
 												"$ref": "AAAAAAF/rU0gStwZrEg="
@@ -3406,7 +3372,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1389,
-											"top": 1063,
+											"top": 1060,
 											"width": 181.060546875,
 											"height": 13,
 											"text": "+getValue(): int",
@@ -3423,7 +3389,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 1389,
-											"top": 1078,
+											"top": 1075,
 											"width": 181.060546875,
 											"height": 13,
 											"text": "+getSteps(): int",
@@ -3432,9 +3398,9 @@
 									],
 									"font": "Arial;13;0",
 									"left": 1384,
-									"top": 1043,
+									"top": 1055,
 									"width": 191.060546875,
-									"height": 53
+									"height": 38
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -3475,9 +3441,9 @@
 							"font": "Arial;13;0",
 							"containerChangeable": true,
 							"left": 1384,
-							"top": 965,
+							"top": 992,
 							"width": 191.060546875,
-							"height": 131,
+							"height": 105,
 							"nameCompartment": {
 								"$ref": "AAAAAAF/rU0gSdwThZ4="
 							},
@@ -3535,7 +3501,7 @@
 											"font": "Arial;13;1",
 											"left": 1317,
 											"top": 639,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "PlayerDashboard"
 										},
@@ -3570,7 +3536,7 @@
 									"font": "Arial;13;0",
 									"left": 1312,
 									"top": 632,
-									"width": 337.6533203125,
+									"width": 369,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAF/f0mnUMrMnN4="
@@ -3607,7 +3573,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 662,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "-entrance: TokenContainer",
 											"horizontalAlignment": 0
@@ -3624,7 +3590,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 677,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "-hall: TokenContainer",
 											"horizontalAlignment": 0
@@ -3641,9 +3607,9 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 692,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
-											"text": "-assistantCardsList: List<AssistantCard>",
+											"text": "-assistantCardsMap: Map<String, AssistantCard>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3658,9 +3624,9 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 707,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
-											"text": "-discardedAssistantCardsList: List<AssistantCard>",
+											"text": "-discardedAssistantCardsMap: Map<String, AssistantCard>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3675,7 +3641,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 722,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "-cardsBack: WizardType",
 											"horizontalAlignment": 0
@@ -3692,7 +3658,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 737,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "-towers: Pair<TowerColor, Integer>",
 											"horizontalAlignment": 0
@@ -3709,7 +3675,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 752,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "-coinsNumber: int",
 											"horizontalAlignment": 0
@@ -3718,7 +3684,7 @@
 									"font": "Arial;13;0",
 									"left": 1312,
 									"top": 657,
-									"width": 337.6533203125,
+									"width": 369,
 									"height": 113
 								},
 								{
@@ -3743,7 +3709,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 775,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "+getEntrance(): TokenContainer",
 											"horizontalAlignment": 0
@@ -3760,7 +3726,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 790,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "+getHall(): TokenContainer",
 											"horizontalAlignment": 0
@@ -3777,9 +3743,9 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 805,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
-											"text": "+getAssistantCards(): List<AssistantCard>",
+											"text": "+getAssistantCards(): Map<String, AssistantCard>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3794,9 +3760,9 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 820,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
-											"text": "+getDiscardedAssistantCards(): List<AssistantCard>",
+											"text": "+getDiscardedAssistantCards(): Map<String, AssistantCard>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3811,7 +3777,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 835,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "+getCardsBack(): WizardType",
 											"horizontalAlignment": 0
@@ -3828,7 +3794,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 850,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "+getTowers(): Pair<TowerColor, Integer>",
 											"horizontalAlignment": 0
@@ -3845,7 +3811,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 865,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "+setTowersNumber(towersNumber: int): void",
 											"horizontalAlignment": 0
@@ -3862,7 +3828,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 880,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "+getCoinsNumber(): int",
 											"horizontalAlignment": 0
@@ -3879,7 +3845,7 @@
 											"font": "Arial;13;0",
 											"left": 1317,
 											"top": 895,
-											"width": 327.6533203125,
+											"width": 359,
 											"height": 13,
 											"text": "+setCoinsNumber(coinsNumber: int): void",
 											"horizontalAlignment": 0
@@ -3888,7 +3854,7 @@
 									"font": "Arial;13;0",
 									"left": 1312,
 									"top": 770,
-									"width": 337.6533203125,
+									"width": 369,
 									"height": 143
 								},
 								{
@@ -3931,7 +3897,7 @@
 							"containerChangeable": true,
 							"left": 1312,
 							"top": 632,
-							"width": 337.6533203125,
+							"width": 369,
 							"height": 281,
 							"nameCompartment": {
 								"$ref": "AAAAAAF/f0mnUMrLr+8="
@@ -8062,7 +8028,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1465,
-									"top": 931,
+									"top": 945,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -8083,7 +8049,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 1450,
-									"top": 931,
+									"top": 945,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -8104,7 +8070,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1494,
-									"top": 932,
+									"top": 946,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -8125,7 +8091,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1465,
-									"top": 933,
+									"top": 960,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -8146,7 +8112,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1451,
-									"top": 930,
+									"top": 957,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -8166,7 +8132,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 1478,
-									"top": 937,
+									"top": 964,
 									"width": 28.91357421875,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -8275,7 +8241,7 @@
 							"tail": {
 								"$ref": "AAAAAAF/rU0gSdwSzGo="
 							},
-							"points": "1480:965;1480:912",
+							"points": "1480:992;1480:912",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF/xgMSClxmm48="
@@ -13791,7 +13757,6 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAF/7wxhLqqUy94="
 							},
-							"showEndOrder": "hide",
 							"tailRoleNameLabel": {
 								"$ref": "AAAAAAF/7wxhLqqV2rE="
 							},
@@ -15208,16 +15173,6 @@
 							"attributes": [
 								{
 									"_type": "UMLAttribute",
-									"_id": "AAAAAAF/6eurg/eQ+pg=",
-									"_parent": {
-										"$ref": "AAAAAAF/rU0gSdwQGJ8="
-									},
-									"name": "name",
-									"visibility": "private",
-									"type": "String"
-								},
-								{
-									"_type": "UMLAttribute",
 									"_id": "AAAAAAF/rbfwD3PdCHU=",
 									"_parent": {
 										"$ref": "AAAAAAF/rU0gSdwQGJ8="
@@ -15238,25 +15193,6 @@
 								}
 							],
 							"operations": [
-								{
-									"_type": "UMLOperation",
-									"_id": "AAAAAAF/6ev8E/3Bl+4=",
-									"_parent": {
-										"$ref": "AAAAAAF/rU0gSdwQGJ8="
-									},
-									"name": "getName",
-									"parameters": [
-										{
-											"_type": "UMLParameter",
-											"_id": "AAAAAAF/6ewXAP8DOhU=",
-											"_parent": {
-												"$ref": "AAAAAAF/6ev8E/3Bl+4="
-											},
-											"type": "String",
-											"direction": "return"
-										}
-									]
-								},
 								{
 									"_type": "UMLOperation",
 									"_id": "AAAAAAF/wk9ZBoBziWU=",
@@ -15366,9 +15302,9 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f0mnUMrImCo="
 									},
-									"name": "assistantCardsList",
+									"name": "assistantCardsMap",
 									"visibility": "private",
-									"type": "List<AssistantCard>"
+									"type": "Map<String, AssistantCard>"
 								},
 								{
 									"_type": "UMLAttribute",
@@ -15376,9 +15312,9 @@
 									"_parent": {
 										"$ref": "AAAAAAF/f0mnUMrImCo="
 									},
-									"name": "discardedAssistantCardsList",
+									"name": "discardedAssistantCardsMap",
 									"visibility": "private",
-									"type": "List<AssistantCard>"
+									"type": "Map<String, AssistantCard>"
 								},
 								{
 									"_type": "UMLAttribute",
@@ -15470,7 +15406,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/xgyj0MjadgM="
 											},
-											"type": "List<AssistantCard>",
+											"type": "Map<String, AssistantCard>",
 											"direction": "return"
 										}
 									]
@@ -15489,7 +15425,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/0XGKnNRU74o="
 											},
-											"type": "List<AssistantCard>",
+											"type": "Map<String, AssistantCard>",
 											"direction": "return"
 										}
 									]
@@ -15774,7 +15710,8 @@
 											"_parent": {
 												"$ref": "AAAAAAF/xWL7sZ3rOZw="
 											},
-											"name": "action"
+											"name": "action",
+											"type": ""
 										},
 										{
 											"_type": "UMLParameter",
