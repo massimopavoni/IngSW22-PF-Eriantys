@@ -12,9 +12,8 @@ class AssistantCardTest {
     @Test
     @DisplayName("Test constructor")
     void AssistantCard_constructor() {
-        assistantCard = new AssistantCard("Cheetah", 1, 1);
+        assistantCard = new AssistantCard(1, 1);
         assertAll(
-                () -> assertEquals("Cheetah", assistantCard.getName()),
                 () -> assertEquals(1, assistantCard.getValue()),
                 () -> assertEquals(1, assistantCard.getSteps())
         );

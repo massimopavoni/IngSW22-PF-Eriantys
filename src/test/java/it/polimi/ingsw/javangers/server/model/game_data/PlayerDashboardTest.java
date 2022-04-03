@@ -26,9 +26,9 @@ class PlayerDashboardTest {
                 () -> assertTrue(playerDashboard.getHall().getTokens().isEmpty()),
                 () -> assertNotNull(playerDashboard.getAssistantCards()),
                 () -> assertEquals(10, playerDashboard.getAssistantCards().size()),
-                () -> assertEquals("Cheetah", playerDashboard.getAssistantCards().get(0).getName()),
-                () -> assertEquals(1, playerDashboard.getAssistantCards().get(0).getValue()),
-                () -> assertEquals(1, playerDashboard.getAssistantCards().get(0).getSteps()),
+                () -> assertEquals("eagle", playerDashboard.getAssistantCards().keySet().toArray()[3]),
+                () -> assertEquals(4, playerDashboard.getAssistantCards().get("eagle").getValue()),
+                () -> assertEquals(2, playerDashboard.getAssistantCards().get("eagle").getSteps()),
                 () -> assertNotNull(playerDashboard.getDiscardedAssistantCards()),
                 () -> assertTrue(playerDashboard.getDiscardedAssistantCards().isEmpty()),
                 () -> assertEquals(WizardType.DRUID, playerDashboard.getCardsBack()),
@@ -38,26 +38,8 @@ class PlayerDashboardTest {
     }
 
     @Test
-    @DisplayName("Test constructor with non existing resource path")
-    void PlayerDashboard_nonExistingResourcePath() {
-        assertThrowsExactly(NullPointerException.class,
-                () -> new PlayerDashboard("/it/polimi/ingsw/javangers/server/model/game_data/trolol.json",
-                        WizardType.DRUID, new Pair<>(TowerColor.WHITE, 8), 1),
-                "Assistant cards json file resource not found");
-    }
-
-    @Test
-    @DisplayName("Test constructor with null resource path")
-    void PlayerDashboard_nullResourcePath() {
-        assertThrowsExactly(NullPointerException.class,
-                () -> new PlayerDashboard(null,
-                        WizardType.DRUID, new Pair<>(TowerColor.WHITE, 8), 1),
-                "Assistant cards json file resource not found");
-    }
-
-    @Test
     @DisplayName("Test constructor with non json file type")
-    void PlayerDashboard() {
+    void PlayerDashboard_wrongFileType() {
         assertThrowsExactly(IOException.class,
                 () -> new PlayerDashboard("/it/polimi/ingsw/javangers/server/model/game_data/AssistantCard.class",
                         WizardType.DRUID, new Pair<>(TowerColor.WHITE, 8), 1),

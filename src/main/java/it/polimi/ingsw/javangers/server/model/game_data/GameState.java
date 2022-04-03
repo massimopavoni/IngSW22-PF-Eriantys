@@ -41,11 +41,11 @@ public class GameState {
      * initializing player dashboards, teachers, archipelago, students bag and clouds.
      *
      * @param assistantCardResourceLocation path to the assistant card resource file
-     * @param playerInfo map of players' usernames and dashboards
-     * @param numberOfTowers initial number of towers
-     * @param numberOfIslands initial number of islands
-     * @param studentsBagInfo map of students color and number
-     * @param coinsNumber initial number of coins
+     * @param playerInfo                    map of players' usernames and dashboards
+     * @param numberOfTowers                initial number of towers
+     * @param numberOfIslands               initial number of islands
+     * @param studentsBagInfo               map of students color and number
+     * @param coinsNumber                   initial number of coins
      * @throws GameStateException if an error occurs during player dashboards initialization
      */
     public GameState(String assistantCardResourceLocation, Map<String, Pair<WizardType, TowerColor>> playerInfo,
@@ -69,7 +69,6 @@ public class GameState {
         this.cloudsList = new ArrayList<>();
         this.cloudsList.addAll(Stream.generate(Cloud::new).limit(playerInfo.size()).collect(java.util.stream.Collectors.toList()));
     }
-
 
     /**
      * Get player dashboards map.
@@ -124,7 +123,7 @@ public class GameState {
          * GameStateException constructor with message and cause.
          *
          * @param message message to be shown
-         * @param cause cause of the exception
+         * @param cause   cause of the exception
          */
         public GameStateException(String message, Throwable cause) {
             super(message, cause);

@@ -1,48 +1,43 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
+import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Cloud;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.StudentsBag;
 
 import java.util.List;
 
 /**
- * Class sto fill clouds.
+ * Class representing the fill clouds action.
  */
 public class FillClouds implements ActionStrategy {
-
     /**
      * Number of students to insert in clouds.
      */
     private final int numberOfStudents;
 
     /**
-     * Constructor of FillClouds.
+     * Constructor for fill clouds action, initializing number of students.
      *
-     * @param numberOfStudents to insert in clouds
+     * @param numberOfStudents students number to add to clouds
      */
     public FillClouds(int numberOfStudents) {
         this.numberOfStudents = numberOfStudents;
     }
 
     /**
-     * Action to fill clouds.
+     * Action implementation for filling clouds.
      *
-     * @param gameState status of the game
-     * @param username  nickname of the player
+     * @param gameState game state instance
+     * @param username  player username
      */
     @Override
     public void doAction(GameState gameState, String username) {
-        List<Cloud> cloudList = gameState.getCloudsList();
         StudentsBag studentsBag = gameState.getStudentsBag();
-        for (Cloud cloud :
-                cloudList) {
-            if (studentsBag.getTokenContainer().getTokens().size() < 1)
-                break;
-            else if (studentsBag.getTokenContainer().getTokens().size() < this.numberOfStudents)
-                cloud.getTokenContainer().addTokens(studentsBag.grabTokens(studentsBag.getTokenContainer().getTokens().size()));
-            else
-                cloud.getTokenContainer().addTokens(studentsBag.grabTokens(this.numberOfStudents));
+        List<TokenColor> studentsBagTokens = studentsBag.getTokenContainer().getTokens();
+        for (Cloud cloud : gameState.getCloudsList()) {
+            if (studentsBagTokens.isEmpty()) break;
+            cloud.getTokenContainer().addTokens(studentsBag.grabTokens(this.numberOfStudents));
         }
     }
 }

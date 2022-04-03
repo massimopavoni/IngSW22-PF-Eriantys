@@ -1,52 +1,42 @@
-[
-  {
-    "name": "Cheetah",
+{
+  "cheetah": {
     "value": 1,
     "steps": 1
   },
-  {
-    "name": "Ostrich",
+  "ostrich": {
     "value": 2,
     "steps": 1
   },
-  {
-    "name": "Cat",
+  "cat": {
     "value": 3,
     "steps": 2
   },
-  {
-    "name": "Eagle",
+  "eagle": {
     "value": 4,
     "steps": 2
   },
-  {
-    "name": "Fox",
+  "fox": {
     "value": 5,
     "steps": 3
   },
-  {
-    "name": "Snake",
+  "snake": {
     "value": 6,
     "steps": 3
   },
-  {
-    "name": "Octopus",
+  "octopus": {
     "value": 7,
     "steps": 4
   },
-  {
-    "name": "Dog",
+  "dog": {
     "value": 8,
     "steps": 4
   },
-  {
-    "name": "Elephant",
+  "elephant": {
     "value": 9,
     "steps": 5
   },
-  {
-    "name": "Turtle",
+  "turtle": {
     "value": 10,
     "steps": 5
   }
-]
+}

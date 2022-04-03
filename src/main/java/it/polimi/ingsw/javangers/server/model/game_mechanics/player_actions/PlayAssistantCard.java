@@ -1,44 +1,35 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
-import it.polimi.ingsw.javangers.server.model.game_data.AssistantCard;
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 /**
- * Class to play an assistant card.
+ * Class representing the play assistant card action.
  */
-public class PlayAssistantCard implements ActionStrategy{
-
+public class PlayAssistantCard implements ActionStrategy {
     /**
-     * name of assistant card to play.
+     * Name of assistant card to play.
      */
     private final String cardName;
 
     /**
-     * Constructor of PlayAssistantCard.
+     * Constructor for play assistant card action, initializing card name.
      *
      * @param cardName name of assistant card to play
      */
-    public PlayAssistantCard(String cardName){
+    public PlayAssistantCard(String cardName) {
         this.cardName = cardName;
     }
 
     /**
-     * Action to play assistant card.
+     * Action implementation for playing assistant card.
      *
-     * @param gameState status of the game
-     * @param username  nickname of the player
+     * @param gameState game state instance
+     * @param username  player username
      */
     @Override
     public void doAction(GameState gameState, String username) {
-        Map<String, PlayerDashboard> playerDashboardMap = gameState.getPlayerDashboards();
-        PlayerDashboard playerDashboard = playerDashboardMap.get(username);
-        AssistantCard assistantCard = playerDashboard.getAssistantCards().stream()
-                .filter(a -> a.getName().equalsIgnoreCase(this.cardName)).collect(Collectors.toList()).get(0);
-        playerDashboard.getAssistantCards().remove(assistantCard);
-        playerDashboard.getDiscardedAssistantCards().add(0, assistantCard);
+        PlayerDashboard playerDashboard = gameState.getPlayerDashboards().get(username);
+        playerDashboard.getDiscardedAssistantCards().put(this.cardName, playerDashboard.getAssistantCards().remove(this.cardName));
     }
 }
