@@ -66,11 +66,8 @@ public class Archipelago {
      * Pop an island from the islands list.
      *
      * @param index index of island to pop
-     * @throws IllegalArgumentException if index is less than 0 or greater than islands list size
      */
-    public Island popIsland(int index) throws IllegalArgumentException {
-        if (index < 0 || index >= this.getIslands().size())
-            throw new IllegalArgumentException("Invalid index for pop");
+    public Island popIsland(int index) {
         return this.islandsList.remove(index);
     }
 
@@ -79,11 +76,8 @@ public class Archipelago {
      *
      * @param island island to insert
      * @param index  insertion index
-     * @throws IllegalArgumentException if index is less than 0 or greater than islands list size
      */
-    public void insertIsland(Island island, int index) throws IllegalArgumentException {
-        if (index < 0 || index > this.getIslands().size())
-            throw new IllegalArgumentException("Invalid index for insert");
+    public void insertIsland(Island island, int index) {
         this.islandsList.add(index, island);
     }
 }

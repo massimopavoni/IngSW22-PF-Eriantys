@@ -19,7 +19,7 @@ class ArchipelagoTest {
 
     @Test
     @DisplayName("Test constructor for invalid number of islands")
-    void Archipelago_invalidNumber(){
+    void Archipelago_invalidNumber() {
         assertThrowsExactly(IllegalArgumentException.class, () -> new Archipelago(0),
                 "Invalid number of islands");
     }
@@ -55,42 +55,20 @@ class ArchipelagoTest {
 
     @Test
     @DisplayName("Test setMotherNaturePosition for setting correct index")
-    void setMotherNaturePosition_correct() {
+    void setMotherNaturePosition_correctSet() {
         archipelago.setMotherNaturePosition(1);
         assertEquals(1, archipelago.getMotherNaturePosition());
     }
 
     @Test
-    @DisplayName("Test popIsland for invalid index exception")
-    void popIsland_invalidIndex() {
-        assertAll(
-                () -> assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.popIsland(-1),
-                        "Invalid index for pop"),
-                () -> assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.popIsland(3),
-                        "Invalid index for pop")
-        );
-    }
-
-    @Test
     @DisplayName("Test popIsland for correct pop")
-    void popIsland_correct() {
+    void popIsland_correctPop() {
         archipelago.getIslands().get(0).setEnabled(false);
         Island poppedIsland = archipelago.getIslands().get(0);
         List<Island> remainingIslands = archipelago.getIslands().subList(1, 2);
         assertAll(
                 () -> assertEquals(poppedIsland, archipelago.popIsland(0)),
                 () -> assertEquals(remainingIslands, archipelago.getIslands())
-        );
-    }
-
-    @Test
-    @DisplayName("Test insertIsland for invalid index exception")
-    void insertIsland_invalidIndex() {
-        assertAll(
-                () -> assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.insertIsland(new Island(), -1),
-                        "Invalid index for insert"),
-                () -> assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.insertIsland(new Island(), 3),
-                        "Invalid index for insert")
         );
     }
 
