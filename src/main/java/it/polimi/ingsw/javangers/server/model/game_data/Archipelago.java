@@ -3,8 +3,9 @@ package it.polimi.ingsw.javangers.server.model.game_data;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class representing the archipelago.
@@ -24,7 +25,7 @@ public class Archipelago {
      */
     public Archipelago(int numberOfIslands) {
         this.islandsList = new ArrayList<>();
-        this.islandsList.addAll(Collections.nCopies(numberOfIslands, new Island()));
+        this.islandsList.addAll(Stream.generate(Island::new).limit(numberOfIslands).collect(Collectors.toList()));
     }
 
     /**
@@ -32,7 +33,7 @@ public class Archipelago {
      *
      * @return list of islands
      */
-    public List<Island> getIslandsList() {
+    public List<Island> getIslands() {
         return new ArrayList<>(this.islandsList);
     }
 
@@ -49,8 +50,11 @@ public class Archipelago {
      * Set the position of mother nature in the islands list.
      *
      * @param motherNaturePosition new mother nature position
+     * @throws IllegalArgumentException if mother nature position is less than 0 or greater than islands list size
      */
-    public void setMotherNaturePosition(int motherNaturePosition) {
+    public void setMotherNaturePosition(int motherNaturePosition) throws IllegalArgumentException {
+        if (motherNaturePosition < 0 || motherNaturePosition >= this.getIslands().size())
+            throw new IllegalArgumentException("Invalid mother nature position");
         this.motherNaturePosition = motherNaturePosition;
     }
 
@@ -58,9 +62,11 @@ public class Archipelago {
      * Pop an island from the islands list.
      *
      * @param index index of island to pop
-     * @return popped island
+     * @throws IllegalArgumentException if index is less than 0 or greater than islands list size
      */
-    public Island popIsland(int index) {
+    public Island popIsland(int index) throws IllegalArgumentException{
+        if (index < 0 || index >= this.getIslands().size())
+            throw new IllegalArgumentException("Invalid index for pop");
         return this.islandsList.remove(index);
     }
 
@@ -69,8 +75,11 @@ public class Archipelago {
      *
      * @param island island to insert
      * @param index  insertion index
+     * @throws IllegalArgumentException if index is less than 0 or greater than islands list size
      */
-    public void insertIsland(Island island, int index) {
+    public void insertIsland(Island island, int index) throws IllegalArgumentException {
+        if (index < 0 || index > this.getIslands().size())
+            throw new IllegalArgumentException("Invalid index for insert");
         this.islandsList.add(index, island);
     }
 }
