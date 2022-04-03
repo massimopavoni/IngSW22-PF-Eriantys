@@ -48,16 +48,13 @@ public class StudentsBag {
      * Grab random tokens from bag.
      *
      * @param number number of tokens to grab
-     * @return list of randomly grabbed tokens or an empty list if parameter is zero
-     * @throws IllegalArgumentException if parameter is negative, zero or greater than number of tokens in bag
+     * @return list of randomly grabbed tokens
      */
-    public List<TokenColor> grabTokens(int number) throws IllegalArgumentException {
+    public List<TokenColor> grabTokens(int number) {
         List<TokenColor> tokensCopy = this.tokenContainer.getTokens();
-        if (number < 1 || number > tokensCopy.size()) throw new IllegalArgumentException("Invalid number of tokens");
-        // Shuffle copy
         Collections.shuffle(tokensCopy, this.random);
-        // Get number of tokens from token container list
-        List<TokenColor> tokens = tokensCopy.subList(0, number);
+        int actualNumber = Math.min(number, tokensCopy.size());
+        List<TokenColor> tokens = tokensCopy.subList(0, actualNumber);
         return this.tokenContainer.extractTokens(tokens);
     }
 }
