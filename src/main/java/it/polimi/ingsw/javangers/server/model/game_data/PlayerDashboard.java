@@ -53,7 +53,7 @@ public class PlayerDashboard {
      * @param cardsBack                     wizard type of cards' back
      * @param towers                        initial towers pair, dependent on players number
      * @param coinsNumber                   initial coins number
-     * @throws IOException          if json parsing fails for some reason (stack trace can be examined)
+     * @throws IOException if json parsing fails for some reason (stack trace can be examined)
      */
     public PlayerDashboard(String assistantCardResourceLocation, WizardType cardsBack, Pair<TowerColor, Integer> towers, int coinsNumber) throws IOException {
         this.entrance = new TokenContainer();
