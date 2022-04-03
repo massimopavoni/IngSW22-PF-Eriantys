@@ -6,14 +6,13 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.Acti
 /**
  * Class representing a player.
  */
-
 public class Player {
     /**
-     * Action the player performs.
+     * Action set for the player to perform.
      */
     private ActionStrategy action;
     /**
-     * Flag for has already been used in the same round.
+     * Flag for character card already used in the same round.
      */
     private boolean enabledCharacterCard;
     /**
@@ -22,61 +21,70 @@ public class Player {
     private int motherNatureSteps;
 
     /**
-     * Constructor for player, initializing enabledCharacterCard, motherNatureSteps and action.
-     * @param enabledCharacterCard
-     * @param motherNatureSteps
-     * @param action
+     * Constructor for player, initializing initial action strategy, enabled character card and mother nature steps.
+     *
+     * @param initialAction initial action strategy
      */
-    public Player(boolean enabledCharacterCard, int motherNatureSteps, ActionStrategy action) {
-
-        this.action = action;
+    public Player(ActionStrategy initialAction) {
+        this.action = initialAction;
         this.enabledCharacterCard = true;
-        this.motherNatureSteps = motherNatureSteps;
-
+        this.motherNatureSteps = 0;
     }
 
     /**
-     * Execute an Action.
-     * @param gamestate
-     * @param username
-     * @return action used
+     * Execute an action.
+     *
+     * @param gameState game state instance for modifications
+     * @param username  player username
      */
-    public void executeAction(GameState gamestate, String username) {
-         this.action.doAction(gamestate, username);
+    public void executeAction(GameState gameState, String username) {
+        this.action.doAction(gameState, username);
     }
 
     /**
      * Set action strategy.
-     * @param action action used
+     *
+     * @param action action to set
      */
     public void setActionStrategy(ActionStrategy action) {
         this.action = action;
     }
 
     /**
-     * Get status of enabled character card.
-     * @return enabled character card
+     * Get enabled character card flag value.
+     *
+     * @return enabled character card flag
      */
     public boolean isEnabledCharacterCard() {
         return this.enabledCharacterCard;
     }
 
     /**
-     * Set enabled character card.
-     * @param enabled character card
+     * Set enabled character card flag.
+     *
+     * @param enabled character card flag new value
      */
     public void setEnabledCharacterCard(boolean enabled) {
         this.enabledCharacterCard = enabled;
     }
 
     /**
-     * Set steps of mather nature.
-      * @param steps number of steps
+     * Get mother nature steps.
+     *
+     * @return mother nature steps
+     */
+    public int getMotherNatureSteps() {
+        return this.motherNatureSteps;
+    }
+
+    /**
+     * Set mother nature steps.
+     *
+     * @param steps new number of steps
      */
     public void setMotherNatureSteps(int steps) {
         this.motherNatureSteps = steps;
     }
-
 }
 
 
