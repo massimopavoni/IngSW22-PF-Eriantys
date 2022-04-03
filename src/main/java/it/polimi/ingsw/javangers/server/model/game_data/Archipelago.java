@@ -66,6 +66,7 @@ public class Archipelago {
      * Pop an island from the islands list.
      *
      * @param index index of island to pop
+     * @return popped island
      */
     public Island popIsland(int index) {
         return this.islandsList.remove(index);
