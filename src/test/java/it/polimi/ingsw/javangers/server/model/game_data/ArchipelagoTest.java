@@ -18,6 +18,13 @@ class ArchipelagoTest {
     }
 
     @Test
+    @DisplayName("Test constructor for invalid number of islands")
+    void Archipelago_invalidNumber(){
+        assertThrowsExactly(IllegalArgumentException.class, () -> new Archipelago(0),
+                "Invalid number of islands");
+    }
+
+    @Test
     @DisplayName("Test constructor")
     void Archipelago_constructor() {
         assertEquals(2, archipelago.getIslands().size());
