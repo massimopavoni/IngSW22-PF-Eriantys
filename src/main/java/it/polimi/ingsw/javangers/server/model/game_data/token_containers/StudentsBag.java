@@ -20,12 +20,14 @@ public class StudentsBag {
      */
     private final Random random;
 
+
     /**
      * Constructor for studentsBag initializing token container (according to students per color map) and random instance.
      *
      * @param studentsPerColor map with token colors as keys and number of occurrences as values
+     * @throws IllegalArgumentException if number of tokens for any color is less than 1
      */
-    public StudentsBag(Map<TokenColor, Integer> studentsPerColor) {
+    public StudentsBag(Map<TokenColor, Integer> studentsPerColor) throws IllegalArgumentException {
         this.tokenContainer = new TokenContainer();
         this.random = new Random();
         for (Map.Entry<TokenColor, Integer> entry : studentsPerColor.entrySet()) {
