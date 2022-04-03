@@ -121,15 +121,6 @@ public class GameState {
      */
     public static class GameStateException extends Exception {
         /**
-         * GameStateException constructor with simple message.
-         *
-         * @param message message to be shown
-         */
-        public GameStateException(String message) {
-            super(message);
-        }
-
-        /**
          * GameStateException constructor with message and cause.
          *
          * @param message message to be shown
