@@ -22,8 +22,12 @@ public class Archipelago {
 
     /**
      * Constructor for Archipelago, initializing islands list and add the number of islands.
+     *
+     * @param numberOfIslands number of islands in the archipelago
+     * @throws IllegalArgumentException if number of islands is less than 1
      */
-    public Archipelago(int numberOfIslands) {
+    public Archipelago(int numberOfIslands) throws IllegalArgumentException {
+        if (numberOfIslands < 1) throw new IllegalArgumentException("Invalid number of islands");
         this.islandsList = new ArrayList<>();
         this.islandsList.addAll(Stream.generate(Island::new).limit(numberOfIslands).collect(Collectors.toList()));
     }
@@ -64,7 +68,7 @@ public class Archipelago {
      * @param index index of island to pop
      * @throws IllegalArgumentException if index is less than 0 or greater than islands list size
      */
-    public Island popIsland(int index) throws IllegalArgumentException{
+    public Island popIsland(int index) throws IllegalArgumentException {
         if (index < 0 || index >= this.getIslands().size())
             throw new IllegalArgumentException("Invalid index for pop");
         return this.islandsList.remove(index);
