@@ -5621,7 +5621,7 @@
 											"top": 1459,
 											"width": 415,
 											"height": 13,
-											"text": "+executeAction(gameState: GameState, username: String): boolean",
+											"text": "+executeAction(gameState: GameState, username: String): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5655,7 +5655,7 @@
 											"top": 1489,
 											"width": 415,
 											"height": 13,
-											"text": "+isEnabledCharacterCard(): void",
+											"text": "+isEnabledCharacterCard(): boolean",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15954,7 +15954,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/xTYtqurpneg="
 											},
-											"type": "boolean",
+											"type": "void",
 											"direction": "return"
 										}
 									]
@@ -16001,7 +16001,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/0VLyeFIOgM0="
 											},
-											"type": "void",
+											"type": "boolean",
 											"direction": "return"
 										}
 									]
