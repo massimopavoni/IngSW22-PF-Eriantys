@@ -5619,7 +5619,7 @@
 											"top": 1338,
 											"width": 415,
 											"height": 13,
-											"text": "+setAction(action: ActionStrategy): void",
+											"text": "+setAction(action): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15696,7 +15696,7 @@
 									"name": "action",
 									"visibility": "private",
 									"type": {
-										"$ref": "AAAAAAF/xdZ39vP4M4w="
+										"$ref": "AAAAAAF/7vWBoo+hRIg="
 									}
 								},
 								{
@@ -15774,10 +15774,7 @@
 											"_parent": {
 												"$ref": "AAAAAAF/xWL7sZ3rOZw="
 											},
-											"name": "action",
-											"type": {
-												"$ref": "AAAAAAF/xdZ39vP4M4w="
-											}
+											"name": "action"
 										},
 										{
 											"_type": "UMLParameter",
