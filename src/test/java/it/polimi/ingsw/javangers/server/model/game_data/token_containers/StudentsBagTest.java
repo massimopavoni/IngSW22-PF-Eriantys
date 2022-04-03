@@ -54,24 +54,16 @@ class StudentsBagTest {
     }
 
     @Test
-    @DisplayName("Test grabTokens throws IllegalArgumentException if number is less than 1")
-    void grabTokens_notPresent() {
+    @DisplayName("Test grabTokens throws IllegalArgumentException if number is less than 1 or more than available tokens")
+    void grabTokens_invalidNumberOfTokens() {
         Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
         studentsPerColor.put(TokenColor.RED_DRAGON, 1);
         studentsPerColor.put(TokenColor.PINK_FAIRY, 2);
         studentsPerColor.put(TokenColor.BLUE_UNICORN, 1);
         studentsBag = new StudentsBag(studentsPerColor);
-        assertThrowsExactly(IllegalArgumentException.class, () -> studentsBag.grabTokens(0), "Invalid number of tokens");
-    }
-
-    @Test
-    @DisplayName("Test grabTokens throws IllegalArgumentException if number is more than available tokens")
-    void grabTokens_notEnoughToken() {
-        Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
-        studentsPerColor.put(TokenColor.RED_DRAGON, 1);
-        studentsPerColor.put(TokenColor.PINK_FAIRY, 2);
-        studentsPerColor.put(TokenColor.BLUE_UNICORN, 1);
-        studentsBag = new StudentsBag(studentsPerColor);
-        assertThrowsExactly(IllegalArgumentException.class, () -> studentsBag.grabTokens(5), "Invalid number of tokens");
+        assertAll(
+                () -> assertThrowsExactly(IllegalArgumentException.class, () -> studentsBag.grabTokens(0), "Invalid number of tokens"),
+                () -> assertThrowsExactly(IllegalArgumentException.class, () -> studentsBag.grabTokens(5), "Invalid number of tokens")
+        );
     }
 }
