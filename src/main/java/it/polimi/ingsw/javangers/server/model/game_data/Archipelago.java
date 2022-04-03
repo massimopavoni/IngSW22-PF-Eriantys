@@ -53,13 +53,13 @@ public class Archipelago {
     /**
      * Set the position of mother nature in the islands list.
      *
-     * @param motherNaturePosition new mother nature position
+     * @param position new mother nature position
      * @throws IllegalArgumentException if mother nature position is less than 0 or greater than islands list size
      */
-    public void setMotherNaturePosition(int motherNaturePosition) throws IllegalArgumentException {
-        if (motherNaturePosition < 0 || motherNaturePosition >= this.getIslands().size())
+    public void setMotherNaturePosition(int position) throws IllegalArgumentException {
+        if (position < 0 || position >= this.getIslands().size())
             throw new IllegalArgumentException("Invalid mother nature position");
-        this.motherNaturePosition = motherNaturePosition;
+        this.motherNaturePosition = position;
     }
 
     /**

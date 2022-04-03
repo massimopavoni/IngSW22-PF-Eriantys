@@ -71,7 +71,7 @@ public class GameState {
     }
 
     /**
-     * Get player dashboards map.
+     * Get player dashboards map shallow copy.
      *
      * @return player dashboards map
      */
@@ -80,9 +80,9 @@ public class GameState {
     }
 
     /**
-     * Get teacher map.
+     * Get teachers map shallow copy.
      *
-     * @return teacher map
+     * @return teachers map
      */
     public Map<TokenColor, Teacher> getTeachers() {
         return new EnumMap<>(this.teachersMap);
@@ -107,7 +107,7 @@ public class GameState {
     }
 
     /**
-     * Get clouds list.
+     * Get clouds list shallow copy.
      *
      * @return clouds list
      */

@@ -45,11 +45,11 @@ public class Teacher {
     /**
      * Set teacher owner.
      *
-     * @param ownerUsername       new owner username
-     * @param ownerStudentsNumber new number of students owned
+     * @param username       new owner username
+     * @param studentsNumber new number of students owned
      */
-    public void setOwner(String ownerUsername, int ownerStudentsNumber) {
-        this.ownerUsername = ownerUsername;
-        this.ownerStudentsNumber = ownerStudentsNumber;
+    public void setOwner(String username, int studentsNumber) {
+        this.ownerUsername = username;
+        this.ownerStudentsNumber = studentsNumber;
     }
 }
