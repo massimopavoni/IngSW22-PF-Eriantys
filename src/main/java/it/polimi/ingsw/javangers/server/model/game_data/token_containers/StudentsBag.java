@@ -53,8 +53,7 @@ public class StudentsBag {
     public List<TokenColor> grabTokens(int number) {
         List<TokenColor> tokensCopy = this.tokenContainer.getTokens();
         Collections.shuffle(tokensCopy, this.random);
-        int actualNumber = Math.min(number, tokensCopy.size());
-        List<TokenColor> tokens = tokensCopy.subList(0, actualNumber);
+        List<TokenColor> tokens = tokensCopy.subList(0, Math.min(number, tokensCopy.size()));
         return this.tokenContainer.extractTokens(tokens);
     }
 }
