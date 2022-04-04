@@ -7,7 +7,7 @@ import it.polimi.ingsw.javangers.server.model.game_data.GameState;
  */
 public interface ActionStrategy {
     /**
-     * Prototype method actions implementation.
+     * Prototype method for action implementation.
      *
      * @param gameState game state instance
      * @param username player username
