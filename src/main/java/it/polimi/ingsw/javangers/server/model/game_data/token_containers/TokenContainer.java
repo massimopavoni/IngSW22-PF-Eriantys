@@ -70,9 +70,8 @@ public class TokenContainer {
      *
      * @param tokens tokens to be extracted
      * @return list of extracted tokens
-     * @throws IllegalArgumentException if one or more of the tokens to be extracted are not in container
      */
-    public List<TokenColor> extractTokens(List<TokenColor> tokens) throws IllegalArgumentException {
+    public List<TokenColor> extractTokens(List<TokenColor> tokens) {
         if (!containsSubList(tokens)) throw new IllegalArgumentException("Tokens not in container");
         tokens.forEach(this.tokensList::remove);
         return tokens;
