@@ -61,8 +61,11 @@ class StudentsBagTest {
         studentsPerColor.put(TokenColor.PINK_FAIRY, 2);
         studentsPerColor.put(TokenColor.BLUE_UNICORN, 1);
         studentsBag = new StudentsBag(studentsPerColor);
-        assertEquals(studentsPerColor, new TokenContainer() {{
-            addTokens(studentsBag.grabTokens(7));
-        }}.getColorCounts());
+        assertAll(
+                () -> assertEquals(studentsPerColor, new TokenContainer() {{
+                    addTokens(studentsBag.grabTokens(7));
+                }}.getColorCounts()),
+                () -> assertTrue(studentsBag.getTokenContainer().getTokens().isEmpty())
+        );
     }
 }
