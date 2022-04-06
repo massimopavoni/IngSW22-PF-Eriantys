@@ -8,57 +8,55 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_eff
  */
 public class CharacterCard {
     /**
-     * Activation price of the character card.
+     * Activation cost of the character card.
      */
-    private final int price;
+    private final int cost;
 
     /**
-     * Delta of the price of the character card.
+     * Cost delta of the character card.
      */
-    private int priceDelta;
+    private int costDelta;
 
     /**
-     * Effect of the card that was activated.
+     * Effect strategy to activate.
      */
     private EffectStrategy effect;
 
     /**
-     * Constructor for character card, initializing price, price delta and effect strategy.
+     * Constructor for character card, initializing cost, cost delta and effect strategy.
      *
-     * @param price  initial price of the character card
-     * @param effect effect of the character card
+     * @param cost  initial cost of the character card
      */
-    public CharacterCard(int price, EffectStrategy effect) {
-        this.price = price;
-        this.priceDelta = 0;
-        this.effect = effect;
+    public CharacterCard(int cost) {
+        this.cost = cost;
+        this.costDelta = 0;
     }
 
     /**
-     * Get initial price of the card.
+     * Get initial cost of the card.
      *
-     * @return initial price of the card
+     * @return initial cost of the card
      */
-    public int getPrice() {
-        return price;
+    public int getCost() {
+        return cost;
     }
 
     /**
-     * Get price delta of the card.
+     * Get cost delta of the card.
      *
-     * @return price delta of the card
+     * @return cost delta of the card
      */
-    public int getPriceDelta() {
-        return priceDelta;
+    public int getCostDelta() {
+        return costDelta;
     }
 
     /**
-     * Set price delta of the card.
+     * Set cost delta of the card.
      *
-     * @param priceDelta new price delta of the card
+     * @param costDelta new cost delta of the card
      */
-    public void setPriceDelta(int priceDelta) {
-        this.priceDelta = priceDelta;
+    public void setCostDelta(int costDelta) {
+        this.costDelta = costDelta;
     }
 
     /**

@@ -21,12 +21,9 @@ public class Player {
     private int motherNatureSteps;
 
     /**
-     * Constructor for player, initializing initial action strategy, enabled character card and mother nature steps.
-     *
-     * @param initialAction initial action strategy
+     * Constructor for player, initializing enabled character card and mother nature steps.
      */
-    public Player(ActionStrategy initialAction) {
-        this.action = initialAction;
+    public Player() {
         this.enabledCharacterCard = true;
         this.motherNatureSteps = 0;
     }
