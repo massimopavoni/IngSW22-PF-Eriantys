@@ -40,21 +40,21 @@ public class GameState {
      * Constructor for game state, defining assistant card resource location, initial number of towers, islands, students tokens and coins;
      * initializing player dashboards, teachers, archipelago, students bag and clouds.
      *
-     * @param assistantCardResourceLocation path to the assistant card resource file
-     * @param playerInfo                    map of players' usernames and dashboards
-     * @param numberOfTowers                initial number of towers
-     * @param numberOfIslands               initial number of islands
-     * @param studentsBagInfo               map of students color and number
-     * @param coinsNumber                   initial number of coins
+     * @param assistantCardsResourceLocation path to the assistant card resource file
+     * @param playerInfo                     map of players' usernames and dashboards
+     * @param numberOfTowers                 initial number of towers
+     * @param numberOfIslands                initial number of islands
+     * @param studentsBagInfo                map of students color and number
+     * @param coinsNumber                    initial number of coins
      * @throws GameStateException if an error occurs during player dashboards initialization
      */
-    public GameState(String assistantCardResourceLocation, Map<String, Pair<WizardType, TowerColor>> playerInfo,
+    public GameState(String assistantCardsResourceLocation, Map<String, Pair<WizardType, TowerColor>> playerInfo,
                      int numberOfTowers, int numberOfIslands, Map<TokenColor, Integer> studentsBagInfo, int coinsNumber) throws GameStateException {
         this.playerDashboardsMap = new HashMap<>();
         try {
             for (Map.Entry<String, Pair<WizardType, TowerColor>> entry : playerInfo.entrySet()) {
                 this.playerDashboardsMap.put(entry.getKey(),
-                        new PlayerDashboard(assistantCardResourceLocation, entry.getValue().getValue0(),
+                        new PlayerDashboard(assistantCardsResourceLocation, entry.getValue().getValue0(),
                                 new Pair<>(entry.getValue().getValue1(), numberOfTowers), coinsNumber));
             }
         } catch (IOException e) {

@@ -49,18 +49,18 @@ public class PlayerDashboard {
     /**
      * Constructor for player dashboard, initializing token containers, assistant cards (from json resource file), cards' back, towers and coins.
      *
-     * @param assistantCardResourceLocation resource location of assistant cards json file
-     * @param cardsBack                     wizard type of cards' back
-     * @param towers                        initial towers pair, dependent on players number
-     * @param coinsNumber                   initial coins number
+     * @param assistantCardsResourceLocation resource location of assistant cards json file
+     * @param cardsBack                      wizard type of cards' back
+     * @param towers                         initial towers pair, dependent on players number
+     * @param coinsNumber                    initial coins number
      * @throws IOException if json parsing fails for some reason (stack trace can be examined)
      */
-    public PlayerDashboard(String assistantCardResourceLocation, WizardType cardsBack, Pair<TowerColor, Integer> towers, int coinsNumber) throws IOException {
+    public PlayerDashboard(String assistantCardsResourceLocation, WizardType cardsBack, Pair<TowerColor, Integer> towers, int coinsNumber) throws IOException {
         this.entrance = new TokenContainer();
         this.hall = new TokenContainer();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            File jsonFile = new File(Objects.requireNonNull(getClass().getResource(assistantCardResourceLocation)).getFile());
+            File jsonFile = new File(Objects.requireNonNull(getClass().getResource(assistantCardsResourceLocation)).getFile());
             JavaType assistantCardsMapType = mapper.getTypeFactory().constructMapType(LinkedHashMap.class, String.class, AssistantCard.class);
             this.assistantCardsMap = mapper.readValue(jsonFile, assistantCardsMapType);
         } catch (IOException e) {
