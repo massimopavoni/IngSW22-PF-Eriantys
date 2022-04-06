@@ -40,11 +40,11 @@ class ChooseCloudTest {
         List<TokenColor> tokens = new ArrayList<TokenColor>() {{
             addAll(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.YELLOW_ELF));
         }};
-        tokens.addAll(gameState.getCloudsList().get(0).getTokenContainer().getTokens());
+        tokens.addAll(gameState.getClouds().get(0).getTokenContainer().getTokens());
         chooseCloud = new ChooseCloud(0);
         chooseCloud.doAction(gameState, "pippo");
         assertAll(
-                () -> assertTrue(gameState.getCloudsList().get(0).getTokenContainer().getTokens().isEmpty()),
+                () -> assertTrue(gameState.getClouds().get(0).getTokenContainer().getTokens().isEmpty()),
                 () -> assertEquals(tokens, entrance.getTokens())
         );
     }

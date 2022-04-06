@@ -33,8 +33,8 @@ class FillCloudsTest {
                 }}, 8, 12, new HashMap<TokenColor, Integer>(), 1);
         fillClouds.doAction(gameState, "pippo");
         assertAll(
-                () -> assertEquals(0, gameState.getCloudsList().get(0).getTokenContainer().getTokens().size()),
-                () -> assertEquals(0, gameState.getCloudsList().get(1).getTokenContainer().getTokens().size())
+                () -> assertEquals(0, gameState.getClouds().get(0).getTokenContainer().getTokens().size()),
+                () -> assertEquals(0, gameState.getClouds().get(1).getTokenContainer().getTokens().size())
         );
     }
 
@@ -54,8 +54,8 @@ class FillCloudsTest {
         }}, 1);
         fillClouds.doAction(gameState, "pippo");
         assertAll(
-                () -> assertEquals(3, gameState.getCloudsList().get(0).getTokenContainer().getTokens().size()),
-                () -> assertEquals(3, gameState.getCloudsList().get(1).getTokenContainer().getTokens().size())
+                () -> assertEquals(3, gameState.getClouds().get(0).getTokenContainer().getTokens().size()),
+                () -> assertEquals(3, gameState.getClouds().get(1).getTokenContainer().getTokens().size())
         );
     }
 
@@ -75,8 +75,8 @@ class FillCloudsTest {
         }}, 1);
         fillClouds.doAction(gameState, "pippo");
         assertAll(
-                () -> assertEquals(3, gameState.getCloudsList().get(0).getTokenContainer().getTokens().size()),
-                () -> assertEquals(2, gameState.getCloudsList().get(1).getTokenContainer().getTokens().size())
+                () -> assertEquals(3, gameState.getClouds().get(0).getTokenContainer().getTokens().size()),
+                () -> assertEquals(2, gameState.getClouds().get(1).getTokenContainer().getTokens().size())
         );
     }
 }

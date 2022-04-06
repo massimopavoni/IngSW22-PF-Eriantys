@@ -45,7 +45,7 @@ class GameStateTest {
                     add(TokenColor.YELLOW_ELF);
                     add(TokenColor.BLUE_UNICORN);
                 }}, gameState.getTeachers().keySet()),
-                () -> assertEquals(2, gameState.getCloudsList().size())
+                () -> assertEquals(2, gameState.getClouds().size())
         );
     }
 
@@ -127,13 +127,13 @@ class GameStateTest {
             put(TokenColor.PINK_FAIRY, 26);
             put(TokenColor.YELLOW_ELF, 26);
         }}, 1);
-        List<Cloud> shallowCopy = gameState.getCloudsList();
+        List<Cloud> shallowCopy = gameState.getClouds();
         shallowCopy.remove(0);
-        gameState.getCloudsList().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.YELLOW_ELF));
+        gameState.getClouds().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.YELLOW_ELF));
         assertAll(
-                () -> assertNotEquals(shallowCopy, gameState.getCloudsList()),
-                () -> assertEquals(TokenColor.RED_DRAGON, gameState.getCloudsList().get(0).getTokenContainer().getTokens().get(0)),
-                () -> assertEquals(TokenColor.YELLOW_ELF, gameState.getCloudsList().get(0).getTokenContainer().getTokens().get(1))
+                () -> assertNotEquals(shallowCopy, gameState.getClouds()),
+                () -> assertEquals(TokenColor.RED_DRAGON, gameState.getClouds().get(0).getTokenContainer().getTokens().get(0)),
+                () -> assertEquals(TokenColor.YELLOW_ELF, gameState.getClouds().get(0).getTokenContainer().getTokens().get(1))
         );
     }
 }

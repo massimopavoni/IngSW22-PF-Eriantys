@@ -28,6 +28,6 @@ public class ChooseCloud implements ActionStrategy {
      */
     @Override
     public void doAction(GameState gameState, String username) {
-        gameState.getPlayerDashboards().get(username).getEntrance().addTokens(gameState.getCloudsList().get(cloudIndex).grabTokens());
+        gameState.getPlayerDashboards().get(username).getEntrance().addTokens(gameState.getClouds().get(cloudIndex).grabTokens());
     }
 }

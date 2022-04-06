@@ -111,7 +111,7 @@ public class GameState {
      *
      * @return clouds list
      */
-    public List<Cloud> getCloudsList() {
+    public List<Cloud> getClouds() {
         return new ArrayList<>(this.cloudsList);
     }
 
