@@ -54,6 +54,20 @@ class TokenContainerTest {
     }
 
     @Test
+    @DisplayName("Test containsSubList for true")
+    void containsSubList_true() {
+        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
+        assertTrue(tokenContainer.containsSubList(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON)));
+    }
+
+    @Test
+    @DisplayName("Test containsSubList for false")
+    void containsSubList_false() {
+        tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
+        assertFalse(tokenContainer.containsSubList(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN)));
+    }
+
+    @Test
     @DisplayName("Test extractTokens only specified tokens")
     void extractTokens_onlySpecifiedTokens() {
         tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN,

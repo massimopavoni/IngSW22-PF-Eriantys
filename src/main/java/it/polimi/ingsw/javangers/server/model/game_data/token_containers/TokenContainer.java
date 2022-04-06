@@ -51,18 +51,28 @@ public class TokenContainer {
     }
 
     /**
+     * Check if tokens list contains passed tokens.
+     *
+     * @param tokens list of tokens to check
+     * @return true if tokens list contains all the tokens in the passed list, false otherwise
+     */
+    public boolean containsSubList(List<TokenColor> tokens) {
+        List<TokenColor> tokensCopy = getTokens();
+        for (TokenColor token : tokens) {
+            if (!tokensCopy.contains(token)) return false;
+            tokensCopy.remove(token);
+        }
+        return true;
+    }
+
+    /**
      * Extract tokens from container with class specific function logic.
      *
      * @param tokens tokens to be extracted
      * @return list of extracted tokens
-     * @throws IllegalArgumentException if one or more of the tokens to be extracted are not in container
      */
-    public List<TokenColor> extractTokens(List<TokenColor> tokens) throws IllegalArgumentException {
-        List<TokenColor> tokensCopy = getTokens();
-        for (TokenColor token : tokens) {
-            if (!tokensCopy.contains(token)) throw new IllegalArgumentException("Token not in container");
-            tokensCopy.remove(token);
-        }
+    public List<TokenColor> extractTokens(List<TokenColor> tokens) {
+        if (!containsSubList(tokens)) throw new IllegalArgumentException("Tokens not in container");
         tokens.forEach(this.tokensList::remove);
         return tokens;
     }

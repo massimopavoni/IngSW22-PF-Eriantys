@@ -30,6 +30,8 @@ public class PlayAssistantCard implements ActionStrategy {
     @Override
     public void doAction(GameState gameState, String username) {
         PlayerDashboard playerDashboard = gameState.getPlayerDashboards().get(username);
+        if (!playerDashboard.getAssistantCards().containsKey(this.cardName))
+            throw new IllegalStateException("Specified card does not exist");
         playerDashboard.getDiscardedAssistantCards().put(this.cardName, playerDashboard.getAssistantCards().remove(this.cardName));
     }
 }
