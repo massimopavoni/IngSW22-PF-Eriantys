@@ -6,11 +6,15 @@ import it.polimi.ingsw.javangers.server.model.game_data.GameState;
  * Player action strategy interface.
  */
 public interface ActionStrategy {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Method prototypes
+
     /**
      * Prototype method for action implementation.
      *
      * @param gameState game state instance
-     * @param username player username
+     * @param username  player username
      */
     void doAction(GameState gameState, String username);
+    //endregion
 }

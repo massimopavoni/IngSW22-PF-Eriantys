@@ -6,10 +6,16 @@ import it.polimi.ingsw.javangers.server.model.game_data.GameState;
  * Class representing choose clouds action.
  */
 public class ChooseCloud implements ActionStrategy {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Index of the chosen cloud
      */
     private final int cloudIndex;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for choose cloud action, initializing cloud index.
@@ -19,6 +25,10 @@ public class ChooseCloud implements ActionStrategy {
     public ChooseCloud(int cloudIndex) {
         this.cloudIndex = cloudIndex;
     }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
 
     /**
      * Action implementation for choosing clouds.
@@ -30,4 +40,5 @@ public class ChooseCloud implements ActionStrategy {
     public void doAction(GameState gameState, String username) {
         gameState.getPlayerDashboards().get(username).getEntrance().addTokens(gameState.getClouds().get(cloudIndex).grabTokens());
     }
+    //endregion
 }

@@ -17,6 +17,8 @@ import java.util.Objects;
  * Class representing a player dashboard.
  */
 public class PlayerDashboard {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Dashboard entrance token container.
      */
@@ -45,6 +47,10 @@ public class PlayerDashboard {
      * Number of coins available to the player.
      */
     private int coinsNumber;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for player dashboard, initializing token containers, assistant cards (from json resource file), cards' back, towers and coins.
@@ -152,4 +158,5 @@ public class PlayerDashboard {
     public void setCoinsNumber(int coinsNumber) {
         this.coinsNumber = coinsNumber;
     }
+    //endregion
 }

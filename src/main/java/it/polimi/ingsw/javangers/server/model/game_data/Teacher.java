@@ -4,6 +4,8 @@ package it.polimi.ingsw.javangers.server.model.game_data;
  * Class representing a teacher.
  */
 public class Teacher {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Username of current teacher owner.
      */
@@ -12,6 +14,10 @@ public class Teacher {
      * Students number of current teacher owner.
      */
     private int ownerStudentsNumber;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for teacher, initializing owner username and students number.
@@ -52,4 +58,5 @@ public class Teacher {
         this.ownerUsername = username;
         this.ownerStudentsNumber = studentsNumber;
     }
+    //endregion
 }

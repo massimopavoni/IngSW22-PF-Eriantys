@@ -7,6 +7,8 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_eff
  * Class representing a character card.
  */
 public class CharacterCard {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Activation cost of the character card.
      */
@@ -21,11 +23,15 @@ public class CharacterCard {
      * Effect strategy to activate.
      */
     private EffectStrategy effect;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for character card, initializing cost, cost delta and effect strategy.
      *
-     * @param cost  initial cost of the character card
+     * @param cost initial cost of the character card
      */
     public CharacterCard(int cost) {
         this.cost = cost;
@@ -67,6 +73,10 @@ public class CharacterCard {
     public void setEffect(EffectStrategy effect) {
         this.effect = effect;
     }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
 
     /**
      * Activate the effect of the character card.
@@ -77,4 +87,5 @@ public class CharacterCard {
     public void activateEffect(GameState gameState, String username) {
         this.effect.useEffect(gameState, username);
     }
+    //endregion
 }

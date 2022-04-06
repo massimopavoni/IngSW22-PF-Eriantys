@@ -9,10 +9,16 @@ import java.util.List;
  * Class representing a cloud.
  */
 public class Cloud {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Token container instance.
      */
     private final TokenContainer tokenContainer;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for cloud, initializing token container.
@@ -29,6 +35,10 @@ public class Cloud {
     public TokenContainer getTokenContainer() {
         return this.tokenContainer;
     }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
 
     /**
      * Grab all tokens from cloud.
@@ -39,4 +49,5 @@ public class Cloud {
         List<TokenColor> tokens = new ArrayList<>(this.tokenContainer.getTokens());
         return this.tokenContainer.extractTokens(tokens);
     }
+    //endregion
 }

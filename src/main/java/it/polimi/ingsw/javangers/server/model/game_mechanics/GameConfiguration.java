@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Class representing a game configuration.
  */
 public class GameConfiguration {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Resource location of assistant cards json file.
      */
@@ -43,6 +45,10 @@ public class GameConfiguration {
      * Initial number of coins per dashboard.
      */
     private final int coinsPerDashBoard;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for game configuration, initializing cards resource locations,
@@ -159,4 +165,5 @@ public class GameConfiguration {
     public int getCoinsPerDashBoard() {
         return coinsPerDashBoard;
     }
+    //endregion
 }

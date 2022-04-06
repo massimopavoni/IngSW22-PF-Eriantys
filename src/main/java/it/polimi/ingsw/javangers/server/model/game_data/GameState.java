@@ -15,6 +15,8 @@ import java.util.stream.Stream;
  * Class representing the state of the game.
  */
 public class GameState {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Map of players' usernames and dashboards.
      */
@@ -35,6 +37,10 @@ public class GameState {
      * List of game clouds.
      */
     private final List<Cloud> cloudsList;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for game state, defining assistant card resource location, initial number of towers, islands, students tokens and coins;
@@ -114,6 +120,7 @@ public class GameState {
     public List<Cloud> getClouds() {
         return new ArrayList<>(this.cloudsList);
     }
+    //endregion
 
     /**
      * Exception for errors within game state class.

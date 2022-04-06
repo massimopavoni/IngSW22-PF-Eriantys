@@ -7,6 +7,8 @@ import org.javatuples.Pair;
  * Class representing an island.
  */
 public class Island {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Token container instance.
      */
@@ -19,6 +21,10 @@ public class Island {
      * Flag for island power computation.
      */
     private boolean enabled;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for island, initializing token container, towers and enabled flag.
@@ -73,4 +79,5 @@ public class Island {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+    //endregion
 }

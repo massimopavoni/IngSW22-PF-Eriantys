@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Class representing an assistant card.
  */
 public class AssistantCard {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * The value of the card.
      */
@@ -15,6 +17,10 @@ public class AssistantCard {
      * The mother nature steps limit of the card.
      */
     private final int steps;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for assistant card, initializing value and steps.
@@ -45,4 +51,5 @@ public class AssistantCard {
     public int getSteps() {
         return this.steps;
     }
+    //endregion
 }

@@ -11,10 +11,16 @@ import java.util.stream.Collectors;
  * Class representing a container of tokens.
  */
 public class TokenContainer {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * List of all the tokens in the container.
      */
     private final List<TokenColor> tokensList;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for token container, creates tokens list as empty ArrayList.
@@ -31,6 +37,10 @@ public class TokenContainer {
     public List<TokenColor> getTokens() {
         return new ArrayList<>(this.tokensList);
     }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
 
     /**
      * Get map of token colors and number of occurrences of each token color.
@@ -72,8 +82,9 @@ public class TokenContainer {
      * @return list of extracted tokens
      */
     public List<TokenColor> extractTokens(List<TokenColor> tokens) {
-        if (!containsSubList(tokens)) throw new IllegalArgumentException("Tokens not in container");
+        if (!this.containsSubList(tokens)) throw new IllegalArgumentException("Tokens not in container");
         tokens.forEach(this.tokensList::remove);
         return tokens;
     }
+    //endregion
 }

@@ -11,6 +11,8 @@ import java.util.stream.Stream;
  * Class representing the archipelago.
  */
 public class Archipelago {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * List of all islands.
      */
@@ -19,6 +21,10 @@ public class Archipelago {
      * Mother nature position in archipelago.
      */
     private int motherNaturePosition;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for Archipelago, initializing islands list and add the number of islands.
@@ -59,6 +65,10 @@ public class Archipelago {
             throw new IllegalArgumentException("Invalid mother nature position");
         this.motherNaturePosition = position;
     }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
 
     /**
      * Pop an island from the islands list.
@@ -79,4 +89,5 @@ public class Archipelago {
     public void insertIsland(Island island, int index) {
         this.islandsList.add(index, island);
     }
+    //endregion
 }

@@ -11,6 +11,8 @@ import java.util.Random;
  * Class representing a container of students.
  */
 public class StudentsBag {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Token container instance.
      */
@@ -19,6 +21,10 @@ public class StudentsBag {
      * Random number generator.
      */
     private final Random random;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for studentsBag initializing token container (according to students per color map) and random instance.
@@ -42,6 +48,10 @@ public class StudentsBag {
     public TokenContainer getTokenContainer() {
         return this.tokenContainer;
     }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
 
     /**
      * Grab random tokens from bag.
@@ -55,4 +65,5 @@ public class StudentsBag {
         List<TokenColor> tokens = tokensCopy.subList(0, Math.min(number, tokensCopy.size()));
         return this.tokenContainer.extractTokens(tokens);
     }
+    //endregion
 }

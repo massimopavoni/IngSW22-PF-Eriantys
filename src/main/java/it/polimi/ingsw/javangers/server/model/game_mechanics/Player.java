@@ -7,6 +7,8 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.Acti
  * Class representing a player.
  */
 public class Player {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Action set for the player to perform.
      */
@@ -19,6 +21,10 @@ public class Player {
      * Number of mother nature steps.
      */
     private int motherNatureSteps;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for player, initializing enabled character card and mother nature steps.
@@ -26,16 +32,6 @@ public class Player {
     public Player() {
         this.enabledCharacterCard = true;
         this.motherNatureSteps = 0;
-    }
-
-    /**
-     * Execute an action.
-     *
-     * @param gameState game state instance for modifications
-     * @param username  player username
-     */
-    public void executeAction(GameState gameState, String username) {
-        this.action.doAction(gameState, username);
     }
 
     /**
@@ -82,6 +78,21 @@ public class Player {
     public void setMotherNatureSteps(int steps) {
         this.motherNatureSteps = steps;
     }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
+
+    /**
+     * Execute an action.
+     *
+     * @param gameState game state instance for modifications
+     * @param username  player username
+     */
+    public void executeAction(GameState gameState, String username) {
+        this.action.doAction(gameState, username);
+    }
+    //endregion
 }
 
 

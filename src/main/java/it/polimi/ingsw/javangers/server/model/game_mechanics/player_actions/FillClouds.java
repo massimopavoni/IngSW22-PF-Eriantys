@@ -11,10 +11,16 @@ import java.util.List;
  * Class representing the fill clouds action.
  */
 public class FillClouds implements ActionStrategy {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
     /**
      * Number of students to insert in clouds.
      */
     private final int numberOfStudents;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
 
     /**
      * Constructor for fill clouds action, initializing number of students.
@@ -24,6 +30,10 @@ public class FillClouds implements ActionStrategy {
     public FillClouds(int numberOfStudents) {
         this.numberOfStudents = numberOfStudents;
     }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
 
     /**
      * Action implementation for filling clouds.
@@ -40,4 +50,5 @@ public class FillClouds implements ActionStrategy {
             cloud.getTokenContainer().addTokens(studentsBag.grabTokens(this.numberOfStudents));
         }
     }
+    //endregion
 }
