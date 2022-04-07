@@ -1,10 +1,15 @@
 package it.polimi.ingsw.javangers.server.model.game_data;
 
+import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
+import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +19,7 @@ class ArchipelagoTest {
 
     @BeforeEach
     void setUp() {
-        archipelago = new Archipelago(2);
+        archipelago = new Archipelago(3);
     }
 
     @Test
@@ -27,7 +32,7 @@ class ArchipelagoTest {
     @Test
     @DisplayName("Test constructor")
     void Archipelago_constructor() {
-        assertEquals(2, archipelago.getIslands().size());
+        assertEquals(3, archipelago.getIslands().size());
     }
 
     @Test
@@ -61,23 +66,51 @@ class ArchipelagoTest {
     }
 
     @Test
-    @DisplayName("Test popIsland for correct pop")
-    void popIsland_correctPop() {
-        archipelago.getIslands().get(0).setEnabled(false);
-        Island poppedIsland = archipelago.getIslands().get(0);
-        List<Island> remainingIslands = archipelago.getIslands().subList(1, 2);
+    @DisplayName("Test mergeIslands for invalid merge exception")
+    void mergeIslands_invalidMerge() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.mergeIslands(1, false, false));
+    }
+
+    @Test
+    @DisplayName("Test mergeIslands for only left merge")
+    void mergeIslands_leftMerge() {
+        archipelago.getIslands().get(2).setEnabled(false);
+        Island otherIsland = archipelago.getIslands().get(1);
+        archipelago.mergeIslands(0, true, false);
         assertAll(
-                () -> assertEquals(poppedIsland, archipelago.popIsland(0)),
-                () -> assertEquals(remainingIslands, archipelago.getIslands())
+                () -> assertEquals(2, archipelago.getIslands().size()),
+                () -> assertFalse(archipelago.getIslands().get(0).isEnabled()),
+                () -> assertEquals(otherIsland, archipelago.getIslands().get(1))
         );
     }
 
     @Test
-    @DisplayName("Test insertIsland for correct insert")
-    void insertIsland_correct() {
-        Island insertedIsland = new Island();
-        insertedIsland.setEnabled(false);
-        archipelago.insertIsland(insertedIsland, 2);
-        assertFalse(archipelago.getIslands().get(2).isEnabled());
+    @DisplayName("Test mergeIslands for only right merge")
+    void mergeIslands_rightMerge() {
+        archipelago.getIslands().get(2).setTowers(new Pair<>(TowerColor.WHITE, 1));
+        archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.WHITE, 1));
+        Island otherIsland = archipelago.getIslands().get(1);
+        archipelago.mergeIslands(2, false, true);
+        assertAll(
+                () -> assertEquals(2, archipelago.getIslands().size()),
+                () -> assertEquals(2, archipelago.getIslands().get(1).getTowers().getValue1()),
+                () -> assertEquals(otherIsland, archipelago.getIslands().get(0))
+        );
+    }
+
+    @Test
+    @DisplayName("Test mergeIslands for both left and right merge")
+    void mergeIslands_leftAndRightMerge() {
+        archipelago.getIslands().get(2).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.YELLOW_ELF));
+        archipelago.getIslands().get(1).getTokenContainer().addTokens(Arrays.asList(TokenColor.GREEN_FROG, TokenColor.GREEN_FROG));
+        archipelago.mergeIslands(0, true, true);
+        assertAll(
+                () -> assertEquals(1, archipelago.getIslands().size()),
+                () -> assertEquals(new HashMap<TokenColor, Integer>() {{
+                    put(TokenColor.RED_DRAGON, 1);
+                    put(TokenColor.YELLOW_ELF, 1);
+                    put(TokenColor.GREEN_FROG, 2);
+                }}, archipelago.getIslands().get(0).getTokenContainer().getColorCounts())
+        );
     }
 }

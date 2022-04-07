@@ -71,23 +71,24 @@ public class Archipelago {
     //region Methods
 
     /**
-     * Pop an island from the islands list.
+     * Merge islands in the archipelago.
      *
-     * @param index index of island to pop
-     * @return popped island
+     * @param selectedIslandIndex index of the starting island for merge
+     * @param leftMerge           true if merge should happen on the left
+     * @param rightMerge          true if merge should happen on the right
      */
-    public Island popIsland(int index) {
-        return this.islandsList.remove(index);
-    }
-
-    /**
-     * Insert an island in the islands list.
-     *
-     * @param island island to insert
-     * @param index  insertion index
-     */
-    public void insertIsland(Island island, int index) {
-        this.islandsList.add(index, island);
+    public void mergeIslands(int selectedIslandIndex, boolean leftMerge, boolean rightMerge) {
+        if (!leftMerge && !rightMerge)
+            throw new IllegalArgumentException("Invalid merge, should merge at least two islands");
+        Island selectedIsland = this.islandsList.get(selectedIslandIndex);
+        if (leftMerge) {
+            Island leftIsland = this.islandsList.remove((selectedIslandIndex - 1 + this.islandsList.size()) % this.islandsList.size());
+            selectedIsland.mergeWith(leftIsland);
+        }
+        if (rightMerge) {
+            Island rightIsland = this.islandsList.remove((this.islandsList.indexOf(selectedIsland) + 1) % this.islandsList.size());
+            selectedIsland.mergeWith(rightIsland);
+        }
     }
     //endregion
 }

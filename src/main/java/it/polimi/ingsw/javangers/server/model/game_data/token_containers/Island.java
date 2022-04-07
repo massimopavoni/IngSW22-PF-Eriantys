@@ -80,4 +80,19 @@ public class Island {
         this.enabled = enabled;
     }
     //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
+
+    /**
+     * Merge current island with another island.
+     *
+     * @param island island to merge with
+     */
+    public void mergeWith(Island island) {
+        this.tokenContainer.addTokens(island.tokenContainer.getTokens());
+        this.towers = new Pair<>(this.towers.getValue0(), this.towers.getValue1() + island.towers.getValue1());
+        this.enabled = this.enabled && island.enabled;
+    }
+    //endregion
 }
