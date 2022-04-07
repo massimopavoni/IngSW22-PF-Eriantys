@@ -70,7 +70,7 @@ class ArchipelagoTest {
     void mergeIslands_leftMerge() {
         archipelago.getIslands().get(2).setEnabled(false);
         Island otherIsland = archipelago.getIslands().get(1);
-        archipelago.mergeIslands(0, true, false);
+        archipelago.mergeIslands(archipelago.getIslands().get(0), true, false);
         assertAll(
                 () -> assertEquals(2, archipelago.getIslands().size()),
                 () -> assertFalse(archipelago.getIslands().get(0).isEnabled()),
@@ -81,10 +81,11 @@ class ArchipelagoTest {
     @Test
     @DisplayName("Test mergeIslands for only right merge")
     void mergeIslands_rightMerge() {
-        archipelago.getIslands().get(2).setTowers(new Pair<>(TowerColor.WHITE, 1));
+        Island selectedIsland = archipelago.getIslands().get(2);
+        selectedIsland.setTowers(new Pair<>(TowerColor.WHITE, 1));
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.WHITE, 1));
         Island otherIsland = archipelago.getIslands().get(1);
-        archipelago.mergeIslands(2, false, true);
+        archipelago.mergeIslands(selectedIsland, false, true);
         assertAll(
                 () -> assertEquals(2, archipelago.getIslands().size()),
                 () -> assertEquals(2, archipelago.getIslands().get(1).getTowers().getValue1()),
@@ -97,7 +98,7 @@ class ArchipelagoTest {
     void mergeIslands_leftAndRightMerge() {
         archipelago.getIslands().get(2).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.YELLOW_ELF));
         archipelago.getIslands().get(1).getTokenContainer().addTokens(Arrays.asList(TokenColor.GREEN_FROG, TokenColor.GREEN_FROG));
-        archipelago.mergeIslands(0, true, true);
+        archipelago.mergeIslands(archipelago.getIslands().get(0), true, true);
         assertAll(
                 () -> assertEquals(1, archipelago.getIslands().size()),
                 () -> assertEquals(new HashMap<TokenColor, Integer>() {{

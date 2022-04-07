@@ -73,14 +73,13 @@ public class Archipelago {
     /**
      * Merge islands in the archipelago.
      *
-     * @param selectedIslandIndex index of the starting island for merge
-     * @param leftMerge           true if merge should happen on the left
-     * @param rightMerge          true if merge should happen on the right
+     * @param selectedIsland starting island for merge
+     * @param leftMerge      true if merge should happen on the left
+     * @param rightMerge     true if merge should happen on the right
      */
-    public void mergeIslands(int selectedIslandIndex, boolean leftMerge, boolean rightMerge) {
-        Island selectedIsland = this.islandsList.get(selectedIslandIndex);
+    public void mergeIslands(Island selectedIsland, boolean leftMerge, boolean rightMerge) {
         if (leftMerge) {
-            Island leftIsland = this.islandsList.remove((selectedIslandIndex - 1 + this.islandsList.size()) % this.islandsList.size());
+            Island leftIsland = this.islandsList.remove((this.islandsList.indexOf(selectedIsland) - 1 + this.islandsList.size()) % this.islandsList.size());
             selectedIsland.mergeWith(leftIsland);
         }
         if (rightMerge) {
