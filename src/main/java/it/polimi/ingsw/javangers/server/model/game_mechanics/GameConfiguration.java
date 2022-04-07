@@ -26,10 +26,6 @@ public class GameConfiguration {
      */
     private final int studentsPerColor;
     /**
-     * Initial number of students per island.
-     */
-    private final int studentsPerIsland;
-    /**
      * Number of students per cloud.
      */
     private final int studentsPerCloud;
@@ -62,7 +58,6 @@ public class GameConfiguration {
      * @param characterCardsResourceLocation resource location of character cards json file
      * @param numberOfIslands                initial number of islands
      * @param studentsPerColor               number of students per color
-     * @param studentsPerIsland              initial number of students per island
      * @param studentsPerCloud               number of students per cloud
      * @param studentsPerEntrance            number of students per dashboard entrance
      * @param towersPerDashboard             number of towers per dashboard
@@ -74,7 +69,6 @@ public class GameConfiguration {
                              @JsonProperty("characterCardsResourceLocation") String characterCardsResourceLocation,
                              @JsonProperty("numberOfIslands") int numberOfIslands,
                              @JsonProperty("studentsPerColor") int studentsPerColor,
-                             @JsonProperty("studentsPerIsland") int studentsPerIsland,
                              @JsonProperty("studentsPerCloud") int studentsPerCloud,
                              @JsonProperty("studentsPerEntrance") int studentsPerEntrance,
                              @JsonProperty("towersPerDashboard") int towersPerDashboard,
@@ -84,7 +78,6 @@ public class GameConfiguration {
         this.characterCardsResourceLocation = characterCardsResourceLocation;
         this.numberOfIslands = numberOfIslands;
         this.studentsPerColor = studentsPerColor;
-        this.studentsPerIsland = studentsPerIsland;
         this.studentsPerCloud = studentsPerCloud;
         this.studentsPerEntrance = studentsPerEntrance;
         this.towersPerDashboard = towersPerDashboard;
@@ -126,15 +119,6 @@ public class GameConfiguration {
      */
     public int getStudentsPerColor() {
         return this.studentsPerColor;
-    }
-
-    /**
-     * Get number of students per island.
-     *
-     * @return number of students per island
-     */
-    public int getStudentsPerIsland() {
-        return this.studentsPerIsland;
     }
 
     /**
