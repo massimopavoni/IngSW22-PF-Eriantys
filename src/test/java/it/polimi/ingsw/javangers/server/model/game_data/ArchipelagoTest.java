@@ -66,12 +66,6 @@ class ArchipelagoTest {
     }
 
     @Test
-    @DisplayName("Test mergeIslands for invalid merge exception")
-    void mergeIslands_invalidMerge() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.mergeIslands(1, false, false));
-    }
-
-    @Test
     @DisplayName("Test mergeIslands for only left merge")
     void mergeIslands_leftMerge() {
         archipelago.getIslands().get(2).setEnabled(false);

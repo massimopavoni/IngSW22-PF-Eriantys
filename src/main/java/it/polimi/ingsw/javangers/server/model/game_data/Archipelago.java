@@ -78,8 +78,6 @@ public class Archipelago {
      * @param rightMerge          true if merge should happen on the right
      */
     public void mergeIslands(int selectedIslandIndex, boolean leftMerge, boolean rightMerge) {
-        if (!leftMerge && !rightMerge)
-            throw new IllegalArgumentException("Invalid merge, should merge at least two islands");
         Island selectedIsland = this.islandsList.get(selectedIslandIndex);
         if (leftMerge) {
             Island leftIsland = this.islandsList.remove((selectedIslandIndex - 1 + this.islandsList.size()) % this.islandsList.size());
