@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.EffectStrategy;
 
@@ -33,7 +35,8 @@ public class CharacterCard {
      *
      * @param cost initial cost of the character card
      */
-    public CharacterCard(int cost) {
+    @JsonCreator
+    public CharacterCard(@JsonProperty("cost") int cost) {
         this.cost = cost;
         this.costDelta = 0;
     }
