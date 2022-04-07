@@ -1,0 +1,387 @@
+package it.polimi.ingsw.javangers.server.model.game_mechanics;
+
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
+import it.polimi.ingsw.javangers.server.model.game_data.GameState;
+import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
+import it.polimi.ingsw.javangers.server.model.game_data.Teacher;
+import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
+import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
+import it.polimi.ingsw.javangers.server.model.game_data.enums.WizardType;
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
+import org.javatuples.Pair;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * Class representing the game engine.
+ */
+public class GameEngine {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
+    /**
+     * Game configuration instance.
+     */
+    private final GameConfiguration gameConfiguration;
+    /**
+     * Game state instance.
+     */
+    private final GameState gameState;
+    /**
+     * Flag for expert mode game.
+     */
+    private final boolean expertMode;
+    /**
+     * Map of character cards for the game.
+     */
+    private final Map<String, CharacterCard> characterCardsMap;
+    /**
+     * Flag for teachers power comparison.
+     */
+    private boolean teachersEqualCount;
+    /**
+     * Additional mother nature steps allowed for the current turn.
+     */
+    private int additionalMotherNatureSteps;
+    /**
+     * Flag for island towers power bonus.
+     */
+    private boolean enabledIslandTowers;
+    /**
+     * Additional power points for the current turn.
+     */
+    private int additionalPower;
+    /**
+     * Forbidden token color for island power evaluation.
+     */
+    private TokenColor forbiddenColor;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
+
+    /**
+     * Constructor for the game engine, initializing game configuration, game state, character cards and game engine parameters,
+     * based on players' info, selected configuration and expert mode flag.
+     *
+     * @param gameConfigurationsResourceLocation resource location of game configurations json file
+     * @param playersInfo                        players specific info for game state initialization
+     * @param expertMode                         flag for expert mode game
+     * @throws GameEngineException if json parsing or game state initialization fails for some reason (stack trace can be examined)
+     */
+    public GameEngine(String gameConfigurationsResourceLocation, Map<String, Pair<WizardType, TowerColor>> playersInfo, boolean expertMode) throws GameEngineException {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            // Get game configuration based on number of players
+            File jsonFile = new File(Objects.requireNonNull(getClass().getResource(gameConfigurationsResourceLocation)).getFile());
+            JavaType gameConfigurationsMapType = mapper.getTypeFactory().constructMapType(HashMap.class, Integer.class, GameConfiguration.class);
+            Map<Integer, GameConfiguration> gameConfigurations = mapper.readValue(jsonFile, gameConfigurationsMapType);
+            this.gameConfiguration = gameConfigurations.get(playersInfo.size());
+            this.expertMode = expertMode;
+
+            // Create game state based on game configuration, player info and expert mode
+            Map<TokenColor, Integer> studentsBagMap = new EnumMap<>(TokenColor.class);
+            Arrays.stream(TokenColor.values()).forEach(color -> studentsBagMap.put(color, this.gameConfiguration.getStudentsPerColor()));
+            this.gameState = new GameState(this.gameConfiguration.getAssistantCardsResourceLocation(), playersInfo,
+                    this.gameConfiguration.getTowersPerDashboard(), this.gameConfiguration.getNumberOfIslands(), studentsBagMap,
+                    this.expertMode ? this.gameConfiguration.getCoinsPerDashBoard() : 0);
+
+            this.characterCardsMap = new HashMap<>();
+            // Read character cards and select some random ones if expert mode is enabled
+            if (this.expertMode) {
+                jsonFile = new File(Objects.requireNonNull(getClass().getResource(this.gameConfiguration.getCharacterCardsResourceLocation())).getFile());
+                JavaType characterCardsMapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, CharacterCard.class);
+                Map<String, CharacterCard> allCharacterCardsMap = mapper.readValue(jsonFile, characterCardsMapType);
+                List<String> characterCardsKeys = new ArrayList<>(allCharacterCardsMap.keySet());
+                Collections.shuffle(characterCardsKeys, new Random());
+                characterCardsKeys.subList(0, this.gameConfiguration.getNumberOfCharacterCards())
+                        .forEach(key -> this.characterCardsMap.put(key, allCharacterCardsMap.get(key)));
+            }
+
+            // Set default values for character cards parameters
+            this.teachersEqualCount = false;
+            this.additionalMotherNatureSteps = 0;
+            this.enabledIslandTowers = true;
+            this.additionalPower = 0;
+            this.forbiddenColor = null;
+        } catch (IOException e) {
+            throw new GameEngineException("Error while reading game configurations or character cards json files", e);
+        } catch (GameState.GameStateException e) {
+            throw new GameEngineException("Error while creating game state", e);
+        }
+    }
+
+    /**
+     * Get game configuration instance.
+     *
+     * @return game configuration instance
+     */
+    public GameConfiguration getGameConfiguration() {
+        return this.gameConfiguration;
+    }
+
+    /**
+     * Get expert mode flag.
+     *
+     * @return expert mode flag
+     */
+    public boolean isExpertMode() {
+        return this.expertMode;
+    }
+
+    /**
+     * Get shallow copy of character cards map.
+     *
+     * @return character cards map
+     */
+    public Map<String, CharacterCard> getCharacterCards() {
+        return new HashMap<>(this.characterCardsMap);
+    }
+
+    /**
+     * Get teachers power comparison flag.
+     *
+     * @return teachers power comparison flag
+     */
+    public boolean getTeachersEqualCount() {
+        return this.teachersEqualCount;
+    }
+
+    /**
+     * Set teachers power comparison flag.
+     *
+     * @param teachersEqualCount new teachers power comparison flag value
+     */
+    public void setTeachersEqualCount(boolean teachersEqualCount) {
+        this.teachersEqualCount = teachersEqualCount;
+    }
+
+    /**
+     * Get additional mother nature steps for current turn.
+     *
+     * @return additional mother nature steps for current turn
+     */
+    public int getAdditionalMotherNatureSteps() {
+        return this.additionalMotherNatureSteps;
+    }
+
+    /**
+     * Set additional mother nature steps for current turn.
+     *
+     * @param additionalMotherNatureSteps new additional mother nature steps value
+     */
+    public void setAdditionalMotherNatureSteps(int additionalMotherNatureSteps) {
+        this.additionalMotherNatureSteps = additionalMotherNatureSteps;
+    }
+
+    /**
+     * Get island towers power bonus flag.
+     *
+     * @return island towers power bonus flag
+     */
+    public boolean getEnabledIslandTowers() {
+        return this.enabledIslandTowers;
+    }
+
+    /**
+     * Set island towers power bonus flag.
+     *
+     * @param enabledIslandTowers new island towers power bonus flag value
+     */
+    public void setEnabledIslandTowers(boolean enabledIslandTowers) {
+        this.enabledIslandTowers = enabledIslandTowers;
+    }
+
+    /**
+     * Get additional power points for current turn.
+     *
+     * @return additional power points for current turn
+     */
+    public int getAdditionalPower() {
+        return this.additionalPower;
+    }
+
+    /**
+     * Set additional power points for current turn.
+     *
+     * @param additionalPower new additional power points value
+     */
+    public void setAdditionalPower(int additionalPower) {
+        this.additionalPower = additionalPower;
+    }
+
+    /**
+     * Get forbidden token color for island power evaluation.
+     *
+     * @return forbidden token color for island power evaluation
+     */
+    public TokenColor getForbiddenColor() {
+        return this.forbiddenColor;
+    }
+
+    /**
+     * Set forbidden token color for island power evaluation.
+     *
+     * @param forbiddenColor new forbidden token color value
+     */
+    public void setForbiddenColor(TokenColor forbiddenColor) {
+        this.forbiddenColor = forbiddenColor;
+    }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
+
+    /**
+     * Reset character cards parameters to their default values.
+     */
+    public void resetCharacterCardsParameters() {
+        this.teachersEqualCount = false;
+        this.additionalMotherNatureSteps = 0;
+        this.enabledIslandTowers = true;
+        this.additionalPower = 0;
+        this.forbiddenColor = null;
+    }
+
+    /**
+     * Change teachers owners and students number based on game state changes.
+     */
+    public void changeTeachersPower() {
+        this.updateTeachersPower();
+        Map<TokenColor, Teacher> teachers = this.gameState.getTeachers();
+        for (Map.Entry<String, PlayerDashboard> playerDashboard : this.gameState.getPlayerDashboards().entrySet()) {
+            for (Map.Entry<TokenColor, Integer> colorCount : playerDashboard.getValue().getHall().getColorCounts().entrySet()) {
+                if (this.teacherPowerComparison(colorCount.getValue(), teachers.get(colorCount.getKey()).getOwnerStudentsNumber())) {
+                    teachers.get(colorCount.getKey()).setOwner(playerDashboard.getKey(), colorCount.getValue());
+                }
+            }
+        }
+    }
+
+    /**
+     * Update teachers students numbers to make up for character cards shenanigans.
+     */
+    private void updateTeachersPower() {
+        Map<String, PlayerDashboard> playerDashboards = this.gameState.getPlayerDashboards();
+        this.gameState.getTeachers().forEach((color, teacher) -> teacher.setOwner(teacher.getOwnerUsername(),
+                playerDashboards.get(teacher.getOwnerUsername()).getHall().getColorCounts().get(color)));
+    }
+
+    /**
+     * Conditional comparison of candidate owner power and current owner power on teacher.
+     *
+     * @param candidatePower candidate owner power
+     * @param currentPower   current owner power
+     * @return based on teachers equal count flag, true if candidate power is greater or equal/strictly greater than current power, false otherwise
+     */
+    private boolean teacherPowerComparison(int candidatePower, int currentPower) {
+        return this.teachersEqualCount ? candidatePower >= currentPower : candidatePower > currentPower;
+    }
+
+    /**
+     * Change island towers power and archipelago merging situation based on game state changes.
+     *
+     * @param selectedIslandIndex selected island index
+     * @param username            username of player who selected island
+     */
+    public void changeIslandPower(int selectedIslandIndex, String username) {
+        // Get base players power map
+        Map<String, Integer> playersPower = this.assignPlayersPower(selectedIslandIndex);
+
+        // Add additional power
+        playersPower.put(username, playersPower.get(username) + this.additionalPower);
+
+        // Find all players with the highest power
+        int highestPower = Collections.max(playersPower.values());
+        List<String> islandWinners = playersPower.entrySet().stream()
+                .filter(entry -> entry.getValue() == highestPower).map(Map.Entry::getKey).collect(Collectors.toList());
+
+        // Make changes based on island winners
+        // "There can be only one (one, one, one)"
+        if (islandWinners.size() == 1) {
+            this.updateIslandData(selectedIslandIndex, this.gameState.getPlayerDashboards().get(islandWinners.get(0)));
+        }
+    }
+
+    /**
+     * Create players power map based on selected island and players' power on teachers.
+     *
+     * @param selectedIslandIndex selected island index
+     * @return players power map (without additional power)
+     */
+    private Map<String, Integer> assignPlayersPower(int selectedIslandIndex) {
+        // Temporary variables for easier lines
+        Island selectedIsland = this.gameState.getArchipelago().getIslands().get(selectedIslandIndex);
+        Pair<TowerColor, Integer> selectedIslandTowers = selectedIsland.getTowers();
+        TokenContainer selectedIslandTokenContainer = selectedIsland.getTokenContainer();
+        Map<String, PlayerDashboard> playerDashboards = this.gameState.getPlayerDashboards();
+
+        // Generate a players power map
+        Map<String, Integer> playersPower = playerDashboards.keySet().stream().collect(Collectors.toMap(u -> u, u -> 0));
+        // Add island number of students only if player is corresponding teacher's owner
+        this.gameState.getTeachers().entrySet().stream()
+                .filter(entry -> selectedIslandTokenContainer.getTokens().contains(entry.getKey()) &&
+                        entry.getKey() != this.forbiddenColor && !(entry.getValue().getOwnerUsername()).equals(""))
+                .forEach(entry -> playersPower.put(entry.getValue().getOwnerUsername(),
+                        selectedIslandTokenContainer.getColorCounts().get(entry.getKey())));
+
+        // Add initial values from placed towers
+        if (this.enabledIslandTowers) {
+            playerDashboards.forEach((key, value) -> playersPower.put(key,
+                    playersPower.get(key) + (value.getTowers().getValue0().equals(selectedIslandTowers.getValue0())
+                            ? selectedIslandTowers.getValue1() : 0)));
+        }
+
+        return playersPower;
+    }
+
+    /**
+     * Update island towers and archipelago merging situation based on winning player.
+     *
+     * @param selectedIslandIndex selected island index
+     * @param winnerDashboard     winner dashboard
+     */
+    private void updateIslandData(int selectedIslandIndex, PlayerDashboard winnerDashboard) {
+        // Temporary variables for easier lines
+        Island selectedIsland = this.gameState.getArchipelago().getIslands().get(selectedIslandIndex);
+        Pair<TowerColor, Integer> selectedIslandTowers = selectedIsland.getTowers();
+
+        // Get towers number based on remaining towers on winner dashboard
+        int towersNumber = Math.min(
+                selectedIslandTowers.getValue0().equals(TowerColor.NONE) ? 1 : selectedIslandTowers.getValue1(),
+                winnerDashboard.getTowers().getValue1());
+
+        // Update island and dashboard towers
+        TowerColor winnerTowerColor = winnerDashboard.getTowers().getValue0();
+        selectedIsland.setTowers(new Pair<>(winnerTowerColor, towersNumber));
+        winnerDashboard.setTowersNumber(winnerDashboard.getTowers().getValue1() - towersNumber);
+
+        // Update archipelago for island merging
+        Archipelago archipelago = this.gameState.getArchipelago();
+        List<Island> islands = archipelago.getIslands();
+        archipelago.mergeIslands(selectedIslandIndex,
+                winnerTowerColor == islands.get((selectedIslandIndex - 1 + islands.size()) % islands.size()).getTowers().getValue0(),
+                winnerTowerColor == islands.get((selectedIslandIndex + 1) % islands.size()).getTowers().getValue0());
+    }
+    //endregion
+
+    /**
+     * Exception for errors within game engine class.
+     */
+    public static class GameEngineException extends Exception {
+        /**
+         * GameEngineException constructor with message and cause.
+         *
+         * @param message message to be shown
+         * @param cause   cause of the exception
+         */
+        public GameEngineException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+}
