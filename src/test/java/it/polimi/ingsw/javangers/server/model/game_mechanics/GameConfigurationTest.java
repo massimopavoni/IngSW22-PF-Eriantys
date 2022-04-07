@@ -16,7 +16,7 @@ class GameConfigurationTest {
                 "/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
                 "/it/polimi/ingsw/javangers/server/model/game_mechanics/character_cards.json",
                 12, 26, 2, 3,
-                7, 8, 1);
+                7, 8, 3, 1);
         assertAll(
                 () -> assertEquals("/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
                         gameConfiguration.getAssistantCardsResourceLocation()),
@@ -28,6 +28,7 @@ class GameConfigurationTest {
                 () -> assertEquals(3, gameConfiguration.getStudentsPerCloud()),
                 () -> assertEquals(7, gameConfiguration.getStudentsPerEntrance()),
                 () -> assertEquals(8, gameConfiguration.getTowersPerDashboard()),
+                () -> assertEquals(3, gameConfiguration.getNumberOfCharacterCards()),
                 () -> assertEquals(1, gameConfiguration.getCoinsPerDashBoard())
         );
     }

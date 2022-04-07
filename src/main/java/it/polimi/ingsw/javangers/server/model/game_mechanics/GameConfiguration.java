@@ -42,6 +42,10 @@ public class GameConfiguration {
      */
     private final int towersPerDashboard;
     /**
+     * Number of character cards for the game.
+     */
+    private final int numberOfCharacterCards;
+    /**
      * Initial number of coins per dashboard.
      */
     private final int coinsPerDashBoard;
@@ -62,6 +66,7 @@ public class GameConfiguration {
      * @param studentsPerCloud               number of students per cloud
      * @param studentsPerEntrance            number of students per dashboard entrance
      * @param towersPerDashboard             number of towers per dashboard
+     * @param numberOfCharacterCards         number of character cards for the game
      * @param coinsPerDashBoard              initial number of coins per dashboard
      */
     @JsonCreator
@@ -73,6 +78,7 @@ public class GameConfiguration {
                              @JsonProperty("studentsPerCloud") int studentsPerCloud,
                              @JsonProperty("studentsPerEntrance") int studentsPerEntrance,
                              @JsonProperty("towersPerDashboard") int towersPerDashboard,
+                             @JsonProperty("numberOfCharacterCards") int numberOfCharacterCards,
                              @JsonProperty("coinsPerDashBoard") int coinsPerDashBoard) {
         this.assistantCardsResourceLocation = assistantCardsResourceLocation;
         this.characterCardsResourceLocation = characterCardsResourceLocation;
@@ -82,6 +88,7 @@ public class GameConfiguration {
         this.studentsPerCloud = studentsPerCloud;
         this.studentsPerEntrance = studentsPerEntrance;
         this.towersPerDashboard = towersPerDashboard;
+        this.numberOfCharacterCards = numberOfCharacterCards;
         this.coinsPerDashBoard = coinsPerDashBoard;
     }
 
@@ -91,7 +98,7 @@ public class GameConfiguration {
      * @return assistant cards resource location
      */
     public String getAssistantCardsResourceLocation() {
-        return assistantCardsResourceLocation;
+        return this.assistantCardsResourceLocation;
     }
 
     /**
@@ -100,7 +107,7 @@ public class GameConfiguration {
      * @return character cards resource location
      */
     public String getCharacterCardsResourceLocation() {
-        return characterCardsResourceLocation;
+        return this.characterCardsResourceLocation;
     }
 
     /**
@@ -109,7 +116,7 @@ public class GameConfiguration {
      * @return number of islands
      */
     public int getNumberOfIslands() {
-        return numberOfIslands;
+        return this.numberOfIslands;
     }
 
     /**
@@ -118,7 +125,7 @@ public class GameConfiguration {
      * @return number of students per color
      */
     public int getStudentsPerColor() {
-        return studentsPerColor;
+        return this.studentsPerColor;
     }
 
     /**
@@ -127,7 +134,7 @@ public class GameConfiguration {
      * @return number of students per island
      */
     public int getStudentsPerIsland() {
-        return studentsPerIsland;
+        return this.studentsPerIsland;
     }
 
     /**
@@ -136,7 +143,7 @@ public class GameConfiguration {
      * @return number of students per cloud
      */
     public int getStudentsPerCloud() {
-        return studentsPerCloud;
+        return this.studentsPerCloud;
     }
 
     /**
@@ -145,7 +152,7 @@ public class GameConfiguration {
      * @return number of students per dashboard entrance
      */
     public int getStudentsPerEntrance() {
-        return studentsPerEntrance;
+        return this.studentsPerEntrance;
     }
 
     /**
@@ -154,7 +161,17 @@ public class GameConfiguration {
      * @return number of towers per dashboard
      */
     public int getTowersPerDashboard() {
-        return towersPerDashboard;
+        return this.towersPerDashboard;
+    }
+
+
+    /**
+     * Get number of character cards for the game.
+     *
+     * @return number of character cards for the game
+     */
+    public int getNumberOfCharacterCards() {
+        return this.numberOfCharacterCards;
     }
 
     /**
@@ -163,7 +180,7 @@ public class GameConfiguration {
      * @return number of coins per dashboard
      */
     public int getCoinsPerDashBoard() {
-        return coinsPerDashBoard;
+        return this.coinsPerDashBoard;
     }
     //endregion
 }
