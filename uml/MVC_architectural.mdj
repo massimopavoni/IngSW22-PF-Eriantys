@@ -2405,9 +2405,9 @@
 											"font": "Arial;13;1",
 											"left": 1717,
 											"top": 239,
-											"width": 79.46630859375,
+											"width": 89.5908203125,
 											"height": 13,
-											"text": "GameEngine"
+											"text": "GameManager"
 										},
 										{
 											"_type": "LabelView",
@@ -2440,7 +2440,7 @@
 									"font": "Arial;13;0",
 									"left": 1712,
 									"top": 232,
-									"width": 89.46630859375,
+									"width": 99.5908203125,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAF/7sRwFZj1KeU="
@@ -2483,7 +2483,7 @@
 									"font": "Arial;13;0",
 									"left": 1712,
 									"top": 257,
-									"width": 89.46630859375,
+									"width": 99.5908203125,
 									"height": 10
 								},
 								{
@@ -2526,7 +2526,7 @@
 							"containerChangeable": true,
 							"left": 1712,
 							"top": 232,
-							"width": 89.46630859375,
+							"width": 99.5908203125,
 							"height": 73,
 							"nameCompartment": {
 								"$ref": "AAAAAAF/7sRwFZj0DIc="
@@ -3336,7 +3336,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF/7sI+NomChjM="
 									},
-									"name": "GameEngine"
+									"name": "GameManager"
 								}
 							]
 						},
