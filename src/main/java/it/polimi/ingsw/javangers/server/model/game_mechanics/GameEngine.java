@@ -126,6 +126,15 @@ public class GameEngine {
     }
 
     /**
+     * Get game state instance.
+     *
+     * @return game state instance
+     */
+    public GameState getGameState() {
+        return this.gameState;
+    }
+
+    /**
      * Get expert mode flag.
      *
      * @return expert mode flag
