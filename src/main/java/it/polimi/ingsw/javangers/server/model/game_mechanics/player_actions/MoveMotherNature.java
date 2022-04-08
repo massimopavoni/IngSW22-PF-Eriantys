@@ -40,8 +40,9 @@ public class MoveMotherNature implements ActionStrategy {
         // Get new mother nature position with cyclic movement
         int newPosition = (archipelago.getMotherNaturePosition() + this.steps) % archipelago.getIslands().size();
         archipelago.setMotherNaturePosition(newPosition);
-        // Trigger power changes
-        gameEngine.changeIslandPower(archipelago.getMotherNaturePosition(), username);
+        // Trigger island power changes if island is enabled
+        if (archipelago.getIslands().get(newPosition).isEnabled())
+            gameEngine.changeIslandPower(archipelago.getMotherNaturePosition(), username);
     }
 
 }
