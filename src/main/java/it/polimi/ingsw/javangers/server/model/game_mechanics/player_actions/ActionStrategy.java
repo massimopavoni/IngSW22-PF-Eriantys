@@ -1,6 +1,6 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
-import it.polimi.ingsw.javangers.server.model.game_data.GameState;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
 
 /**
  * Player action strategy interface.
@@ -12,9 +12,9 @@ public interface ActionStrategy {
     /**
      * Prototype method for action implementation.
      *
-     * @param gameState game state instance
-     * @param username  player username
+     * @param gameEngine game engine instance
+     * @param username   player username
      */
-    void doAction(GameState gameState, String username);
+    void doAction(GameEngine gameEngine, String username);
     //endregion
 }
