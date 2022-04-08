@@ -96,7 +96,7 @@ public class CharacterCard {
     /**
      * Get optional token container.
      *
-     * @return optinal token container
+     * @return optional token container
      */
     public TokenContainer getTokenContainer() {
         return this.tokenContainer;
