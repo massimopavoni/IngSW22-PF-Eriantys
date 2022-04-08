@@ -23,7 +23,7 @@ class ChooseCloudTest {
     @Test
     @DisplayName("Test doAction for correct students movements")
     void doAction_correctMovements() throws GameEngine.GameEngineException {
-        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configuration.json",
+        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
