@@ -2,6 +2,7 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
 import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
 
 import java.util.Map;
@@ -43,6 +44,11 @@ public class MoveMotherNature implements ActionStrategy {
         // Trigger island power changes if island is enabled
         if (archipelago.getIslands().get(newPosition).isEnabled())
             gameEngine.changeIslandPower(archipelago.getMotherNaturePosition(), username);
+        else {
+            archipelago.getIslands().get(archipelago.getMotherNaturePosition()).setEnabled(true);
+            CharacterCard herbalist = gameEngine.getCharacterCards().get("herbalist");
+            herbalist.setMultipurposeCounter(herbalist.getMultipurposeCounter() + 1);
+        }
     }
 
 }
