@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -112,6 +113,16 @@ public class PlayerDashboard {
      */
     public Map<String, AssistantCard> getDiscardedAssistantCards() {
         return this.discardedAssistantCardsMap;
+    }
+
+    /**
+     * Get last discarded card entry.
+     *
+     * @return last discarded card entry
+     */
+    public Map.Entry<String, AssistantCard> getLastDiscardedAssistantCard() {
+        String lastDiscardedAssistantCardName = this.discardedAssistantCardsMap.keySet().toArray()[this.discardedAssistantCardsMap.size() - 1].toString();
+        return new AbstractMap.SimpleEntry<>(lastDiscardedAssistantCardName, this.discardedAssistantCardsMap.get(lastDiscardedAssistantCardName));
     }
 
     /**
