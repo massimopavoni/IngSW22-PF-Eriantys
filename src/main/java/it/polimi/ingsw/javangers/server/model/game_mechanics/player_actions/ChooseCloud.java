@@ -1,6 +1,6 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
-import it.polimi.ingsw.javangers.server.model.game_data.GameState;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
 
 /**
  * Class representing choose clouds action.
@@ -33,12 +33,12 @@ public class ChooseCloud implements ActionStrategy {
     /**
      * Action implementation for choosing clouds.
      *
-     * @param gameState game state instance
-     * @param username  player username
+     * @param gameEngine game state instance
+     * @param username   player username
      */
     @Override
-    public void doAction(GameState gameState, String username) {
-        gameState.getPlayerDashboards().get(username).getEntrance().addTokens(gameState.getClouds().get(cloudIndex).grabTokens());
+    public void doAction(GameEngine gameEngine, String username) {
+        gameEngine.getGameState().getPlayerDashboards().get(username).getEntrance().addTokens(gameEngine.getGameState().getClouds().get(cloudIndex).grabTokens());
     }
     //endregion
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics;
 
-import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.ActionStrategy;
 
 /**
@@ -17,10 +16,6 @@ public class Player {
      * Flag for character card already used in the same round.
      */
     private boolean enabledCharacterCard;
-    /**
-     * Number of mother nature steps.
-     */
-    private int motherNatureSteps;
     //endregion
 
     //--------------------------------------------------------------------------------------------------------------------------------
@@ -31,7 +26,6 @@ public class Player {
      */
     public Player() {
         this.enabledCharacterCard = true;
-        this.motherNatureSteps = 0;
     }
 
     /**
@@ -60,24 +54,6 @@ public class Player {
     public void setEnabledCharacterCard(boolean enabled) {
         this.enabledCharacterCard = enabled;
     }
-
-    /**
-     * Get mother nature steps.
-     *
-     * @return mother nature steps
-     */
-    public int getMotherNatureSteps() {
-        return this.motherNatureSteps;
-    }
-
-    /**
-     * Set mother nature steps.
-     *
-     * @param steps new number of steps
-     */
-    public void setMotherNatureSteps(int steps) {
-        this.motherNatureSteps = steps;
-    }
     //endregion
 
     //--------------------------------------------------------------------------------------------------------------------------------
@@ -86,11 +62,11 @@ public class Player {
     /**
      * Execute an action.
      *
-     * @param gameState game state instance for modifications
-     * @param username  player username
+     * @param gameEngine game state instance for modifications
+     * @param username   player username
      */
-    public void executeAction(GameState gameState, String username) {
-        this.action.doAction(gameState, username);
+    public void executeAction(GameEngine gameEngine, String username) {
+        this.action.doAction(gameEngine, username);
     }
     //endregion
 }
