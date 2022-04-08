@@ -136,11 +136,11 @@ public class CharacterCard {
     /**
      * Activate the effect of the character card.
      *
-     * @param gameState gameState instance for updates
+     * @param gameEngine gameEngine instance for updates
      * @param username  username of the player activating the character card
      */
-    public void activateEffect(GameState gameState, String username) {
-        this.effect.useEffect(gameState, username);
+    public void activateEffect(GameEngine gameEngine, String username) {
+        this.effect.useEffect(gameEngine, username);
     }
     //endregion
 }

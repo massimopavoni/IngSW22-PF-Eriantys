@@ -1,6 +1,6 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
-import it.polimi.ingsw.javangers.server.model.game_data.GameState;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
 
 /**
  * Character card effect strategy interface.
@@ -12,9 +12,9 @@ public interface EffectStrategy {
     /**
      * Prototype method for effect implementation.
      *
-     * @param gameState game state instance
+     * @param gameEngine game engine instance
      * @param username  player username
      */
-    void useEffect(GameState gameState, String username);
+    void useEffect(GameEngine gameEngine, String username);
     //endregion
 }
