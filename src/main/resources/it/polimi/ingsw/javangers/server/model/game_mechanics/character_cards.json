@@ -1,0 +1,62 @@
+{
+  "monk": {
+    "cost": 1,
+    "tokenContainerSize": 4,
+    "multipurposeCounter": 1
+  },
+  "herald": {
+    "cost": 3,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 0
+  },
+  "mailman": {
+    "cost": 1,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 2
+  },
+  "herbalist": {
+    "cost": 2,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 4
+  },
+  "centaur": {
+    "cost": 3,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 0
+  },
+  "jester": {
+    "cost": 1,
+    "tokenContainerSize": 6,
+    "multipurposeCounter": 3
+  },
+  "knight": {
+    "cost": 2,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 2
+  },
+  "mushroomer": {
+    "cost": 3,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 0
+  },
+  "bard": {
+    "cost": 1,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 2
+  },
+  "queen": {
+    "cost": 2,
+    "tokenContainerSize": 4,
+    "multipurposeCounter": 1
+  },
+  "scoundrel": {
+    "cost": 3,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 3
+  },
+  "innkeeper": {
+    "cost": 2,
+    "tokenContainerSize": 0,
+    "multipurposeCounter": 0
+  }
+}

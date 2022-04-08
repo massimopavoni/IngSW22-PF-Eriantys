@@ -3,6 +3,7 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.EffectStrategy;
 
 /**
@@ -15,12 +16,22 @@ public class CharacterCard {
      * Activation cost of the character card.
      */
     private final int cost;
-
+    /**
+     * Optional token container size.
+     */
+    private final int tokenContainerSize;
+    /**
+     * Optional token container.
+     */
+    private final TokenContainer tokenContainer;
+    /**
+     * Optional counter used for different effects.
+     */
+    private int multipurposeCounter;
     /**
      * Cost delta of the character card.
      */
     private int costDelta;
-
     /**
      * Effect strategy to activate.
      */
@@ -36,9 +47,14 @@ public class CharacterCard {
      * @param cost initial cost of the character card
      */
     @JsonCreator
-    public CharacterCard(@JsonProperty("cost") int cost) {
+    public CharacterCard(@JsonProperty("cost") int cost,
+                         @JsonProperty("tokenContainerSize") int tokenContainerSize,
+                         @JsonProperty("multipurposeCounter") int multipurposeCounter) {
         this.cost = cost;
         this.costDelta = 0;
+        this.tokenContainerSize = tokenContainerSize;
+        this.tokenContainer = new TokenContainer();
+        this.multipurposeCounter = multipurposeCounter;
     }
 
     /**
@@ -66,6 +82,42 @@ public class CharacterCard {
      */
     public void setCostDelta(int costDelta) {
         this.costDelta = costDelta;
+    }
+
+    /**
+     * Get optional token container size.
+     *
+     * @return optional token container size
+     */
+    public int getTokenContainerSize() {
+        return this.tokenContainerSize;
+    }
+
+    /**
+     * Get optional token container.
+     *
+     * @return optinal token container
+     */
+    public TokenContainer getTokenContainer() {
+        return this.tokenContainer;
+    }
+
+    /**
+     * Get optional counter used for different effects.
+     *
+     * @return optional counter
+     */
+    public int getMultipurposeCounter() {
+        return this.multipurposeCounter;
+    }
+
+    /**
+     * Set optional counter used for different effects.
+     *
+     * @param counter new counter value
+     */
+    public void setMultipurposeCounter(int counter) {
+        this.multipurposeCounter = counter;
     }
 
     /**
