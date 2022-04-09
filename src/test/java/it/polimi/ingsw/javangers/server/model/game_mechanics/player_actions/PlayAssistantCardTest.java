@@ -29,12 +29,12 @@ class PlayAssistantCardTest {
                 }}, false);
         assertThrowsExactly(IllegalStateException.class,
                 () -> playAssistantCard.doAction(gameEngine, "pippo"),
-                "Specified card does not exist");
+                "Specified card does not exist in player's available assistant cards");
     }
 
     @Test
     @DisplayName("Test play a specified card")
-    void doAction_SpecifiedCard() throws GameEngine.GameEngineException {
+    void doAction_specifiedCard() throws GameEngine.GameEngineException {
         PlayAssistantCard playAssistantCard = new PlayAssistantCard("cheetah");
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
                 "2_players",
@@ -100,5 +100,4 @@ class PlayAssistantCardTest {
         playAssistantCard.doAction(gameEngine, "pluto");
         assertEquals("turtle", gameEngine.getGameState().getPlayerDashboards().get("pluto").getLastDiscardedAssistantCard().getKey());
     }
-
 }
