@@ -26,6 +26,7 @@ class FillCloudsTest {
     @DisplayName("Test do action with empty StudentsBag")
     void doAction_emptyStudentsBag() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
+                "2_players",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
@@ -42,6 +43,7 @@ class FillCloudsTest {
     @DisplayName("Test completely fill all cloud")
     void doAction_completelyFill() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
+                "2_players",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
@@ -57,6 +59,7 @@ class FillCloudsTest {
     @DisplayName("Test fill clouds with remaining students")
     void doAction_remainingStudents() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
+                "2_players",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));

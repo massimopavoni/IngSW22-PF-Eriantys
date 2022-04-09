@@ -70,18 +70,19 @@ public class GameEngine {
      * based on players' info, selected configuration and expert mode flag.
      *
      * @param gameConfigurationsResourceLocation resource location of game configurations json file
+     * @param configurationName                  selected configuration name
      * @param playersInfo                        players specific info for game state initialization
      * @param expertMode                         flag for expert mode game
      * @throws GameEngineException if json parsing or game state initialization fails for some reason (stack trace can be examined)
      */
-    public GameEngine(String gameConfigurationsResourceLocation, Map<String, Pair<WizardType, TowerColor>> playersInfo, boolean expertMode) throws GameEngineException {
+    public GameEngine(String gameConfigurationsResourceLocation, String configurationName, Map<String, Pair<WizardType, TowerColor>> playersInfo, boolean expertMode) throws GameEngineException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             // Get game configuration based on number of players
             File jsonFile = new File(Objects.requireNonNull(getClass().getResource(gameConfigurationsResourceLocation)).getFile());
-            JavaType gameConfigurationsMapType = mapper.getTypeFactory().constructMapType(HashMap.class, Integer.class, GameConfiguration.class);
-            Map<Integer, GameConfiguration> gameConfigurations = mapper.readValue(jsonFile, gameConfigurationsMapType);
-            this.gameConfiguration = gameConfigurations.get(playersInfo.size());
+            JavaType gameConfigurationsMapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, GameConfiguration.class);
+            Map<String, GameConfiguration> gameConfigurations = mapper.readValue(jsonFile, gameConfigurationsMapType);
+            this.gameConfiguration = gameConfigurations.get(configurationName);
             this.expertMode = expertMode;
 
             // Create game state based on game configuration, player info and expert mode
@@ -112,7 +113,7 @@ public class GameEngine {
         } catch (IOException e) {
             throw new GameEngineException("Error while reading game configurations or character cards json files", e);
         } catch (GameState.GameStateException e) {
-            throw new GameEngineException("Error while creating game state", e);
+            throw new GameEngineException(String.format("Error while creating game state (%s)", e.getMessage()), e);
         }
     }
 
@@ -277,8 +278,9 @@ public class GameEngine {
      */
     private void updateTeachersPower() {
         Map<String, PlayerDashboard> playerDashboards = this.gameState.getPlayerDashboards();
-        this.gameState.getTeachers().forEach((color, teacher) -> teacher.setOwner(teacher.getOwnerUsername(),
-                playerDashboards.get(teacher.getOwnerUsername()).getHall().getColorCounts().get(color)));
+        this.gameState.getTeachers().entrySet().stream().filter(entry -> !entry.getValue().getOwnerUsername().isEmpty())
+                .forEach(entry -> entry.getValue().setOwner(entry.getValue().getOwnerUsername(),
+                playerDashboards.get(entry.getValue().getOwnerUsername()).getHall().getColorCounts().get(entry.getKey())));
     }
 
     /**
