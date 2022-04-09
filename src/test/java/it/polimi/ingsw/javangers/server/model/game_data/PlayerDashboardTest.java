@@ -47,6 +47,21 @@ class PlayerDashboardTest {
     }
 
     @Test
+    @DisplayName("Test getLastDiscardedAssistantCard for correct last discard")
+    void getLastDiscardedAssistantCard_correctLastDiscard() throws IOException {
+        playerDashboard = new PlayerDashboard(
+                "/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
+                WizardType.DRUID, new Pair<>(TowerColor.WHITE, 8), 1);
+        playerDashboard.getDiscardedAssistantCards().put("eagle", playerDashboard.getAssistantCards().remove("eagle"));
+        playerDashboard.getDiscardedAssistantCards().put("octopus", playerDashboard.getAssistantCards().remove("octopus"));
+        assertAll(
+                () -> assertEquals("octopus", playerDashboard.getLastDiscardedAssistantCard().getKey()),
+                () -> assertEquals(7, playerDashboard.getLastDiscardedAssistantCard().getValue().getValue()),
+                () -> assertEquals(4, playerDashboard.getLastDiscardedAssistantCard().getValue().getSteps())
+        );
+    }
+
+    @Test
     @DisplayName("Test setTowersNumber for changing towers number")
     void setTowersNumber_changePair() throws IOException {
         playerDashboard = new PlayerDashboard(
