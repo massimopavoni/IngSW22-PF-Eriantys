@@ -65,11 +65,11 @@ public class PlayerDashboard {
     public PlayerDashboard(String assistantCardsResourceLocation, WizardType cardsBack, Pair<TowerColor, Integer> towers, int coinsNumber) throws IOException {
         this.entrance = new TokenContainer();
         this.hall = new TokenContainer();
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper jsonMapper = new ObjectMapper();
         try {
             File jsonFile = new File(Objects.requireNonNull(getClass().getResource(assistantCardsResourceLocation)).getFile());
-            JavaType assistantCardsMapType = mapper.getTypeFactory().constructMapType(LinkedHashMap.class, String.class, AssistantCard.class);
-            this.assistantCardsMap = mapper.readValue(jsonFile, assistantCardsMapType);
+            JavaType assistantCardsMapType = jsonMapper.getTypeFactory().constructMapType(LinkedHashMap.class, String.class, AssistantCard.class);
+            this.assistantCardsMap = jsonMapper.readValue(jsonFile, assistantCardsMapType);
         } catch (IOException e) {
             throw new IOException("Error while reading assistant cards json file", e);
         }

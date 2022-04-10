@@ -76,12 +76,12 @@ public class GameEngine {
      * @throws GameEngineException if json parsing or game state initialization fails for some reason (stack trace can be examined)
      */
     public GameEngine(String gameConfigurationsResourceLocation, String configurationName, Map<String, Pair<WizardType, TowerColor>> playersInfo, boolean expertMode) throws GameEngineException {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper jsonMapper = new ObjectMapper();
         try {
             // Get game configuration based on number of players
             File jsonFile = new File(Objects.requireNonNull(getClass().getResource(gameConfigurationsResourceLocation)).getFile());
-            JavaType gameConfigurationsMapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, GameConfiguration.class);
-            Map<String, GameConfiguration> gameConfigurations = mapper.readValue(jsonFile, gameConfigurationsMapType);
+            JavaType gameConfigurationsMapType = jsonMapper.getTypeFactory().constructMapType(HashMap.class, String.class, GameConfiguration.class);
+            Map<String, GameConfiguration> gameConfigurations = jsonMapper.readValue(jsonFile, gameConfigurationsMapType);
             this.gameConfiguration = gameConfigurations.get(configurationName);
             this.expertMode = expertMode;
 
@@ -96,8 +96,8 @@ public class GameEngine {
             // Read character cards and select some random ones if expert mode is enabled
             if (this.expertMode) {
                 jsonFile = new File(Objects.requireNonNull(getClass().getResource(this.gameConfiguration.getCharacterCardsResourceLocation())).getFile());
-                JavaType characterCardsMapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, CharacterCard.class);
-                Map<String, CharacterCard> allCharacterCardsMap = mapper.readValue(jsonFile, characterCardsMapType);
+                JavaType characterCardsMapType = jsonMapper.getTypeFactory().constructMapType(HashMap.class, String.class, CharacterCard.class);
+                Map<String, CharacterCard> allCharacterCardsMap = jsonMapper.readValue(jsonFile, characterCardsMapType);
                 List<String> characterCardsKeys = new ArrayList<>(allCharacterCardsMap.keySet());
                 Collections.shuffle(characterCardsKeys, new Random());
                 characterCardsKeys.subList(0, this.gameConfiguration.getNumberOfCharacterCards())
