@@ -1,6 +1,6 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics;
 
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
@@ -80,8 +80,8 @@ public class GameEngine {
         try {
             // Get game configuration based on number of players
             File jsonFile = new File(Objects.requireNonNull(getClass().getResource(gameConfigurationsResourceLocation)).getFile());
-            JavaType gameConfigurationsMapType = jsonMapper.getTypeFactory().constructMapType(HashMap.class, String.class, GameConfiguration.class);
-            Map<String, GameConfiguration> gameConfigurations = jsonMapper.readValue(jsonFile, gameConfigurationsMapType);
+            Map<String, GameConfiguration> gameConfigurations = jsonMapper.readValue(jsonFile, new TypeReference<Map<String, GameConfiguration>>() {
+            });
             this.gameConfiguration = gameConfigurations.get(configurationName);
             this.expertMode = expertMode;
 
@@ -96,8 +96,8 @@ public class GameEngine {
             // Read character cards and select some random ones if expert mode is enabled
             if (this.expertMode) {
                 jsonFile = new File(Objects.requireNonNull(getClass().getResource(this.gameConfiguration.getCharacterCardsResourceLocation())).getFile());
-                JavaType characterCardsMapType = jsonMapper.getTypeFactory().constructMapType(HashMap.class, String.class, CharacterCard.class);
-                Map<String, CharacterCard> allCharacterCardsMap = jsonMapper.readValue(jsonFile, characterCardsMapType);
+                Map<String, CharacterCard> allCharacterCardsMap = jsonMapper.readValue(jsonFile, new TypeReference<Map<String, CharacterCard>>() {
+                });
                 List<String> characterCardsKeys = new ArrayList<>(allCharacterCardsMap.keySet());
                 Collections.shuffle(characterCardsKeys, new Random());
                 characterCardsKeys.subList(0, this.gameConfiguration.getNumberOfCharacterCards())
@@ -280,7 +280,7 @@ public class GameEngine {
         Map<String, PlayerDashboard> playerDashboards = this.gameState.getPlayerDashboards();
         this.gameState.getTeachers().entrySet().stream().filter(entry -> !entry.getValue().getOwnerUsername().isEmpty())
                 .forEach(entry -> entry.getValue().setOwner(entry.getValue().getOwnerUsername(),
-                playerDashboards.get(entry.getValue().getOwnerUsername()).getHall().getColorCounts().get(entry.getKey())));
+                        playerDashboards.get(entry.getValue().getOwnerUsername()).getHall().getColorCounts().get(entry.getKey())));
     }
 
     /**

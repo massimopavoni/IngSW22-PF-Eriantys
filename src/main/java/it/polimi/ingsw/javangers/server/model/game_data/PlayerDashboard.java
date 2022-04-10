@@ -1,6 +1,6 @@
 package it.polimi.ingsw.javangers.server.model.game_data;
 
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.WizardType;
@@ -68,8 +68,8 @@ public class PlayerDashboard {
         ObjectMapper jsonMapper = new ObjectMapper();
         try {
             File jsonFile = new File(Objects.requireNonNull(getClass().getResource(assistantCardsResourceLocation)).getFile());
-            JavaType assistantCardsMapType = jsonMapper.getTypeFactory().constructMapType(LinkedHashMap.class, String.class, AssistantCard.class);
-            this.assistantCardsMap = jsonMapper.readValue(jsonFile, assistantCardsMapType);
+            this.assistantCardsMap = jsonMapper.readValue(jsonFile, new TypeReference<Map<String, AssistantCard>>() {
+            });
         } catch (IOException e) {
             throw new IOException("Error while reading assistant cards json file", e);
         }
