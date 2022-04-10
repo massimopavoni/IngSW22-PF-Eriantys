@@ -2,7 +2,6 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.EffectStrategy;
 
@@ -137,7 +136,7 @@ public class CharacterCard {
      * Activate the effect of the character card.
      *
      * @param gameEngine gameEngine instance for updates
-     * @param username  username of the player activating the character card
+     * @param username   username of the player activating the character card
      */
     public void activateEffect(GameEngine gameEngine, String username) {
         this.effect.useEffect(gameEngine, username);
