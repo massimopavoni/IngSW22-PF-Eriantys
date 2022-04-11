@@ -41,8 +41,8 @@ public class Bard implements EffectStrategy {
     public void useEffect(GameEngine gameEngine, String username) {
         if (this.tokensFromHall.size() != this.tokensFromEntrance.size()
                 || this.tokensFromHall.size() > gameEngine.getCharacterCards().get(this.getClass().getSimpleName().toLowerCase()).getMultipurposeCounter()
-                || this.tokensFromEntrance.size() > gameEngine.getCharacterCards().get(this.getClass().getSimpleName().toLowerCase()).getMultipurposeCounter()) {
-            throw new IllegalArgumentException();
+        ) {
+            throw new IllegalStateException("Impossible activation of the card because sizes of the lists are different or out of bound");
         }
         PlayerDashboard playerDashboard = gameEngine.getGameState().getPlayerDashboards().get(username);
         playerDashboard.getHall().addTokens(playerDashboard.getEntrance().extractTokens(tokensFromEntrance));

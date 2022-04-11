@@ -43,7 +43,8 @@ class BardTest {
     void useEffect_exceptionDifferentSize() {
         bardEffect = new Bard(Collections.singletonList(TokenColor.RED_DRAGON), Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         bard.setEffect(bardEffect);
-        assertThrowsExactly(IllegalArgumentException.class, () -> bard.activateEffect(gameEngine, "Thor"));
+        assertThrowsExactly(IllegalStateException.class, () -> bard.activateEffect(gameEngine, "Thor"),
+                "Impossible activation of the card because sizes of the lists are different or out of bound");
     }
 
     @Test
@@ -54,7 +55,8 @@ class BardTest {
                 Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN,
                         TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         bard.setEffect(bardEffect);
-        assertThrowsExactly(IllegalArgumentException.class, () -> bard.activateEffect(gameEngine, "Thor"));
+        assertThrowsExactly(IllegalStateException.class, () -> bard.activateEffect(gameEngine, "Thor"),
+                "Impossible activation of the card because sizes of the lists are different or out of bound");
     }
 
     @Test
