@@ -25,7 +25,7 @@ class CentaurTest {
                     put("Thor", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Cap", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
                 }}, true);
-        centaur = gameEngine.getCharacterCards().get("bard");
+        centaur = gameEngine.getCharacterCards().get("centaur");
     }
 
     @Test
