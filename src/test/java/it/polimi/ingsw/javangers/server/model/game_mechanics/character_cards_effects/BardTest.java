@@ -27,7 +27,7 @@ class BardTest {
 
     @BeforeEach
     void setUp() throws GameEngine.GameEngineException {
-        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
+        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/test_game_configurations.json",
                 "test_loadAllCharacterCards",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("Thor", new Pair<>(WizardType.KING, TowerColor.BLACK));

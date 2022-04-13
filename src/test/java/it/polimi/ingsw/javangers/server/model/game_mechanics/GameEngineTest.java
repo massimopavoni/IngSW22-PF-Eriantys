@@ -47,7 +47,7 @@ class GameEngineTest {
     @DisplayName("Test constructor for invalid configuration assistant cards file path")
     void GameEngine_invalidAssistantCardsFilePath() {
         assertThrowsExactly(GameEngine.GameEngineException.class,
-                () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
+                () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/test_game_configurations.json",
                         "test_invalidAssistantCardsResourceLocation",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
@@ -59,7 +59,7 @@ class GameEngineTest {
     @DisplayName("Test constructor for invalid configuration character cards file path")
     void GameEngine_invalidCharacterCardsFilePath() {
         assertThrowsExactly(GameEngine.GameEngineException.class,
-                () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
+                () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/test_game_configurations.json",
                         "test_invalidCharacterCardsResourceLocation",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));

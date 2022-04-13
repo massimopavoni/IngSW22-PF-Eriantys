@@ -90,7 +90,7 @@ class MoveMotherNatureTest {
     @Test
     @DisplayName("Test movement with Herbalist Card")
     void doAction_disableIslandExpert() throws GameEngine.GameEngineException {
-        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
+        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/test_game_configurations.json",
                 "test_loadAllCharacterCards",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
