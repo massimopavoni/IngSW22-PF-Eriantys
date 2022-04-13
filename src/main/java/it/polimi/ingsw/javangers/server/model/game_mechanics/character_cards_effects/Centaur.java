@@ -6,6 +6,8 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
  * Class that represents the centaur character card.
  */
 public class Centaur implements EffectStrategy {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
 
     /**
      * Method called to use the effect of the centaur character card.
@@ -17,4 +19,5 @@ public class Centaur implements EffectStrategy {
     public void useEffect(GameEngine gameEngine, String username) {
         gameEngine.setEnabledIslandTowers(false);
     }
+    //endregion
 }
