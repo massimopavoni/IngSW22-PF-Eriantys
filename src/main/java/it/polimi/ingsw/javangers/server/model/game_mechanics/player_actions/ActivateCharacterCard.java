@@ -13,9 +13,11 @@ public class ActivateCharacterCard implements ActionStrategy {
     //region Attributes
     /**
      * Name of character card to play.
-     * Effect of the card is applied to the player.
      */
     private final String cardName;
+    /**
+     * Effect of the card.
+     */
     private final EffectStrategy effect;
     //endregion
 
@@ -23,7 +25,7 @@ public class ActivateCharacterCard implements ActionStrategy {
     //region Constructor, get and set methods
 
     /**
-     * Constructor for play character card action, initializing card name.
+     * Constructor for play character card action, initializing card name and effect.
      *
      * @param cardName name of character card to play
      * @param effect   effect of the card
@@ -45,14 +47,14 @@ public class ActivateCharacterCard implements ActionStrategy {
      */
     @Override
     public void doAction(GameEngine gameEngine, String username) {
+        if (!this.effect.getClass().getSimpleName().equalsIgnoreCase(this.cardName))
+            throw new IllegalStateException("Provided effect cannot be used with the specified card");
         CharacterCard card = gameEngine.getCharacterCards().get(this.cardName);
         PlayerDashboard playerDashboard = gameEngine.getGameState().getPlayerDashboards().get(username);
-        if (card.getCost() + card.getCostDelta() > playerDashboard.getCoinsNumber()) {
-            throw new IllegalStateException("You don't have enough coins to play this card.");
-        }
+        if (card.getCost() + card.getCostDelta() > playerDashboard.getCoinsNumber())
+            throw new IllegalStateException("You don't have enough coins to play this card");
         card.setEffect(this.effect);
         card.activateEffect(gameEngine, username);
-
         playerDashboard.setCoinsNumber(playerDashboard.getCoinsNumber() - (card.getCost() + card.getCostDelta()));
         card.setCostDelta(card.getCostDelta() + 1);
     }
