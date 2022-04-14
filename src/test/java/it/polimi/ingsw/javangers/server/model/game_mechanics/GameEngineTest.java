@@ -40,7 +40,7 @@ class GameEngineTest {
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                             put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
-                        }}, true), "Error while reading game configurations or character cards json files");
+                        }}, true));
     }
 
     @Test
@@ -52,7 +52,7 @@ class GameEngineTest {
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                             put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
-                        }}, true), "Error while creating game state (Error while creating player dashboards)");
+                        }}, true));
     }
 
     @Test
@@ -64,7 +64,7 @@ class GameEngineTest {
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                             put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
-                        }}, true), "Error while reading game configurations or character cards json files");
+                        }}, true));
     }
 
     @Test

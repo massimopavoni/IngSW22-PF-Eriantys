@@ -85,7 +85,7 @@ class TokenContainerTest {
         tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         assertAll(
                 () -> assertThrowsExactly(IllegalArgumentException.class,
-                        () -> tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON)), "Token not in container"),
+                        () -> tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON))),
                 () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokenContainer.getTokens())
         );
     }
@@ -96,7 +96,7 @@ class TokenContainerTest {
         tokenContainer.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         assertAll(
                 () -> assertThrowsExactly(IllegalArgumentException.class,
-                        () -> tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.GREEN_FROG)), "Token not in container"),
+                        () -> tokenContainer.extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.GREEN_FROG))),
                 () -> assertEquals(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN), tokenContainer.getTokens())
         );
     }

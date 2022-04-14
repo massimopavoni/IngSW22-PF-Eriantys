@@ -4,7 +4,6 @@ import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.WizardType;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
-import org.junit.jupiter.api.BeforeEach;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoveStudentsTest {
     MoveStudents moveStudents;
     GameEngine gameEngine;
-
-
-
-
 
     @Test
     @DisplayName("Test movement to island")
@@ -45,6 +40,7 @@ class MoveStudentsTest {
                 () -> assertEquals("pippo", gameEngine.getGameState().getTeachers().get(TokenColor.BLUE_UNICORN).getOwnerUsername())
         );
     }
+
     @Test
     @DisplayName("Test Illegal Argument Exception")
     void doAction_exceptionMovement() throws GameEngine.GameEngineException {
@@ -64,12 +60,4 @@ class MoveStudentsTest {
                 () -> assertThrowsExactly(IllegalStateException.class, () -> moveStudents.doAction(gameEngine, "pippo"))
         );
     }
-
-
-
-
-
-
-
-
 }

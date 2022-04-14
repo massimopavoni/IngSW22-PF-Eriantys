@@ -28,8 +28,7 @@ class PlayAssistantCardTest {
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
         assertThrowsExactly(IllegalStateException.class,
-                () -> playAssistantCard.doAction(gameEngine, "pippo"),
-                "Specified card does not exist in player's available assistant cards");
+                () -> playAssistantCard.doAction(gameEngine, "pippo"));
     }
 
     @Test
@@ -74,8 +73,7 @@ class PlayAssistantCardTest {
         PlayAssistantCard playAssistantCard = new PlayAssistantCard("cheetah");
         playAssistantCard.doAction(gameEngine, "pippo");
         assertThrowsExactly(IllegalStateException.class,
-                () -> playAssistantCard.doAction(gameEngine, "pluto"),
-                "Specified player must play a card different from this turn's discards");
+                () -> playAssistantCard.doAction(gameEngine, "pluto"));
     }
 
     @Test

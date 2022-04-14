@@ -25,8 +25,7 @@ class ArchipelagoTest {
     @Test
     @DisplayName("Test constructor for invalid number of islands")
     void Archipelago_invalidNumber() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> new Archipelago(0),
-                "Invalid number of islands");
+        assertThrowsExactly(IllegalArgumentException.class, () -> new Archipelago(0));
     }
 
     @Test
@@ -51,10 +50,8 @@ class ArchipelagoTest {
     @DisplayName("Test setMotherNaturePosition for invalid position exception")
     void setMotherNaturePosition_invalidPosition() {
         assertAll(
-                () -> assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.setMotherNaturePosition(-1),
-                        "Invalid mother nature position"),
-                () -> assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.setMotherNaturePosition(3),
-                        "Invalid mother nature position")
+                () -> assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.setMotherNaturePosition(-1)),
+                () -> assertThrowsExactly(IllegalArgumentException.class, () -> archipelago.setMotherNaturePosition(3))
         );
     }
 

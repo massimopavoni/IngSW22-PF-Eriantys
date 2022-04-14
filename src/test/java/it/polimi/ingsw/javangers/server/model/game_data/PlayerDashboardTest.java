@@ -42,8 +42,7 @@ class PlayerDashboardTest {
     void PlayerDashboard_wrongFileType() {
         assertThrowsExactly(IOException.class,
                 () -> new PlayerDashboard("/it/polimi/ingsw/javangers/server/model/game_data/AssistantCard.class",
-                        WizardType.DRUID, new Pair<>(TowerColor.WHITE, 8), 1),
-                "Error while reading assistant cards json file");
+                        WizardType.DRUID, new Pair<>(TowerColor.WHITE, 8), 1));
     }
 
     @Test

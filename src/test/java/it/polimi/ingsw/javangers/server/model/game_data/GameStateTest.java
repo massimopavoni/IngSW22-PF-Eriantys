@@ -63,7 +63,7 @@ class GameStateTest {
                     put(TokenColor.GREEN_FROG, 26);
                     put(TokenColor.PINK_FAIRY, 26);
                     put(TokenColor.YELLOW_ELF, 26);
-                }}, 1), "Error while creating player dashboards");
+                }}, 1));
     }
 
     @Test

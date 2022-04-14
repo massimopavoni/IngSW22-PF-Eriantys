@@ -19,7 +19,7 @@ class StudentsBagTest {
         Map<TokenColor, Integer> studentsPerColor = new HashMap<>();
         studentsPerColor.put(TokenColor.RED_DRAGON, 5);
         studentsPerColor.put(TokenColor.BLUE_UNICORN, -5);
-        assertThrowsExactly(IllegalArgumentException.class, () -> new StudentsBag(studentsPerColor), "Invalid number of students per color");
+        assertThrowsExactly(IllegalArgumentException.class, () -> new StudentsBag(studentsPerColor));
     }
 
     @Test
