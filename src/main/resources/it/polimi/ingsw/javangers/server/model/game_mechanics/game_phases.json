@@ -1,0 +1,50 @@
+{
+  "planning": {
+    "phases": [
+      {
+        "availableActions": [
+          "FillClouds"
+        ],
+        "repeat": false,
+        "changePlayer": true
+      },
+      {
+        "availableActions": [
+          "PlayAssistantCard"
+        ],
+        "repeat": true,
+        "changePlayer": true
+      }
+    ],
+    "repeat": false
+  },
+  "action": {
+    "phases": [
+      {
+        "availableActions": [
+          "MoveStudents",
+          "ActivateCharacterCard"
+        ],
+        "repeat": false,
+        "changePlayer": false
+      },
+      {
+        "availableActions": [
+          "MoveMotherNature",
+          "ActivateCharacterCard"
+        ],
+        "repeat": false,
+        "changePlayer": false
+      },
+      {
+        "availableActions": [
+          "ChooseCloud",
+          "ActivateCharacterCard"
+        ],
+        "repeat": false,
+        "changePlayer": true
+      }
+    ],
+    "repeat": true
+  }
+}
