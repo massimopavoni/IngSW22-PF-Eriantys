@@ -121,6 +121,8 @@ public class PlayerDashboard {
      * @return last discarded card entry
      */
     public Map.Entry<String, AssistantCard> getLastDiscardedAssistantCard() {
+        if (this.discardedAssistantCardsMap.isEmpty())
+            return null;
         String lastDiscardedAssistantCardName = this.discardedAssistantCardsMap.keySet().toArray()[this.discardedAssistantCardsMap.size() - 1].toString();
         return new AbstractMap.SimpleEntry<>(lastDiscardedAssistantCardName, this.discardedAssistantCardsMap.get(lastDiscardedAssistantCardName));
     }
