@@ -42,7 +42,8 @@ class ActivateCharacterCardTest {
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, true);
         gameEngine.getGameState().getPlayerDashboards().get("pippo").setCoinsNumber(4);
-        EffectStrategy effect = new Bard(gameEngine.getGameState().getPlayerDashboards().get("pippo").getHall().getTokens(), gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance().getTokens());
+        EffectStrategy effect = new Bard(gameEngine.getGameState().getPlayerDashboards().get("pippo").getHall().getTokens(),
+                gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance().getTokens());
         characterCard = new ActivateCharacterCard("bard", effect);
         characterCard.doAction(gameEngine, "pippo");
         assertAll(
@@ -61,7 +62,8 @@ class ActivateCharacterCardTest {
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, true);
         gameEngine.getGameState().getPlayerDashboards().get("pippo").setCoinsNumber(0);
-        EffectStrategy effect = new Bard(gameEngine.getGameState().getPlayerDashboards().get("pippo").getHall().getTokens(), gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance().getTokens());
+        EffectStrategy effect = new Bard(gameEngine.getGameState().getPlayerDashboards().get("pippo").getHall().getTokens(),
+                gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance().getTokens());
         characterCard = new ActivateCharacterCard("centaur", effect);
         assertThrowsExactly(IllegalStateException.class, () -> characterCard.doAction(gameEngine, "pippo"));
     }
