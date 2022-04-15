@@ -54,7 +54,7 @@ class ActivateCharacterCardTest {
 
     @Test
     @DisplayName("Test illegal effect with card name")
-    void doAction_2() throws GameEngine.GameEngineException {
+    void doAction_illegalEffect() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/test_game_configurations.json",
                 "test_loadAllCharacterCards",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
