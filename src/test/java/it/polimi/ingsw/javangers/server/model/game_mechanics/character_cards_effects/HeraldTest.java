@@ -33,7 +33,7 @@ class HeraldTest {
 
     @Test
     @DisplayName("Test useEffect of Herald class for correct behavior")
-    void useEffect() {
+    void useEffect_correct() {
         for (TokenColor color : TokenColor.values())
             gameEngine.getGameState().getTeachers().get(color).setOwner("Cap", 1);
         for (int i = 0; i < gameEngine.getGameState().getArchipelago().getIslands().size(); i++)
