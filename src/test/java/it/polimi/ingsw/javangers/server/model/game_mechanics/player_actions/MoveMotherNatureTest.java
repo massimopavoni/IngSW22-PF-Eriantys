@@ -1,12 +1,10 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
-import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
 import it.polimi.ingsw.javangers.server.model.game_data.AssistantCard;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.WizardType;
-import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
-import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +74,7 @@ class MoveMotherNatureTest {
         gameEngine.getGameState().getPlayerDashboards().get("pippo").getDiscardedAssistantCards().put("eagle",eagle);
         gameEngine.getGameState().getArchipelago().getIslands().get(2).getTokenContainer().addTokens(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         gameEngine.getGameState().getTeachers().get(TokenColor.BLUE_UNICORN).setOwner("pippo",2);
-        gameEngine.getGameState().getArchipelago().getIslands().get(2).setEnabled(false);
+        gameEngine.getGameState().getArchipelago().getIslands().get(2).setEnabled(1);
         moveMotherNature = new MoveMotherNature(2);
         moveMotherNature.doAction(gameEngine, "pippo");
         assertAll(
@@ -101,7 +99,7 @@ class MoveMotherNatureTest {
         gameEngine.getGameState().getPlayerDashboards().get("pippo").getDiscardedAssistantCards().put("eagle",eagle);
         gameEngine.getGameState().getArchipelago().getIslands().get(2).getTokenContainer().addTokens(new ArrayList<>(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN)));
         gameEngine.getGameState().getTeachers().get(TokenColor.BLUE_UNICORN).setOwner("pippo",2);
-        gameEngine.getGameState().getArchipelago().getIslands().get(5).setEnabled(false);
+        gameEngine.getGameState().getArchipelago().getIslands().get(5).setEnabled(1);
         gameEngine.getCharacterCards().get("herbalist").setMultipurposeCounter(3);
         moveMotherNature = new MoveMotherNature(2);
         moveMotherNature.doAction(gameEngine, "pippo");

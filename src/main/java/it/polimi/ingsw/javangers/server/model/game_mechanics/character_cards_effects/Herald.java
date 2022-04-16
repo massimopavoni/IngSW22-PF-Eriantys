@@ -1,6 +1,6 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
-import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
  * Class representing the herald character card.

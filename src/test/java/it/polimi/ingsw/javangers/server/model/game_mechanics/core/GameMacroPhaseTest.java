@@ -1,4 +1,4 @@
-package it.polimi.ingsw.javangers.server.model.game_mechanics;
+package it.polimi.ingsw.javangers.server.model.game_mechanics.core;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

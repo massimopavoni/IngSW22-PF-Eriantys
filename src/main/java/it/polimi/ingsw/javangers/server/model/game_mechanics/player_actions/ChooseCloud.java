@@ -1,6 +1,6 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
-import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
  * Class representing choose clouds action.

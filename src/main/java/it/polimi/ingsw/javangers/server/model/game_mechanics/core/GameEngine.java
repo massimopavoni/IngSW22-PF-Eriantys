@@ -1,4 +1,4 @@
-package it.polimi.ingsw.javangers.server.model.game_mechanics;
+package it.polimi.ingsw.javangers.server.model.game_mechanics.core;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +11,7 @@ import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.WizardType;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import org.javatuples.Pair;
 
 import java.io.File;
@@ -32,6 +33,10 @@ public class GameEngine {
      * Game state instance.
      */
     private final GameState gameState;
+    /**
+     * Random instance for game initialization.
+     */
+    private final Random initializationRandom;
     /**
      * Flag for expert mode game.
      */
@@ -92,6 +97,9 @@ public class GameEngine {
                     this.gameConfiguration.getTowersPerDashboard(), this.gameConfiguration.getNumberOfIslands(), studentsBagMap,
                     this.expertMode ? this.gameConfiguration.getCoinsPerDashBoard() : 0);
 
+            // Create random instance for later game initialization
+            this.initializationRandom = new Random();
+
             this.characterCardsMap = new HashMap<>();
             // Read character cards and select some random ones if expert mode is enabled
             if (this.expertMode) {
@@ -99,7 +107,7 @@ public class GameEngine {
                 Map<String, CharacterCard> allCharacterCardsMap = jsonMapper.readValue(jsonFile, new TypeReference<Map<String, CharacterCard>>() {
                 });
                 List<String> characterCardsKeys = new ArrayList<>(allCharacterCardsMap.keySet());
-                Collections.shuffle(characterCardsKeys, new Random());
+                Collections.shuffle(characterCardsKeys, this.initializationRandom);
                 characterCardsKeys.subList(0, this.gameConfiguration.getNumberOfCharacterCards())
                         .forEach(key -> this.characterCardsMap.put(key, allCharacterCardsMap.get(key)));
             }
@@ -246,6 +254,30 @@ public class GameEngine {
 
     //--------------------------------------------------------------------------------------------------------------------------------
     //region Methods
+
+    /**
+     * Initialize game as rules dictate.
+     */
+    public void initializeGame() {
+        // Local variables for easier lines
+        Archipelago archipelago = this.gameState.getArchipelago();
+        List<Island> islands = archipelago.getIslands();
+        // Set initial mother nature position
+        archipelago.setMotherNaturePosition(this.initializationRandom.nextInt(islands.size()));
+        // Distribute tokens on islands
+        List<TokenColor> initialIslandsTokens = new ArrayList<>();
+        Arrays.stream(TokenColor.values()).forEach(color -> initialIslandsTokens.addAll(Collections.nCopies(2, color)));
+        this.gameState.getStudentsBag().getTokenContainer().extractTokens(initialIslandsTokens);
+        Collections.shuffle(initialIslandsTokens, this.initializationRandom);
+        islands.stream().filter(island -> !Arrays.asList(archipelago.getMotherNaturePosition(),
+                                (archipelago.getMotherNaturePosition() + islands.size() / 2) % islands.size())
+                        .contains(islands.indexOf(island)))
+                .forEach(island -> island.getTokenContainer()
+                        .addTokens(Collections.singletonList(initialIslandsTokens.remove(0))));
+        // Fill dashboards' entrances
+        this.gameState.getPlayerDashboards().values().forEach(dashboard -> dashboard.getEntrance()
+                .addTokens(this.gameState.getStudentsBag().grabTokens(this.gameConfiguration.getStudentsPerEntrance())));
+    }
 
     /**
      * Reset character cards parameters to their default values.

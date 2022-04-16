@@ -2,7 +2,7 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
-import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.EffectStrategy;
 
 /**

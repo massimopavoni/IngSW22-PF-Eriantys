@@ -46,6 +46,15 @@ class PlayerDashboardTest {
     }
 
     @Test
+    @DisplayName("Test getLastDiscardedAssistantCard for null last discard")
+    void getLastDiscardedAssistantCard_nullLastDiscard() throws IOException {
+        playerDashboard = new PlayerDashboard(
+                "/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
+                WizardType.DRUID, new Pair<>(TowerColor.WHITE, 8), 1);
+        assertNull(playerDashboard.getLastDiscardedAssistantCard());
+    }
+
+    @Test
     @DisplayName("Test getLastDiscardedAssistantCard for correct last discard")
     void getLastDiscardedAssistantCard_correctLastDiscard() throws IOException {
         playerDashboard = new PlayerDashboard(

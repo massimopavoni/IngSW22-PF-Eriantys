@@ -3,7 +3,7 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
-import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 import java.util.ArrayList;
 import java.util.List;

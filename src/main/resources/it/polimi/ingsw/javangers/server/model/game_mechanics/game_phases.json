@@ -6,7 +6,7 @@
           "FillClouds"
         ],
         "repeat": false,
-        "changePlayer": true
+        "changePlayer": false
       },
       {
         "availableActions": [

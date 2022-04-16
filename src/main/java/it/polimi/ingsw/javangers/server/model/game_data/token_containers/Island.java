@@ -18,21 +18,21 @@ public class Island {
      */
     private Pair<TowerColor, Integer> towers;
     /**
-     * Flag for island power computation.
+     * Counter for island power computation.
      */
-    private boolean enabled;
+    private int enabled;
     //endregion
 
     //--------------------------------------------------------------------------------------------------------------------------------
     //region Constructor, get and set methods
 
     /**
-     * Constructor for island, initializing token container, towers and enabled flag.
+     * Constructor for island, initializing token container, towers and enabled counter.
      */
     public Island() {
         this.tokenContainer = new TokenContainer();
         this.towers = new Pair<>(TowerColor.NONE, 0);
-        this.enabled = true;
+        this.enabled = 0;
     }
 
     /**
@@ -63,20 +63,20 @@ public class Island {
     }
 
     /**
-     * Get enabled flag.
+     * Get enabled counter.
      *
-     * @return enabled flag
+     * @return enabled counter
      */
-    public boolean isEnabled() {
+    public int getEnabled() {
         return this.enabled;
     }
 
     /**
-     * Set enabled flag.
+     * Set enabled counter.
      *
-     * @param enabled flag
+     * @param enabled counter
      */
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(int enabled) {
         this.enabled = enabled;
     }
     //endregion
@@ -92,7 +92,7 @@ public class Island {
     public void mergeWith(Island island) {
         this.tokenContainer.addTokens(island.tokenContainer.getTokens());
         this.towers = new Pair<>(this.towers.getValue0(), this.towers.getValue1() + island.towers.getValue1());
-        this.enabled = this.enabled && island.enabled;
+        this.enabled = this.enabled + island.enabled;
     }
     //endregion
 }

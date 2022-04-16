@@ -28,7 +28,7 @@ class IslandTest {
                 () -> assertTrue(island.getTokenContainer().getTokens().isEmpty()),
                 () -> assertNotNull(island.getTowers()),
                 () -> assertEquals(new Pair<>(TowerColor.NONE, 0), island.getTowers()),
-                () -> assertTrue(island.isEnabled())
+                () -> assertEquals(0, island.getEnabled())
         );
     }
 
@@ -48,18 +48,18 @@ class IslandTest {
     }
 
     @Test
-    @DisplayName("Test setEnabled for enabled flag")
-    void setEnabled_changeFlag() {
-        island.setEnabled(false);
-        assertFalse(island.isEnabled());
+    @DisplayName("Test setEnabled for enabled counter")
+    void setEnabled_changeCounter() {
+        island.setEnabled(1);
+        assertEquals(1, island.getEnabled());
     }
 
     @Test
-    @DisplayName("Test mergeWith for correct information merging (false && true condition)")
-    void mergeWith_correctInfoFalseTrue() {
+    @DisplayName("Test mergeWith for correct information merging")
+    void mergeWith_correctInfo() {
         island.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         island.setTowers(new Pair<>(TowerColor.WHITE, 1));
-        island.setEnabled(false);
+        island.setEnabled(1);
         Island islandToMerge = new Island();
         islandToMerge.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.PINK_FAIRY));
         islandToMerge.setTowers(new Pair<>(TowerColor.WHITE, 2));
@@ -71,28 +71,7 @@ class IslandTest {
                     put(TokenColor.PINK_FAIRY, 1);
                 }}, island.getTokenContainer().getColorCounts()),
                 () -> assertEquals(new Pair<>(TowerColor.WHITE, 3), island.getTowers()),
-                () -> assertFalse(island.isEnabled())
-        );
-    }
-
-    @Test
-    @DisplayName("Test mergeWith for correct information merging (true && false condition)")
-    void mergeWith_correctInfoTrueFalse() {
-        island.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
-        island.setTowers(new Pair<>(TowerColor.WHITE, 1));
-        Island islandToMerge = new Island();
-        islandToMerge.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.PINK_FAIRY));
-        islandToMerge.setTowers(new Pair<>(TowerColor.WHITE, 2));
-        islandToMerge.setEnabled(false);
-        island.mergeWith(islandToMerge);
-        assertAll(
-                () -> assertEquals(new HashMap<TokenColor, Integer>() {{
-                    put(TokenColor.RED_DRAGON, 2);
-                    put(TokenColor.BLUE_UNICORN, 1);
-                    put(TokenColor.PINK_FAIRY, 1);
-                }}, island.getTokenContainer().getColorCounts()),
-                () -> assertEquals(new Pair<>(TowerColor.WHITE, 3), island.getTowers()),
-                () -> assertFalse(island.isEnabled())
+                () -> assertEquals(1, island.getEnabled())
         );
     }
 }

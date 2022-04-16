@@ -1,4 +1,4 @@
-package it.polimi.ingsw.javangers.server.model.game_mechanics;
+package it.polimi.ingsw.javangers.server.model.game_mechanics.core;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ class GameConfigurationTest {
         gameConfiguration = new GameConfiguration(
                 "/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
                 "/it/polimi/ingsw/javangers/server/model/game_mechanics/character_cards.json",
-                12, 26, 3,7,
+                12, 26, 3, 7,
                 8, 3, 1);
         assertAll(
                 () -> assertEquals("/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",

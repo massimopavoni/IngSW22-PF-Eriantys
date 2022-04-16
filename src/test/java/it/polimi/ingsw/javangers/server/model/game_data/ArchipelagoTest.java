@@ -39,10 +39,10 @@ class ArchipelagoTest {
     void getIslands_shallow() {
         List<Island> shallowCopy = archipelago.getIslands();
         shallowCopy.remove(0);
-        archipelago.getIslands().get(0).setEnabled(false);
+        archipelago.getIslands().get(0).setEnabled(1);
         assertAll(
                 () -> assertNotEquals(shallowCopy, archipelago.getIslands()),
-                () -> assertFalse(archipelago.getIslands().get(0).isEnabled())
+                () -> assertEquals(1, archipelago.getIslands().get(0).getEnabled())
         );
     }
 
@@ -65,12 +65,12 @@ class ArchipelagoTest {
     @Test
     @DisplayName("Test mergeIslands for only left merge")
     void mergeIslands_leftMerge() {
-        archipelago.getIslands().get(2).setEnabled(false);
+        archipelago.getIslands().get(2).setEnabled(1);
         Island otherIsland = archipelago.getIslands().get(1);
         archipelago.mergeIslands(0, true, false);
         assertAll(
                 () -> assertEquals(2, archipelago.getIslands().size()),
-                () -> assertFalse(archipelago.getIslands().get(0).isEnabled()),
+                () -> assertEquals(1, archipelago.getIslands().get(0).getEnabled()),
                 () -> assertEquals(otherIsland, archipelago.getIslands().get(1))
         );
     }

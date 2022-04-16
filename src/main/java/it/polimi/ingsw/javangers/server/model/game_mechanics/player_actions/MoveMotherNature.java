@@ -2,8 +2,9 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
 import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
-import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 import java.util.Map;
 
@@ -42,10 +43,11 @@ public class MoveMotherNature implements ActionStrategy {
         int newPosition = (archipelago.getMotherNaturePosition() + this.steps) % archipelago.getIslands().size();
         archipelago.setMotherNaturePosition(newPosition);
         // Trigger island power changes if island is enabled
-        if (archipelago.getIslands().get(newPosition).isEnabled())
+        Island selectedIsland = archipelago.getIslands().get(archipelago.getMotherNaturePosition());
+        if (selectedIsland.getEnabled() == 0)
             gameEngine.changeIslandPower(archipelago.getMotherNaturePosition(), username);
         else {
-            archipelago.getIslands().get(archipelago.getMotherNaturePosition()).setEnabled(true);
+            selectedIsland.setEnabled(selectedIsland.getEnabled() - 1);
             CharacterCard herbalist = gameEngine.getCharacterCards().get("herbalist");
             herbalist.setMultipurposeCounter(herbalist.getMultipurposeCounter() + 1);
         }

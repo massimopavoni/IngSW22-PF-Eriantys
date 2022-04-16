@@ -1,4 +1,4 @@
-package it.polimi.ingsw.javangers.server.model.game_mechanics;
+package it.polimi.ingsw.javangers.server.model.game_mechanics.core;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

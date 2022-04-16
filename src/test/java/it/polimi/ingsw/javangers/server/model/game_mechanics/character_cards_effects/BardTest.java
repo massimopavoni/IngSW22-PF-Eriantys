@@ -6,7 +6,7 @@ import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.WizardType;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.StudentsBag;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
-import it.polimi.ingsw.javangers.server.model.game_mechanics.GameEngine;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

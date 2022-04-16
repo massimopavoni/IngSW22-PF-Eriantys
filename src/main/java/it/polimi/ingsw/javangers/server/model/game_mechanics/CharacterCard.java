@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.EffectStrategy;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
  * Class representing a character card.

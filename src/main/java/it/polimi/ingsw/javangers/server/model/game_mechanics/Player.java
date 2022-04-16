@@ -1,5 +1,6 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics;
 
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.ActionStrategy;
 
 /**

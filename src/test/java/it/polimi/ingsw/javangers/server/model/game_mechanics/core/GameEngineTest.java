@@ -1,4 +1,4 @@
-package it.polimi.ingsw.javangers.server.model.game_mechanics;
+package it.polimi.ingsw.javangers.server.model.game_mechanics.core;
 
 import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
@@ -6,15 +6,15 @@ import it.polimi.ingsw.javangers.server.model.game_data.Teacher;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.WizardType;
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +35,7 @@ class GameEngineTest {
     @DisplayName("Test constructor for invalid game configurations file path")
     void GameEngine_invalidGameConfigurationsFilePath() {
         assertThrowsExactly(GameEngine.GameEngineException.class,
-                () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/GameConfiguration.class",
+                () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/GameConfiguration.class",
                         "2_players",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
@@ -130,6 +130,24 @@ class GameEngineTest {
     void setForbiddenColor_correctValue() {
         gameEngine.setForbiddenColor(TokenColor.YELLOW_ELF);
         assertEquals(TokenColor.YELLOW_ELF, gameEngine.getForbiddenColor());
+    }
+
+    @Test
+    @DisplayName("Test initializeGame for correct initialization based on game configuration and game rules")
+    void initializeGame_correctInitialization() {
+        gameEngine.initializeGame();
+        Archipelago archipelago = gameEngine.getGameState().getArchipelago();
+        List<Island> allIslands = archipelago.getIslands();
+        List<Island> voidIslands = Arrays.asList(allIslands.get(archipelago.getMotherNaturePosition()),
+                allIslands.get((archipelago.getMotherNaturePosition() + allIslands.size() / 2) % allIslands.size()));
+        List<Island> islandsWithTokens = archipelago.getIslands().stream()
+                .filter(island -> !voidIslands.contains(island)).collect(Collectors.toList());
+        assertAll(
+                () -> voidIslands.forEach(island -> assertEquals(0, island.getTokenContainer().getTokens().size())),
+                () -> islandsWithTokens.forEach(island -> assertEquals(1, island.getTokenContainer().getTokens().size())),
+                () -> gameEngine.getGameState().getPlayerDashboards().values()
+                        .forEach(dashboard -> assertEquals(7, dashboard.getEntrance().getTokens().size()))
+        );
     }
 
     @Test
