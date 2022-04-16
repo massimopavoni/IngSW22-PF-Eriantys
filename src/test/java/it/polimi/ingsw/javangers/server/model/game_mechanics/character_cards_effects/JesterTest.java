@@ -56,7 +56,7 @@ class JesterTest {
     }
 
     @Test
-    @DisplayName("Test useEffect of Bard class for correct behavior")
+    @DisplayName("Test useEffect of Jester class for correct behavior")
     void useEffect_correct() {
         playerDashboard.getEntrance().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN,
                 TokenColor.PINK_FAIRY, TokenColor.GREEN_FROG, TokenColor.YELLOW_ELF, TokenColor.RED_DRAGON,
