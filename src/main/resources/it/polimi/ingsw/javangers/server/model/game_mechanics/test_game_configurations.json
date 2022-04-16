@@ -1,4 +1,15 @@
 {
+  "2_players": {
+    "assistantCardsResourceLocation": "/it/polimi/ingsw/javangers/server/model/game_data/AssistantCard.class",
+    "characterCardsResourceLocation": "/it/polimi/ingsw/javangers/server/model/game_mechanics/character_cards.json",
+    "numberOfIslands": 12,
+    "studentsPerColor": 26,
+    "studentsPerCloud": 3,
+    "studentsPerEntrance": 7,
+    "towersPerDashboard": 8,
+    "numberOfCharacterCards": 3,
+    "coinsPerDashBoard": 1
+  },
   "test_invalidAssistantCardsResourceLocation": {
     "assistantCardsResourceLocation": "/it/polimi/ingsw/javangers/server/model/game_data/AssistantCard.class",
     "characterCardsResourceLocation": "/it/polimi/ingsw/javangers/server/model/game_mechanics/character_cards.json",
