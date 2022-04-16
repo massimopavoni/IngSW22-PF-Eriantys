@@ -45,7 +45,8 @@ public class MoveStudents implements ActionStrategy {
         TokenContainer entrance = gameEngine.getGameState().getPlayerDashboards().get(username).getEntrance();
         List<TokenColor> tokens = new ArrayList<>(this.studentsToHall);
         this.studentsToIslands.values().forEach(tokens::addAll);
-        if (!entrance.containsSubList(tokens)) throw new IllegalStateException("Tokens not present in entrance");
+        if (!entrance.containsSubList(tokens))
+            throw new IllegalStateException("Specified tokens not present in entrance");
         gameEngine.getGameState().getPlayerDashboards().get(username).getHall().addTokens(entrance.extractTokens(this.studentsToHall));
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         for (Map.Entry<Integer, List<TokenColor>> entry : this.studentsToIslands.entrySet()) {

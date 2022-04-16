@@ -333,22 +333,33 @@ public class GameEngine {
      * @param username            username of player who selected island
      */
     public void changeIslandPower(int selectedIslandIndex, String username) {
-        // Get base players power map
-        Map<String, Integer> playersPower = this.assignPlayersPower(selectedIslandIndex);
+        // Trigger island power changes if island is enabled
+        Archipelago archipelago = this.gameState.getArchipelago();
+        Island selectedIsland = archipelago.getIslands().get(archipelago.getMotherNaturePosition());
+        if (selectedIsland.getEnabled() == 0){
+            // Get base players power map
+            Map<String, Integer> playersPower = this.assignPlayersPower(selectedIslandIndex);
 
-        // Add additional power
-        playersPower.put(username, playersPower.get(username) + this.additionalPower);
+            // Add additional power
+            playersPower.put(username, playersPower.get(username) + this.additionalPower);
 
-        // Find all players with the highest power
-        int highestPower = Collections.max(playersPower.values());
-        List<String> islandWinners = playersPower.entrySet().stream()
-                .filter(entry -> entry.getValue() == highestPower).map(Map.Entry::getKey).collect(Collectors.toList());
+            // Find all players with the highest power
+            int highestPower = Collections.max(playersPower.values());
+            List<String> islandWinners = playersPower.entrySet().stream()
+                    .filter(entry -> entry.getValue() == highestPower).map(Map.Entry::getKey).collect(Collectors.toList());
 
-        // Make changes based on island winners
-        // "There can be only one (one, one, one)"
-        if (islandWinners.size() == 1) {
-            this.updateIslandData(selectedIslandIndex, this.gameState.getPlayerDashboards().get(islandWinners.get(0)));
+            // Make changes based on island winners
+            // "There can be only one (one, one, one)"
+            if (islandWinners.size() == 1) {
+                this.updateIslandData(selectedIslandIndex, this.gameState.getPlayerDashboards().get(islandWinners.get(0)));
+            }
         }
+        else {
+            selectedIsland.setEnabled(selectedIsland.getEnabled() - 1);
+            CharacterCard herbalist = this.characterCardsMap.get("herbalist");
+            herbalist.setMultipurposeCounter(herbalist.getMultipurposeCounter() + 1);
+        }
+
     }
 
     /**

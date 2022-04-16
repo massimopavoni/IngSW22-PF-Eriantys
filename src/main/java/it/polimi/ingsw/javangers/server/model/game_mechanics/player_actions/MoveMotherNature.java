@@ -2,8 +2,6 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
 import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
-import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
-import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 import java.util.Map;
@@ -40,17 +38,9 @@ public class MoveMotherNature implements ActionStrategy {
                 + gameEngine.getAdditionalMotherNatureSteps())
             throw new IllegalStateException("Illegal number of steps");
         // Get new mother nature position with cyclic movement
-        int newPosition = (archipelago.getMotherNaturePosition() + this.steps) % archipelago.getIslands().size();
-        archipelago.setMotherNaturePosition(newPosition);
-        // Trigger island power changes if island is enabled
-        Island selectedIsland = archipelago.getIslands().get(archipelago.getMotherNaturePosition());
-        if (selectedIsland.getEnabled() == 0)
-            gameEngine.changeIslandPower(archipelago.getMotherNaturePosition(), username);
-        else {
-            selectedIsland.setEnabled(selectedIsland.getEnabled() - 1);
-            CharacterCard herbalist = gameEngine.getCharacterCards().get("herbalist");
-            herbalist.setMultipurposeCounter(herbalist.getMultipurposeCounter() + 1);
-        }
+        archipelago.setMotherNaturePosition(
+                (archipelago.getMotherNaturePosition() + this.steps) % archipelago.getIslands().size());
+        // Trigger island power changes
+        gameEngine.changeIslandPower(archipelago.getMotherNaturePosition(), username);
     }
-
 }

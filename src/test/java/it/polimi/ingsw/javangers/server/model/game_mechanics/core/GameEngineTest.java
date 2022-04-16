@@ -1,6 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.core;
 
 import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
+import it.polimi.ingsw.javangers.server.model.game_data.AssistantCard;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_data.Teacher;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
@@ -23,8 +24,8 @@ class GameEngineTest {
 
     @BeforeEach
     void setUp() throws GameEngine.GameEngineException {
-        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/game_configurations.json",
-                "2_players",
+        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/test_game_configurations.json",
+                "test_loadAllCharacterCards",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
@@ -73,7 +74,7 @@ class GameEngineTest {
         assertAll(
                 () -> assertEquals(3, gameEngine.getGameConfiguration().getStudentsPerCloud()),
                 () -> assertEquals(1, gameEngine.getGameState().getPlayerDashboards().get("Neo").getCoinsNumber()),
-                () -> assertEquals(3, gameEngine.getCharacterCards().size()),
+                () -> assertEquals(12, gameEngine.getCharacterCards().size()),
                 () -> assertTrue(gameEngine.isExpertMode()),
                 () -> assertFalse(gameEngine.getTeachersEqualCount()),
                 () -> assertEquals(0, gameEngine.getAdditionalMotherNatureSteps()),
@@ -91,7 +92,7 @@ class GameEngineTest {
         characterCardsCopy.remove(characterCardsNames[0]);
         characterCardsCopy.get(characterCardsNames[1]).setCostDelta(1);
         assertAll(
-                () -> assertEquals(3, gameEngine.getCharacterCards().size()),
+                () -> assertEquals(12, gameEngine.getCharacterCards().size()),
                 () -> assertEquals(1, gameEngine.getCharacterCards()
                         .get(characterCardsNames[1]).getCostDelta())
         );
@@ -264,7 +265,24 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct leave unchanged with tower points")
+    @DisplayName("Test changeIslandPower with disabled island")
+    void changeIslandPower_disabledIsland() {
+        gameEngine.getGameState().getArchipelago().setMotherNaturePosition(3);
+        AssistantCard eagle = gameEngine.getGameState().getPlayerDashboards().get("Neo").getAssistantCards().get("eagle");
+        gameEngine.getGameState().getPlayerDashboards().get("Neo").getDiscardedAssistantCards().put("eagle", eagle);
+        gameEngine.getGameState().getArchipelago().getIslands().get(2).getTokenContainer().addTokens(new ArrayList<>(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN)));
+        gameEngine.getGameState().getTeachers().get(TokenColor.BLUE_UNICORN).setOwner("Neo", 2);
+        gameEngine.getGameState().getArchipelago().getIslands().get(3).setEnabled(1);
+        gameEngine.getCharacterCards().get("herbalist").setMultipurposeCounter(3);
+        gameEngine.changeIslandPower(3, "Neo");
+        assertAll(
+                () -> assertEquals(TowerColor.NONE, gameEngine.getGameState().getArchipelago().getIslands().get(5).getTowers().getValue0()),
+                () -> assertEquals(4, gameEngine.getCharacterCards().get("herbalist").getMultipurposeCounter())
+        );
+    }
+
+    @Test
+    @DisplayName("Test changeIslandPower for correct leave unchanged with tower points")
     void changeIslandPower_leaveUnchangedWithTowerPoints() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -280,7 +298,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct leave unchanged with forbidden color")
+    @DisplayName("Test changeIslandPower for correct leave unchanged with forbidden color")
     void changeIslandPower_correctLeaveUnchangedWithForbiddenColor() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -298,7 +316,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct new power")
+    @DisplayName("Test changeIslandPower for correct new power")
     void changeIslandPower_correctNewPower() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -313,7 +331,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct change without tower points")
+    @DisplayName("Test changeIslandPower for correct change without tower points")
     void changeIslandPower_correctChangeWithoutTowerPoints() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -330,7 +348,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct change existing power")
+    @DisplayName("Test changeIslandPower for correct change existing power")
     void changeIslandPower_correctChangePower() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -346,7 +364,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct change with additional power")
+    @DisplayName("Test changeIslandPower for correct change with additional power")
     void changeIslandPower_correctChangeWithAdditionalPower() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -363,7 +381,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct select number of towers from dashboard")
+    @DisplayName("Test changeIslandPower for correct select number of towers from dashboard")
     void changeIslandPower_correctTowersRemaining() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -381,7 +399,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct island left merge")
+    @DisplayName("Test changeIslandPower for correct island left merge")
     void changeIslandPower_correctIslandLeftMerge() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -399,7 +417,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct island right merge")
+    @DisplayName("Test changeIslandPower for correct island right merge")
     void changeIslandPower_correctIslandRightMerge() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
@@ -417,7 +435,7 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test changeTeachersPower for correct island left and right merge")
+    @DisplayName("Test changeIslandPower for correct island left and right merge")
     void changeIslandPower_correctIslandLeftRightMerge() {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();

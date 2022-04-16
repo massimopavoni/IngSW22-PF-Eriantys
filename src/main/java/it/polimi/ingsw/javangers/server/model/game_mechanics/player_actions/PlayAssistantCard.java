@@ -52,12 +52,10 @@ public class PlayAssistantCard implements ActionStrategy {
         otherPlayersDashboard.values().stream()
                 .filter(dashboard -> currentPlayerDashboard.getDiscardedAssistantCards().size() < dashboard.getDiscardedAssistantCards().size())
                 .forEach(dashboard -> forbiddenAssistantCards.add(dashboard.getLastDiscardedAssistantCard().getKey()));
-        if (forbiddenAssistantCards.contains(this.cardName)) {
-            for (String name : currentPlayerDashboard.getAssistantCards().keySet()) {
+        if (forbiddenAssistantCards.contains(this.cardName))
+            for (String name : currentPlayerDashboard.getAssistantCards().keySet())
                 if (!forbiddenAssistantCards.contains(name))
                     throw new IllegalStateException("Specified player must play a card different from this turn's discards");
-            }
-        }
         currentPlayerDashboard.getDiscardedAssistantCards().put(this.cardName, currentPlayerDashboard.getAssistantCards().remove(this.cardName));
     }
     //endregion
