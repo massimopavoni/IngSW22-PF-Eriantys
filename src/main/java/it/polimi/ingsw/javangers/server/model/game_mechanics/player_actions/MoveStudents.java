@@ -52,7 +52,7 @@ public class MoveStudents implements ActionStrategy {
         for (Map.Entry<Integer, List<TokenColor>> entry : this.studentsToIslands.entrySet()) {
             archipelago.getIslands().get(entry.getKey()).getTokenContainer().addTokens(entrance.extractTokens(entry.getValue()));
         }
-        gameEngine.changeTeachersPower();
+        gameEngine.changeTeachersPower(username);
     }
 
 

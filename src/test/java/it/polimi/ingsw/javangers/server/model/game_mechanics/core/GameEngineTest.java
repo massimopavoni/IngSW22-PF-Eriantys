@@ -176,7 +176,7 @@ class GameEngineTest {
         neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
         gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
         neoDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
-        gameEngine.changeTeachersPower();
+        gameEngine.changeTeachersPower("Neo");
         assertAll(
                 () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(3, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber())
@@ -191,7 +191,7 @@ class GameEngineTest {
         neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
         gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
         morpheusDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
-        gameEngine.changeTeachersPower();
+        gameEngine.changeTeachersPower("Neo");
         assertAll(
                 () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber())
@@ -203,7 +203,7 @@ class GameEngineTest {
     void changeTeachersPower_addOwner() {
         PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
         neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
-        gameEngine.changeTeachersPower();
+        gameEngine.changeTeachersPower("Neo");
         assertAll(
                 () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber())
@@ -218,12 +218,12 @@ class GameEngineTest {
         neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
         gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
         morpheusDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
-        gameEngine.changeTeachersPower();
+        gameEngine.changeTeachersPower("Neo");
         assertAll(
                 () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber()),
                 () -> morpheusDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON)),
-                () -> gameEngine.changeTeachersPower(),
+                () -> gameEngine.changeTeachersPower("Neo"),
                 () -> assertEquals("Morpheus", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(3, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber())
         );
@@ -234,17 +234,17 @@ class GameEngineTest {
     void changeTeachersPower_changeOwnerEnabledEqualCount() {
         PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
         PlayerDashboard morpheusDashboard = gameEngine.getGameState().getPlayerDashboards().get("Morpheus");
-        neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
-        gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        morpheusDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
+        morpheusDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
+        gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Morpheus", 2);
+        neoDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
         gameEngine.setTeachersEqualCount(true);
-        gameEngine.changeTeachersPower();
+        gameEngine.changeTeachersPower("Neo");
         assertAll(
-                () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
-                () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber()),
-                () -> morpheusDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON)),
-                () -> gameEngine.changeTeachersPower(),
                 () -> assertEquals("Morpheus", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
+                () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber()),
+                () -> neoDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON)),
+                () -> gameEngine.changeTeachersPower("Neo"),
+                () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber())
         );
     }

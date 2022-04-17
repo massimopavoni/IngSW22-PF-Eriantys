@@ -292,13 +292,20 @@ public class GameEngine {
 
     /**
      * Change teachers owners and students number based on game state changes.
+     *
+     * @param username username of the player who triggered the update
      */
-    public void changeTeachersPower() {
+    public void changeTeachersPower(String username) {
         this.updateTeachersPower();
         Map<TokenColor, Teacher> teachers = this.gameState.getTeachers();
+        int candidatePower;
+        int currentPower;
         for (Map.Entry<String, PlayerDashboard> playerDashboard : this.gameState.getPlayerDashboards().entrySet()) {
             for (Map.Entry<TokenColor, Integer> colorCount : playerDashboard.getValue().getHall().getColorCounts().entrySet()) {
-                if (this.teacherPowerComparison(colorCount.getValue(), teachers.get(colorCount.getKey()).getOwnerStudentsNumber())) {
+                candidatePower = colorCount.getValue();
+                currentPower = teachers.get(colorCount.getKey()).getOwnerStudentsNumber();
+                if (playerDashboard.getKey().equals(username) && this.teachersEqualCount ?
+                        candidatePower >= currentPower : candidatePower > currentPower) {
                     teachers.get(colorCount.getKey()).setOwner(playerDashboard.getKey(), colorCount.getValue());
                 }
             }
@@ -316,17 +323,6 @@ public class GameEngine {
     }
 
     /**
-     * Conditional comparison of candidate owner power and current owner power on teacher.
-     *
-     * @param candidatePower candidate owner power
-     * @param currentPower   current owner power
-     * @return based on teachers equal count flag, true if candidate power is greater or equal/strictly greater than current power, false otherwise
-     */
-    private boolean teacherPowerComparison(int candidatePower, int currentPower) {
-        return this.teachersEqualCount ? candidatePower >= currentPower : candidatePower > currentPower;
-    }
-
-    /**
      * Change island towers power and archipelago merging situation based on game state changes.
      *
      * @param selectedIslandIndex selected island index
@@ -336,7 +332,7 @@ public class GameEngine {
         // Trigger island power changes if island is enabled
         Archipelago archipelago = this.gameState.getArchipelago();
         Island selectedIsland = archipelago.getIslands().get(archipelago.getMotherNaturePosition());
-        if (selectedIsland.getEnabled() == 0){
+        if (selectedIsland.getEnabled() == 0) {
             // Get base players power map
             Map<String, Integer> playersPower = this.assignPlayersPower(selectedIslandIndex);
 
@@ -353,8 +349,7 @@ public class GameEngine {
             if (islandWinners.size() == 1) {
                 this.updateIslandData(selectedIslandIndex, this.gameState.getPlayerDashboards().get(islandWinners.get(0)));
             }
-        }
-        else {
+        } else {
             selectedIsland.setEnabled(selectedIsland.getEnabled() - 1);
             CharacterCard herbalist = this.characterCardsMap.get("herbalist");
             herbalist.setMultipurposeCounter(herbalist.getMultipurposeCounter() + 1);
