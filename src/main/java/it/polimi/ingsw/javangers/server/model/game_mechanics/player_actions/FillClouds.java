@@ -12,27 +12,6 @@ import java.util.List;
  */
 public class FillClouds implements ActionStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------
-    //region Attributes
-    /**
-     * Number of students to insert in clouds.
-     */
-    private final int numberOfStudents;
-    //endregion
-
-    //--------------------------------------------------------------------------------------------------------------------------------
-    //region Constructor, get and set methods
-
-    /**
-     * Constructor for fill clouds action, initializing number of students.
-     *
-     * @param numberOfStudents students number to add to clouds
-     */
-    public FillClouds(int numberOfStudents) {
-        this.numberOfStudents = numberOfStudents;
-    }
-    //endregion
-
-    //--------------------------------------------------------------------------------------------------------------------------------
     //region Methods
 
     /**
@@ -47,7 +26,7 @@ public class FillClouds implements ActionStrategy {
         List<TokenColor> studentsBagTokens = studentsBag.getTokenContainer().getTokens();
         for (Cloud cloud : gameEngine.getGameState().getClouds()) {
             if (studentsBagTokens.isEmpty()) break;
-            cloud.getTokenContainer().addTokens(studentsBag.grabTokens(this.numberOfStudents));
+            cloud.getTokenContainer().addTokens(studentsBag.grabTokens(gameEngine.getGameConfiguration().getStudentsPerCloud()));
         }
     }
     //endregion

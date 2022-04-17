@@ -28,7 +28,7 @@ class GameEngineTest {
                 "test_loadAllCharacterCards",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
-                    put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                    put("Trinity", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
                 }}, true);
     }
 
@@ -40,7 +40,7 @@ class GameEngineTest {
                         "2_players",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
-                            put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                            put("Trinity", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
                         }}, true));
     }
 
@@ -52,7 +52,7 @@ class GameEngineTest {
                         "test_invalidAssistantCardsResourceLocation",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
-                            put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                            put("Trinity", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
                         }}, true));
     }
 
@@ -64,7 +64,7 @@ class GameEngineTest {
                         "test_invalidCharacterCardsResourceLocation",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
-                            put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                            put("Trinity", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
                         }}, true));
     }
 
@@ -187,10 +187,10 @@ class GameEngineTest {
     @DisplayName("Test changeTeachersPower for leaving current owner after others' changes")
     void changeTeachersPower_leaveUnchanged() {
         PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
-        PlayerDashboard morpheusDashboard = gameEngine.getGameState().getPlayerDashboards().get("Morpheus");
+        PlayerDashboard trinityDashboard = gameEngine.getGameState().getPlayerDashboards().get("Trinity");
         neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
         gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        morpheusDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
+        trinityDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
         gameEngine.changeTeachersPower("Neo");
         assertAll(
                 () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
@@ -214,17 +214,17 @@ class GameEngineTest {
     @DisplayName("Test changeTeachersPower for changing owner without equal count")
     void changeTeachersPower_changeOwnerDisabledEqualCount() {
         PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
-        PlayerDashboard morpheusDashboard = gameEngine.getGameState().getPlayerDashboards().get("Morpheus");
+        PlayerDashboard trinityDashboard = gameEngine.getGameState().getPlayerDashboards().get("Trinity");
         neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
         gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        morpheusDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
+        trinityDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
         gameEngine.changeTeachersPower("Neo");
         assertAll(
                 () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber()),
-                () -> morpheusDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON)),
+                () -> trinityDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON)),
                 () -> gameEngine.changeTeachersPower("Neo"),
-                () -> assertEquals("Morpheus", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
+                () -> assertEquals("Trinity", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(3, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber())
         );
     }
@@ -233,14 +233,14 @@ class GameEngineTest {
     @DisplayName("Test changeTeachersPower for changing owner with equal count")
     void changeTeachersPower_changeOwnerEnabledEqualCount() {
         PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
-        PlayerDashboard morpheusDashboard = gameEngine.getGameState().getPlayerDashboards().get("Morpheus");
-        morpheusDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
-        gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Morpheus", 2);
+        PlayerDashboard trinityDashboard = gameEngine.getGameState().getPlayerDashboards().get("Trinity");
+        trinityDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
+        gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).setOwner("Trinity", 2);
         neoDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
         gameEngine.setTeachersEqualCount(true);
         gameEngine.changeTeachersPower("Neo");
         assertAll(
-                () -> assertEquals("Morpheus", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
+                () -> assertEquals("Trinity", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
                 () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber()),
                 () -> neoDashboard.getHall().addTokens(Collections.singletonList(TokenColor.RED_DRAGON)),
                 () -> gameEngine.changeTeachersPower("Neo"),
@@ -255,9 +255,9 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Morpheus", 2);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
-        gameEngine.changeIslandPower(0, "Morpheus");
+        gameEngine.changeIslandPower(0, "Trinity");
         assertAll(
                 () -> assertEquals(TowerColor.NONE, archipelago.getIslands().get(0).getTowers().getValue0()),
                 () -> assertEquals(0, archipelago.getIslands().get(0).getTowers().getValue1())
@@ -287,7 +287,7 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Morpheus", 2);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         gameEngine.changeIslandPower(0, "Neo");
@@ -303,8 +303,8 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Morpheus", 2);
-        gameEngine.getGameState().getPlayerDashboards().get("Morpheus").setTowersNumber(1);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
+        gameEngine.getGameState().getPlayerDashboards().get("Trinity").setTowersNumber(1);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         gameEngine.setForbiddenColor(TokenColor.BLUE_UNICORN);
@@ -321,9 +321,9 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Morpheus", 2);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
-        gameEngine.changeIslandPower(0, "Morpheus");
+        gameEngine.changeIslandPower(0, "Trinity");
         assertAll(
                 () -> assertEquals(TowerColor.BLACK, archipelago.getIslands().get(0).getTowers().getValue0()),
                 () -> assertEquals(1, archipelago.getIslands().get(0).getTowers().getValue1())
@@ -336,7 +336,7 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Morpheus", 2);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         gameEngine.setEnabledIslandTowers(false);
@@ -353,7 +353,7 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Morpheus", 2);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.YELLOW_ELF, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         gameEngine.changeIslandPower(0, "Neo");
@@ -369,11 +369,11 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Morpheus", 2);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         gameEngine.setAdditionalPower(2);
-        gameEngine.changeIslandPower(0, "Morpheus");
+        gameEngine.changeIslandPower(0, "Trinity");
         assertAll(
                 () -> assertEquals(TowerColor.WHITE, archipelago.getIslands().get(0).getTowers().getValue0()),
                 () -> assertEquals(1, archipelago.getIslands().get(0).getTowers().getValue1())
@@ -386,15 +386,15 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
-        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Morpheus", 2);
-        gameEngine.getGameState().getPlayerDashboards().get("Morpheus").setTowersNumber(1);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
+        gameEngine.getGameState().getPlayerDashboards().get("Trinity").setTowersNumber(1);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 2));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         gameEngine.changeIslandPower(0, "Neo");
         assertAll(
                 () -> assertEquals(TowerColor.WHITE, archipelago.getIslands().get(0).getTowers().getValue0()),
                 () -> assertEquals(1, archipelago.getIslands().get(0).getTowers().getValue1()),
-                () -> assertEquals(0, gameEngine.getGameState().getPlayerDashboards().get("Morpheus").getTowers().getValue1())
+                () -> assertEquals(0, gameEngine.getGameState().getPlayerDashboards().get("Trinity").getTowers().getValue1())
         );
     }
 

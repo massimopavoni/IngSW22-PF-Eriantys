@@ -31,7 +31,7 @@ class ChooseCloudTest {
                 }}, false);
         TokenContainer entrance = gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance();
         entrance.addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.YELLOW_ELF));
-        new FillClouds(3).doAction(gameEngine, "pippo");
+        new FillClouds().doAction(gameEngine, "pippo");
         List<TokenColor> tokens = new ArrayList<TokenColor>() {{
             addAll(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.YELLOW_ELF));
         }};

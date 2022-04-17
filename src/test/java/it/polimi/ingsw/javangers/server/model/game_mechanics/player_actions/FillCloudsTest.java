@@ -19,7 +19,7 @@ class FillCloudsTest {
 
     @BeforeEach
     void setUp() {
-        fillClouds = new FillClouds(3);
+        fillClouds = new FillClouds();
     }
 
     @Test
