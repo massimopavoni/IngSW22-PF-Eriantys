@@ -31,7 +31,7 @@ class MushroomerTest {
 
     @Test
     @DisplayName("Test useEffect of Mushroomer class for correct behavior")
-    void useEffect() {
+    void useEffect_correct() {
         Mushroomer mushroomerEffect = new Mushroomer(TokenColor.RED_DRAGON);
         mushroomer.setEffect(mushroomerEffect);
         mushroomer.activateEffect(gameEngine, "Panther");
