@@ -4,7 +4,6 @@ import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.WizardType;
-import it.polimi.ingsw.javangers.server.model.game_data.token_containers.StudentsBag;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 import org.javatuples.Pair;
@@ -20,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BardTest {
     GameEngine gameEngine;
-    StudentsBag bag;
     PlayerDashboard playerDashboard;
     CharacterCard bard;
     Bard bardEffect;
@@ -33,7 +31,6 @@ class BardTest {
                     put("Thor", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Cap", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
                 }}, true);
-        bag = gameEngine.getGameState().getStudentsBag();
         playerDashboard = gameEngine.getGameState().getPlayerDashboards().get("Thor");
         bard = gameEngine.getCharacterCards().get("bard");
     }
