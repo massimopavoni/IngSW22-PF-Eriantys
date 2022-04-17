@@ -55,16 +55,16 @@ class MonkTest {
     @Test
     @DisplayName("Test useEffect of Monk class for correct behavior")
     void useEffect_correct() {
-        StudentsBag bag = new StudentsBag(new HashMap<TokenColor, Integer>() {{
-            put(TokenColor.BLUE_UNICORN, 1);
-        }});
+        StudentsBag bag = gameEngine.getGameState().getStudentsBag();
+        bag.grabTokens(bag.getTokenContainer().getTokens().size());
+        bag.getTokenContainer().addTokens(Collections.singletonList(TokenColor.BLUE_UNICORN));
         monk.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN, TokenColor.YELLOW_ELF, TokenColor.GREEN_FROG));
         monkEffect = new Monk(Collections.singletonList(TokenColor.RED_DRAGON), 0);
         monk.setEffect(monkEffect);
         monk.activateEffect(gameEngine, "BlackWidow");
         assertAll(
                 () -> assertEquals(Collections.singletonList(TokenColor.RED_DRAGON), gameEngine.getGameState().getArchipelago().getIslands().get(0).getTokenContainer().getTokens()),
-                () -> assertEquals(monk.getTokenContainer().getTokens().size(), monk.getTokenContainerSize()),
+                () -> assertEquals(monk.getTokenContainerSize(), monk.getTokenContainer().getTokens().size()),
                 () -> assertEquals(new HashMap<TokenColor, Integer>() {{
                     put(TokenColor.BLUE_UNICORN, 2);
                     put(TokenColor.GREEN_FROG, 1);
