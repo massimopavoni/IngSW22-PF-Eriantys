@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Class representing the game engine.
@@ -266,14 +267,17 @@ public class GameEngine {
         archipelago.setMotherNaturePosition(this.initializationRandom.nextInt(islands.size()));
         // Distribute tokens on islands
         List<TokenColor> initialIslandsTokens = new ArrayList<>();
-        Arrays.stream(TokenColor.values()).forEach(color -> initialIslandsTokens.addAll(Collections.nCopies(2, color)));
+        List<Island> islandsWithTokens = islands.stream().filter(island -> !Arrays.asList(archipelago.getMotherNaturePosition(),
+                        (archipelago.getMotherNaturePosition() + islands.size() / 2) % islands.size())
+                .contains(islands.indexOf(island))).collect(Collectors.toList());
+        int tokensPerColor = (int) Math.ceil((double) islandsWithTokens.size() / TokenColor.values().length);
+        Arrays.stream(TokenColor.values()).forEach(color -> initialIslandsTokens
+                .addAll(Collections.nCopies(tokensPerColor, color)));
         this.gameState.getStudentsBag().getTokenContainer().extractTokens(initialIslandsTokens);
         Collections.shuffle(initialIslandsTokens, this.initializationRandom);
-        islands.stream().filter(island -> !Arrays.asList(archipelago.getMotherNaturePosition(),
-                                (archipelago.getMotherNaturePosition() + islands.size() / 2) % islands.size())
-                        .contains(islands.indexOf(island)))
-                .forEach(island -> island.getTokenContainer()
-                        .addTokens(Collections.singletonList(initialIslandsTokens.remove(0))));
+        IntStream.range(0, initialIslandsTokens.size()).boxed().sorted(Collections.reverseOrder())
+                .forEach(i -> islandsWithTokens.get(i % islandsWithTokens.size()).getTokenContainer()
+                        .addTokens(Collections.singletonList(initialIslandsTokens.remove(i.intValue()))));
         // Fill dashboards' entrances
         this.gameState.getPlayerDashboards().values().forEach(dashboard -> dashboard.getEntrance()
                 .addTokens(this.gameState.getStudentsBag().grabTokens(this.gameConfiguration.getStudentsPerEntrance())));

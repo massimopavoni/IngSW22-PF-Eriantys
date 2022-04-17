@@ -28,7 +28,7 @@ class GameEngineTest {
                 "test_loadAllCharacterCards",
                 new HashMap<String, Pair<WizardType, TowerColor>>() {{
                     put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
-                    put("Trinity", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                    put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                 }}, true);
     }
 
@@ -40,7 +40,7 @@ class GameEngineTest {
                         "2_players",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
-                            put("Trinity", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                            put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                         }}, true));
     }
 
@@ -52,7 +52,7 @@ class GameEngineTest {
                         "test_invalidAssistantCardsResourceLocation",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
-                            put("Trinity", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                            put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                         }}, true));
     }
 
@@ -64,7 +64,7 @@ class GameEngineTest {
                         "test_invalidCharacterCardsResourceLocation",
                         new HashMap<String, Pair<WizardType, TowerColor>>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
-                            put("Trinity", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                            put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                         }}, true));
     }
 
@@ -134,8 +134,8 @@ class GameEngineTest {
     }
 
     @Test
-    @DisplayName("Test initializeGame for correct initialization based on game configuration and game rules")
-    void initializeGame_correctInitialization() {
+    @DisplayName("Test initializeGame with 12 islands for correct initialization based on game configuration and game rules")
+    void initializeGame_correctInitialization12Islands() {
         gameEngine.initializeGame();
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         List<Island> allIslands = archipelago.getIslands();
@@ -148,6 +148,30 @@ class GameEngineTest {
                 () -> islandsWithTokens.forEach(island -> assertEquals(1, island.getTokenContainer().getTokens().size())),
                 () -> gameEngine.getGameState().getPlayerDashboards().values()
                         .forEach(dashboard -> assertEquals(7, dashboard.getEntrance().getTokens().size()))
+        );
+    }
+
+    @Test
+    @DisplayName("Test initializeGame with 6 islands for correct initialization based on game configuration and game rules")
+    void initializeGame_correctInitialization6Islands() throws GameEngine.GameEngineException {
+        gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/test_game_configurations.json",
+                "3_players",
+                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                    put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
+                    put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.GRAY));
+                    put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
+                }}, true);
+        gameEngine.initializeGame();
+        Archipelago archipelago = gameEngine.getGameState().getArchipelago();
+        List<Island> allIslands = archipelago.getIslands();
+        List<Island> voidIslands = Arrays.asList(allIslands.get(archipelago.getMotherNaturePosition()),
+                allIslands.get((archipelago.getMotherNaturePosition() + allIslands.size() / 2) % allIslands.size()));
+        assertAll(
+                () -> voidIslands.forEach(island -> assertEquals(0, island.getTokenContainer().getTokens().size())),
+                () -> assertEquals(3, allIslands.stream().filter(island -> island.getTokenContainer().getTokens().size() == 1).count()),
+                () -> assertEquals(1, allIslands.stream().filter(island -> island.getTokenContainer().getTokens().size() == 2).count()),
+                () -> gameEngine.getGameState().getPlayerDashboards().values()
+                        .forEach(dashboard -> assertEquals(9, dashboard.getEntrance().getTokens().size()))
         );
     }
 

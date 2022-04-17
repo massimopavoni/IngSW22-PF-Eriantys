@@ -1,0 +1,14 @@
+{
+  "cheetah": {
+    "value": 1,
+    "steps": 1
+  },
+  "ostrich": {
+    "value": 2,
+    "steps": 1
+  },
+  "cat": {
+    "value": 3,
+    "steps": 2
+  }
+}
