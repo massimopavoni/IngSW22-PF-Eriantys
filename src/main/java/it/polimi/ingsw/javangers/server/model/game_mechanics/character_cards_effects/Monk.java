@@ -1,8 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
-import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
-import it.polimi.ingsw.javangers.server.model.game_data.token_containers.StudentsBag;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
@@ -17,8 +16,7 @@ public class Monk implements EffectStrategy {
     /**
      * Tokens that will be moved from this card to an island.
      */
-    private final List<TokenColor> tokensFromThis;
-
+    private final List<TokenColor> tokensToIsland;
     /**
      * Index of the island where the tokens will be moved.
      */
@@ -32,11 +30,11 @@ public class Monk implements EffectStrategy {
      * Constructor of the Monk class, initializing the list of tokens that will be moved and the index of the island
      * where they will be moved.
      *
-     * @param tokensFromThis list of tokens that will be moved from this card to an island
+     * @param tokensToIsland list of tokens that will be moved from this card to an island
      * @param islandIndex    index of the island where the tokens will be moved
      */
-    public Monk(List<TokenColor> tokensFromThis, int islandIndex) {
-        this.tokensFromThis = tokensFromThis;
+    public Monk(List<TokenColor> tokensToIsland, int islandIndex) {
+        this.tokensToIsland = tokensToIsland;
         this.islandIndex = islandIndex;
     }
     //endregion
@@ -53,14 +51,14 @@ public class Monk implements EffectStrategy {
     @Override
     public void useEffect(GameEngine gameEngine, String username) {
         CharacterCard monk = gameEngine.getCharacterCards().get(this.getClass().getSimpleName().toLowerCase());
-        if (monk.getTokenContainer().getTokens().size() <= 0 ||
-                this.tokensFromThis.size() != monk.getMultipurposeCounter()) {
+        if (monk.getTokenContainer().getTokens().isEmpty() ||
+                this.tokensToIsland.size() > monk.getMultipurposeCounter()) {
             throw new IllegalStateException("Impossible activation of the card because token container is empty or size of the list is out of bound");
         }
-        StudentsBag bag = gameEngine.getGameState().getStudentsBag();
-        Island island = gameEngine.getGameState().getArchipelago().getIslands().get(this.islandIndex);
-        island.getTokenContainer().addTokens(monk.getTokenContainer().extractTokens(this.tokensFromThis));
-        monk.getTokenContainer().addTokens(bag.grabTokens(monk.getMultipurposeCounter()));
+        GameState gameState = gameEngine.getGameState();
+        gameState.getArchipelago().getIslands().get(this.islandIndex)
+                .getTokenContainer().addTokens(monk.getTokenContainer().extractTokens(this.tokensToIsland));
+        monk.getTokenContainer().addTokens(gameState.getStudentsBag().grabTokens(monk.getMultipurposeCounter()));
     }
     //endregion
 }

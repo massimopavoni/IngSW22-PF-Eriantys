@@ -1,7 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
-import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
@@ -17,11 +17,10 @@ public class Jester implements EffectStrategy {
      * Tokens that will be moved from entrance to this card.
      */
     List<TokenColor> tokensFromEntrance;
-
     /**
      * Tokens that will be moved from this card to entrance.
      */
-    List<TokenColor> tokensFromThis;
+    List<TokenColor> tokensToEntrance;
     //endregion
 
     //--------------------------------------------------------------------------------------------------------------------------------
@@ -30,12 +29,12 @@ public class Jester implements EffectStrategy {
     /**
      * Constructor of the Jester class initializing the lists that will be exchanged.
      *
-     * @param tokensFromThis     list of tokens that will be moved from this card to entrance
      * @param tokensFromEntrance list of tokens that will be moved from entrance to this card
+     * @param tokensToEntrance   list of tokens that will be moved from this card to entrance
      */
-    public Jester(List<TokenColor> tokensFromEntrance, List<TokenColor> tokensFromThis) {
-        this.tokensFromThis = tokensFromThis;
+    public Jester(List<TokenColor> tokensFromEntrance, List<TokenColor> tokensToEntrance) {
         this.tokensFromEntrance = tokensFromEntrance;
+        this.tokensToEntrance = tokensToEntrance;
     }
     //endregion
 
@@ -50,14 +49,14 @@ public class Jester implements EffectStrategy {
      */
     @Override
     public void useEffect(GameEngine gameEngine, String username) {
-        if (this.tokensFromThis.size() != this.tokensFromEntrance.size() ||
+        if (this.tokensToEntrance.size() != this.tokensFromEntrance.size() ||
                 this.tokensFromEntrance.size() > gameEngine.getCharacterCards().get(this.getClass().getSimpleName().toLowerCase()).getMultipurposeCounter()) {
             throw new IllegalStateException("Impossible activation of the card because sizes of the lists are different or out of bound");
         }
-        PlayerDashboard playerDashboard = gameEngine.getGameState().getPlayerDashboards().get(username);
+        TokenContainer entrance = gameEngine.getGameState().getPlayerDashboards().get(username).getEntrance();
         CharacterCard characterCard = gameEngine.getCharacterCards().get(this.getClass().getSimpleName().toLowerCase());
-        playerDashboard.getEntrance().addTokens(characterCard.getTokenContainer().extractTokens(tokensFromThis));
-        characterCard.getTokenContainer().addTokens(playerDashboard.getEntrance().extractTokens(tokensFromEntrance));
+        entrance.addTokens(characterCard.getTokenContainer().extractTokens(tokensToEntrance));
+        characterCard.getTokenContainer().addTokens(entrance.extractTokens(tokensFromEntrance));
     }
     //endregion
 }

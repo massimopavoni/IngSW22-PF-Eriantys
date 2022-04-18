@@ -6,9 +6,10 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 /**
  * Class representing the knight character card.
  */
-public class Knight implements EffectStrategy{
+public class Knight implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------
     //region Methods
+
     /**
      * Method called to use the effect of the knight character card.
      *

@@ -1,8 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
-import it.polimi.ingsw.javangers.server.model.game_data.token_containers.StudentsBag;
-import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
@@ -17,7 +16,7 @@ public class Queen implements EffectStrategy {
     /**
      * Tokens that will be moved from this card to the hall.
      */
-    private final List<TokenColor> tokensFromThis;
+    private final List<TokenColor> tokensToHall;
     //endregion
 
     //--------------------------------------------------------------------------------------------------------------------------------
@@ -26,10 +25,10 @@ public class Queen implements EffectStrategy {
     /**
      * Constructor of the Queen class, initializing the list of tokens that will be moved.
      *
-     * @param tokensFromThis list of tokens that will be moved from this card to the hall
+     * @param tokensToHall list of tokens that will be moved from this card to the hall
      */
-    public Queen(List<TokenColor> tokensFromThis) {
-        this.tokensFromThis = tokensFromThis;
+    public Queen(List<TokenColor> tokensToHall) {
+        this.tokensToHall = tokensToHall;
     }
     //endregion
 
@@ -45,16 +44,14 @@ public class Queen implements EffectStrategy {
     @Override
     public void useEffect(GameEngine gameEngine, String username) {
         CharacterCard queen = gameEngine.getCharacterCards().get(this.getClass().getSimpleName().toLowerCase());
-        if (queen.getTokenContainer().getTokens().size() <= 0 ||
-                this.tokensFromThis.size() != queen.getMultipurposeCounter()) {
+        if (queen.getTokenContainer().getTokens().isEmpty() ||
+                this.tokensToHall.size() > queen.getMultipurposeCounter()) {
             throw new IllegalStateException("Impossible activation of the card because token container is empty or size of the list is out of bound");
         }
-        if (this.tokensFromThis.size() == queen.getMultipurposeCounter()) {
-            StudentsBag bag = gameEngine.getGameState().getStudentsBag();
-            TokenContainer hall = gameEngine.getGameState().getPlayerDashboards().get(username).getHall();
-            hall.addTokens(queen.getTokenContainer().extractTokens(this.tokensFromThis));
-            queen.getTokenContainer().addTokens(bag.grabTokens(queen.getMultipurposeCounter()));
-        }
+        GameState gameState = gameEngine.getGameState();
+        gameState.getPlayerDashboards().get(username)
+                .getHall().addTokens(queen.getTokenContainer().extractTokens(this.tokensToHall));
+        queen.getTokenContainer().addTokens(gameState.getStudentsBag().grabTokens(queen.getMultipurposeCounter()));
     }
     //endregion
 }
