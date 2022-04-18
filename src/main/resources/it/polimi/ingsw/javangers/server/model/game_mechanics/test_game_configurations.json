@@ -19,7 +19,7 @@
     "studentsPerEntrance": 9,
     "towersPerDashboard": 3,
     "numberOfCharacterCards": 12,
-    "coinsPerDashBoard": 10
+    "coinsPerDashBoard": 100
   },
   "test_invalidAssistantCardsResourceLocation": {
     "assistantCardsResourceLocation": "/it/polimi/ingsw/javangers/server/model/game_data/AssistantCard.class",

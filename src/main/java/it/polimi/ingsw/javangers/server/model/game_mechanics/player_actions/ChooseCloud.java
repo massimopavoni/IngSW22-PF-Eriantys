@@ -1,6 +1,9 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Cloud;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
+
+import java.util.List;
 
 /**
  * Class representing choose clouds action.
@@ -38,8 +41,13 @@ public class ChooseCloud implements ActionStrategy {
      */
     @Override
     public void doAction(GameEngine gameEngine, String username) {
+        List<Cloud> clouds = gameEngine.getGameState().getClouds();
+        Cloud selectedCloud = clouds.get(this.cloudIndex);
+        if (selectedCloud.getTokenContainer().getTokens().isEmpty()
+                && clouds.stream().anyMatch(cloud -> !cloud.getTokenContainer().getTokens().isEmpty()))
+            throw new IllegalStateException("There is a cloud that is not empty");
         gameEngine.getGameState().getPlayerDashboards().get(username).getEntrance()
-                .addTokens(gameEngine.getGameState().getClouds().get(cloudIndex).grabTokens());
+                .addTokens(selectedCloud.grabTokens());
     }
     //endregion
 }
