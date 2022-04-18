@@ -1,0 +1,61 @@
+package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
+
+import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
+import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
+import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
+
+import java.util.Collections;
+import java.util.stream.Collectors;
+
+/**
+ * Class representing the scoundrel character card.
+ */
+public class Scoundrel implements EffectStrategy {
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Attributes
+    /**
+     * Token color to remove from all the halls.
+     */
+    private final TokenColor tokenColor;
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Constructor, get and set methods
+
+    /**
+     * Constructor of the Scoundrel class, initializing the token color that will be removed from the halls.
+     *
+     * @param tokenColor token color that will be removed from the halls
+     */
+    public Scoundrel(TokenColor tokenColor) {
+        this.tokenColor = tokenColor;
+    }
+    //endregion
+
+    //--------------------------------------------------------------------------------------------------------------------------------
+    //region Methods
+
+    /**
+     * Method called to use the effect of the scoundrel character card.
+     *
+     * @param gameEngine game engine instance
+     * @param username   player username
+     */
+    @Override
+    public void useEffect(GameEngine gameEngine, String username) {
+        int tokenCount;
+        CharacterCard scoundrel = gameEngine.getCharacterCards().get(this.getClass().getSimpleName().toLowerCase());
+        for (TokenContainer playerHall : gameEngine.getGameState().getPlayerDashboards().values().stream()
+                .map(PlayerDashboard::getHall).collect(Collectors.toList())) {
+            tokenCount = playerHall.getColorCounts().get(this.tokenColor) != null ? playerHall.getColorCounts().get(this.tokenColor) : 0;
+            if (tokenCount > 0) {
+                gameEngine.getGameState().getStudentsBag().getTokenContainer()
+                        .addTokens(playerHall.extractTokens(
+                                Collections.nCopies(Math.min(tokenCount, scoundrel.getMultipurposeCounter()), tokenColor)));
+            }
+        }
+    }
+    //endregion
+}
