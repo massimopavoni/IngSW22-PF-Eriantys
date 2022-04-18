@@ -358,7 +358,6 @@ public class GameEngine {
             CharacterCard herbalist = this.characterCardsMap.get("herbalist");
             herbalist.setMultipurposeCounter(herbalist.getMultipurposeCounter() + 1);
         }
-
     }
 
     /**
