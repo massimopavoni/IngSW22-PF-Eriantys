@@ -48,6 +48,8 @@ public class MoveStudents implements ActionStrategy {
         TokenContainer entrance = playerDashboard.getEntrance();
         List<TokenColor> tokensFromEntrance = new ArrayList<>(this.studentsToHall);
         this.studentsToIslands.values().forEach(tokensFromEntrance::addAll);
+        if (tokensFromEntrance.size() != gameEngine.getGameConfiguration().getStudentsPerCloud())
+            throw new IllegalStateException("Students to move must be equal to students per cloud");
         if (!entrance.containsSubList(tokensFromEntrance))
             throw new IllegalStateException("Specified tokens not present in entrance");
         int oldHallCoins = hall.getColorCounts().values().stream().mapToInt(c -> c / 3).sum();
