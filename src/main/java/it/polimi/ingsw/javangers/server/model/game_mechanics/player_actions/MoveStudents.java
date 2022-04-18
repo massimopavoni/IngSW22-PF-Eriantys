@@ -1,7 +1,8 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
-import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
+import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
+import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
@@ -42,16 +43,21 @@ public class MoveStudents implements ActionStrategy {
      */
     @Override
     public void doAction(GameEngine gameEngine, String username) {
-        TokenContainer entrance = gameEngine.getGameState().getPlayerDashboards().get(username).getEntrance();
-        List<TokenColor> tokens = new ArrayList<>(this.studentsToHall);
-        this.studentsToIslands.values().forEach(tokens::addAll);
-        if (!entrance.containsSubList(tokens))
+        PlayerDashboard playerDashboard = gameEngine.getGameState().getPlayerDashboards().get(username);
+        TokenContainer hall = playerDashboard.getHall();
+        TokenContainer entrance = playerDashboard.getEntrance();
+        List<TokenColor> tokensFromEntrance = new ArrayList<>(this.studentsToHall);
+        this.studentsToIslands.values().forEach(tokensFromEntrance::addAll);
+        if (!entrance.containsSubList(tokensFromEntrance))
             throw new IllegalStateException("Specified tokens not present in entrance");
-        gameEngine.getGameState().getPlayerDashboards().get(username).getHall().addTokens(entrance.extractTokens(this.studentsToHall));
-        Archipelago archipelago = gameEngine.getGameState().getArchipelago();
-        for (Map.Entry<Integer, List<TokenColor>> entry : this.studentsToIslands.entrySet()) {
-            archipelago.getIslands().get(entry.getKey()).getTokenContainer().addTokens(entrance.extractTokens(entry.getValue()));
-        }
+        int oldHallCoins = hall.getColorCounts().values().stream().mapToInt(c -> c / 3).sum();
+        hall.addTokens(entrance.extractTokens(this.studentsToHall));
+        if (gameEngine.isExpertMode())
+            playerDashboard.setCoinsNumber(playerDashboard.getCoinsNumber() +
+                    hall.getColorCounts().values().stream().mapToInt(c -> c / 3).sum() - oldHallCoins);
+        List<Island> islands = gameEngine.getGameState().getArchipelago().getIslands();
+        this.studentsToIslands.forEach((islandIndex, tokensToIsland) ->
+                islands.get(islandIndex).getTokenContainer().addTokens(entrance.extractTokens(tokensToIsland)));
         gameEngine.changeTeachersPower(username);
     }
 
