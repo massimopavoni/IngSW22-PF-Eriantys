@@ -10,6 +10,10 @@ public class Island {
     //--------------------------------------------------------------------------------------------------------------------------------
     //region Attributes
     /**
+     * Island id for merging collisions.
+     */
+    private final int id;
+    /**
      * Token container instance.
      */
     private final TokenContainer tokenContainer;
@@ -29,10 +33,20 @@ public class Island {
     /**
      * Constructor for island, initializing token container, towers and enabled counter.
      */
-    public Island() {
+    public Island(int id) {
+        this.id = id;
         this.tokenContainer = new TokenContainer();
         this.towers = new Pair<>(TowerColor.NONE, 0);
         this.enabled = 0;
+    }
+
+    /**
+     * Getter for island id.
+     *
+     * @return island id
+     */
+    public int getId() {
+        return id;
     }
 
     /**

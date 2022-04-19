@@ -43,10 +43,10 @@ public class PlayAssistantCard implements ActionStrategy {
      */
     @Override
     public void doAction(GameEngine gameEngine, String username) {
-        List<String> forbiddenAssistantCards = new ArrayList<>();
         PlayerDashboard currentPlayerDashboard = gameEngine.getGameState().getPlayerDashboards().get(username);
         if (!currentPlayerDashboard.getAssistantCards().containsKey(this.cardName))
             throw new IllegalStateException("Specified card does not exist in player's available assistant cards");
+        List<String> forbiddenAssistantCards = new ArrayList<>();
         Map<String, PlayerDashboard> otherPlayersDashboard = gameEngine.getGameState().getPlayerDashboards();
         otherPlayersDashboard.remove(username);
         otherPlayersDashboard.values().stream()

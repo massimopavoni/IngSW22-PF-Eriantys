@@ -17,13 +17,14 @@ class IslandTest {
 
     @BeforeEach
     void setUp() {
-        island = new Island();
+        island = new Island(0);
     }
 
     @Test
     @DisplayName("Test constructor")
     void Island_constructor() {
         assertAll(
+                () -> assertEquals(0, island.getId()),
                 () -> assertNotNull(island.getTokenContainer()),
                 () -> assertTrue(island.getTokenContainer().getTokens().isEmpty()),
                 () -> assertNotNull(island.getTowers()),
@@ -60,7 +61,7 @@ class IslandTest {
         island.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         island.setTowers(new Pair<>(TowerColor.WHITE, 1));
         island.setEnabled(1);
-        Island islandToMerge = new Island();
+        Island islandToMerge = new Island(1);
         islandToMerge.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.PINK_FAIRY));
         islandToMerge.setTowers(new Pair<>(TowerColor.WHITE, 2));
         island.mergeWith(islandToMerge);

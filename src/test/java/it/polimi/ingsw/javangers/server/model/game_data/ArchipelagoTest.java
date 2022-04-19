@@ -71,7 +71,8 @@ class ArchipelagoTest {
         assertAll(
                 () -> assertEquals(2, archipelago.getIslands().size()),
                 () -> assertEquals(1, archipelago.getIslands().get(0).getEnabled()),
-                () -> assertEquals(otherIsland, archipelago.getIslands().get(1))
+                () -> assertEquals(otherIsland, archipelago.getIslands().get(1)),
+                () -> assertEquals(0, archipelago.getMotherNaturePosition())
         );
     }
 
@@ -85,7 +86,8 @@ class ArchipelagoTest {
         assertAll(
                 () -> assertEquals(2, archipelago.getIslands().size()),
                 () -> assertEquals(2, archipelago.getIslands().get(1).getTowers().getValue1()),
-                () -> assertEquals(otherIsland, archipelago.getIslands().get(0))
+                () -> assertEquals(otherIsland, archipelago.getIslands().get(0)),
+                () -> assertEquals(1, archipelago.getMotherNaturePosition())
         );
     }
 
@@ -103,7 +105,8 @@ class ArchipelagoTest {
                     put(TokenColor.BLUE_UNICORN, 2);
                     put(TokenColor.YELLOW_ELF, 1);
                     put(TokenColor.GREEN_FROG, 2);
-                }}, archipelago.getIslands().get(0).getTokenContainer().getColorCounts())
+                }}, archipelago.getIslands().get(0).getTokenContainer().getColorCounts()),
+                () -> assertEquals(0, archipelago.getMotherNaturePosition())
         );
     }
 }

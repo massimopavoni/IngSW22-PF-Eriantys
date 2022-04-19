@@ -4,8 +4,7 @@ import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 /**
  * Class representing the archipelago.
@@ -34,7 +33,7 @@ public class Archipelago {
     public Archipelago(int numberOfIslands) {
         if (numberOfIslands < 1) throw new IllegalArgumentException("Invalid number of islands");
         this.islandsList = new ArrayList<>();
-        this.islandsList.addAll(Stream.generate(Island::new).limit(numberOfIslands).collect(Collectors.toList()));
+        IntStream.range(0, numberOfIslands).forEach(id -> this.islandsList.add(new Island(id)));
     }
 
     /**
@@ -87,6 +86,7 @@ public class Archipelago {
             Island rightIsland = this.islandsList.remove((this.islandsList.indexOf(selectedIsland) + 1) % this.islandsList.size());
             selectedIsland.mergeWith(rightIsland);
         }
+        this.motherNaturePosition = this.islandsList.indexOf(selectedIsland);
     }
     //endregion
 }
