@@ -335,7 +335,7 @@ public class GameEngine {
     public void changeIslandPower(int selectedIslandIndex, String username) {
         // Trigger island power changes if island is enabled
         Archipelago archipelago = this.gameState.getArchipelago();
-        Island selectedIsland = archipelago.getIslands().get(archipelago.getMotherNaturePosition());
+        Island selectedIsland = archipelago.getIslands().get(selectedIslandIndex);
         if (selectedIsland.getEnabled() == 0) {
             // Get base players power map
             Map<String, Integer> playersPower = this.assignPlayersPower(selectedIslandIndex);
@@ -350,8 +350,9 @@ public class GameEngine {
 
             // Make changes based on island winners
             // "There can be only one (one, one, one)"
-            if (islandWinners.size() == 1) {
-                this.updateIslandData(selectedIslandIndex, this.gameState.getPlayerDashboards().get(islandWinners.get(0)));
+            PlayerDashboard winnerDashboard = this.gameState.getPlayerDashboards().get(islandWinners.get(0));
+            if (islandWinners.size() == 1 && selectedIsland.getTowers().getValue0() != winnerDashboard.getTowers().getValue0()) {
+                this.updateIslandData(selectedIslandIndex, winnerDashboard);
             }
         } else {
             selectedIsland.setEnabled(selectedIsland.getEnabled() - 1);
