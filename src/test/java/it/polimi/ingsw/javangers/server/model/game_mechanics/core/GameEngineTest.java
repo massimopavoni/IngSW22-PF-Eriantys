@@ -161,7 +161,7 @@ class GameEngineTest {
                     put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.GRAY));
                     put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
-                }}, true);
+                }}, false);
         gameEngine.initializeGame();
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         List<Island> allIslands = archipelago.getIslands();
