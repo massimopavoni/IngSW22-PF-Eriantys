@@ -38,7 +38,7 @@ public class MoveStudents implements ActionStrategy {
     /**
      * Action implementation to move students.
      *
-     * @param gameEngine game state instance
+     * @param gameEngine game engine instance
      * @param username   player username
      */
     @Override

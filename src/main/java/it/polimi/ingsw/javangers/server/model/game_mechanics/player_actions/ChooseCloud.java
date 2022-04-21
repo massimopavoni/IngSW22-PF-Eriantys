@@ -36,7 +36,7 @@ public class ChooseCloud implements ActionStrategy {
     /**
      * Action implementation for choosing clouds.
      *
-     * @param gameEngine game state instance
+     * @param gameEngine game engine instance
      * @param username   player username
      */
     @Override

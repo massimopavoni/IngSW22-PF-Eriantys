@@ -63,7 +63,7 @@ public class Player {
     /**
      * Execute an action.
      *
-     * @param gameEngine game state instance for modifications
+     * @param gameEngine game engine instance
      * @param username   player username
      */
     public void executeAction(GameEngine gameEngine, String username) {
