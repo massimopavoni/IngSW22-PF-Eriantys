@@ -1,14 +1,26 @@
 {
-  "cheetah": {
-    "value": 1,
-    "steps": 1
+  "fox": {
+    "value": 5,
+    "steps": 6
   },
-  "ostrich": {
-    "value": 2,
-    "steps": 1
+  "snake": {
+    "value": 6,
+    "steps": 6
   },
-  "cat": {
-    "value": 3,
-    "steps": 2
+  "octopus": {
+    "value": 7,
+    "steps": 7
+  },
+  "dog": {
+    "value": 8,
+    "steps": 7
+  },
+  "elephant": {
+    "value": 9,
+    "steps": 8
+  },
+  "turtle": {
+    "value": 10,
+    "steps": 8
   }
 }
