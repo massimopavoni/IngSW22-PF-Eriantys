@@ -52,6 +52,7 @@ public class Queen implements EffectStrategy {
         gameState.getPlayerDashboards().get(username)
                 .getHall().addTokens(queen.getTokenContainer().extractTokens(this.tokensToHall));
         queen.getTokenContainer().addTokens(gameState.getStudentsBag().grabTokens(queen.getMultipurposeCounter()));
+        gameEngine.changeTeachersPower(username);
     }
     //endregion
 }
