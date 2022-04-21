@@ -1,0 +1,26 @@
+{
+  "fox": {
+    "value": 5,
+    "steps": 6
+  },
+  "snake": {
+    "value": 6,
+    "steps": 6
+  },
+  "octopus": {
+    "value": 7,
+    "steps": 7
+  },
+  "dog": {
+    "value": 8,
+    "steps": 7
+  },
+  "elephant": {
+    "value": 9,
+    "steps": 8
+  },
+  "turtle": {
+    "value": 10,
+    "steps": 8
+  }
+}
