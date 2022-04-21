@@ -309,7 +309,7 @@ public class GameManager {
         // Try to execute the action
         Player currentPlayer = this.playersMap.get(username);
         try {
-            currentPlayer.setActionStrategy(playerAction);
+            currentPlayer.setAction(playerAction);
             currentPlayer.executeAction(this.gameEngine, username);
         } catch (IllegalStateException e) {
             throw new GameManagerException(String.format("Error while executing action (%s)", e.getMessage()), e);

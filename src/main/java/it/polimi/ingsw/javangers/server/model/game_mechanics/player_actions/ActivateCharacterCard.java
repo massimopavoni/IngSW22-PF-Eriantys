@@ -52,7 +52,7 @@ public class ActivateCharacterCard implements ActionStrategy {
         CharacterCard card = gameEngine.getCharacterCards().get(this.cardName);
         PlayerDashboard playerDashboard = gameEngine.getGameState().getPlayerDashboards().get(username);
         if (card.getCost() + card.getCostDelta() > playerDashboard.getCoinsNumber())
-            throw new IllegalStateException("You don't have enough coins to play this card");
+            throw new IllegalStateException("Specified player does not have enough coins to activate specified card");
         card.setEffect(this.effect);
         card.activateEffect(gameEngine, username);
         playerDashboard.setCoinsNumber(playerDashboard.getCoinsNumber() - (card.getCost() + card.getCostDelta()));

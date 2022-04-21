@@ -34,7 +34,7 @@ public class Player {
      *
      * @param action action to set
      */
-    public void setActionStrategy(ActionStrategy action) {
+    public void setAction(ActionStrategy action) {
         this.action = action;
     }
 
