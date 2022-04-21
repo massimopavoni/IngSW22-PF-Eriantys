@@ -147,7 +147,8 @@ class GameEngineTest {
                 () -> voidIslands.forEach(island -> assertEquals(0, island.getTokenContainer().getTokens().size())),
                 () -> islandsWithTokens.forEach(island -> assertEquals(1, island.getTokenContainer().getTokens().size())),
                 () -> gameEngine.getGameState().getPlayerDashboards().values()
-                        .forEach(dashboard -> assertEquals(7, dashboard.getEntrance().getTokens().size()))
+                        .forEach(dashboard -> assertEquals(7, dashboard.getEntrance().getTokens().size())),
+                () -> assertEquals(4, gameEngine.getCharacterCards().get("queen").getTokenContainer().getTokens().size())
         );
     }
 

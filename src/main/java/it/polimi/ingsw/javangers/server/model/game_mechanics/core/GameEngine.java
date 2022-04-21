@@ -281,6 +281,14 @@ public class GameEngine {
         // Fill dashboards' entrances
         this.gameState.getPlayerDashboards().values().forEach(dashboard -> dashboard.getEntrance()
                 .addTokens(this.gameState.getStudentsBag().grabTokens(this.gameConfiguration.getStudentsPerEntrance())));
+        // Fill token containers of character cards, if needed
+        if (this.expertMode) {
+            for(CharacterCard characterCard : this.characterCardsMap.values()) {
+                if (characterCard.getTokenContainerSize() > 0) {
+                    characterCard.getTokenContainer().addTokens(this.gameState.getStudentsBag().grabTokens(characterCard.getTokenContainerSize()));
+                }
+            }
+        }
     }
 
     /**
