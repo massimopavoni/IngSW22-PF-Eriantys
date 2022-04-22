@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
@@ -33,7 +35,8 @@ public class Monk implements EffectStrategy {
      * @param tokensToIsland list of tokens that will be moved from this card to an island
      * @param islandIndex    index of the island where the tokens will be moved
      */
-    public Monk(List<TokenColor> tokensToIsland, int islandIndex) {
+    @JsonCreator
+    public Monk(@JsonProperty("tokensToIsland") List<TokenColor> tokensToIsland, @JsonProperty("islandIndex") int islandIndex) {
         this.tokensToIsland = tokensToIsland;
         this.islandIndex = islandIndex;
     }

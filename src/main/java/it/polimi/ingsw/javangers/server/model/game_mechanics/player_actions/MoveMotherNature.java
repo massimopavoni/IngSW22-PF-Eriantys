@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.Archipelago;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
@@ -20,7 +22,8 @@ public class MoveMotherNature implements ActionStrategy {
      *
      * @param steps number of steps to move
      */
-    public MoveMotherNature(int steps) {
+    @JsonCreator
+    public MoveMotherNature(@JsonProperty("steps") int steps) {
         this.steps = steps;
     }
 

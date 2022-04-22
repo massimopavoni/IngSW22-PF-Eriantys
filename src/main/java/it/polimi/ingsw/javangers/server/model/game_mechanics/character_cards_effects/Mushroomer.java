@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
@@ -23,7 +25,8 @@ public class Mushroomer implements EffectStrategy {
      *
      * @param forbiddenColor token color forbidden during the computation of the power on the islands
      */
-    public Mushroomer(TokenColor forbiddenColor) {
+    @JsonCreator
+    public Mushroomer(@JsonProperty("forbiddenColor") TokenColor forbiddenColor) {
         this.forbiddenColor = forbiddenColor;
     }
     //endregion
