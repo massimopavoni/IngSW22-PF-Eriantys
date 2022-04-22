@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
@@ -29,7 +31,8 @@ public class Scoundrel implements EffectStrategy {
      *
      * @param tokenColor token color that will be removed from the halls
      */
-    public Scoundrel(TokenColor tokenColor) {
+    @JsonCreator
+    public Scoundrel(@JsonProperty("tokenColor") TokenColor tokenColor) {
         this.tokenColor = tokenColor;
     }
     //endregion
