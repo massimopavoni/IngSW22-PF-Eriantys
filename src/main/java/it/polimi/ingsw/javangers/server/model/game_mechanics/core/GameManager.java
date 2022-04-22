@@ -3,6 +3,8 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics.core;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TowerColor;
@@ -25,9 +27,9 @@ public class GameManager {
     //--------------------------------------------------------------------------------------------------------------------------------
     //region Attributes
     /**
-     * Object mapper instance for game engine serialization.
+     * Object mapper instance for serialization.
      */
-    private final ObjectMapper gameEngineJSONMapper;
+    private final ObjectMapper jsonMapper;
     /**
      * Game configurations json file resource location.
      */
@@ -101,7 +103,7 @@ public class GameManager {
             throw new GameManagerException("Invalid first player's chosen tower color");
         if (firstPlayerUsername.isEmpty())
             throw new GameManagerException("Username is empty");
-        this.gameEngineJSONMapper = new ObjectMapper();
+        this.jsonMapper = new ObjectMapper();
         this.gameConfigurationsResourceLocation = gameConfigurationsResourceLocation;
         this.exactPlayersNumber = exactPlayersNumber;
         this.expertMode = expertMode;
@@ -109,7 +111,9 @@ public class GameManager {
         this.playersMap.put(firstPlayerUsername, new Player());
         this.playersInfo = new HashMap<>();
         this.playersInfo.put(firstPlayerUsername, firstPlayerInfo);
-        ObjectMapper jsonMapper = new ObjectMapper();
+        this.playersOrder = Collections.emptyList();
+        this.endgame = Endgame.NONE;
+        this.winners = Collections.emptyList();
         try {
             File jsonFile = new File(Objects.requireNonNull(getClass().getResource(gamePhasesResourceLocation)).getFile());
             this.gameMacroPhases = jsonMapper.readValue(jsonFile, new TypeReference<Map<Integer, GameMacroPhase>>() {
@@ -128,10 +132,37 @@ public class GameManager {
      */
     public String getGameEngineJSON() throws GameManagerException {
         try {
-            return this.gameEngineJSONMapper.writeValueAsString(this.gameEngine);
+            return this.jsonMapper.writeValueAsString(this.gameEngine);
         } catch (JsonProcessingException e) {
             throw new GameManagerException("Error while serializing game engine", e);
         }
+    }
+
+    /**
+     * Get a serialized copy of the full game information.
+     *
+     * @return full game information serialized copy
+     * @throws GameManagerException if there was an error while serializing the full game information
+     */
+    public String getGameJSON() throws GameManagerException {
+        ObjectNode gameJSON = this.jsonMapper.createObjectNode();
+        gameJSON.put("exactPlayersNumber", this.exactPlayersNumber);
+        gameJSON.put("expertMode", this.expertMode);
+        ObjectNode gameMacroPhasesJSON = this.jsonMapper.createObjectNode();
+        this.gameMacroPhases.forEach((phaseNumber, gameMacroPhase) ->
+                gameMacroPhasesJSON.set(phaseNumber.toString(), this.jsonMapper.valueToTree(gameMacroPhase)));
+        gameJSON.set("gameMacroPhases", gameMacroPhasesJSON);
+        gameJSON.put("currentPhase", this.getCurrentPhaseString());
+        ArrayNode playersOrderJSON = this.jsonMapper.createArrayNode();
+        this.playersOrder.forEach(playersOrderJSON::add);
+        gameJSON.set("playersOrder", playersOrderJSON);
+        gameJSON.put("currentPlayer", this.getCurrentPlayer());
+        gameJSON.put("endgame", this.endgame.name());
+        ArrayNode winnersJSON = this.jsonMapper.createArrayNode();
+        this.winners.forEach(winnersJSON::add);
+        gameJSON.set("winners", winnersJSON);
+        gameJSON.set("gameEngine", this.jsonMapper.valueToTree(this.gameEngine));
+        return gameJSON.toString();
     }
 
     /**
@@ -176,7 +207,7 @@ public class GameManager {
      * @return current player
      */
     public String getCurrentPlayer() {
-        return this.playersOrder.get(this.currentPlayerIndex);
+        return !this.playersOrder.isEmpty() ? this.playersOrder.get(this.currentPlayerIndex) : "";
     }
 
     /**
@@ -269,8 +300,6 @@ public class GameManager {
             this.playersOrder = Arrays.asList(this.playersMap.keySet().toArray(new String[0]));
             Collections.shuffle(this.playersOrder, new Random());
             this.currentPlayerIndex = 0;
-            this.endgame = Endgame.NONE;
-            this.winners = Collections.emptyList();
         }
     }
 
