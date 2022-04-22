@@ -1,0 +1,14 @@
+{
+  "bard": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Bard",
+  "centaur": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Centaur",
+  "herald": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Herald",
+  "herbalist": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Herbalist",
+  "innkeeper": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Innkeeper",
+  "jester": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Jester",
+  "knight": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Knight",
+  "mailman": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Mailman",
+  "monk": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Monk",
+  "mushroomer": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Mushroomer",
+  "queen": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Queen",
+  "scoundrel": "it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects.Scoundrel"
+}
