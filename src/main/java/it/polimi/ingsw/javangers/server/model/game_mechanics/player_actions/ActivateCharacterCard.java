@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
@@ -30,7 +32,8 @@ public class ActivateCharacterCard implements ActionStrategy {
      * @param cardName name of character card to play
      * @param effect   effect of the card
      */
-    public ActivateCharacterCard(String cardName, EffectStrategy effect) {
+    @JsonCreator
+    public ActivateCharacterCard(@JsonProperty("cardName") String cardName, @JsonProperty("effect") EffectStrategy effect) {
         this.cardName = cardName;
         this.effect = effect;
     }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.TokenContainer;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
@@ -32,7 +34,8 @@ public class Jester implements EffectStrategy {
      * @param tokensFromEntrance list of tokens that will be moved from entrance to this card
      * @param tokensToEntrance   list of tokens that will be moved from this card to entrance
      */
-    public Jester(List<TokenColor> tokensFromEntrance, List<TokenColor> tokensToEntrance) {
+    @JsonCreator
+    public Jester(@JsonProperty("tokensFromEntrance") List<TokenColor> tokensFromEntrance, @JsonProperty("tokensToEntrance") List<TokenColor> tokensToEntrance) {
         this.tokensFromEntrance = tokensFromEntrance;
         this.tokensToEntrance = tokensToEntrance;
     }

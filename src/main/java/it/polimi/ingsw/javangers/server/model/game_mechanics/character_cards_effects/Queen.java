@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.GameState;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
@@ -27,7 +29,8 @@ public class Queen implements EffectStrategy {
      *
      * @param tokensToHall list of tokens that will be moved from this card to the hall
      */
-    public Queen(List<TokenColor> tokensToHall) {
+    @JsonCreator
+    public Queen(@JsonProperty("tokensToHall") List<TokenColor> tokensToHall) {
         this.tokensToHall = tokensToHall;
     }
     //endregion
