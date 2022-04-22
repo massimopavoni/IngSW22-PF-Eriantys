@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
@@ -22,7 +24,8 @@ public class Herald implements EffectStrategy {
      *
      * @param islandIndex index of the island where the power is checked
      */
-    public Herald(int islandIndex) {
+    @JsonCreator
+    public Herald(@JsonProperty("islandIndex") int islandIndex) {
         this.islandIndex = islandIndex;
     }
     //endregion

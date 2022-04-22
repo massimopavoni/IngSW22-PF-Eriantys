@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
@@ -24,7 +26,8 @@ public class Herbalist implements EffectStrategy {
      *
      * @param islandIndex index of the island where the inhibition will be set
      */
-    public Herbalist(int islandIndex) {
+    @JsonCreator
+    public Herbalist(@JsonProperty("islandIndex") int islandIndex) {
         this.islandIndex = islandIndex;
     }
     //endregion
