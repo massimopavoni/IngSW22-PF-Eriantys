@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
@@ -30,7 +32,8 @@ public class MoveStudents implements ActionStrategy {
      * @param studentsToHall    students to move in the hall
      * @param studentsToIslands students to move on the islands
      */
-    public MoveStudents(List<TokenColor> studentsToHall, Map<Integer, List<TokenColor>> studentsToIslands) {
+    @JsonCreator
+    public MoveStudents(@JsonProperty("studentsToHall") List<TokenColor> studentsToHall, @JsonProperty("studentsToIslands") Map<Integer, List<TokenColor>> studentsToIslands) {
         this.studentsToHall = studentsToHall;
         this.studentsToIslands = studentsToIslands;
     }

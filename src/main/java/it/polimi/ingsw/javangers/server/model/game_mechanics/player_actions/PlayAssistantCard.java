@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.PlayerDashboard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
@@ -27,7 +29,8 @@ public class PlayAssistantCard implements ActionStrategy {
      *
      * @param cardName name of assistant card to play
      */
-    public PlayAssistantCard(String cardName) {
+    @JsonCreator
+    public PlayAssistantCard(@JsonProperty("cardName") String cardName) {
         this.cardName = cardName;
     }
     //endregion

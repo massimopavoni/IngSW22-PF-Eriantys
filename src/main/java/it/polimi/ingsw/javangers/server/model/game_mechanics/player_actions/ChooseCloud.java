@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Cloud;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
@@ -25,7 +27,8 @@ public class ChooseCloud implements ActionStrategy {
      *
      * @param cloudIndex index of the chosen cloud
      */
-    public ChooseCloud(int cloudIndex) {
+    @JsonCreator
+    public ChooseCloud(@JsonProperty("cloudIndex") int cloudIndex) {
         this.cloudIndex = cloudIndex;
     }
     //endregion
