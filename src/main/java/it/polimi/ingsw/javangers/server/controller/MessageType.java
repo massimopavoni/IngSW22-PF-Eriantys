@@ -13,9 +13,13 @@ public enum MessageType {
      */
     PLAYER,
     /**
+     * Initialization of the game.
+     */
+    START,
+    /**
      * Execution of the action of the player.
      */
-    UPDATE,
+    ACTION,
     /**
      * Error occurred in the deserialization.
      */

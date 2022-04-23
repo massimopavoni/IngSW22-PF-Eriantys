@@ -91,8 +91,8 @@ public class DirectivesForge {
         try {
             JsonNode addPlayerTree = this.jsonMapper.readTree(jsonArgs);
             return new Pair<>(
-                    WizardType.valueOf(addPlayerTree.at("wizardType").textValue()),
-                    TowerColor.valueOf(addPlayerTree.at("towerColor").textValue())
+                    WizardType.valueOf(addPlayerTree.get("wizardType").textValue()),
+                    TowerColor.valueOf(addPlayerTree.get("towerColor").textValue())
             );
         } catch (JsonProcessingException e) {
             throw new DirectivesForgeException(String.format("Error while deserializing add player arguments (%s)", e.getMessage()), e);
