@@ -1,0 +1,8 @@
+{
+  "ActivateCharacterCard": "it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.ActivateCharacterCard",
+  "ChooseCloud": "it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.ChooseCloud",
+  "FillClouds": "it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.FillClouds",
+  "MoveMotherNature": "it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.MoveMotherNature",
+  "MoveStudents": "it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.MoveStudents",
+  "PlayAssistantCard": "it.polimi.ingsw.javangers.server.model.game_mechanics.player_actions.PlayAssistantCard"
+}

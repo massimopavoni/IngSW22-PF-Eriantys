@@ -89,7 +89,11 @@ class GameManagerTest {
         assertAll(
                 () -> assertEquals(3, gameManager.getExactPlayersNumber()),
                 () -> assertTrue(gameManager.isExpertMode()),
-                () -> assertEquals("0:0", gameManager.getCurrentPhaseString())
+                () -> assertEquals("0:0", gameManager.getCurrentPhaseString()),
+                () -> assertEquals(Collections.emptyList(), gameManager.getPlayersOrder()),
+                () -> assertEquals(Endgame.NONE, gameManager.getEndgame()),
+                () -> assertEquals(Collections.emptyList(), gameManager.getWinners()),
+                () -> assertFalse(gameManager.getGameJSON().isEmpty())
         );
     }
 
@@ -200,9 +204,7 @@ class GameManagerTest {
                 () -> assertFalse(gameManager.getGameEngineJSON().isEmpty()),
                 () -> assertEquals(1, gameManager.getAvailableWizardTypes().size()),
                 () -> assertEquals(3, gameManager.getPlayersOrder().size()),
-                () -> assertTrue(Arrays.asList("Rick Deckard", "Roy Batty", "Rachael").contains(gameManager.getCurrentPlayer())),
-                () -> assertEquals(Endgame.NONE, gameManager.getEndgame()),
-                () -> assertEquals(Collections.emptyList(), gameManager.getWinners())
+                () -> assertTrue(Arrays.asList("Rick Deckard", "Roy Batty", "Rachael").contains(gameManager.getCurrentPlayer()))
         );
     }
 
