@@ -1,0 +1,6 @@
+{
+  "gameConfigurationsResourceLocation": "/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
+  "gamePhasesResourceLocation": "/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_phases.json",
+  "actionStrategyClassMappingsResourceLocation": "/it/polimi/ingsw/javangers/server/controller/forge_action_strategy_class_mappings.json",
+  "effectStrategyClassMappingsResourceLocation": "/it/polimi/ingsw/javangers/server/controller/forge_effect_strategy_class_mappings.json"
+}
