@@ -106,13 +106,44 @@ public class MessageHandler implements Runnable {
     }
 
     /**
+     * Handle player connections for directive messages.
+     *
+     * @param playerConnections        list of all player connections
+     * @param allowedPlayerConnections list of allowed player connections for playing the game
+     */
+    private void handleConnections(List<PlayerConnection> playerConnections, List<PlayerConnection> allowedPlayerConnections) {
+        String incomingDirective;
+        for (PlayerConnection playerConnection : playerConnections) {
+            incomingDirective = playerConnection.getIncomingDirective();
+            if (incomingDirective != null) {
+                LOGGER.log(Level.INFO, "Receiving directive from player connection {0}", playerConnection.getID());
+                if (this.modelGate.isGameFull() && !allowedPlayerConnections.contains(playerConnection)) {
+                    String outgoingDirective = this.composeJSONMessage(MessageType.ERROR, "\"Player connection not added to the game\"");
+                    LOGGER.log(Level.INFO, "Sending directive to player connection {0}", playerConnection.getID());
+                    playerConnection.setOutgoingDirective(outgoingDirective);
+                } else {
+                    Pair<MessageType, String> outgoingDirectivePair = this.modelGate.executeDirective(playerConnection.getID(), incomingDirective);
+                    String outgoingDirective = this.composeJSONMessage(outgoingDirectivePair.getValue0(), outgoingDirectivePair.getValue1());
+                    if (outgoingDirectivePair.getValue0() == MessageType.START || outgoingDirectivePair.getValue0() == MessageType.ACTION) {
+                        LOGGER.info("Sending directive to all player connections in the game");
+                        allowedPlayerConnections.forEach(p -> p.setOutgoingDirective(outgoingDirective));
+                    } else {
+                        LOGGER.log(Level.INFO, "Sending directive to player connection {0}", playerConnection.getID());
+                        playerConnection.setOutgoingDirective(outgoingDirective);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Run message handler inside main server thread, managing directives.
      */
     @Override
     public void run() {
         LOGGER.info("Main infinite loop starting");
-        List<PlayerConnection> playerConnectionsList;
-        String incomingDirective;
+        List<PlayerConnection> playerConnections;
         while (alive) {
             try {
                 synchronized (this.pollingWaitingLock) {
@@ -123,11 +154,11 @@ public class MessageHandler implements Runnable {
                 Thread.currentThread().interrupt();
                 System.exit(1);
             }
-            playerConnectionsList = this.connectionsPool.getAlivePlayerConnections();
-            Collections.shuffle(playerConnectionsList);
-            Set<Integer> playerConnectionsIDs = playerConnectionsList.stream().map(PlayerConnection::getID).collect(Collectors.toSet());
+            playerConnections = this.connectionsPool.getAlivePlayerConnections();
+            Collections.shuffle(playerConnections);
+            Set<Integer> playerConnectionsIDs = playerConnections.stream().map(PlayerConnection::getID).collect(Collectors.toSet());
             List<Integer> allowedPlayerConnectionIDs = this.modelGate.getPlayerConnectionIDs();
-            List<PlayerConnection> allowedPlayerConnections = playerConnectionsList.stream()
+            List<PlayerConnection> allowedPlayerConnections = playerConnections.stream()
                     .filter(playerConnection -> allowedPlayerConnectionIDs
                             .contains(playerConnection.getID())).collect(Collectors.toList());
             if (!new HashSet<>(playerConnectionsIDs).containsAll(allowedPlayerConnectionIDs)) {
@@ -138,28 +169,7 @@ public class MessageHandler implements Runnable {
                     playerConnection.setOutgoingDirective(outgoingDirective);
                 }
             }
-            for (PlayerConnection playerConnection : playerConnectionsList) {
-                incomingDirective = playerConnection.getIncomingDirective();
-                if (incomingDirective != null) {
-                    LOGGER.log(Level.INFO, "Receiving directive from player connection {0}", playerConnection.getID());
-                    if (this.modelGate.isGameFull() && !allowedPlayerConnections.contains(playerConnection)) {
-                        String outgoingDirective = this.composeJSONMessage(MessageType.ERROR, "\"Player connection not added to the game\"");
-                        LOGGER.log(Level.INFO, "Sending directive to player connection {0}", playerConnection.getID());
-                        playerConnection.setOutgoingDirective(outgoingDirective);
-                    } else {
-                        Pair<MessageType, String> outgoingDirectivePair = this.modelGate.executeDirective(playerConnection.getID(), incomingDirective);
-                        String outgoingDirective = this.composeJSONMessage(outgoingDirectivePair.getValue0(), outgoingDirectivePair.getValue1());
-                        if (outgoingDirectivePair.getValue0() == MessageType.START || outgoingDirectivePair.getValue0() == MessageType.ACTION) {
-                            LOGGER.info("Sending directive to all player connections in the game");
-                            allowedPlayerConnections.forEach(p -> p.setOutgoingDirective(outgoingDirective));
-                        } else {
-                            LOGGER.log(Level.INFO, "Sending directive to player connection {0}", playerConnection.getID());
-                            playerConnection.setOutgoingDirective(outgoingDirective);
-                        }
-                        break;
-                    }
-                }
-            }
+            this.handleConnections(playerConnections, allowedPlayerConnections);
         }
     }
 }

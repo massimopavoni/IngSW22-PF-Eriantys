@@ -34,6 +34,10 @@ public class PlayerConnection implements Runnable {
      */
     private final int id;
     /**
+     * Locking object for outgoing directives wait.
+     */
+    private final Object directiveWaitingLock;
+    /**
      * Buffered reader for incoming directives.
      */
     private BufferedReader in;
@@ -41,10 +45,6 @@ public class PlayerConnection implements Runnable {
      * Buffered writer for outgoing directives.
      */
     private BufferedWriter out;
-    /**
-     * Locking object for outgoing directives wait.
-     */
-    private final Object directiveWaitingLock;
     /**
      * Alive connection flag.
      */
@@ -113,9 +113,63 @@ public class PlayerConnection implements Runnable {
      */
     public void setOutgoingDirective(String outgoingDirective) {
         if (this.alive) {
-            synchronized (this.directiveWaitingLock){
+            synchronized (this.directiveWaitingLock) {
                 this.outgoingDirective = outgoingDirective;
+                this.directiveWaitingLock.notifyAll();
             }
+        }
+    }
+
+    /**
+     * Function to run inside incoming directive thread.
+     */
+    private void incomingDirectiveThreadFunction() {
+        try {
+            while (this.playerSocket.isConnected()) {
+                String input = this.in.readLine();
+                if (input.equals("EXIT")) {
+                    LOGGER.log(Level.WARNING, "Player connection {0} - disconnected", this.id);
+                    this.alive = false;
+                    break;
+                }
+                this.incomingDirective = input;
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, String.format(EXCEPTION_MESSAGE, this.id),
+                    new PlayerConnectionException(String.format(BUFFER_ERROR_MESSAGE, e.getMessage()), e));
+        } finally {
+            Thread.currentThread().interrupt();
+            this.alive = false;
+        }
+    }
+
+    /**
+     * Function to run inside outgoing directive thread.
+     */
+    private void outgoingDirectiveThreadFunction() {
+        try {
+            while (this.playerSocket.isConnected()) {
+                synchronized (this.directiveWaitingLock) {
+                    this.directiveWaitingLock.wait();
+                }
+                if (this.outgoingDirective != null) {
+                    this.out.write(this.outgoingDirective);
+                    this.out.newLine();
+                    this.out.flush();
+                    this.incomingDirective = null;
+                    this.outgoingDirective = null;
+                }
+            }
+            LOGGER.log(Level.WARNING, "Player connection {0} - disconnected", this.id);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, String.format(EXCEPTION_MESSAGE, this.id),
+                    new PlayerConnectionException(String.format(BUFFER_ERROR_MESSAGE, e.getMessage()), e));
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.SEVERE, String.format(EXCEPTION_MESSAGE, this.id),
+                    new PlayerConnectionException(String.format("Thread interrupted %s", e.getMessage()), e));
+        } finally {
+            Thread.currentThread().interrupt();
+            this.alive = false;
         }
     }
 
@@ -125,47 +179,8 @@ public class PlayerConnection implements Runnable {
     @Override
     public void run() {
         LOGGER.log(Level.INFO, "Player connection {0} - running", this.id);
-        new Thread(() -> {
-            try {
-                while (this.playerSocket.isConnected()) {
-                    String input = this.in.readLine();
-                    if (input.equals("exit")) {
-                        LOGGER.log(Level.WARNING, "Player connection {0} - disconnected", this.id);
-                        this.alive = false;
-                        break;
-                    }
-                    this.incomingDirective = input;
-                }
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, String.format(EXCEPTION_MESSAGE, this.id),
-                        new PlayerConnectionException(String.format(BUFFER_ERROR_MESSAGE, e.getMessage()), e));
-            } finally {
-                Thread.currentThread().interrupt();
-                this.alive = false;
-            }
-        }).start();
-        new Thread(() -> {
-            try {
-                while (this.playerSocket.isConnected()) {
-                    synchronized (this.directiveWaitingLock) {
-                        if (this.outgoingDirective != null) {
-                            this.out.write(this.outgoingDirective);
-                            this.out.newLine();
-                            this.out.flush();
-                            this.incomingDirective = null;
-                            this.outgoingDirective = null;
-                        }
-                    }
-                }
-                LOGGER.log(Level.WARNING, "Player connection {0} - disconnected", this.id);
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, String.format(EXCEPTION_MESSAGE, this.id),
-                        new PlayerConnectionException(String.format(BUFFER_ERROR_MESSAGE, e.getMessage()), e));
-            } finally {
-                Thread.currentThread().interrupt();
-                this.alive = false;
-            }
-        }).start();
+        new Thread(this::incomingDirectiveThreadFunction).start();
+        new Thread(this::outgoingDirectiveThreadFunction).start();
     }
 
     /**

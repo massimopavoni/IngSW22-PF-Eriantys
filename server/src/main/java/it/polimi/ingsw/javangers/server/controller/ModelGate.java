@@ -138,6 +138,35 @@ public class ModelGate {
     }
 
     /**
+     * Check game full for setting flag.
+     */
+    private void checkGameFull() {
+        if (this.gameManager.getPlayersOrder().size() == this.gameManager.getExactPlayersNumber()) {
+            LOGGER.info("Game full");
+            this.gameFull = true;
+        }
+    }
+
+    /**
+     * Check game ended for resetting.
+     */
+    private void checkGameEnded() {
+        if (!this.gameManager.getWinners().isEmpty()) {
+            LOGGER.log(Level.INFO, "Game ended - winners: {0}", this.gameManager.getWinners());
+            this.reset();
+        }
+    }
+
+    /**
+     * Reset game manager and player connections IDs list.
+     */
+    public void reset() {
+        this.gameManager = null;
+        this.playerConnectionsIDsList.clear();
+        this.gameFull = false;
+    }
+
+    /**
      * Execute incoming directive depending on message type.
      *
      * @param playerConnectionID player connection id
@@ -172,10 +201,7 @@ public class ModelGate {
                 this.gameManager.addPlayer(username, playerInfo);
                 if (!this.playerConnectionsIDsList.contains(playerConnectionID))
                     this.playerConnectionsIDsList.add(playerConnectionID);
-                if (this.gameManager.getPlayersOrder().size() == this.gameManager.getExactPlayersNumber()) {
-                    LOGGER.info("Game full");
-                    this.gameFull = true;
-                }
+                this.checkGameFull();
                 return new Pair<>(type, "\"OK\"");
             case START:
                 if (this.gameManager == null) {
@@ -202,24 +228,12 @@ public class ModelGate {
                 LOGGER.log(Level.INFO, "Executing player action - {0} ({1})", new Object[]{username, action.getClass().getSimpleName()});
                 this.gameManager.executePlayerAction(username, action);
                 String gameJSON = this.gameManager.getGameJSON();
-                if (!this.gameManager.getWinners().isEmpty()) {
-                    LOGGER.log(Level.INFO, "Game ended - winners: {0}", this.gameManager.getWinners());
-                    this.reset();
-                }
+                this.checkGameEnded();
                 return new Pair<>(type, gameJSON);
             default:
                 LOGGER.warning("Unsupported directive message type");
                 return new Pair<>(type, "\"Unsupported directive message type\"");
         }
-    }
-
-    /**
-     * Reset game manager and player connections IDs list.
-     */
-    public void reset() {
-        this.gameManager = null;
-        this.playerConnectionsIDsList.clear();
-        this.gameFull = false;
     }
 
     /**

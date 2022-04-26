@@ -1,6 +1,7 @@
 package it.polimi.ingsw.javangers.server.controller.network;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -51,7 +52,9 @@ public class ConnectionsPool implements Runnable {
     private ConnectionsPool(int port, int maxConnections) throws ConnectionsPoolException {
         try {
             LOGGER.info("Creating connections pool server socket");
-            this.serverSocket = new ServerSocket(port);
+            this.serverSocket = new ServerSocket();
+            this.serverSocket.setReuseAddress(true);
+            this.serverSocket.bind(new InetSocketAddress(port));
             this.maxConnections = maxConnections;
             this.playerConnectionsList = new ArrayList<>();
         } catch (IOException e) {
@@ -106,14 +109,15 @@ public class ConnectionsPool implements Runnable {
         try {
             LOGGER.info("Connections pool running");
             while (!this.serverSocket.isClosed()) {
-                if (this.playerConnectionsList.size() <= this.maxConnections) {
+                if (this.playerConnectionsList.size() < this.maxConnections) {
                     Socket socket = this.serverSocket.accept();
-                    LOGGER.info("Accepting new connection");
                     PlayerConnection playerConnection = new PlayerConnection(socket);
+                    new Thread(playerConnection).start();
                     synchronized (this.playerConnectionsList) {
                         this.playerConnectionsList.add(playerConnection);
                     }
-                    new Thread(playerConnection).start();
+                    LOGGER.log(Level.INFO, "Accepting new connection - {0}/{1} connections",
+                            new Object[]{this.playerConnectionsList.size(), this.maxConnections});
                 }
             }
         } catch (IOException e) {
