@@ -131,6 +131,7 @@ public class PlayerConnection implements Runnable {
                     String input = this.in.readLine();
                     if (input.equals("exit")) {
                         LOGGER.log(Level.WARNING, "Player connection {0} - disconnected", this.id);
+                        this.alive = false;
                         break;
                     }
                     this.incomingDirective = input;
@@ -151,8 +152,8 @@ public class PlayerConnection implements Runnable {
                             this.out.write(this.outgoingDirective);
                             this.out.newLine();
                             this.out.flush();
-                            this.outgoingDirective = null;
                             this.incomingDirective = null;
+                            this.outgoingDirective = null;
                         }
                     }
                 }
