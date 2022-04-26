@@ -74,11 +74,14 @@ public class ConnectionsPool implements Runnable {
     }
 
     /**
-     * Get shallow copy of player connections list.
+     * Get shallow copy of player connections list, after removing dead connections.
      *
-     * @return player connections list
+     * @return alive player connections list
      */
-    public List<PlayerConnection> getPlayerConnectionsList() {
+    public List<PlayerConnection> getAlivePlayerConnections() {
+        synchronized (this.playerConnectionsList) {
+            this.playerConnectionsList.removeIf(playerConnection -> !playerConnection.isAlive());
+        }
         return new ArrayList<>(this.playerConnectionsList);
     }
 
@@ -103,9 +106,6 @@ public class ConnectionsPool implements Runnable {
         try {
             LOGGER.info("Connections pool running");
             while (!this.serverSocket.isClosed()) {
-                synchronized (this.playerConnectionsList) {
-                    this.playerConnectionsList.removeIf(playerConnection -> !playerConnection.isAlive());
-                }
                 if (this.playerConnectionsList.size() <= this.maxConnections) {
                     Socket socket = this.serverSocket.accept();
                     LOGGER.info("Accepting new connection");

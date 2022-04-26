@@ -123,11 +123,10 @@ public class MessageHandler implements Runnable {
                 Thread.currentThread().interrupt();
                 System.exit(1);
             }
-            playerConnectionsList = this.connectionsPool.getPlayerConnectionsList();
+            playerConnectionsList = this.connectionsPool.getAlivePlayerConnections();
             Collections.shuffle(playerConnectionsList);
             Set<Integer> playerConnectionsIDs = playerConnectionsList.stream().map(PlayerConnection::getID).collect(Collectors.toSet());
-            List<Integer> allowedPlayerConnectionIDs = this.modelGate.isGameFull() ? this.modelGate.getPlayerConnectionIDs() :
-                    new ArrayList<>(playerConnectionsIDs);
+            List<Integer> allowedPlayerConnectionIDs = this.modelGate.getPlayerConnectionIDs();
             List<PlayerConnection> allowedPlayerConnections = playerConnectionsList.stream()
                     .filter(playerConnection -> allowedPlayerConnectionIDs
                             .contains(playerConnection.getID())).collect(Collectors.toList());
@@ -143,7 +142,7 @@ public class MessageHandler implements Runnable {
                 incomingDirective = playerConnection.getIncomingDirective();
                 if (incomingDirective != null) {
                     LOGGER.log(Level.INFO, "Receiving directive from player connection {0}", playerConnection.getID());
-                    if (!allowedPlayerConnections.contains(playerConnection)) {
+                    if (this.modelGate.isGameFull() && !allowedPlayerConnections.contains(playerConnection)) {
                         String outgoingDirective = this.composeJSONMessage(MessageType.ERROR, "\"Player connection not added to the game\"");
                         LOGGER.log(Level.INFO, "Sending directive to player connection {0}", playerConnection.getID());
                         playerConnection.setOutgoingDirective(outgoingDirective);
