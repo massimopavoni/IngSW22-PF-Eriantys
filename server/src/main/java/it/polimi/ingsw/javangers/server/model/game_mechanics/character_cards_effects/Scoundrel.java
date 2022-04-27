@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
- * Class representing the scoundrel character card.
+ * Class representing the scoundrel character card effect.
  */
 public class Scoundrel implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------
