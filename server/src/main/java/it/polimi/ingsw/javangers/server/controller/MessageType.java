@@ -21,6 +21,10 @@ public enum MessageType {
      */
     ACTION,
     /**
+     * Game abort.
+     */
+    ABORT,
+    /**
      * Error message.
      */
     ERROR

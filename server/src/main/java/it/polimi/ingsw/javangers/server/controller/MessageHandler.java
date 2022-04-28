@@ -165,7 +165,7 @@ public class MessageHandler implements Runnable {
                 LOGGER.severe("Aborting game because of missing player connections");
                 this.modelGate.reset();
                 for (PlayerConnection playerConnection : allowedPlayerConnections) {
-                    String outgoingDirective = this.composeJSONMessage(MessageType.ERROR, "\"Game aborted because of missing players\"");
+                    String outgoingDirective = this.composeJSONMessage(MessageType.ABORT, "\"Game aborted because of missing players\"");
                     playerConnection.setOutgoingDirective(outgoingDirective);
                 }
             }
