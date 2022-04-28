@@ -10,7 +10,7 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 import java.util.List;
 
 /**
- * Class representing the queen character card.
+ * Class representing the queen character card effect.
  */
 public class Queen implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------

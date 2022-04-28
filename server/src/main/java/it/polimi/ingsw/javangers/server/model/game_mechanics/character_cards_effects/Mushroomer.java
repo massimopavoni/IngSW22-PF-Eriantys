@@ -6,7 +6,7 @@ import it.polimi.ingsw.javangers.server.model.game_data.enums.TokenColor;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
- * Class representing the mushroomer character card.
+ * Class representing the mushroomer character card effect.
  */
 public class Mushroomer implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 import java.util.List;
 
 /**
- * Class representing bard character card.
+ * Class representing the bard character card effect.
  */
 public class Bard implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------
