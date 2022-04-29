@@ -1,6 +1,7 @@
 package it.polimi.ingsw.javangers.client.launcher;
 
 import it.polimi.ingsw.javangers.client.cli.launcher.CLILauncher;
+import it.polimi.ingsw.javangers.client.controller.NetworkManager;
 import it.polimi.ingsw.javangers.client.gui.launcher.GUILauncherApplication;
 
 import java.io.*;
@@ -140,12 +141,14 @@ public class ClientLauncher {
         do {
         serverIP = chooseServerIp();
         serverPort = chooseServerPort();
-        Dispatcher_send(serverIP, serverPort);
-        if (!Parser_wait()){
-        System.out.println(">ERROR: WRONG SERVER IP OR PORT");
-        System.out.println(">Please try again");
-        }
-        }while(!Parser_wait());
+            try {
+                NetworkManager.getInstance(serverIP, serverPort);
+                break;
+            } catch (NetworkManager.NetworkManagerException e) {
+                System.out.println(">ERROR: WRONG SERVER IP OR PORT");
+                System.out.println(">Please try again");
+            }
+        }while(true);
 
         System.out.println(">Insert if you want to remain on CLI or play on GUI [cli/gui]:");
         System.out.print(">");
