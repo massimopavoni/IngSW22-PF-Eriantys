@@ -77,10 +77,19 @@ public class MessageHandler {
      * @param type    type of the message
      * @param content message content json string
      */
-    public void sendDirective(MessageType type, String content) {
+    public void sendOutgoingDirective(MessageType type, String content) {
         synchronized (this.sendMessageLock) {
             this.networkManager.setOutgoingDirective(this.composeJSONMessage(type, content));
         }
+    }
+
+    /**
+     * Get incoming directive.
+     *
+     * @return incoming directive string
+     */
+    public String getIncomingDirective() {
+        return this.networkManager.getIncomingDirective();
     }
 
     /**
