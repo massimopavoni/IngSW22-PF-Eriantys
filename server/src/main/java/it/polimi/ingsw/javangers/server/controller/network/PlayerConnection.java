@@ -70,7 +70,7 @@ public class PlayerConnection implements Runnable {
         try {
             this.in = new BufferedReader(new InputStreamReader(this.playerSocket.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(this.playerSocket.getOutputStream()));
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.log(Level.SEVERE, String.format(EXCEPTION_MESSAGE, this.id),
                     new PlayerConnectionException(String.format(BUFFER_ERROR_MESSAGE, e.getMessage()), e));
         }

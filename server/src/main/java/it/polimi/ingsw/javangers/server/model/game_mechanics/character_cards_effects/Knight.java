@@ -4,7 +4,7 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
- * Class representing the knight character card.
+ * Class representing the knight character card effect.
  */
 public class Knight implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------

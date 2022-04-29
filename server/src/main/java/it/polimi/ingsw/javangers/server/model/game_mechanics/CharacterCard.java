@@ -44,7 +44,9 @@ public class CharacterCard {
     /**
      * Constructor for character card, initializing cost, cost delta and effect strategy.
      *
-     * @param cost initial cost of the character card
+     * @param cost                initial cost of the character card
+     * @param tokenContainerSize  optional token container size
+     * @param multipurposeCounter optional counter used for different effects
      */
     @JsonCreator
     public CharacterCard(@JsonProperty("cost") int cost,

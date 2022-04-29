@@ -30,6 +30,10 @@ public class ModelGate {
      */
     private static final String EXCEPTION_MESSAGE = "Logging exception:";
     /**
+     * Success message for outgoing directives.
+     */
+    private static final String SUCCESS_MESSAGE = "\"OK\"";
+    /**
      * Game configurations json file resource location.
      */
     private final String gameConfigurationsResourceLocation;
@@ -100,6 +104,15 @@ public class ModelGate {
      */
     public boolean isGameFull() {
         return this.gameFull;
+    }
+
+    /**
+     * Get flag for game started.
+     *
+     * @return flag for game started
+     */
+    public boolean isGameStarted() {
+        return this.gameManager != null && this.gameManager.isStarted();
     }
 
     /**
@@ -190,7 +203,7 @@ public class ModelGate {
                 this.gameManager = new GameManager(this.gameConfigurationsResourceLocation, this.gamePhasesResourceLocation, creationParameters.getValue0(),
                         creationParameters.getValue1(), username, creationParameters.getValue2());
                 this.playerConnectionsIDsList.add(playerConnectionID);
-                return new Pair<>(type, "\"OK\"");
+                return new Pair<>(type, SUCCESS_MESSAGE);
             case PLAYER:
                 if (this.gameManager == null) {
                     LOGGER.warning("Cannot add player - game not created yet");
@@ -202,7 +215,7 @@ public class ModelGate {
                 if (!this.playerConnectionsIDsList.contains(playerConnectionID))
                     this.playerConnectionsIDsList.add(playerConnectionID);
                 this.checkGameFull();
-                return new Pair<>(type, "\"OK\"");
+                return new Pair<>(type, SUCCESS_MESSAGE);
             case START:
                 if (this.gameManager == null) {
                     LOGGER.warning("Cannot start - game not created yet");

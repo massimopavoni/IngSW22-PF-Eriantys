@@ -63,7 +63,7 @@ public class GameManager {
      */
     private GameEngine gameEngine;
     /**
-     * Flag for game
+     * Flag for game started.
      */
     private boolean started;
     /**
@@ -195,6 +195,15 @@ public class GameManager {
      */
     public String getCurrentPhaseString() {
         return String.format("%d:%d", this.currentPhase.getValue0(), this.currentPhase.getValue1());
+    }
+
+    /**
+     * Get flag for game started.
+     *
+     * @return flag for game started
+     */
+    public boolean isStarted() {
+        return this.started;
     }
 
     /**
