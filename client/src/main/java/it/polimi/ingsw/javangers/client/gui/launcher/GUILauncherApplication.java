@@ -1,4 +1,4 @@
-package it.polimi.ingsw.javangers.client.launcher;
+package it.polimi.ingsw.javangers.client.gui.launcher;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ClientLauncherApplication extends Application {
+public class GUILauncherApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientLauncherApplication.class.getResource("client-launcher-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GUILauncherApplication.class.getResource("gui-launcher-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
