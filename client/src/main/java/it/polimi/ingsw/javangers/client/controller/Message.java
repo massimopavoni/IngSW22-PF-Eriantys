@@ -43,6 +43,4 @@ public class Message {
     public JsonNode getContent() {
         return this.content;
     }
-
-
 }
