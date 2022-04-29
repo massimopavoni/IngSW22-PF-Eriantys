@@ -68,6 +68,7 @@ public class MessageHandler {
             LOGGER.log(Level.SEVERE, "Logging exception:",
                     new MessageHandlerException(String.format("Error while serializing message (%s)", e.getMessage()), e));
             System.exit(1);
+            return null;
         }
     }
 
