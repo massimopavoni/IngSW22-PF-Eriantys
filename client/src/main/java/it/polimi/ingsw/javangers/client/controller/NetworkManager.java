@@ -62,7 +62,6 @@ public class NetworkManager implements Runnable {
      * @throws NetworkManagerException if there was an error while creating socket or buffered reader/writer
      */
     private NetworkManager(String serverAddress, int port) throws NetworkManagerException {
-        LOGGER.info("Creating network manager socket");
         try {
             this.socket = new Socket(serverAddress, port);
         } catch (IOException e) {
@@ -167,7 +166,6 @@ public class NetworkManager implements Runnable {
      */
     @Override
     public void run() {
-        LOGGER.info("Network manager running");
         new Thread(this::incomingDirectiveThreadFunction).start();
         new Thread(this::outgoingDirectiveThreadFunction).start();
     }

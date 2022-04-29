@@ -67,7 +67,7 @@ public class MessageHandler {
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.SEVERE, "Logging exception:",
                     new MessageHandlerException(String.format("Error while serializing message (%s)", e.getMessage()), e));
-            return "Server message error";
+            System.exit(1);
         }
     }
 
@@ -77,10 +77,19 @@ public class MessageHandler {
      * @param type    type of the message
      * @param content message content json string
      */
-    public void sendDirective(MessageType type, String content) {
+    public void sendOutgoingDirective(MessageType type, String content) {
         synchronized (this.sendMessageLock) {
             this.networkManager.setOutgoingDirective(this.composeJSONMessage(type, content));
         }
+    }
+
+    /**
+     * Get incoming directive.
+     *
+     * @return incoming directive string
+     */
+    public String getIncomingDirective() {
+        return this.networkManager.getIncomingDirective();
     }
 
     /**
