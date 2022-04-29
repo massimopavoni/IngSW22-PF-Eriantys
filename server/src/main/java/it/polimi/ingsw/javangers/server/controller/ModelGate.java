@@ -107,6 +107,15 @@ public class ModelGate {
     }
 
     /**
+     * Get flag for game started.
+     *
+     * @return flag for game started
+     */
+    public boolean isGameStarted() {
+        return this.gameManager != null && this.gameManager.isStarted();
+    }
+
+    /**
      * Execute incoming directive depending on message type.
      *
      * @param playerConnectionID player connection id
