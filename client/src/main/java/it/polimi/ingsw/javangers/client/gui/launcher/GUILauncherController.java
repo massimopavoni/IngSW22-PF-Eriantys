@@ -1,9 +1,9 @@
-package it.polimi.ingsw.javangers.client.launcher;
+package it.polimi.ingsw.javangers.client.gui.launcher;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class ClientLauncherController {
+public class GUILauncherController {
     @FXML
     private Label welcomeText;
 
