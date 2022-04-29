@@ -67,7 +67,7 @@ public class MessageHandler {
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.SEVERE, "Logging exception:",
                     new MessageHandlerException(String.format("Error while serializing message (%s)", e.getMessage()), e));
-            return "Server message error";
+            System.exit(1);
         }
     }
 
