@@ -182,18 +182,18 @@ public class CLILauncher{
     }
 
     private static void waitTurn(){
-        System.out.println(colorsMap.get(YELLOW) + "Wait your turn..." + colorsMap.get(RST));
+        System.out.println("Wait your turn...");
     }
 
     public static void main(String[] args) {
-        ObjectMapper jsonMapper = new ObjectMapper();
+       /* ObjectMapper jsonMapper = new ObjectMapper();
         try {
             InputStream jsonInputStream = CLILauncher.class.getClassLoader().getResourceAsStream("/it/polimi/ingsw/javangers/client/cli/launcher/colors.json");
             colorsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
             });
         } catch (IOException e) {
             System.out.println("Error while reading assistant cards json file");
-        }
+        }*/
 
         String selection = null;
         String username;
