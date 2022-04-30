@@ -54,6 +54,10 @@ public class ModelGate {
      */
     private boolean gameFull;
     /**
+     * Flag for game full message already sent.
+     */
+    private boolean gameFullMessageSent;
+    /**
      * Directives forge instance for incoming directives' deserialization.
      */
     private DirectivesForge directivesForge;
@@ -86,6 +90,7 @@ public class ModelGate {
         this.jsonMapper = new ObjectMapper();
         this.playerConnectionsIDsList = new ArrayList<>();
         this.gameFull = false;
+        this.gameFullMessageSent = false;
     }
 
     /**
@@ -104,6 +109,24 @@ public class ModelGate {
      */
     public boolean isGameFull() {
         return this.gameFull;
+    }
+
+    /**
+     * Get game full message sent flag.
+     *
+     * @return game full message sent flag
+     */
+    public boolean isGameFullMessageSent() {
+        return this.gameFullMessageSent;
+    }
+
+    /**
+     * Set game full message sent flag.
+     *
+     * @param gameFullMessageSent game full message sent flag
+     */
+    public void setGameFullMessageSent(boolean gameFullMessageSent) {
+        this.gameFullMessageSent = gameFullMessageSent;
     }
 
     /**
@@ -177,6 +200,7 @@ public class ModelGate {
         this.gameManager = null;
         this.playerConnectionsIDsList.clear();
         this.gameFull = false;
+        this.gameFullMessageSent = false;
     }
 
     /**
