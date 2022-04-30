@@ -1,0 +1,33 @@
+{
+  "monk": {
+    "tokensToIsland": "tokensToIsland",
+    "islandIndex": "islandIndex"
+  },
+  "innkeeper": {},
+  "herald": {
+    "islandIndex": "islandIndex"
+  },
+  "mailman": {},
+  "herbalist": {
+    "islandIndex": "islandIndex"
+  },
+  "centaur": {},
+  "jester": {
+    "tokensFromEntrance": "tokensFromEntrance",
+    "tokensToEntrance": "tokensToEntrance"
+  },
+  "knight": {},
+  "mushroomer": {
+    "forbiddenColor": "forbiddenColor"
+  },
+  "bard": {
+    "tokensFromHall": "tokensFromHall",
+    "tokensFromEntrance": "tokensFromEntrance"
+  },
+  "queen": {
+    "tokensToHall": "tokensToHall"
+  },
+  "scoundrel": {
+    "tokenColor": "tokenColor"
+  }
+}
