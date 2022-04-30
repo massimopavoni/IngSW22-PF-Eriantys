@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 
 public class CLILauncher{
 
+    private static final String GAME_COLOR_RESOURCE_LOCATION = "/it/polimi/ingsw/javangers/client/cli/launcher/colors.json";
+
     public static final String RED = "RED";
     private static final String GREEN = "GREEN";
     private static final String YELLOW = "YELLOW";
@@ -182,19 +184,21 @@ public class CLILauncher{
     }
 
     private static void waitTurn(){
-        System.out.println("Wait your turn...");
+        System.out.println(colorsMap.get(YELLOW) + "Wait your turn..." + colorsMap.get(RST));
     }
 
-    public static void main(String[] args) {
-       /* ObjectMapper jsonMapper = new ObjectMapper();
+    public CLILauncher(){
+        ObjectMapper jsonMapper = new ObjectMapper();
         try {
-            InputStream jsonInputStream = CLILauncher.class.getClassLoader().getResourceAsStream("/it/polimi/ingsw/javangers/client/cli/launcher/colors.json");
+            InputStream jsonInputStream = CLILauncher.class.getClassLoader().getResourceAsStream(GAME_COLOR_RESOURCE_LOCATION);
             colorsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
             });
         } catch (IOException e) {
             System.out.println("Error while reading assistant cards json file");
-        }*/
+        }
 
+    }
+    public static void main(String[] args) {
         String selection = null;
         String username;
         String numberOfPlayersString;
