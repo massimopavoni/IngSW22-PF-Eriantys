@@ -7,7 +7,7 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
- * Class that represents the herbalist character card.
+ * Class representing the herbalist character card effect.
  */
 public class Herbalist implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------
