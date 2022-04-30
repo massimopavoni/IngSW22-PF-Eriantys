@@ -361,7 +361,7 @@ public class GameManager {
         try {
             currentPlayer.setAction(playerAction);
             currentPlayer.executeAction(this.gameEngine, username);
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException | IllegalStateException e) {
             throw new GameManagerException(String.format("Error while executing action (%s)", e.getMessage()), e);
         }
 
