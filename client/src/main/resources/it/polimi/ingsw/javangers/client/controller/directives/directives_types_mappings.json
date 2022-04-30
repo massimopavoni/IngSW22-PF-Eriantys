@@ -1,0 +1,23 @@
+{
+  "CREATE": {
+    "exactPlayersNumber": "exactPlayersNumber",
+    "expertMode": "expertMode",
+    "firstPlayerInfo": "firstPlayerInfo",
+    "wizardType": "wizardType",
+    "towerColor": "towerColor"
+  },
+  "PLAYER": {
+    "wizardType": "wizardType",
+    "towerColor": "towerColor"
+  },
+  "START": {
+  },
+  "ACTION": {
+    "action": "action",
+    "args": "args"
+  },
+  "ABORT": {
+  },
+  "ERROR": {
+  }
+}

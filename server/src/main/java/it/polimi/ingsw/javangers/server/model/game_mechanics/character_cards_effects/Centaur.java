@@ -3,7 +3,7 @@ package it.polimi.ingsw.javangers.server.model.game_mechanics.character_cards_ef
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
- * Class that represents the centaur character card.
+ * Class representing the centaur character card effect.
  */
 public class Centaur implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------

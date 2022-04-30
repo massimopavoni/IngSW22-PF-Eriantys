@@ -4,7 +4,7 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
- * Class representing the mailman character card.
+ * Class representing the mailman character card effect.
  */
 public class Mailman implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------

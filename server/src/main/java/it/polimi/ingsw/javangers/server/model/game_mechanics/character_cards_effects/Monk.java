@@ -10,7 +10,7 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 import java.util.List;
 
 /**
- * Class representing the monk character card.
+ *Class representing the monk character card effect.
  */
 public class Monk implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------

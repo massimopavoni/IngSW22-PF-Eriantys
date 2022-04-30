@@ -87,6 +87,7 @@ class GameManagerTest {
                 "/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_phases.json", 3, true,
                 "Rick Deckard", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
         assertAll(
+                () -> assertFalse(gameManager.isStarted()),
                 () -> assertEquals(3, gameManager.getExactPlayersNumber()),
                 () -> assertTrue(gameManager.isExpertMode()),
                 () -> assertEquals("0:0", gameManager.getCurrentPhaseString()),
@@ -241,6 +242,7 @@ class GameManagerTest {
                 () -> assertDoesNotThrow(() ->
                         gameManager.addPlayer("Rachael", new Pair<>(WizardType.WITCH, TowerColor.GRAY))),
                 () -> assertDoesNotThrow(() -> gameManager.initializeGame()),
+                () -> assertTrue(gameManager.isStarted()),
                 () -> assertThrowsExactly(GameManager.GameManagerException.class,
                         () -> gameManager.initializeGame())
         );
