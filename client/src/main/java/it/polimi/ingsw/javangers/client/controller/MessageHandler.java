@@ -57,13 +57,14 @@ public class MessageHandler {
     /**
      * Compose message from json.
      *
-     * @param messageType    type of the message
-     * @param messageContent message content json string
+     * @param messageType     type of the message
+     * @param messageUsername username of the player sending the message
+     * @param messageContent  message content json string
      * @return serialized message
      */
-    private String composeJSONMessage(MessageType messageType, String messageContent) {
+    private String composeJSONMessage(MessageType messageType, String messageUsername, String messageContent) {
         try {
-            return this.jsonMapper.writeValueAsString(new Message(messageType, this.jsonMapper.readTree(messageContent)));
+            return this.jsonMapper.writeValueAsString(new Message(messageType, messageUsername, this.jsonMapper.readTree(messageContent)));
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.SEVERE, "Logging exception:",
                     new MessageHandlerException(String.format("Error while serializing message (%s)", e.getMessage()), e));
@@ -75,12 +76,13 @@ public class MessageHandler {
     /**
      * Send directive message to server.
      *
-     * @param type    type of the message
-     * @param content message content json string
+     * @param type     type of the message
+     * @param username username of the player sending the message
+     * @param content  message content json string
      */
-    public void sendOutgoingDirective(MessageType type, String content) {
+    public void sendOutgoingDirective(MessageType type, String username, String content) {
         synchronized (this.sendMessageLock) {
-            this.networkManager.setOutgoingDirective(this.composeJSONMessage(type, content));
+            this.networkManager.setOutgoingDirective(this.composeJSONMessage(type, username, content));
         }
     }
 

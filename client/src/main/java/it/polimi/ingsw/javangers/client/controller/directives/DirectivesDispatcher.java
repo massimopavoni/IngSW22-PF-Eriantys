@@ -1,13 +1,15 @@
 package it.polimi.ingsw.javangers.client.controller.directives;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.polimi.ingsw.javangers.client.controller.MessageHandler;
+import it.polimi.ingsw.javangers.client.controller.MessageType;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,7 +35,7 @@ public class DirectivesDispatcher {
     /**
      * Map for directives types mappings.
      */
-    private static Map<String, Map<String, String>> directivesTypesMappings;
+    private static Map<MessageType, Map<String, String>> directivesTypesMappings;
     /**
      * Map for directives actions mappings.
      */
@@ -88,6 +90,114 @@ public class DirectivesDispatcher {
         if (singleton == null)
             singleton = new DirectivesDispatcher(messageHandler);
         return singleton;
+    }
+
+    /**
+     * Dispatch create directive.
+     *
+     * @param username           player username
+     * @param exactPlayersNumber exact number of players for the game
+     * @param expertMode         game expert mode flag
+     * @param wizardType         player wizard type
+     * @param towerColor         player tower color
+     */
+    public void createGame(String username, int exactPlayersNumber, boolean expertMode, String wizardType, String towerColor) {
+        ObjectNode contentJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> createMappings = directivesTypesMappings.get(MessageType.CREATE);
+        contentJSON.put(createMappings.get("exactPlayersNumber"), exactPlayersNumber);
+        contentJSON.put(createMappings.get("expertMode"), expertMode);
+        ObjectNode firstPlayerInfoJSON = this.jsonMapper.createObjectNode();
+        firstPlayerInfoJSON.put(createMappings.get("wizardType"), wizardType);
+        firstPlayerInfoJSON.put(createMappings.get("towerColor"), towerColor);
+        contentJSON.set(createMappings.get("firstPlayerInfo"), firstPlayerInfoJSON);
+        this.messageHandler.sendOutgoingDirective(MessageType.CREATE, username, contentJSON.toString());
+    }
+
+    /**
+     * Dispatch player directive.
+     *
+     * @param username   player username
+     * @param wizardType player wizard type
+     * @param towerColor player tower color
+     */
+    public void addPlayer(String username, String wizardType, String towerColor) {
+        ObjectNode contentJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> addPlayerMappings = directivesTypesMappings.get(MessageType.PLAYER);
+        contentJSON.put(addPlayerMappings.get("wizardType"), wizardType);
+        contentJSON.put(addPlayerMappings.get("towerColor"), towerColor);
+        this.messageHandler.sendOutgoingDirective(MessageType.PLAYER, username, contentJSON.toString());
+    }
+
+    /**
+     * Dispatch start directive.
+     *
+     * @param username player username
+     */
+    public void startGame(String username) {
+        ObjectNode contentJSON = this.jsonMapper.createObjectNode();
+        this.messageHandler.sendOutgoingDirective(MessageType.START, username, contentJSON.toString());
+    }
+
+    /**
+     * Dispatch action directive.
+     *
+     * @param username player username
+     * @param action   action class
+     * @param args     action arguments
+     */
+    private void actionDirective(String username, String action, ObjectNode args) {
+        ObjectNode contentJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> actionMappings = directivesTypesMappings.get(MessageType.ACTION);
+        contentJSON.put(actionMappings.get("action"), action);
+        contentJSON.set(actionMappings.get("args"), args);
+        this.messageHandler.sendOutgoingDirective(MessageType.ACTION, username, contentJSON.toString());
+    }
+
+    /**
+     * Dispatch fill clouds directive.
+     *
+     * @param username player username
+     */
+    public void actionFillClouds(String username) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> fillCloudsMappings = directivesActionsMappings.get("fillClouds");
+        this.actionDirective(username, fillCloudsMappings.get("action"), argsJSON);
+    }
+
+    /**
+     * Dispatch play assistant card directive.
+     *
+     * @param username player username
+     * @param cardName card name
+     */
+    public void actionPlayAssistantCard(String username, String cardName) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> playAssistantCardMappings = directivesActionsMappings.get("playAssistantCard");
+        argsJSON.put(playAssistantCardMappings.get("cardName"), cardName);
+        this.actionDirective(username, playAssistantCardMappings.get("action"), argsJSON);
+    }
+
+    /**
+     * Dispatch move students directive.
+     *
+     * @param username          player username
+     * @param studentsToHall    students to hall list
+     * @param studentsToIslands students to islands map
+     */
+    public void actionMoveStudents(String username, List<String> studentsToHall, Map<Integer, List<String>> studentsToIslands) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> moveStudentsMappings = directivesActionsMappings.get("moveStudents");
+        ArrayNode studentsToHallJSON = this.jsonMapper.createArrayNode();
+        studentsToHall.forEach(studentsToHallJSON::add);
+        argsJSON.set(moveStudentsMappings.get("studentsToHall"), studentsToHallJSON);
+        ObjectNode studentsToIslandsJSON = this.jsonMapper.createObjectNode();
+        studentsToIslands.forEach((islandIndex, students) -> {
+            ArrayNode studentsJSON = this.jsonMapper.createArrayNode();
+            students.forEach(studentsJSON::add);
+            studentsToIslandsJSON.set(String.valueOf(islandIndex), studentsJSON);
+        });
+        argsJSON.set(moveStudentsMappings.get("studentsToIslands"), studentsToIslandsJSON);
+        this.actionDirective(username, moveStudentsMappings.get("action"), argsJSON);
     }
 
     /**
