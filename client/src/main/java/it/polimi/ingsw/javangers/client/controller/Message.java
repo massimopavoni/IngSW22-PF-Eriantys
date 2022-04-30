@@ -4,43 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Class representing a network message.
+ *
+ * @param type     Type of the message.
+ * @param username Username of the player sending the message.
+ * @param content  Content of the message.
  */
-public class Message {
-    /**
-     * Type of the message.
-     */
-    private final MessageType type;
-    /**
-     * Content of the message.
-     */
-    private final JsonNode content;
-
-    /**
-     * Constructor for message, initializing type and content.
-     *
-     * @param type    type of the message
-     * @param content content of the message
-     */
-    public Message(MessageType type, JsonNode content) {
-        this.type = type;
-        this.content = content;
-    }
-
-    /**
-     * Get message type.
-     *
-     * @return message type
-     */
-    public MessageType getType() {
-        return this.type;
-    }
-
-    /**
-     * Get message content.
-     *
-     * @return message content
-     */
-    public JsonNode getContent() {
-        return this.content;
-    }
+public record Message(MessageType type, String username, JsonNode content) {
 }

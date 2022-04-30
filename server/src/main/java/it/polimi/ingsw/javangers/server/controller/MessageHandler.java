@@ -164,13 +164,14 @@ public class MessageHandler implements Runnable {
             String outgoingDirective;
             if (!new HashSet<>(playerConnectionsIDs).containsAll(allowedPlayerConnectionIDs)) {
                 LOGGER.severe("Aborting game because of missing player connections");
-                this.modelGate.reset();
                 outgoingDirective = this.composeJSONMessage(MessageType.ABORT, "\"Game aborted because of missing players\"");
                 allowedPlayerConnections.forEach(p -> p.setOutgoingDirective(outgoingDirective));
-            } else if (modelGate.isGameFull() && !modelGate.isGameStarted()) {
+                this.modelGate.reset();
+            } else if (modelGate.isGameFull() && !modelGate.isGameStarted() && !this.modelGate.isGameFullMessageSent()) {
                 LOGGER.info("Game full but not started");
                 outgoingDirective = this.composeJSONMessage(MessageType.PLAYER, "\"FULL\"");
                 allowedPlayerConnections.forEach(p -> p.setOutgoingDirective(outgoingDirective));
+                this.modelGate.setGameFullMessageSent(true);
             }
             this.handleConnections(playerConnections, allowedPlayerConnections);
         }
