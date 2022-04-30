@@ -198,7 +198,7 @@ public class ModelGate {
                     LOGGER.warning("Game already created");
                     return new Pair<>(MessageType.ERROR, "\"Game already created\"");
                 }
-                Triplet<Integer, Boolean, Pair<WizardType, TowerColor>> creationParameters = directivesForge.parseGameManager(content);
+                Triplet<Integer, Boolean, Pair<WizardType, TowerColor>> creationParameters = this.directivesForge.parseGameManager(content);
                 LOGGER.log(Level.INFO, "Creating game - {0}", username);
                 this.gameManager = new GameManager(this.gameConfigurationsResourceLocation, this.gamePhasesResourceLocation, creationParameters.getValue0(),
                         creationParameters.getValue1(), username, creationParameters.getValue2());
@@ -209,7 +209,7 @@ public class ModelGate {
                     LOGGER.warning("Cannot add player - game not created yet");
                     return new Pair<>(MessageType.ERROR, "\"Cannot add player: game not created yet\"");
                 }
-                Pair<WizardType, TowerColor> playerInfo = directivesForge.parseAddPlayer(content);
+                Pair<WizardType, TowerColor> playerInfo = this.directivesForge.parseAddPlayer(content);
                 LOGGER.log(Level.INFO, "Adding player - {0}", username);
                 this.gameManager.addPlayer(username, playerInfo);
                 if (!this.playerConnectionsIDsList.contains(playerConnectionID))
@@ -237,7 +237,7 @@ public class ModelGate {
                     LOGGER.log(Level.WARNING, "Cannot execute action - player connection {0} not added to the game", playerConnectionID);
                     return new Pair<>(MessageType.ERROR, "\"Cannot execute action: player connection not added to the game\"");
                 }
-                ActionStrategy action = directivesForge.parseAction(content);
+                ActionStrategy action = this.directivesForge.parseAction(content);
                 LOGGER.log(Level.INFO, "Executing player action - {0} ({1})", new Object[]{username, action.getClass().getSimpleName()});
                 this.gameManager.executePlayerAction(username, action);
                 String gameJSON = this.gameManager.getGameJSON();
