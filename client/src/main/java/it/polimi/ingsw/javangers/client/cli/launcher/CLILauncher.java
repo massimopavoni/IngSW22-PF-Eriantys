@@ -1,15 +1,31 @@
 package it.polimi.ingsw.javangers.client.cli.launcher;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CLILauncher{
 
+    public static final String RED = "RED";
+    private static final String GREEN = "GREEN";
+    private static final String YELLOW = "YELLOW";
+    private static final String BG_BLACK = "BACKGROUND_BLACK";
+    private static final String RST = "RST";
+    private static final String BLUE = "BLUE";
+    private static final String CYAN = "CYAN";
+    private static final String WHITE = "WHITE";
+    private static HashMap<String, String> colorsMap = new HashMap<>();
+
     private static final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     private static final BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
+
 
     private static boolean isValidUsername(String username) {
         String regex = "^[A-Za-z]\\w{2,29}$";
@@ -140,7 +156,7 @@ public class CLILauncher{
 
     private static String chooseTowerColor() {
         String towerColor = null;
-        System.out.println(">Insert which type of wizard you want to be between:");
+        System.out.println(">Insert which color of tower you want to be between:");
         System.out.println(">White [w]");
         System.out.println(">Black [b]");
         System.out.println(">Gray [g]");
@@ -165,7 +181,20 @@ public class CLILauncher{
         return towerColor;
     }
 
+    private static void waitTurn(){
+        System.out.println(colorsMap.get(YELLOW) + "Wait your turn..." + colorsMap.get(RST));
+    }
+
     public static void main(String[] args) {
+        ObjectMapper jsonMapper = new ObjectMapper();
+        try {
+            InputStream jsonInputStream = CLILauncher.class.getClassLoader().getResourceAsStream("/it/polimi/ingsw/javangers/client/cli/launcher/colors.json");
+            colorsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
+            });
+        } catch (IOException e) {
+            System.out.println("Error while reading assistant cards json file");
+        }
+
         String selection = null;
         String username;
         String numberOfPlayersString;
@@ -187,6 +216,7 @@ public class CLILauncher{
             }
             if (selection != null) {
                 if (selection.equalsIgnoreCase("c")) {
+                    //do{
                     do {
                         username = chooseUsername();
                         numberOfPlayers = chooseNumberOfPlayers();
@@ -194,12 +224,22 @@ public class CLILauncher{
                         wizardType = chooseWizardType();
                         towerColor = chooseTowerColor();
                     } while (!confirm());
+                    //dispatcher.send(username, numberOfStudents, expertMode, new Pair<>(){
+                    // })
+                    //if(!parser.correctCreation())
+                    //  System.out.println(">ERROR while creating the game");
+                    //   System.out.println(">Please try again");
+                    //}while(!parser.correctCreation());
+                    System.out.println(">Game created correctly!");
+                    System.out.println(">Waiting for other players to join...");
                 } else if (selection.equalsIgnoreCase("j")) {
                     do {
                         username = chooseUsername();
                         wizardType = chooseWizardType();
                         towerColor = chooseTowerColor();
                     } while (!confirm());
+                    System.out.println(">Game joined correctly!");
+                    System.out.println(">Waiting for starting the game...");
                 } else {
                     System.out.println(">Please insert correct input [c/j]:");
                     System.out.print(">");
@@ -207,6 +247,10 @@ public class CLILauncher{
                 }
             }
         }
+        System.out.println(">Let's play!");
+        waitTurn();
+
+        System.out.println(">Now it's your turn!");
     }
 }
 
