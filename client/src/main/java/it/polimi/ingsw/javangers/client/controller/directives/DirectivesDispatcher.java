@@ -154,7 +154,7 @@ public class DirectivesDispatcher {
     }
 
     /**
-     * Dispatch fill clouds directive.
+     * Dispatch fill clouds action directive.
      *
      * @param username player username
      */
@@ -165,7 +165,7 @@ public class DirectivesDispatcher {
     }
 
     /**
-     * Dispatch play assistant card directive.
+     * Dispatch play assistant card action directive.
      *
      * @param username player username
      * @param cardName card name
@@ -178,7 +178,7 @@ public class DirectivesDispatcher {
     }
 
     /**
-     * Dispatch move students directive.
+     * Dispatch move students action directive.
      *
      * @param username          player username
      * @param studentsToHall    students to hall list
@@ -199,6 +199,214 @@ public class DirectivesDispatcher {
         argsJSON.set(moveStudentsMappings.get("studentsToIslands"), studentsToIslandsJSON);
         this.actionDirective(username, moveStudentsMappings.get("action"), argsJSON);
     }
+
+    /**
+     * Dispatch move mother nature action directive.
+     *
+     * @param username player username
+     * @param steps    number of steps
+     */
+    public void actionMoveMotherNature(String username, int steps) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> moveMotherNatureMappings = directivesActionsMappings.get("moveMotherNature");
+        argsJSON.put(moveMotherNatureMappings.get("steps"), steps);
+        this.actionDirective(username, moveMotherNatureMappings.get("action"), argsJSON);
+    }
+
+    /**
+     * Dispatch choose cloud action directive.
+     *
+     * @param username   player username
+     * @param cloudIndex cloud index
+     */
+    public void actionChooseCloud(String username, int cloudIndex) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> chooseCloudMappings = directivesActionsMappings.get("chooseCloud");
+        argsJSON.put(chooseCloudMappings.get("cloudIndex"), cloudIndex);
+        this.actionDirective(username, chooseCloudMappings.get("action"), argsJSON);
+    }
+
+    /**
+     * Dispatch activate character card action directive.
+     *
+     * @param username player username
+     * @param effect   card effect
+     * @param args     card args
+     */
+    private void actionActivateCharacterCard(String username, String effect, ObjectNode args) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> activateCharacterCardMappings = directivesActionsMappings.get("activateCharacterCard");
+        argsJSON.put(activateCharacterCardMappings.get("effect"), effect);
+        argsJSON.set(activateCharacterCardMappings.get("args"), args);
+        this.actionDirective(username, activateCharacterCardMappings.get("action"), argsJSON);
+    }
+
+    /**
+     * Dispatch monk character card directive.
+     *
+     * @param username       player username
+     * @param tokensToIsland list of tokens to island
+     * @param islandIndex    island index
+     */
+    public void activateMonk(String username, List<String> tokensToIsland, int islandIndex) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> monkMappings = directivesEffectsMappings.get("monk");
+        ArrayNode tokensToIslandJSON = this.jsonMapper.createArrayNode();
+        tokensToIsland.forEach(tokensToIslandJSON::add);
+        argsJSON.set(monkMappings.get("tokensToIsland"), tokensToIslandJSON);
+        argsJSON.put(monkMappings.get("islandIndex"), islandIndex);
+        this.actionActivateCharacterCard(username, monkMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch innkeeper character card directive.
+     *
+     * @param username player username
+     */
+    public void activateInnkeeper(String username) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> innkeeperMappings = directivesEffectsMappings.get("innkeeper");
+        this.actionActivateCharacterCard(username, innkeeperMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch herald character card directive.
+     *
+     * @param username    player username
+     * @param islandIndex island index
+     */
+    public void activateHerald(String username, int islandIndex) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> heraldMappings = directivesEffectsMappings.get("herald");
+        argsJSON.put(heraldMappings.get("islandIndex"), islandIndex);
+        this.actionActivateCharacterCard(username, heraldMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch mailman character card directive.
+     *
+     * @param username player username
+     */
+    public void activateMailman(String username) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> mailmanMappings = directivesEffectsMappings.get("mailman");
+        this.actionActivateCharacterCard(username, mailmanMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch herbalist character card directive.
+     *
+     * @param username    player username
+     * @param islandIndex island index
+     */
+    public void activateHerbalist(String username, int islandIndex) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> herbalistMappings = directivesEffectsMappings.get("herbalist");
+        argsJSON.put(herbalistMappings.get("islandIndex"), islandIndex);
+        this.actionActivateCharacterCard(username, herbalistMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch centaur character card directive.
+     *
+     * @param username player username
+     */
+    public void activateCentaur(String username) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> centaurMappings = directivesEffectsMappings.get("centaur");
+        this.actionActivateCharacterCard(username, centaurMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch jester character card directive.
+     *
+     * @param username           player username
+     * @param tokensFromEntrance list of tokens from entrance
+     * @param tokensToEntrance   list of tokens to entrance
+     */
+    public void activateJester(String username, List<String> tokensFromEntrance, List<String> tokensToEntrance) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> jesterMappings = directivesEffectsMappings.get("jester");
+        ArrayNode tokensFromEntranceJSON = this.jsonMapper.createArrayNode();
+        tokensFromEntrance.forEach(tokensFromEntranceJSON::add);
+        argsJSON.set(jesterMappings.get("tokensFromEntrance"), tokensFromEntranceJSON);
+        ArrayNode tokensToEntranceJSON = this.jsonMapper.createArrayNode();
+        tokensToEntrance.forEach(tokensToEntranceJSON::add);
+        argsJSON.set(jesterMappings.get("tokensToEntrance"), tokensToEntranceJSON);
+        this.actionActivateCharacterCard(username, jesterMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch knight character card directive.
+     *
+     * @param username player username
+     */
+    public void activateKnight(String username) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> knightMappings = directivesEffectsMappings.get("knight");
+        this.actionActivateCharacterCard(username, knightMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch mushroomer character card directive.
+     *
+     * @param username       player username
+     * @param forbiddenColor forbidden color
+     */
+    public void activateMushroomer(String username, String forbiddenColor) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> mushroomerMappings = directivesEffectsMappings.get("mushroomer");
+        argsJSON.put(mushroomerMappings.get("forbiddenColor"), forbiddenColor);
+        this.actionActivateCharacterCard(username, mushroomerMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch bard character card directive.
+     *
+     * @param username           player username
+     * @param tokensFromHall     list of tokens from hall
+     * @param tokensFromEntrance list of tokens from entrance
+     */
+    public void activateBard(String username, List<String> tokensFromHall, List<String> tokensFromEntrance) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> bardMappings = directivesEffectsMappings.get("bard");
+        ArrayNode tokensFromHallJSON = this.jsonMapper.createArrayNode();
+        tokensFromHall.forEach(tokensFromHallJSON::add);
+        argsJSON.set(bardMappings.get("tokensFromHall"), tokensFromHallJSON);
+        ArrayNode tokensFromEntranceJSON = this.jsonMapper.createArrayNode();
+        tokensFromEntrance.forEach(tokensFromEntranceJSON::add);
+        argsJSON.set(bardMappings.get("tokensFromEntrance"), tokensFromEntranceJSON);
+        this.actionActivateCharacterCard(username, bardMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch queen character card directive.
+     *
+     * @param username     player username
+     * @param tokensToHall list of tokens to hall
+     */
+    public void activateQueen(String username, List<String> tokensToHall) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> queenMappings = directivesEffectsMappings.get("queen");
+        ArrayNode tokensToHallJSON = this.jsonMapper.createArrayNode();
+        tokensToHall.forEach(tokensToHallJSON::add);
+        argsJSON.set(queenMappings.get("tokensToHall"), tokensToHallJSON);
+        this.actionActivateCharacterCard(username, queenMappings.get("effect"), argsJSON);
+    }
+
+    /**
+     * Dispatch scoundrel character card directive.
+     *
+     * @param username   player username
+     * @param tokenColor token color
+     */
+    public void activateScoundrel(String username, String tokenColor) {
+        ObjectNode argsJSON = this.jsonMapper.createObjectNode();
+        Map<String, String> scoundrelMappings = directivesEffectsMappings.get("scoundrel");
+        argsJSON.put(scoundrelMappings.get("tokenColor"), tokenColor);
+        this.actionActivateCharacterCard(username, scoundrelMappings.get("effect"), argsJSON);
+    }
+
 
     /**
      * Exception for errors within directives dispatcher class.
