@@ -41,9 +41,6 @@ public class DirectivesParser {
         return newData;
     }
 
-    public void setNewData(boolean newNewData) {
-        newData = newNewData;
-    }
 
     public String getContent() {
         return messageContent;
@@ -62,6 +59,7 @@ public class DirectivesParser {
         } catch (JsonProcessingException e) {
             throw new DirectivesParserException((String.format("Error while deserializing directive (%s)", e.getMessage())), e);
         }
+        newData = true;
     }
 
 
