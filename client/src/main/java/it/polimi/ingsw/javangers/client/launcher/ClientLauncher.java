@@ -154,7 +154,7 @@ public class ClientLauncher {
             }
         } while (true);
 
-        System.out.println(">Insert if you want to remain on CLI or play on GUI [" + constantsMap.get("YELLOW") + "cli" + constantsMap.get("RST") + "/" + constantsMap.get("BLUE") + "gui]:" + constantsMap.get("RST"));
+        System.out.println(">Insert if you want to remain on CLI or play on GUI [" + constantsMap.get("YELLOW") + "cli" + constantsMap.get("RST") + "/" + constantsMap.get("BLUE") + "gui" + constantsMap.get("RST") + "]:");
         System.out.print(">");
         if (Objects.equals(chooseInterfaceMode(), "GUI")) {
             new Thread(() -> GUILauncherApplication.main(args)).start();
