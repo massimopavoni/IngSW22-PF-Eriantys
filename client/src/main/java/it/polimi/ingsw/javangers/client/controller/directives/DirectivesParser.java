@@ -19,6 +19,7 @@ public class DirectivesParser {
     private static MessageType messageType;
     private static JsonNode messageContent;
     private final ObjectMapper jsonMapper;
+    private static Object newDataLock;
 
     private DirectivesParser() throws DirectivesParserException {
         try {
@@ -32,13 +33,17 @@ public class DirectivesParser {
         newData = false;
     }
 
+    public void setLock(Object lock){
+        newDataLock = lock;
+    }
+
     public static DirectivesParser getInstance() throws DirectivesParserException {
         if (singleton == null) singleton = new DirectivesParser();
         return singleton;
     }
 
-    public boolean isNewData() {
-        return newData;
+    public void isNewData() {
+        newDataLock.notify();
     }
 
     public static void setNewData(boolean newData) {
@@ -61,6 +66,7 @@ public class DirectivesParser {
             messageType = MessageType.valueOf(directiveType);
             messageContent = this.jsonMapper.readTree(directiveTree.get("content").toString());
             newData = true;
+
         } catch (JsonProcessingException e) {
             throw new DirectivesParserException((String.format("Error while deserializing directive (%s)", e.getMessage())), e);
         }
@@ -125,5 +131,15 @@ public class DirectivesParser {
         }
     }
 
+
+    public static void main(String[] args) {
+        try {
+            DirectivesParser parser = getInstance();
+            parser.isNewData();
+        } catch (DirectivesParserException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

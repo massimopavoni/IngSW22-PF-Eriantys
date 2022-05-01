@@ -3,17 +3,23 @@ package it.polimi.ingsw.javangers.client.launcher;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.javangers.client.cli.launcher.CLILauncher;
+import it.polimi.ingsw.javangers.client.controller.MessageHandler;
 import it.polimi.ingsw.javangers.client.controller.NetworkManager;
+import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
+import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.gui.launcher.GUILauncherApplication;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ClientLauncher {
+
     private static final String GAME_COLOR_RESOURCE_LOCATION = "/it/polimi/ingsw/javangers/client/cli/launcher/constants.json";
     private static final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     private static final BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -30,8 +36,7 @@ public class ClientLauncher {
             constantsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
             });
         } catch (IOException e) {
-            System.out.println(constantsMap.get("RED_BOLD") + "Error while reading color json file" + constantsMap.get("RST"));
-        }
+            System.out.println("Error while reading color json file");        }
     }
 
 
@@ -141,16 +146,25 @@ public class ClientLauncher {
     public static void main(String[] args) throws IOException {
         String serverIP = null;
         int serverPort = 0;
+        NetworkManager networkManager = null;
+        DirectivesDispatcher dispatcher = null;
+        DirectivesParser parser = null;
+
         System.out.println(">Welcome to Eriantys");
         do {
             serverIP = chooseServerIp();
             serverPort = chooseServerPort();
             try {
-                NetworkManager.getInstance(serverIP, serverPort);
+                networkManager = NetworkManager.getInstance(serverIP, serverPort);
+                dispatcher = DirectivesDispatcher.getInstance(MessageHandler.getInstance(networkManager));
+                parser = DirectivesParser.getInstance();
+                System.out.println("KTM");
                 break;
             } catch (NetworkManager.NetworkManagerException e) {
                 System.out.println(constantsMap.get("RED_BOLD") + "ERROR: WRONG SERVER IP OR PORT" + constantsMap.get("RST"));
                 System.out.println(constantsMap.get("YELLOW") + ">Please try again" + constantsMap.get("RST"));
+            } catch (DirectivesDispatcher.DirectivesDispatcherException | DirectivesParser.DirectivesParserException e) {
+                e.printStackTrace();
             }
         } while (true);
 
@@ -160,6 +174,7 @@ public class ClientLauncher {
             new Thread(() -> GUILauncherApplication.main(args)).start();
             System.out.println(constantsMap.get("BLUE") + "GUI started" + constantsMap.get("RST"));
         } else {
+            CLILauncher.init(dispatcher, parser);
             new Thread(() -> CLILauncher.main(args)).start();
         }
     }

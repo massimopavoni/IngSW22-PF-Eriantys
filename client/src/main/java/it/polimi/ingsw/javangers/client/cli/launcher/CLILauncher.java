@@ -3,6 +3,8 @@ package it.polimi.ingsw.javangers.client.cli.launcher;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
+import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 
 import java.io.*;
 import java.util.HashMap;
@@ -17,6 +19,10 @@ public class CLILauncher {
     private static final BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
     private static Map<String, String> constantsMap;
 
+    private static DirectivesDispatcher dispatcher;
+    private static DirectivesParser parser;
+    private static final Object newDataLock = new Object();
+
     static {
         ObjectMapper jsonMapper = new ObjectMapper();
         try {
@@ -24,10 +30,15 @@ public class CLILauncher {
             constantsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
             });
         } catch (IOException e) {
-            System.out.println(constantsMap.get("RED_BOLD") + "Error while reading color json file" + constantsMap.get("RST"));
+            System.out.println("Error while reading color json file");
         }
     }
 
+    public static void init(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser) {
+        dispatcher = directivesDispatcher;
+        parser = directivesParser;
+        parser.setLock(newDataLock);
+    }
 
     private static boolean isValidUsername(String username) {
         String regex = "^[A-Za-z]\\w{2,29}$";
@@ -53,7 +64,7 @@ public class CLILauncher {
                 if (confirmString.equalsIgnoreCase("y") || confirmString.equalsIgnoreCase("n")) {
                     return confirmString.equalsIgnoreCase("y");
                 } else {
-                    System.out.println("Please insert correct input ["+ constantsMap.get("GREEN")+ "y"+ constantsMap.get("RST") + "/"+ constantsMap.get("RED")+ "n"+constantsMap.get("RST")+ "]");
+                    System.out.println("Please insert correct input ["+ constantsMap.get("GREEN")+ "y"+ constantsMap.get("RST") + "/"+ constantsMap.get("RED")+ "n"+constantsMap.get("RST")+ "]:");
                     System.out.print(">");
                 }
             }
@@ -142,10 +153,10 @@ public class CLILauncher {
                 e.printStackTrace();
             }
             if (wizardType != null) {
-                if (wizardType.equalsIgnoreCase("d")) wizardType = "Druid";
-                else if (wizardType.equalsIgnoreCase("k")) wizardType = "King";
-                else if (wizardType.equalsIgnoreCase("s")) wizardType = "Sensei";
-                else if (wizardType.equalsIgnoreCase("w")) wizardType = "Witch";
+                if (wizardType.equalsIgnoreCase("d")) wizardType = "DRUID";
+                else if (wizardType.equalsIgnoreCase("k")) wizardType = "KING";
+                else if (wizardType.equalsIgnoreCase("s")) wizardType = "SENSEI";
+                else if (wizardType.equalsIgnoreCase("w")) wizardType = "WITCH";
                 else {
                     wizardType = null;
                     System.out.println(">Please insert correct input [d/k/s/w]:");
@@ -170,9 +181,9 @@ public class CLILauncher {
                 e.printStackTrace();
             }
             if (towerColor != null) {
-                if (towerColor.equalsIgnoreCase("w")) towerColor = "White";
-                else if (towerColor.equalsIgnoreCase("b")) towerColor = "Black";
-                else if (towerColor.equalsIgnoreCase("g")) towerColor = "Gray";
+                if (towerColor.equalsIgnoreCase("w")) towerColor = "WHITE";
+                else if (towerColor.equalsIgnoreCase("b")) towerColor = "BLACK";
+                else if (towerColor.equalsIgnoreCase("g")) towerColor = "GRAY";
                 else {
                     System.out.println(">Please insert correct input [w/b/g]:");
                     System.out.print(">");
@@ -210,7 +221,7 @@ public class CLILauncher {
             }
             if (selection != null) {
                 if (selection.equalsIgnoreCase("c")) {
-                    //do{
+                    DirectivesParser.setNewData(false);
                     do {
                         username = chooseUsername();
                         numberOfPlayers = chooseNumberOfPlayers();
@@ -218,12 +229,14 @@ public class CLILauncher {
                         wizardType = chooseWizardType();
                         towerColor = chooseTowerColor();
                     } while (!confirm());
-                    //dispatcher.send(username, numberOfStudents, expertMode, new Pair<>(){
-                    // })
-                    //if(!parser.correctCreation())
-                    //  System.out.println(">ERROR while creating the game");
-                    //   System.out.println(">Please try again");
-                    //}while(!parser.correctCreation());
+                    dispatcher.createGame(username, numberOfPlayers, expertMode, wizardType, towerColor);
+                    synchronized (newDataLock) {
+                        try {
+                            newDataLock.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     System.out.println(constantsMap.get("GREEN_BRIGHT") +">Game created correctly!" + constantsMap.get("RST"));
                     System.out.println(constantsMap.get("YELLOW_BRIGHT") +">Waiting for other players to join..."+ constantsMap.get("RST"));
                 } else if (selection.equalsIgnoreCase("j")) {
