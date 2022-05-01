@@ -1,13 +1,13 @@
 {
-  "RST": "\\033[0m",
-  "UNDERLINE": "\\033[4m",
-  "RED": "\\033[31m",
-  "GREEN": "\\033[32m",
-  "YELLOW": "\\033[33m",
-  "BLUE": "\\033[34m",
-  "PURPLE": "\\033[35m",
-  "CYAN": "\\033[36m",
-  "WHITE": "\\033[37m",
-  "BACKGROUND_BLACK": "\\033[40m",
-  "BACKGROUND_PURPLE": "\\033[45m"
+  "RST": "\u001B[0m",
+  "UNDERLINE": "\u001B[4m",
+  "RED": "\u001B[31m",
+  "GREEN": "\\u033[32m",
+  "YELLOW": "\u001B[33m",
+  "BLUE": "\u001B[34m",
+  "PURPLE": "\u001B[35m",
+  "CYAN": "\u001B[36m",
+  "WHITE": "\u001B[37m",
+  "BACKGROUND_BLACK": "\u001B[40m",
+  "BACKGROUND_PURPLE": "\u001B[45m"
 }
