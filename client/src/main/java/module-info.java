@@ -7,4 +7,6 @@ module it.polimi.ingsw.eriantysclient {
 
     exports it.polimi.ingsw.javangers.client.gui.launcher;
     opens it.polimi.ingsw.javangers.client.gui.launcher to javafx.fxml;
+    exports it.polimi.ingsw.javangers.client.controller;
+    opens it.polimi.ingsw.javangers.client.controller to com.fasterxml.jackson.databind;
 }
