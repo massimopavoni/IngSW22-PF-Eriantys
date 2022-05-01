@@ -12,19 +12,19 @@ import java.util.regex.Pattern;
 
 public class CLILauncher {
 
-    private static final String GAME_COLOR_RESOURCE_LOCATION = "/it/polimi/ingsw/javangers/client/cli/launcher/colors.json";
+    private static final String GAME_COLOR_RESOURCE_LOCATION = "/it/polimi/ingsw/javangers/client/cli/launcher/constants.json";
     private static final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     private static final BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
-    private static Map<String, String> colorsMap;
+    private static Map<String, String> constantsMap;
 
     static {
         ObjectMapper jsonMapper = new ObjectMapper();
         try {
             InputStream jsonInputStream = CLILauncher.class.getResourceAsStream(GAME_COLOR_RESOURCE_LOCATION);
-            colorsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
+            constantsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
             });
         } catch (IOException e) {
-            System.out.println("Error while reading color json file");
+            System.out.println(constantsMap.get("RED_BOLD") + "Error while reading color json file" + constantsMap.get("RST"));
         }
     }
 
@@ -41,7 +41,7 @@ public class CLILauncher {
 
     private static boolean confirm() {
         String confirmString = null;
-        System.out.println(">Do you want to confirm? [y/n] ");
+        System.out.println(">Do you want to confirm? ["+ constantsMap.get("GREEN")+ "y"+ constantsMap.get("RST") + "/"+ constantsMap.get("RED")+ "n"+constantsMap.get("RST")+ "]:");
         System.out.print(">");
         while (true) {
             try {
@@ -53,7 +53,7 @@ public class CLILauncher {
                 if (confirmString.equalsIgnoreCase("y") || confirmString.equalsIgnoreCase("n")) {
                     return confirmString.equalsIgnoreCase("y");
                 } else {
-                    System.out.println("Please insert correct input [y/n]:");
+                    System.out.println("Please insert correct input ["+ constantsMap.get("GREEN")+ "y"+ constantsMap.get("RST") + "/"+ constantsMap.get("RED")+ "n"+constantsMap.get("RST")+ "]");
                     System.out.print(">");
                 }
             }
@@ -62,7 +62,7 @@ public class CLILauncher {
 
     private static String chooseUsername() {
         String username = null;
-        System.out.println(">Insert your username (start with a letter, 3-30 characters):");
+        System.out.println(">Insert your "+ constantsMap.get("YELLOW_BRIGHT") + "username " + constantsMap.get("RST") + "(start with a letter, 3-30 characters):");
         System.out.print(">");
         while (username == null) {
             try {
@@ -105,7 +105,7 @@ public class CLILauncher {
 
     private static boolean chooseExpertMode() {
         String expertModeString;
-        System.out.println(">Insert if you want to play in expert mode [y/n]:");
+        System.out.println(">Insert if you want to play in expert mode ["+ constantsMap.get("GREEN")+ "y"+ constantsMap.get("RST") + "/"+ constantsMap.get("RED")+ "n"+constantsMap.get("RST")+ "]:");
         System.out.print(">");
         while (true) {
             expertModeString = null;
@@ -184,10 +184,11 @@ public class CLILauncher {
     }
 
     private static void waitTurn() {
-        System.out.println(colorsMap.get("BLUE") + "Wait your turn... " + colorsMap.get("RST"));
+        System.out.println(constantsMap.get("YELLOW") + "Wait your turn... " + constantsMap.get("RST"));
     }
 
     public static void main(String[] args) {
+        System.out.println(constantsMap.get("PURPLE") + constantsMap.get("ERIANTYS") + constantsMap.get("RST"));
         String selection = null;
         String username;
         String numberOfPlayersString;
@@ -199,7 +200,7 @@ public class CLILauncher {
         String towerColor;
 
 
-        System.out.println(">Insert if you want to create a new game or join one [c/j]:");
+        System.out.println(">Insert if you want to create a new game or join one [" + constantsMap.get("BLUE") + "c" + constantsMap.get("RST") +"/"+ constantsMap.get("RED") + "j"+ constantsMap.get("RST") + "]:");
         System.out.print(">");
         while (selection == null) {
             try {
@@ -223,16 +224,16 @@ public class CLILauncher {
                     //  System.out.println(">ERROR while creating the game");
                     //   System.out.println(">Please try again");
                     //}while(!parser.correctCreation());
-                    System.out.println(">Game created correctly!");
-                    System.out.println(">Waiting for other players to join...");
+                    System.out.println(constantsMap.get("GREEN_BRIGHT") +">Game created correctly!" + constantsMap.get("RST"));
+                    System.out.println(constantsMap.get("YELLOW_BRIGHT") +">Waiting for other players to join..."+ constantsMap.get("RST"));
                 } else if (selection.equalsIgnoreCase("j")) {
                     do {
                         username = chooseUsername();
                         wizardType = chooseWizardType();
                         towerColor = chooseTowerColor();
                     } while (!confirm());
-                    System.out.println(">Game joined correctly!");
-                    System.out.println(">Waiting for starting the game...");
+                    System.out.println(constantsMap.get("GREEN_BRIGHT") +">Game joined correctly!" + constantsMap.get("RST"));
+                    System.out.println(constantsMap.get("YELLOW_BRIGHT") + ">Waiting for starting the game..." + constantsMap.get("RST"));
                 } else {
                     System.out.println(">Please insert correct input [c/j]:");
                     System.out.print(">");
@@ -241,11 +242,11 @@ public class CLILauncher {
             }
         }
 
-        System.out.println(">Let's play!");
+        System.out.println(constantsMap.get("GREEN_BRIGHT") + ">Let's play!"+ constantsMap.get("RST"));
         waitTurn();
 
 
-        System.out.println(">Now it's your turn!");
+        System.out.println(constantsMap.get("BLUE") + ">Now it's your turn!"+ constantsMap.get("RST"));
     }
 }
 
