@@ -85,7 +85,6 @@ public class ServerLauncher {
                 new Object[]{serverArgs.get(PORT_ARG).toString(), serverArgs.get(MAX_CONNECTIONS_ARG).toString(),
                         serverArgs.get(POLLING_INTERVAL_ARG).toString(), serverResourceLocations});
         LOGGER.info("Server bootstrap - creating server launcher");
-        ServerLauncher serverLauncher = new ServerLauncher();
         try {
             LOGGER.info("Starting connections pool");
             connectionsPool = ConnectionsPool.getInstance(serverArgs.get(PORT_ARG), serverArgs.get(MAX_CONNECTIONS_ARG));
@@ -97,7 +96,7 @@ public class ServerLauncher {
                     .readValue(jsonInputStream, new TypeReference<Map<String, String>>() {
                     });
             LOGGER.info("Server bootstrap - starting message handler");
-            serverLauncher.startMessageHandler(serverResourceLocationsMap, serverArgs.get(POLLING_INTERVAL_ARG));
+            ServerLauncher.startMessageHandler(serverResourceLocationsMap, serverArgs.get(POLLING_INTERVAL_ARG));
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 LOGGER.info("Server shutdown triggering graceful hooks");
                 MessageHandler.closeMessageHandler();
@@ -120,7 +119,7 @@ public class ServerLauncher {
      * @param serverResourceLocations server resource locations map
      * @param pollingInterval         polling interval in milliseconds
      */
-    private void startMessageHandler(Map<String, String> serverResourceLocations, int pollingInterval) {
+    private static void startMessageHandler(Map<String, String> serverResourceLocations, int pollingInterval) {
         new Thread(MessageHandler.getInstance(connectionsPool, serverResourceLocations, pollingInterval)).start();
     }
 
