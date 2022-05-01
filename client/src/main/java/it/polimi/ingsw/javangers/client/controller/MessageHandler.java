@@ -64,7 +64,7 @@ public class MessageHandler {
      */
     private String composeJSONMessage(MessageType messageType, String messageUsername, String messageContent) {
         try {
-            return this.jsonMapper.writeValueAsString(new Message(messageType, messageUsername, this.jsonMapper.readTree(messageContent)));
+            return this.jsonMapper.writeValueAsString(new Message(messageType, messageUsername, messageContent));
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.SEVERE, "Logging exception:",
                     new MessageHandlerException(String.format("Error while serializing message (%s)", e.getMessage()), e));

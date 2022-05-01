@@ -8,6 +8,7 @@ import it.polimi.ingsw.javangers.client.controller.MessageType;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 public class DirectivesParser {
@@ -65,12 +66,25 @@ public class DirectivesParser {
         }
     }
 
-    public String getCurrentPlayer() {
-        return messageContent.at(gameJSONMappings.get("currentPlayer")).textValue();
+    public int getExactPlayersNumber() {
+        return messageContent.at(gameJSONMappings.get("exactPlayersNumber")).intValue();
     }
 
-    public int getExactPlayersNumber() {
-        return messageContent.at(gameJSONMappings.get("exactPlayerNumber")).intValue();
+    public boolean isExpertMode() {
+        return messageContent.at(gameJSONMappings.get("expertMode")).booleanValue();
+    }
+
+    public List<String> getPlayersOrder() throws DirectivesParserException {
+        try {
+            return this.jsonMapper.readValue(messageContent.at(gameJSONMappings.get("playersOrder")).toString(), new TypeReference<>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new DirectivesParserException((String.format("Error while deserializing game json (%s)", e.getMessage())), e);
+        }
+    }
+
+    public String getCurrentPlayer() {
+        return messageContent.at(gameJSONMappings.get("currentPlayer")).textValue();
     }
 
 
@@ -97,5 +111,6 @@ public class DirectivesParser {
             super(message, cause);
         }
     }
+    
 
 }
