@@ -16,7 +16,7 @@ public class DirectivesParser {
     private static Map<String, String> gameJSONMappings;
     private static boolean newData;
     private static MessageType messageType;
-    private static String messageContent;
+    private static JsonNode messageContent;
     private final ObjectMapper jsonMapper;
 
     private DirectivesParser() throws DirectivesParserException {
@@ -31,9 +31,8 @@ public class DirectivesParser {
         newData = false;
     }
 
-    public DirectivesParser getInstance() throws DirectivesParserException {
-        if (singleton == null)
-            singleton = new DirectivesParser();
+    public static DirectivesParser getInstance() throws DirectivesParserException {
+        if (singleton == null) singleton = new DirectivesParser();
         return singleton;
     }
 
@@ -41,9 +40,13 @@ public class DirectivesParser {
         return newData;
     }
 
+    public static void setNewData(boolean newData) {
+        DirectivesParser.newData = newData;
+    }
 
     public String getContent() {
-        return messageContent;
+        return messageContent.isTextual() ? messageContent.textValue() : "";
+
     }
 
     public MessageType getType() {
@@ -55,13 +58,20 @@ public class DirectivesParser {
             JsonNode directiveTree = this.jsonMapper.readTree(jsonDirective);
             String directiveType = directiveTree.get("type").asText();
             messageType = MessageType.valueOf(directiveType);
-            messageContent = directiveTree.get("content").toString();
+            messageContent = this.jsonMapper.readTree(directiveTree.get("content").toString());
+            newData = true;
         } catch (JsonProcessingException e) {
             throw new DirectivesParserException((String.format("Error while deserializing directive (%s)", e.getMessage())), e);
         }
-        newData = true;
     }
 
+    public String getCurrentPlayer() {
+        return messageContent.at(gameJSONMappings.get("currentPlayer")).textValue();
+    }
+
+    public int getExactPlayersNumber() {
+        return messageContent.at(gameJSONMappings.get("exactPlayerNumber")).intValue();
+    }
 
 
     /**
