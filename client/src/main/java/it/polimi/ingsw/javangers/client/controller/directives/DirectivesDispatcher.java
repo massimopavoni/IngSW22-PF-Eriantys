@@ -29,21 +29,33 @@ public class DirectivesDispatcher {
      */
     private static final String DIRECTIVES_EFFECTS_MAPPINGS_RESOURCE_LOCATION = "/it/polimi/ingsw/javangers/client/controller/directives/directives_effects_mappings.json";
     /**
+     * Constant for action json key.
+     */
+    private static final String ACTION_KEY = "action";
+    /**
+     * Constant for effect json key.
+     */
+    private static final String EFFECT_KEY = "effect";
+    /**
+     * Constant for island index json key.
+     */
+    private static final String ISLAND_INDEX_KEY = "islandIndex";
+    /**
      * Directives dispatcher singleton instance.
      */
     private static DirectivesDispatcher singleton = null;
     /**
      * Map for directives types mappings.
      */
-    private static Map<MessageType, Map<String, String>> directivesTypesMappings;
+    private final Map<MessageType, Map<String, String>> directivesTypesMappings;
     /**
      * Map for directives actions mappings.
      */
-    private static Map<String, Map<String, String>> directivesActionsMappings;
+    private final Map<String, Map<String, String>> directivesActionsMappings;
     /**
      * Map for directives effects mappings.
      */
-    private static Map<String, Map<String, String>> directivesEffectsMappings;
+    private final Map<String, Map<String, String>> directivesEffectsMappings;
     /**
      * Message handler singleton instance.
      */
@@ -65,13 +77,13 @@ public class DirectivesDispatcher {
         this.jsonMapper = new ObjectMapper();
         try {
             InputStream jsonInputStream = DirectivesDispatcher.class.getResourceAsStream(DIRECTIVES_TYPES_MAPPINGS_RESOURCE_LOCATION);
-            directivesTypesMappings = this.jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
+            this.directivesTypesMappings = this.jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
             });
             jsonInputStream = DirectivesDispatcher.class.getResourceAsStream(DIRECTIVES_ACTIONS_MAPPINGS_RESOURCE_LOCATION);
-            directivesActionsMappings = this.jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
+            this.directivesActionsMappings = this.jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
             });
             jsonInputStream = DirectivesDispatcher.class.getResourceAsStream(DIRECTIVES_EFFECTS_MAPPINGS_RESOURCE_LOCATION);
-            directivesEffectsMappings = this.jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
+            this.directivesEffectsMappings = this.jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
             });
         } catch (IOException e) {
             throw new DirectivesDispatcherException(
@@ -103,7 +115,7 @@ public class DirectivesDispatcher {
      */
     public void createGame(String username, int exactPlayersNumber, boolean expertMode, String wizardType, String towerColor) {
         ObjectNode contentJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> createMappings = directivesTypesMappings.get(MessageType.CREATE);
+        Map<String, String> createMappings = this.directivesTypesMappings.get(MessageType.CREATE);
         contentJSON.put(createMappings.get("exactPlayersNumber"), exactPlayersNumber);
         contentJSON.put(createMappings.get("expertMode"), expertMode);
         ObjectNode firstPlayerInfoJSON = this.jsonMapper.createObjectNode();
@@ -122,7 +134,7 @@ public class DirectivesDispatcher {
      */
     public void addPlayer(String username, String wizardType, String towerColor) {
         ObjectNode contentJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> addPlayerMappings = directivesTypesMappings.get(MessageType.PLAYER);
+        Map<String, String> addPlayerMappings = this.directivesTypesMappings.get(MessageType.PLAYER);
         contentJSON.put(addPlayerMappings.get("wizardType"), wizardType);
         contentJSON.put(addPlayerMappings.get("towerColor"), towerColor);
         this.messageHandler.sendOutgoingDirective(MessageType.PLAYER, username, contentJSON.toString());
@@ -147,8 +159,8 @@ public class DirectivesDispatcher {
      */
     private void actionDirective(String username, String action, ObjectNode args) {
         ObjectNode contentJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> actionMappings = directivesTypesMappings.get(MessageType.ACTION);
-        contentJSON.put(actionMappings.get("action"), action);
+        Map<String, String> actionMappings = this.directivesTypesMappings.get(MessageType.ACTION);
+        contentJSON.put(actionMappings.get(ACTION_KEY), action);
         contentJSON.set(actionMappings.get("args"), args);
         this.messageHandler.sendOutgoingDirective(MessageType.ACTION, username, contentJSON.toString());
     }
@@ -160,8 +172,8 @@ public class DirectivesDispatcher {
      */
     public void actionFillClouds(String username) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> fillCloudsMappings = directivesActionsMappings.get("fillClouds");
-        this.actionDirective(username, fillCloudsMappings.get("action"), argsJSON);
+        Map<String, String> fillCloudsMappings = this.directivesActionsMappings.get("fillClouds");
+        this.actionDirective(username, fillCloudsMappings.get(ACTION_KEY), argsJSON);
     }
 
     /**
@@ -172,9 +184,9 @@ public class DirectivesDispatcher {
      */
     public void actionPlayAssistantCard(String username, String cardName) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> playAssistantCardMappings = directivesActionsMappings.get("playAssistantCard");
+        Map<String, String> playAssistantCardMappings = this.directivesActionsMappings.get("playAssistantCard");
         argsJSON.put(playAssistantCardMappings.get("cardName"), cardName);
-        this.actionDirective(username, playAssistantCardMappings.get("action"), argsJSON);
+        this.actionDirective(username, playAssistantCardMappings.get(ACTION_KEY), argsJSON);
     }
 
     /**
@@ -186,7 +198,7 @@ public class DirectivesDispatcher {
      */
     public void actionMoveStudents(String username, List<String> studentsToHall, Map<Integer, List<String>> studentsToIslands) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> moveStudentsMappings = directivesActionsMappings.get("moveStudents");
+        Map<String, String> moveStudentsMappings = this.directivesActionsMappings.get("moveStudents");
         ArrayNode studentsToHallJSON = this.jsonMapper.createArrayNode();
         studentsToHall.forEach(studentsToHallJSON::add);
         argsJSON.set(moveStudentsMappings.get("studentsToHall"), studentsToHallJSON);
@@ -197,7 +209,7 @@ public class DirectivesDispatcher {
             studentsToIslandsJSON.set(String.valueOf(islandIndex), studentsJSON);
         });
         argsJSON.set(moveStudentsMappings.get("studentsToIslands"), studentsToIslandsJSON);
-        this.actionDirective(username, moveStudentsMappings.get("action"), argsJSON);
+        this.actionDirective(username, moveStudentsMappings.get(ACTION_KEY), argsJSON);
     }
 
     /**
@@ -208,9 +220,9 @@ public class DirectivesDispatcher {
      */
     public void actionMoveMotherNature(String username, int steps) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> moveMotherNatureMappings = directivesActionsMappings.get("moveMotherNature");
+        Map<String, String> moveMotherNatureMappings = this.directivesActionsMappings.get("moveMotherNature");
         argsJSON.put(moveMotherNatureMappings.get("steps"), steps);
-        this.actionDirective(username, moveMotherNatureMappings.get("action"), argsJSON);
+        this.actionDirective(username, moveMotherNatureMappings.get(ACTION_KEY), argsJSON);
     }
 
     /**
@@ -221,9 +233,9 @@ public class DirectivesDispatcher {
      */
     public void actionChooseCloud(String username, int cloudIndex) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> chooseCloudMappings = directivesActionsMappings.get("chooseCloud");
+        Map<String, String> chooseCloudMappings = this.directivesActionsMappings.get("chooseCloud");
         argsJSON.put(chooseCloudMappings.get("cloudIndex"), cloudIndex);
-        this.actionDirective(username, chooseCloudMappings.get("action"), argsJSON);
+        this.actionDirective(username, chooseCloudMappings.get(ACTION_KEY), argsJSON);
     }
 
     /**
@@ -235,10 +247,10 @@ public class DirectivesDispatcher {
      */
     private void actionActivateCharacterCard(String username, String effect, ObjectNode args) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> activateCharacterCardMappings = directivesActionsMappings.get("activateCharacterCard");
-        argsJSON.put(activateCharacterCardMappings.get("effect"), effect);
+        Map<String, String> activateCharacterCardMappings = this.directivesActionsMappings.get("activateCharacterCard");
+        argsJSON.put(activateCharacterCardMappings.get(EFFECT_KEY), effect);
         argsJSON.set(activateCharacterCardMappings.get("args"), args);
-        this.actionDirective(username, activateCharacterCardMappings.get("action"), argsJSON);
+        this.actionDirective(username, activateCharacterCardMappings.get(ACTION_KEY), argsJSON);
     }
 
     /**
@@ -250,12 +262,12 @@ public class DirectivesDispatcher {
      */
     public void activateMonk(String username, List<String> tokensToIsland, int islandIndex) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> monkMappings = directivesEffectsMappings.get("monk");
+        Map<String, String> monkMappings = this.directivesEffectsMappings.get("monk");
         ArrayNode tokensToIslandJSON = this.jsonMapper.createArrayNode();
         tokensToIsland.forEach(tokensToIslandJSON::add);
         argsJSON.set(monkMappings.get("tokensToIsland"), tokensToIslandJSON);
-        argsJSON.put(monkMappings.get("islandIndex"), islandIndex);
-        this.actionActivateCharacterCard(username, monkMappings.get("effect"), argsJSON);
+        argsJSON.put(monkMappings.get(ISLAND_INDEX_KEY), islandIndex);
+        this.actionActivateCharacterCard(username, monkMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -265,8 +277,8 @@ public class DirectivesDispatcher {
      */
     public void activateInnkeeper(String username) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> innkeeperMappings = directivesEffectsMappings.get("innkeeper");
-        this.actionActivateCharacterCard(username, innkeeperMappings.get("effect"), argsJSON);
+        Map<String, String> innkeeperMappings = this.directivesEffectsMappings.get("innkeeper");
+        this.actionActivateCharacterCard(username, innkeeperMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -277,9 +289,9 @@ public class DirectivesDispatcher {
      */
     public void activateHerald(String username, int islandIndex) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> heraldMappings = directivesEffectsMappings.get("herald");
-        argsJSON.put(heraldMappings.get("islandIndex"), islandIndex);
-        this.actionActivateCharacterCard(username, heraldMappings.get("effect"), argsJSON);
+        Map<String, String> heraldMappings = this.directivesEffectsMappings.get("herald");
+        argsJSON.put(heraldMappings.get(ISLAND_INDEX_KEY), islandIndex);
+        this.actionActivateCharacterCard(username, heraldMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -289,8 +301,8 @@ public class DirectivesDispatcher {
      */
     public void activateMailman(String username) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> mailmanMappings = directivesEffectsMappings.get("mailman");
-        this.actionActivateCharacterCard(username, mailmanMappings.get("effect"), argsJSON);
+        Map<String, String> mailmanMappings = this.directivesEffectsMappings.get("mailman");
+        this.actionActivateCharacterCard(username, mailmanMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -301,9 +313,9 @@ public class DirectivesDispatcher {
      */
     public void activateHerbalist(String username, int islandIndex) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> herbalistMappings = directivesEffectsMappings.get("herbalist");
-        argsJSON.put(herbalistMappings.get("islandIndex"), islandIndex);
-        this.actionActivateCharacterCard(username, herbalistMappings.get("effect"), argsJSON);
+        Map<String, String> herbalistMappings = this.directivesEffectsMappings.get("herbalist");
+        argsJSON.put(herbalistMappings.get(ISLAND_INDEX_KEY), islandIndex);
+        this.actionActivateCharacterCard(username, herbalistMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -313,8 +325,8 @@ public class DirectivesDispatcher {
      */
     public void activateCentaur(String username) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> centaurMappings = directivesEffectsMappings.get("centaur");
-        this.actionActivateCharacterCard(username, centaurMappings.get("effect"), argsJSON);
+        Map<String, String> centaurMappings = this.directivesEffectsMappings.get("centaur");
+        this.actionActivateCharacterCard(username, centaurMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -326,14 +338,14 @@ public class DirectivesDispatcher {
      */
     public void activateJester(String username, List<String> tokensFromEntrance, List<String> tokensToEntrance) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> jesterMappings = directivesEffectsMappings.get("jester");
+        Map<String, String> jesterMappings = this.directivesEffectsMappings.get("jester");
         ArrayNode tokensFromEntranceJSON = this.jsonMapper.createArrayNode();
         tokensFromEntrance.forEach(tokensFromEntranceJSON::add);
         argsJSON.set(jesterMappings.get("tokensFromEntrance"), tokensFromEntranceJSON);
         ArrayNode tokensToEntranceJSON = this.jsonMapper.createArrayNode();
         tokensToEntrance.forEach(tokensToEntranceJSON::add);
         argsJSON.set(jesterMappings.get("tokensToEntrance"), tokensToEntranceJSON);
-        this.actionActivateCharacterCard(username, jesterMappings.get("effect"), argsJSON);
+        this.actionActivateCharacterCard(username, jesterMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -343,8 +355,8 @@ public class DirectivesDispatcher {
      */
     public void activateKnight(String username) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> knightMappings = directivesEffectsMappings.get("knight");
-        this.actionActivateCharacterCard(username, knightMappings.get("effect"), argsJSON);
+        Map<String, String> knightMappings = this.directivesEffectsMappings.get("knight");
+        this.actionActivateCharacterCard(username, knightMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -355,9 +367,9 @@ public class DirectivesDispatcher {
      */
     public void activateMushroomer(String username, String forbiddenColor) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> mushroomerMappings = directivesEffectsMappings.get("mushroomer");
+        Map<String, String> mushroomerMappings = this.directivesEffectsMappings.get("mushroomer");
         argsJSON.put(mushroomerMappings.get("forbiddenColor"), forbiddenColor);
-        this.actionActivateCharacterCard(username, mushroomerMappings.get("effect"), argsJSON);
+        this.actionActivateCharacterCard(username, mushroomerMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -369,14 +381,14 @@ public class DirectivesDispatcher {
      */
     public void activateBard(String username, List<String> tokensFromHall, List<String> tokensFromEntrance) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> bardMappings = directivesEffectsMappings.get("bard");
+        Map<String, String> bardMappings = this.directivesEffectsMappings.get("bard");
         ArrayNode tokensFromHallJSON = this.jsonMapper.createArrayNode();
         tokensFromHall.forEach(tokensFromHallJSON::add);
         argsJSON.set(bardMappings.get("tokensFromHall"), tokensFromHallJSON);
         ArrayNode tokensFromEntranceJSON = this.jsonMapper.createArrayNode();
         tokensFromEntrance.forEach(tokensFromEntranceJSON::add);
         argsJSON.set(bardMappings.get("tokensFromEntrance"), tokensFromEntranceJSON);
-        this.actionActivateCharacterCard(username, bardMappings.get("effect"), argsJSON);
+        this.actionActivateCharacterCard(username, bardMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -387,11 +399,11 @@ public class DirectivesDispatcher {
      */
     public void activateQueen(String username, List<String> tokensToHall) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> queenMappings = directivesEffectsMappings.get("queen");
+        Map<String, String> queenMappings = this.directivesEffectsMappings.get("queen");
         ArrayNode tokensToHallJSON = this.jsonMapper.createArrayNode();
         tokensToHall.forEach(tokensToHallJSON::add);
         argsJSON.set(queenMappings.get("tokensToHall"), tokensToHallJSON);
-        this.actionActivateCharacterCard(username, queenMappings.get("effect"), argsJSON);
+        this.actionActivateCharacterCard(username, queenMappings.get(EFFECT_KEY), argsJSON);
     }
 
     /**
@@ -402,11 +414,10 @@ public class DirectivesDispatcher {
      */
     public void activateScoundrel(String username, String tokenColor) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
-        Map<String, String> scoundrelMappings = directivesEffectsMappings.get("scoundrel");
+        Map<String, String> scoundrelMappings = this.directivesEffectsMappings.get("scoundrel");
         argsJSON.put(scoundrelMappings.get("tokenColor"), tokenColor);
-        this.actionActivateCharacterCard(username, scoundrelMappings.get("effect"), argsJSON);
+        this.actionActivateCharacterCard(username, scoundrelMappings.get(EFFECT_KEY), argsJSON);
     }
-
 
     /**
      * Exception for errors within directives dispatcher class.
