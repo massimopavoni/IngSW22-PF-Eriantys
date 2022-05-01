@@ -7,26 +7,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CLILauncher{
+public class CLILauncher {
 
     private static final String GAME_COLOR_RESOURCE_LOCATION = "/it/polimi/ingsw/javangers/client/cli/launcher/colors.json";
-
-    public static final String RED = "RED";
-    private static final String GREEN = "GREEN";
-    private static final String YELLOW = "YELLOW";
-    private static final String BG_BLACK = "BACKGROUND_BLACK";
-    private static final String RST = "RST";
-    private static final String BLUE = "BLUE";
-    private static final String CYAN = "CYAN";
-    private static final String WHITE = "WHITE";
-    private static HashMap<String, String> colorsMap = new HashMap<>();
-
     private static final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     private static final BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
+    private static Map<String, String> colorsMap;
+
+    static {
+        ObjectMapper jsonMapper = new ObjectMapper();
+        try {
+            InputStream jsonInputStream = CLILauncher.class.getResourceAsStream(GAME_COLOR_RESOURCE_LOCATION);
+            colorsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
+            });
+        } catch (IOException e) {
+            System.out.println("Error while reading color json file");
+        }
+    }
 
 
     private static boolean isValidUsername(String username) {
@@ -183,21 +183,10 @@ public class CLILauncher{
         return towerColor;
     }
 
-    private static void waitTurn(){
-        System.out.println(colorsMap.get(YELLOW) + "Wait your turn..." + colorsMap.get(RST));
+    private static void waitTurn() {
+        System.out.println(colorsMap.get("BLUE") + "Wait your turn... " + colorsMap.get("RST"));
     }
 
-    public CLILauncher(){
-        ObjectMapper jsonMapper = new ObjectMapper();
-        try {
-            InputStream jsonInputStream = CLILauncher.class.getClassLoader().getResourceAsStream(GAME_COLOR_RESOURCE_LOCATION);
-            colorsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<HashMap<String, String>>() {
-            });
-        } catch (IOException e) {
-            System.out.println("Error while reading assistant cards json file");
-        }
-
-    }
     public static void main(String[] args) {
         String selection = null;
         String username;
@@ -251,8 +240,10 @@ public class CLILauncher{
                 }
             }
         }
+
         System.out.println(">Let's play!");
         waitTurn();
+
 
         System.out.println(">Now it's your turn!");
     }
