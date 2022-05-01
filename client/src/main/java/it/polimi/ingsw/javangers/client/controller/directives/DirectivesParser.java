@@ -87,6 +87,19 @@ public class DirectivesParser {
         return messageContent.at(gameJSONMappings.get("currentPlayer")).textValue();
     }
 
+    public String getEndGame(){
+        return messageContent.at(gameJSONMappings.get("endgame")).textValue();
+    }
+
+    public List<String> getWinners() throws DirectivesParserException {
+        try {
+            return this.jsonMapper.readValue(messageContent.at(gameJSONMappings.get("winners")).toString(), new TypeReference<>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new DirectivesParserException((String.format("Error while deserializing game json (%s)", e.getMessage())), e);
+        }
+    }
+
 
     /**
      * Exception for errors within directives parser class.
@@ -111,6 +124,6 @@ public class DirectivesParser {
             super(message, cause);
         }
     }
-    
+
 
 }
