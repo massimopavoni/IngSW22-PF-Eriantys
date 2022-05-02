@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class representing the directives dispatcher.
+ * Class representing the directives' dispatcher.
  */
 public class DirectivesDispatcher {
     /**

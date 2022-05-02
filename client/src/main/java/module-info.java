@@ -6,7 +6,9 @@ module it.polimi.ingsw.eriantysclient {
     requires com.fasterxml.jackson.databind;
 
     exports it.polimi.ingsw.javangers.client.gui.launcher;
-    opens it.polimi.ingsw.javangers.client.gui.launcher to javafx.fxml;
     exports it.polimi.ingsw.javangers.client.controller;
+    exports it.polimi.ingsw.javangers.client.controller.directives;
+    exports it.polimi.ingsw.javangers.client.view;
+    opens it.polimi.ingsw.javangers.client.gui.launcher to javafx.fxml;
     opens it.polimi.ingsw.javangers.client.controller to com.fasterxml.jackson.databind;
 }
