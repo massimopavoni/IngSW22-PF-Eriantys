@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.client.controller;
 
+import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -38,6 +40,10 @@ public class NetworkManager implements Runnable {
      */
     private final Object directiveWaitingLock;
     /**
+     * Directives parser singleton instance.
+     */
+    private final DirectivesParser directivesParser;
+    /**
      * Buffered reader for incoming directives.
      */
     private final BufferedReader in;
@@ -55,13 +61,14 @@ public class NetworkManager implements Runnable {
     private String outgoingDirective;
 
     /**
-     * Constructor for network manager, initializing socket, buffered reader and writer and directive locking object
+     * Constructor for network manager, initializing socket, buffered reader and writer, directive locking object and directives parser instance.
      *
      * @param serverAddress server socket address
      * @param port          server socket port
+     * @param parser        directives parser singleton instance
      * @throws NetworkManagerException if there was an error while creating socket or buffered reader/writer
      */
-    private NetworkManager(String serverAddress, int port) throws NetworkManagerException {
+    private NetworkManager(String serverAddress, int port, DirectivesParser parser) throws NetworkManagerException {
         try {
             this.socket = new Socket(serverAddress, port);
         } catch (IOException e) {
@@ -74,6 +81,7 @@ public class NetworkManager implements Runnable {
             throw new NetworkManagerException(String.format(BUFFER_ERROR_MESSAGE, e.getMessage()), e);
         }
         this.directiveWaitingLock = new Object();
+        this.directivesParser = parser;
     }
 
     /**
@@ -81,12 +89,13 @@ public class NetworkManager implements Runnable {
      *
      * @param serverAddress server socket address
      * @param port          server socket port
+     * @param parser        directives parser singleton instance
      * @return singleton instance
      * @throws NetworkManagerException if network manager constructor throws any exceptions
      */
-    public static NetworkManager getInstance(String serverAddress, int port) throws NetworkManagerException {
+    public static NetworkManager getInstance(String serverAddress, int port, DirectivesParser parser) throws NetworkManagerException {
         if (singleton == null)
-            singleton = new NetworkManager(serverAddress, port);
+            singleton = new NetworkManager(serverAddress, port, parser);
         return singleton;
     }
 
@@ -118,10 +127,16 @@ public class NetworkManager implements Runnable {
         try {
             while (this.socket.isConnected()) {
                 this.incomingDirective = this.in.readLine();
+                this.directivesParser.setMessage(this.incomingDirective);
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, EXCEPTION_MESSAGE,
                     new NetworkManagerException(String.format(BUFFER_ERROR_MESSAGE, e.getMessage()), e));
+            Thread.currentThread().interrupt();
+            System.exit(1);
+        } catch (DirectivesParser.DirectivesParserException e) {
+            LOGGER.log(Level.SEVERE, EXCEPTION_MESSAGE,
+                new NetworkManagerException(String.format("Directives parser error (%s)", e.getMessage()), e));
             Thread.currentThread().interrupt();
             System.exit(1);
         } finally {

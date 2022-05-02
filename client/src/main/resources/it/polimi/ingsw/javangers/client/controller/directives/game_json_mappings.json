@@ -31,8 +31,7 @@
   "additionalPower": "/gameEngine/additionalPower",
   "forbiddenColor": "/gameEngine/forbiddenColor",
   "characterCards": "/gameEngine/characterCards",
-  "characterCardCost": "/gameEngine/characterCards/%s/cost",
-  "characterCardCostDelta": "/gameEngine/characterCards/%s/costDelta",
+  "characterCardCost": "/gameEngine/characterCards/%s",
   "characterCardMultipurposeCounter": "/gameEngine/characterCards/%s/multipurposeCounter",
   "characterCardTokens": "/gameEngine/characterCards/%s/tokenContainer/colorCounts"
 }
