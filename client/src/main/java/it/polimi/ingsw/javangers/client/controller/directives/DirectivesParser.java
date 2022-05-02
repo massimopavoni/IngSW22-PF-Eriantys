@@ -129,7 +129,7 @@ public class DirectivesParser {
             String directiveType = directiveTree.get("type").asText();
             this.messageType = MessageType.valueOf(directiveType);
             this.messageContent = this.jsonMapper.readTree(directiveTree.get("content").toString());
-            this.view.updateGame();
+            this.view.unlockUpdate();
         } catch (JsonProcessingException e) {
             throw new DirectivesParserException((String.format("Error while deserializing directive (%s)", e.getMessage())), e);
         }

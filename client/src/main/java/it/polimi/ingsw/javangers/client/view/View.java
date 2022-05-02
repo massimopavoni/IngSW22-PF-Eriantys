@@ -5,7 +5,20 @@ package it.polimi.ingsw.javangers.client.view;
  */
 public abstract class View {
     /**
-     * Method called to unlock and update the view game information.
+     * Locking object for view update wait.
      */
-    public abstract void updateGame();
+    private final Object updateLock = new Object();
+
+    /**
+     * Method called to unlock the view update wait object.
+     */
+    public void unlockUpdate() {
+        synchronized (this.updateLock) {
+            this.updateLock.notifyAll();
+        }
+    }
+    /**
+     * Method called to update the view game information.
+     */
+    protected abstract void updateGame();
 }
