@@ -87,15 +87,6 @@ public class MessageHandler {
     }
 
     /**
-     * Get incoming directive.
-     *
-     * @return incoming directive string
-     */
-    public String getIncomingDirective() {
-        return this.networkManager.getIncomingDirective();
-    }
-
-    /**
      * Exception for errors within message handler class.
      */
     public static class MessageHandlerException extends Exception {

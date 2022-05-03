@@ -82,6 +82,18 @@ public class NetworkManager implements Runnable {
         }
         this.directiveWaitingLock = new Object();
         this.directivesParser = parser;
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                this.out.write("EXIT");
+                this.out.newLine();
+                this.out.flush();
+                this.out.close();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, EXCEPTION_MESSAGE,
+                        new NetworkManagerException(
+                                String.format("Error while performing graceful shutdown (%s)", e.getMessage()), e));
+            }
+        }));
     }
 
     /**
@@ -136,7 +148,7 @@ public class NetworkManager implements Runnable {
             System.exit(1);
         } catch (DirectivesParser.DirectivesParserException e) {
             LOGGER.log(Level.SEVERE, EXCEPTION_MESSAGE,
-                new NetworkManagerException(String.format("Directives parser error (%s)", e.getMessage()), e));
+                    new NetworkManagerException(String.format("Directives parser error (%s)", e.getMessage()), e));
             Thread.currentThread().interrupt();
             System.exit(1);
         } finally {

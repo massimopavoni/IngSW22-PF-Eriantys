@@ -1,162 +1,156 @@
 package it.polimi.ingsw.javangers.client.launcher;
 
-import it.polimi.ingsw.javangers.client.cli.launcher.CLILauncher;
+import it.polimi.ingsw.javangers.client.controller.MessageHandler;
 import it.polimi.ingsw.javangers.client.controller.NetworkManager;
-import it.polimi.ingsw.javangers.client.gui.launcher.GUILauncherApplication;
+import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
+import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
+import it.polimi.ingsw.javangers.client.view.cli.CLI;
+import it.polimi.ingsw.javangers.client.view.cli.CLIConstants;
+import it.polimi.ingsw.javangers.client.view.gui.GUILauncherApplication;
 
-import java.io.*;
-import java.net.Socket;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
+/**
+ * Class representing the launcher of the client.
+ */
 public class ClientLauncher {
-
-    private static final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    private static final BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
+    /**
+     * Input scanner for cli launcher.
+     */
+    private static final Scanner input = new Scanner(System.in);
+    /**
+     * List of available view interfaces.
+     */
+    private static final List<String> availableInterfaces = Arrays.asList("cli", "gui");
+    /**
+     * Default server host address.
+     */
     private static final String DEFAULT_SERVER_ADDRESS = "127.0.0.1";
-    private static final String DEFAULT_SERVER_PORT = "50666";
-    private static String ServerIP = null;
-    private static int ServerPort= 0;
+    /**
+     * Default server listening port.
+     */
+    private static final int DEFAULT_SERVER_PORT = 50666;
 
-
-    public static String chooseInterfaceMode() {
-        String interfaceMode = null;
-        while (interfaceMode == null) {
-            try {
-                interfaceMode = input.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (interfaceMode != null) {
-                if (interfaceMode.equalsIgnoreCase("cli")) interfaceMode = "CLI";
-                else if (interfaceMode.equalsIgnoreCase("gui")) interfaceMode = "GUI";
-                else {
-                    System.out.println(">Please insert correct input [cli/gui]:");
-                    System.out.print(">");
-                    interfaceMode = null;
-                }
-            }
-        }
-        return interfaceMode;
+    /**
+     * Method used to prompt user for server address.
+     *
+     * @return server address string
+     */
+    private static String chooseServerAddress() {
+        System.out.printf("> Please specify server address [default: %s127.0.0.1%s]: ",
+                CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+        String serverAddress = input.nextLine();
+        return !serverAddress.isEmpty() ? serverAddress : DEFAULT_SERVER_ADDRESS;
     }
 
-    private static boolean isValidIp(String ip) {
-        String regex = "^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\." +
-                "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\." +
-                "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\." +
-                "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$";
-
-        Pattern p = Pattern.compile(regex);
-        if (ip == null) {
-            return false;
-        }
-        Matcher m = p.matcher(ip);
-        return m.matches();
-    }
-
-    public static final String ERIANTYS =
-        "   ▄████████    ▄████████  ▄█     ▄████████ ███▄▄▄▄       ███     ▄██   ▄      ▄████████ \n"
-          +  "  ███    ███   ███    ███ ███    ███    ███ ███▀▀▀██▄ ▀█████████▄ ███   ██▄   ███    ███ \n"
-          +  "  ███    █▀    ███    ███ ███▌   ███    ███ ███   ███    ▀███▀▀██ ███▄▄▄███   ███    █▀  \n"
-          +  " ▄███▄▄▄      ▄███▄▄▄▄██▀ ███▌   ███    ███ ███   ███     ███   ▀ ▀▀▀▀▀▀███   ███        \n"
-          +  "▀▀███▀▀▀     ▀▀███▀▀▀▀▀   ███▌ ▀███████████ ███   ███     ███     ▄██   ███ ▀███████████ \n"
-          +  "  ███    █▄  ▀███████████ ███    ███    ███ ███   ███     ███     ███   ███          ███ \n"
-          +  "  ███    ███   ███    ███ ███    ███    ███ ███   ███     ███     ███   ███    ▄█    ███ \n"
-          +  "  ██████████   ███    ███ █▀     ███    █▀   ▀█   █▀     ▄████▀    ▀█████▀   ▄████████▀  \n"
-          +  "               ███    ███                                                                ";
-
-    private static boolean isValidPort(String port) {
-        String regex = "^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
-
-        Pattern p = Pattern.compile(regex);
-        if (port == null) {
-            return false;
-        }
-        Matcher m = p.matcher(port);
-        return m.matches();
-    }
-
-    private static String chooseServerIp() {
-        String serverIp = null;
-        System.out.println(">Please insert the ip of server [default: 127.0.0.1]:");
-        System.out.print(">");
-
-        while (serverIp == null) {
-            try {
-                serverIp = input.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (serverIp != null && serverIp.isEmpty()){
-                serverIp = DEFAULT_SERVER_ADDRESS;
-            }
-            if (!isValidIp(serverIp)) {
-                serverIp = null;
-                System.out.println(">Please insert correct input [default: 127.0.0.1]:");
-                System.out.print(">");
-            }
-        }
-        return serverIp;
-    }
-
+    /**
+     * Method used to prompt user for server port.
+     *
+     * @return server port number
+     */
     public static int chooseServerPort() {
-        String serverPortString = null;
-        int serverPort = 0;
-        System.out.println(">Please insert port of server [default: 50666]:");
-        System.out.print(">");
-        while (serverPortString == null) {
+        String serverPortString = "";
+        int serverPort = -1;
+        System.out.printf("> Please specify server port [default: %s50666%s]: ",
+                CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+        while (serverPort < 0 || serverPort > 65535) {
             try {
-                serverPortString = input.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (serverPortString != null && serverPortString.isEmpty()){
-                serverPortString = DEFAULT_SERVER_PORT;
-            }
-            if (!isValidPort(serverPortString)) {
-                serverPortString = null;
-
-                System.out.println(">Please insert correct input [default: 50666]:");
-                System.out.print(">");
+                serverPortString = input.nextLine();
+                serverPort = !serverPortString.isEmpty() ? Integer.parseInt(serverPortString) : DEFAULT_SERVER_PORT;
+                if (serverPort < 0 || serverPort > 65535)
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.printf("> Invalid input, please specify server port [default: %s50666%s]: ",
+                        CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
             }
         }
-        serverPort = Integer.parseInt(serverPortString);
         return serverPort;
     }
-    public static boolean Parser_wait(){
-    return (ServerIP.equals("127.0.0.1") && ServerPort == 50666);
-    };
-    public static void Dispatcher_send(String serverIP, int serverPort){
-        ServerIP = serverIP;
-        ServerPort = serverPort;
-    };
-    public static void main(String[] args) throws IOException {
-        String serverIP = null;
-        int serverPort = 0;
 
-        System.out.println(ERIANTYS);
-        System.out.println(">Welcome to Eriantys");
-        do {
-        serverIP = chooseServerIp();
-        serverPort = chooseServerPort();
-            try {
-                NetworkManager.getInstance(serverIP, serverPort);
-                break;
-            } catch (NetworkManager.NetworkManagerException e) {
-                System.out.println(">ERROR: WRONG SERVER IP OR PORT");
-                System.out.println(">Please try again");
+    /**
+     * Method used to prompt user for view interface.
+     *
+     * @return view interface string
+     */
+    public static String chooseGameplayInterface() {
+        String gameplayInterface = "";
+        System.out.printf("> Select preferred gameplay interface [%scli%s/%sgui%s]: ",
+                CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+        while (gameplayInterface.isEmpty()) {
+            gameplayInterface = input.nextLine().toLowerCase();
+            if (!availableInterfaces.contains(gameplayInterface)) {
+                System.out.printf("> Invalid input, please select preferred gameplay interface [%scli%s/%sgui%s]: ",
+                        CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+                gameplayInterface = "";
             }
-        }while(true);
+        }
+        return gameplayInterface;
+    }
 
-        System.out.println(">Insert if you want to remain on CLI or play on GUI [cli/gui]:");
-        System.out.print(">");
-        if (Objects.equals(chooseInterfaceMode(), "GUI")) {
-            new Thread(() -> GUILauncherApplication.main(args)).start();
-            System.out.println("GUI started");
-        } else {
-            new Thread(() -> CLILauncher.main(args)).start();
+    /**
+     * Main method used to launch client.
+     *
+     * @param args command line arguments
+     */
+    public static void main(String[] args) {
+        String serverAddress;
+        int serverPort;
+        DirectivesParser directivesParser = null;
+        NetworkManager networkManager = null;
+        DirectivesDispatcher directivesDispatcher = null;
+        System.out.printf("%sWelcome to Eriantys%s%n%n", CLIConstants.ANSI_BRIGHT_MAGENTA, CLIConstants.ANSI_RESET);
+        while (directivesParser == null || directivesDispatcher == null) {
+            serverAddress = chooseServerAddress();
+            serverPort = chooseServerPort();
+            try {
+                directivesParser = DirectivesParser.getInstance();
+                networkManager = NetworkManager.getInstance(serverAddress, serverPort, directivesParser);
+                directivesDispatcher = DirectivesDispatcher.getInstance(
+                        MessageHandler.getInstance(networkManager));
+            } catch (NetworkManager.NetworkManagerException e) {
+                System.out.printf("%sNetwork error (%s)%s%n", CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
+                System.out.printf("%sPlease try again%s%n", CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+            } catch (DirectivesParser.DirectivesParserException |
+                     DirectivesDispatcher.DirectivesDispatcherException e) {
+                throw new ClientLauncherException(String.format("Error while starting client (%s)", e.getMessage()), e);
+            }
+        }
+        System.out.printf("%sConnected!%s%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
+        String gameplayInterface = chooseGameplayInterface();
+        switch (gameplayInterface) {
+            case "cli" -> {
+                new CLI(directivesDispatcher, directivesParser);
+                new Thread(() -> CLI.main(args)).start();
+            }
+            case "gui" -> new Thread(() -> GUILauncherApplication.main(args)).start();
+            default ->
+                    throw new ClientLauncherException(String.format("Invalid gameplay interface (%s)", gameplayInterface));
+        }
+    }
+
+    /**
+     * Runtime exception for errors within client launcher class.
+     */
+    public static class ClientLauncherException extends RuntimeException {
+        /**
+         * ClientLauncherException constructor with message.
+         *
+         * @param message message to be shown
+         */
+        public ClientLauncherException(String message) {
+            super(message);
+        }
+
+        /**
+         * ClientLauncherException constructor with message and cause.
+         *
+         * @param message message to be shown
+         * @param cause   cause of the exception
+         */
+        public ClientLauncherException(String message, Throwable cause) {
+            super(message, cause);
         }
     }
 }
