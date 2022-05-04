@@ -233,8 +233,14 @@ public abstract class View {
                         this.gameCreator = true;
                     }
                     case PLAYER -> this.checkStart(messageContent);
-                    case START -> this.startShow();
-                    case ACTION -> this.updateFromAction();
+                    case START -> {
+                        this.startShow();
+                        this.continueGame();
+                    }
+                    case ACTION -> {
+                        this.updateFromAction();
+                        this.continueGame();
+                    }
                     case ABORT -> {
                         this.checkEmptyContent(messageContent);
                         this.showAbort(messageContent);
@@ -242,9 +248,9 @@ public abstract class View {
                     case ERROR -> {
                         this.checkEmptyContent(messageContent);
                         this.showError(messageContent);
+                        this.continueGame();
                     }
                 }
-                this.continueGame();
             }
             this.closeGame(this.winners);
         }).start();
