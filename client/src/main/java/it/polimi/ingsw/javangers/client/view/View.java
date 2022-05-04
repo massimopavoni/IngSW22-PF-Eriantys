@@ -64,6 +64,7 @@ public abstract class View {
         this.directivesDispatcher = directivesDispatcher;
         this.directivesParser = directivesParser;
         this.directivesParser.setView(this);
+        this.startMainLoopThread();
     }
 
     /**
@@ -153,6 +154,65 @@ public abstract class View {
     protected abstract void waitTurn();
 
     /**
+     * Check if message content for create or player is valid, and wait for start.
+     *
+     * @param messageContent message content
+     */
+    protected void checkWaitForStart(String messageContent) {
+        if (!messageContent.equals("OK"))
+            throw new ViewException("Unexpected non-ok message content");
+        this.waitForStart();
+    }
+
+    /**
+     * Check if client has to start the game.
+     *
+     * @param messageContent message content
+     */
+    protected void checkStart(String messageContent) {
+        if (messageContent.equals("FULL") && this.gameCreator) {
+            this.startGame();
+        } else {
+            this.checkWaitForStart(messageContent);
+        }
+    }
+
+    /**
+     * Update from action outcomes.
+     */
+    protected void updateFromAction() {
+        this.updateGame();
+        try {
+            this.winners = this.directivesParser.getWinners();
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new ViewException(String.format("Directives parser error (%s)", e.getMessage()), e);
+        }
+    }
+
+    /**
+     * Check if message content is empty.
+     *
+     * @param messageContent message content
+     */
+    protected void checkEmptyContent(String messageContent) {
+        if (messageContent.isEmpty())
+            throw new ViewException("Unexpected empty message content");
+    }
+
+    /**
+     * Continue game if winners is empty.
+     */
+    protected void continueGame() {
+        if (!this.winners.isEmpty()) {
+            if (this.directivesParser.getCurrentPlayer().equals(this.username)) {
+                this.enableActions();
+            } else {
+                this.waitTurn();
+            }
+        }
+    }
+
+    /**
      * Main loop thread method, for updating view according to received directive type.
      */
     protected void startMainLoopThread() {
@@ -163,51 +223,28 @@ public abstract class View {
                         this.updateLock.wait();
                     }
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     throw new ViewException(String.format("View update wait was interrupted (%s)", e.getMessage()), e);
                 }
                 String messageContent = this.directivesParser.getMessageContent();
                 switch (this.directivesParser.getMessageType()) {
                     case CREATE -> {
-                        if (!messageContent.equals("OK"))
-                            throw new ViewException("Unexpected non-ok message content");
-                        this.waitForStart();
+                        this.checkWaitForStart(messageContent);
+                        this.gameCreator = true;
                     }
-                    case PLAYER -> {
-                        if (messageContent.equals("FULL") && this.gameCreator) {
-                            this.startGame();
-                        } else if (!messageContent.equals("OK")) {
-                            throw new ViewException("Unexpected non-ok message content");
-                        } else {
-                            this.waitForStart();
-                        }
-                    }
+                    case PLAYER -> this.checkStart(messageContent);
                     case START -> this.startShow();
-                    case ACTION -> {
-                        this.updateGame();
-                        try {
-                            this.winners = this.directivesParser.getWinners();
-                        } catch (DirectivesParser.DirectivesParserException e) {
-                            throw new ViewException(String.format("Directives parser error (%s)", e.getMessage()), e);
-                        }
-                    }
+                    case ACTION -> this.updateFromAction();
                     case ABORT -> {
-                        if (messageContent.isEmpty())
-                            throw new ViewException("Unexpected empty message content");
+                        this.checkEmptyContent(messageContent);
                         this.showAbort(messageContent);
                     }
                     case ERROR -> {
-                        if (messageContent.isEmpty())
-                            throw new ViewException("Unexpected empty message content");
+                        this.checkEmptyContent(messageContent);
                         this.showError(messageContent);
                     }
                 }
-                if (!this.winners.isEmpty()) {
-                    if (this.directivesParser.getCurrentPlayer().equals(this.username)) {
-                        this.enableActions();
-                    } else {
-                        this.waitTurn();
-                    }
-                }
+                this.continueGame();
             }
             this.closeGame(this.winners);
         }).start();

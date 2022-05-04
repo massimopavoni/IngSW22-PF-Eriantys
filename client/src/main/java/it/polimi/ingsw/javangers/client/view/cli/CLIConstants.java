@@ -85,4 +85,10 @@ public class CLIConstants {
               ███    ███   ███    ███ ███    ███    ███ ███   ███     ███     ███   ███    ▄█    ███\s
               ██████████   ███    ███ █▀     ███    █▀   ▀█   █▀     ▄████▀    ▀█████▀   ▄████████▀ \s
                            ███    ███                                                               \s""";
+
+    /**
+     * Private constructor for utility class.
+     */
+    private CLIConstants() {
+    }
 }
