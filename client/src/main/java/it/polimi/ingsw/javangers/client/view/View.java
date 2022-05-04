@@ -3,6 +3,7 @@ package it.polimi.ingsw.javangers.client.view;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public abstract class View {
     /**
      * List of winners.
      */
-    protected List<String> winners;
+    protected List<String> winners = Collections.emptyList();
     /**
      * Chosen number of players for the game.
      */
@@ -55,7 +56,7 @@ public abstract class View {
     protected String towerColor;
 
     /**
-     * Constructor for view, initializing directives dispatcher and parser.
+     * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
      *
      * @param directivesDispatcher directives dispatcher instance
      * @param directivesParser     directives parser instance
@@ -172,6 +173,7 @@ public abstract class View {
     protected void checkStart(String messageContent) {
         if (messageContent.equals("FULL") && this.gameCreator) {
             this.startGame();
+            this.checkWaitForStart(messageContent);
         } else {
             this.checkWaitForStart(messageContent);
         }
