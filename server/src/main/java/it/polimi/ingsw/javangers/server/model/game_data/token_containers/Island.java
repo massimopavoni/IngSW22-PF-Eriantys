@@ -31,7 +31,9 @@ public class Island {
     //region Constructor, get and set methods
 
     /**
-     * Constructor for island, initializing token container, towers and enabled counter.
+     * Constructor for island, initializing id, token container, towers and enabled counter.
+     *
+     * @param id island id
      */
     public Island(int id) {
         this.id = id;

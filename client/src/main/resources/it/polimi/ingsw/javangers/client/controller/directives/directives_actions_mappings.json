@@ -1,0 +1,27 @@
+{
+  "fillClouds": {
+    "action": "FillClouds"
+  },
+  "playAssistantCard": {
+    "action": "PlayAssistantCard",
+    "cardName": "cardName"
+  },
+  "moveStudents": {
+    "action": "MoveStudents",
+    "studentsToHall": "studentsToHall",
+    "studentsToIslands": "studentsToIslands"
+  },
+  "moveMotherNature": {
+    "action": "MoveMotherNature",
+    "steps": "steps"
+  },
+  "chooseCloud": {
+    "action": "ChooseCloud",
+    "cloudIndex": "cloudIndex"
+  },
+  "activateCharacterCard": {
+    "action": "ActivateCharacterCard",
+    "effect": "effect",
+    "args": "args"
+  }
+}

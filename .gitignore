@@ -17,3 +17,6 @@ target/
 .DS_Store
 # ignore sonarqube scan script for local instance
 sonarqube-scan.sh
+# ignore generated JavaDoc sources
+/JavaDoc/Eriantys-Server/*
+/JavaDoc/Eriantys-Client/*

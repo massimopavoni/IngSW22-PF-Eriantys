@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 /**
- * Class representing the herald character card.
+ * Class representing the herald character card effect.
  */
 public class Herald implements EffectStrategy {
     //--------------------------------------------------------------------------------------------------------------------------------

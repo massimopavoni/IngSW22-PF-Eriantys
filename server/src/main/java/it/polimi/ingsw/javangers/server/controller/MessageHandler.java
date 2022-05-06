@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class MessageHandler implements Runnable {
     /**
-     * Server launcher logger.
+     * Message handler logger.
      */
     private static final Logger LOGGER = Logger.getLogger(MessageHandler.class.getName());
     /**
@@ -100,7 +100,7 @@ public class MessageHandler implements Runnable {
             return this.jsonMapper.writeValueAsString(new Message(messageType, this.jsonMapper.readTree(messageContent)));
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.SEVERE, "Logging exception:",
-                    new ModelGate.ModelGateException(String.format("Error while serializing message (%s)", e.getMessage()), e));
+                    new MessageHandlerException(String.format("Error while serializing message (%s)", e.getMessage()), e));
             return "Server message error";
         }
     }
@@ -161,16 +161,34 @@ public class MessageHandler implements Runnable {
             List<PlayerConnection> allowedPlayerConnections = playerConnections.stream()
                     .filter(playerConnection -> allowedPlayerConnectionIDs
                             .contains(playerConnection.getID())).collect(Collectors.toList());
+            String outgoingDirective;
             if (!new HashSet<>(playerConnectionsIDs).containsAll(allowedPlayerConnectionIDs)) {
                 LOGGER.severe("Aborting game because of missing player connections");
+                outgoingDirective = this.composeJSONMessage(MessageType.ABORT, "\"Game aborted because of missing players\"");
+                allowedPlayerConnections.forEach(p -> p.setOutgoingDirective(outgoingDirective));
                 this.modelGate.reset();
-                for (PlayerConnection playerConnection : allowedPlayerConnections) {
-                    String outgoingDirective = this.composeJSONMessage(MessageType.ERROR, "\"Game aborted because of missing players\"");
-                    playerConnection.setOutgoingDirective(outgoingDirective);
-                }
+            } else if (modelGate.isGameFull() && !modelGate.isGameStarted() && !this.modelGate.isGameFullMessageSent()) {
+                LOGGER.info("Game full but not started");
+                outgoingDirective = this.composeJSONMessage(MessageType.PLAYER, "\"FULL\"");
+                allowedPlayerConnections.forEach(p -> p.setOutgoingDirective(outgoingDirective));
+                this.modelGate.setGameFullMessageSent(true);
             }
             this.handleConnections(playerConnections, allowedPlayerConnections);
         }
     }
-}
 
+    /**
+     * Exception for errors within message handler class.
+     */
+    public static class MessageHandlerException extends Exception {
+        /**
+         * MessageHandlerException constructor with message and cause.
+         *
+         * @param message message to be shown
+         * @param cause   cause of the exception
+         */
+        public MessageHandlerException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+}

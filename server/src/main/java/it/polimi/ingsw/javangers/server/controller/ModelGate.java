@@ -30,6 +30,10 @@ public class ModelGate {
      */
     private static final String EXCEPTION_MESSAGE = "Logging exception:";
     /**
+     * Success message for outgoing directives.
+     */
+    private static final String SUCCESS_MESSAGE = "\"OK\"";
+    /**
      * Game configurations json file resource location.
      */
     private final String gameConfigurationsResourceLocation;
@@ -49,6 +53,10 @@ public class ModelGate {
      * Flag for player connections filter after game filled.
      */
     private boolean gameFull;
+    /**
+     * Flag for game full message already sent.
+     */
+    private boolean gameFullMessageSent;
     /**
      * Directives forge instance for incoming directives' deserialization.
      */
@@ -82,6 +90,7 @@ public class ModelGate {
         this.jsonMapper = new ObjectMapper();
         this.playerConnectionsIDsList = new ArrayList<>();
         this.gameFull = false;
+        this.gameFullMessageSent = false;
     }
 
     /**
@@ -100,6 +109,33 @@ public class ModelGate {
      */
     public boolean isGameFull() {
         return this.gameFull;
+    }
+
+    /**
+     * Get game full message sent flag.
+     *
+     * @return game full message sent flag
+     */
+    public boolean isGameFullMessageSent() {
+        return this.gameFullMessageSent;
+    }
+
+    /**
+     * Set game full message sent flag.
+     *
+     * @param gameFullMessageSent game full message sent flag
+     */
+    public void setGameFullMessageSent(boolean gameFullMessageSent) {
+        this.gameFullMessageSent = gameFullMessageSent;
+    }
+
+    /**
+     * Get flag for game started.
+     *
+     * @return flag for game started
+     */
+    public boolean isGameStarted() {
+        return this.gameManager != null && this.gameManager.isStarted();
     }
 
     /**
@@ -164,6 +200,7 @@ public class ModelGate {
         this.gameManager = null;
         this.playerConnectionsIDsList.clear();
         this.gameFull = false;
+        this.gameFullMessageSent = false;
     }
 
     /**
@@ -185,24 +222,24 @@ public class ModelGate {
                     LOGGER.warning("Game already created");
                     return new Pair<>(MessageType.ERROR, "\"Game already created\"");
                 }
-                Triplet<Integer, Boolean, Pair<WizardType, TowerColor>> creationParameters = directivesForge.parseGameManager(content);
+                Triplet<Integer, Boolean, Pair<WizardType, TowerColor>> creationParameters = this.directivesForge.parseGameManager(content);
                 LOGGER.log(Level.INFO, "Creating game - {0}", username);
                 this.gameManager = new GameManager(this.gameConfigurationsResourceLocation, this.gamePhasesResourceLocation, creationParameters.getValue0(),
                         creationParameters.getValue1(), username, creationParameters.getValue2());
                 this.playerConnectionsIDsList.add(playerConnectionID);
-                return new Pair<>(type, "\"OK\"");
+                return new Pair<>(type, SUCCESS_MESSAGE);
             case PLAYER:
                 if (this.gameManager == null) {
                     LOGGER.warning("Cannot add player - game not created yet");
                     return new Pair<>(MessageType.ERROR, "\"Cannot add player: game not created yet\"");
                 }
-                Pair<WizardType, TowerColor> playerInfo = directivesForge.parseAddPlayer(content);
+                Pair<WizardType, TowerColor> playerInfo = this.directivesForge.parseAddPlayer(content);
                 LOGGER.log(Level.INFO, "Adding player - {0}", username);
                 this.gameManager.addPlayer(username, playerInfo);
                 if (!this.playerConnectionsIDsList.contains(playerConnectionID))
                     this.playerConnectionsIDsList.add(playerConnectionID);
                 this.checkGameFull();
-                return new Pair<>(type, "\"OK\"");
+                return new Pair<>(type, SUCCESS_MESSAGE);
             case START:
                 if (this.gameManager == null) {
                     LOGGER.warning("Cannot start - game not created yet");
@@ -224,7 +261,7 @@ public class ModelGate {
                     LOGGER.log(Level.WARNING, "Cannot execute action - player connection {0} not added to the game", playerConnectionID);
                     return new Pair<>(MessageType.ERROR, "\"Cannot execute action: player connection not added to the game\"");
                 }
-                ActionStrategy action = directivesForge.parseAction(content);
+                ActionStrategy action = this.directivesForge.parseAction(content);
                 LOGGER.log(Level.INFO, "Executing player action - {0} ({1})", new Object[]{username, action.getClass().getSimpleName()});
                 this.gameManager.executePlayerAction(username, action);
                 String gameJSON = this.gameManager.getGameJSON();
