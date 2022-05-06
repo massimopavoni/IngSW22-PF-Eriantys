@@ -67,6 +67,20 @@ public class ServerLauncher {
      * @param args console arguments for default args override
      */
     public static void main(String[] args) {
+        try {
+            String os = System.getProperty("os.name");
+            ProcessBuilder pb;
+            if (os.contains("Windows"))
+                pb = new ProcessBuilder("cmd", "/c", "cls");
+            else
+                pb = new ProcessBuilder("clear");
+            pb.inheritIO().start().waitFor();
+        } catch (IOException | InterruptedException e) {
+            LOGGER.log(Level.WARNING, EXCEPTION_MESSAGE,
+                    new ServerLauncherException(String.format("Error while clearing console (%s)", e.getMessage()), e));
+            Thread.currentThread().interrupt();
+            System.exit(1);
+        }
         LOGGER.info("Server bootstrap - parsing arguments");
         List<String> availableArgs = new ArrayList<>(DEFAULT_SERVER_ARGS.keySet());
         Map<String, Integer> serverArgs = new HashMap<>(DEFAULT_SERVER_ARGS);
