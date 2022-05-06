@@ -3,7 +3,6 @@ package it.polimi.ingsw.javangers.client.view;
 import it.polimi.ingsw.javangers.client.controller.MessageType;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
-import it.polimi.ingsw.javangers.client.view.cli.CLIConstants;
 
 import java.util.Collections;
 import java.util.List;
