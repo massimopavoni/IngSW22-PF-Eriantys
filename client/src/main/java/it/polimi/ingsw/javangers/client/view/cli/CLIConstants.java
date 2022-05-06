@@ -1,5 +1,7 @@
 package it.polimi.ingsw.javangers.client.view.cli;
 
+import java.util.Map;
+
 /**
  * Utility class for cli constants.
  */
@@ -85,6 +87,24 @@ public class CLIConstants {
               ███    ███   ███    ███ ███    ███    ███ ███   ███     ███     ███   ███    ▄█    ███\s
               ██████████   ███    ███ █▀     ███    █▀   ▀█   █▀     ▄████▀    ▀█████▀   ▄████████▀ \s
                            ███    ███                                                               \s""";
+    /**
+     * Mappings for wizard types' cli colors.
+     */
+    protected static final Map<String, String> WIZARD_TYPES_CLI_COLORS = Map.of(
+            "d", CLIConstants.ANSI_BRIGHT_GREEN,
+            "k", CLIConstants.ANSI_BRIGHT_YELLOW,
+            "w", CLIConstants.ANSI_BRIGHT_MAGENTA,
+            "s", CLIConstants.ANSI_BRIGHT_CYAN);
+
+    /**
+     * Mappings for token colors' cli colors.
+     */
+    protected static final Map<String, String> TOKEN_COLORS_CLI_COLORS = Map.of(
+            "y", CLIConstants.ANSI_BRIGHT_YELLOW,
+            "b", CLIConstants.ANSI_BRIGHT_BLUE,
+            "g", CLIConstants.ANSI_BRIGHT_GREEN,
+            "r", CLIConstants.ANSI_BRIGHT_RED,
+            "p", CLIConstants.ANSI_BRIGHT_MAGENTA);
 
     /**
      * Private constructor for utility class.

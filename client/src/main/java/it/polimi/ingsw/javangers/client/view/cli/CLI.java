@@ -1,5 +1,6 @@
 package it.polimi.ingsw.javangers.client.view.cli;
 
+import it.polimi.ingsw.javangers.client.controller.MessageType;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
@@ -20,6 +21,14 @@ public class CLI extends View {
      * Constant for list options.
      */
     private static final String LIST_OPTION = "- %s%s [%s]%s%n";
+    /**
+     * List of loading animation frames.
+     */
+    private static final List<String> LOADING_ANIMATION_FRAMES = List.of("▖", "▘", "▝", "▗");
+    /**
+     * Thread for loading animation.
+     */
+    private static Thread loadingThread;
 
     /**
      * Constructor for cli, initializing directives dispatcher and parser.
@@ -61,7 +70,7 @@ public class CLI extends View {
                 CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
         while (this.exactPlayersNumber < MIN_PLAYERS_NUMBER || this.exactPlayersNumber > MAX_PLAYERS_NUMBER) {
             try {
-                exactPlayersNumberString = input.nextLine();
+                exactPlayersNumberString = CLI.input.nextLine().strip();
                 this.exactPlayersNumber = Integer.parseInt(exactPlayersNumberString);
                 if (exactPlayersNumber < MIN_PLAYERS_NUMBER || exactPlayersNumber > MAX_PLAYERS_NUMBER)
                     throw new NumberFormatException();
@@ -79,7 +88,7 @@ public class CLI extends View {
         this.username = "";
         System.out.print("> Insert your username (min 4/max 32 characters, alphanumeric + underscores): ");
         while (this.username.isEmpty()) {
-            this.username = input.nextLine();
+            this.username = CLI.input.nextLine().strip();
             if (!View.isValidUsername(this.username)) {
                 this.username = "";
                 System.out.print("> Invalid input, insert your username (min 4/max 32 characters, alphanumeric + underscores): ");
@@ -93,7 +102,7 @@ public class CLI extends View {
     private void chooseExpertMode() {
         System.out.printf("> Use expert mode? [%sY%s/%sn%s] ",
                 CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
-        String expertModeString = input.nextLine().toLowerCase();
+        String expertModeString = CLI.input.nextLine().strip().toLowerCase();
         expertModeString = !expertModeString.isEmpty() ? expertModeString : "true";
         this.expertMode = Boolean.parseBoolean(expertModeString);
     }
@@ -104,17 +113,17 @@ public class CLI extends View {
     private void chooseWizardType() {
         this.wizardType = "";
         System.out.println("> Choose wizard type:");
-        WIZARD_TYPES_MAPPINGS.forEach((key, value) -> System.out.printf(LIST_OPTION,
-                WIZARD_TYPES_CLI_COLORS.get(key), value, key, CLIConstants.ANSI_RESET));
+        View.WIZARD_TYPES_MAPPINGS.forEach((key, value) -> System.out.printf(CLI.LIST_OPTION,
+                CLIConstants.WIZARD_TYPES_CLI_COLORS.get(key), value, key, CLIConstants.ANSI_RESET));
         System.out.print("> ");
         while (this.wizardType.isEmpty()) {
-            this.wizardType = input.nextLine().toLowerCase();
-            this.wizardType = AVAILABLE_WIZARD_TYPES.get(this.wizardType);
+            this.wizardType = CLI.input.nextLine().strip().toLowerCase();
+            this.wizardType = View.AVAILABLE_WIZARD_TYPES.get(this.wizardType);
             if (this.wizardType == null) {
                 this.wizardType = "";
                 System.out.println("> Invalid input, choose wizard type:");
-                WIZARD_TYPES_MAPPINGS.forEach((key, value) -> System.out.printf(LIST_OPTION,
-                        WIZARD_TYPES_CLI_COLORS.get(key), value, key, CLIConstants.ANSI_RESET));
+                View.WIZARD_TYPES_MAPPINGS.forEach((key, value) -> System.out.printf(CLI.LIST_OPTION,
+                        CLIConstants.WIZARD_TYPES_CLI_COLORS.get(key), value, key, CLIConstants.ANSI_RESET));
                 System.out.print("> ");
             }
         }
@@ -126,16 +135,16 @@ public class CLI extends View {
     private void chooseTowerColor() {
         this.towerColor = "";
         System.out.println("> Choose tower color:");
-        TOWER_COLORS_MAPPINGS.forEach((key, value) -> System.out.printf(LIST_OPTION,
+        View.TOWER_COLORS_MAPPINGS.forEach((key, value) -> System.out.printf(CLI.LIST_OPTION,
                 CLIConstants.ANSI_BRIGHT_WHITE, value, key, CLIConstants.ANSI_RESET));
         System.out.print("> ");
         while (this.towerColor.isEmpty()) {
-            this.towerColor = input.nextLine().toLowerCase();
-            this.towerColor = AVAILABLE_TOWER_COLORS.get(this.towerColor);
+            this.towerColor = CLI.input.nextLine().strip().toLowerCase();
+            this.towerColor = View.AVAILABLE_TOWER_COLORS.get(this.towerColor);
             if (this.towerColor == null) {
                 this.towerColor = "";
                 System.out.println("> Invalid input, choose tower color:");
-                TOWER_COLORS_MAPPINGS.forEach((key, value) -> System.out.printf(LIST_OPTION,
+                View.TOWER_COLORS_MAPPINGS.forEach((key, value) -> System.out.printf(CLI.LIST_OPTION,
                         CLIConstants.ANSI_BRIGHT_WHITE, value, key, CLIConstants.ANSI_RESET));
                 System.out.print("> ");
             }
@@ -155,7 +164,7 @@ public class CLI extends View {
                 CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
         String choice = "";
         while (choice.isEmpty()) {
-            choice = input.nextLine().toLowerCase();
+            choice = CLI.input.nextLine().strip().toLowerCase();
             switch (choice) {
                 case "c" -> this.createGame();
                 case "j" -> this.joinGame();
@@ -177,6 +186,7 @@ public class CLI extends View {
         this.chooseWizardType();
         this.chooseTowerColor();
         this.directivesDispatcher.createGame(this.username, this.exactPlayersNumber, this.expertMode, this.wizardType, this.towerColor);
+        this.previousMessageType = MessageType.CREATE;
     }
 
     /**
@@ -188,6 +198,7 @@ public class CLI extends View {
         this.chooseWizardType();
         this.chooseTowerColor();
         this.directivesDispatcher.addPlayer(this.username, this.wizardType, this.towerColor);
+        this.previousMessageType = MessageType.PLAYER;
     }
 
     /**
@@ -195,7 +206,20 @@ public class CLI extends View {
      */
     @Override
     protected void waitForStart() {
-
+        CLI.loadingThread = new Thread(() -> {
+            while (this.previousMessageType == MessageType.CREATE || this.previousMessageType == MessageType.PLAYER) {
+                for (int i = 0; i < 4; i++) {
+                    System.out.printf("%sWait for game start %s%s\r",
+                            CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i), CLIConstants.ANSI_RESET);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+        });
+        CLI.loadingThread.start();
     }
 
     /**
@@ -203,7 +227,8 @@ public class CLI extends View {
      */
     @Override
     protected void startGame() {
-
+        this.directivesDispatcher.startGame(this.username);
+        this.previousMessageType = MessageType.START;
     }
 
     /**
@@ -211,7 +236,7 @@ public class CLI extends View {
      */
     @Override
     protected void startShow() {
-
+        CLI.clear();
     }
 
     /**
@@ -219,7 +244,7 @@ public class CLI extends View {
      */
     @Override
     protected void updateGame() {
-
+        CLI.clear();
     }
 
     /**

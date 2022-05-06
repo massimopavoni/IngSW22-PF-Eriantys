@@ -44,14 +44,6 @@ public abstract class View {
             "w", "Witch",
             "s", "Sensei");
     /**
-     * Mappings for wizard types' cli colors.
-     */
-    protected static final Map<String, String> WIZARD_TYPES_CLI_COLORS = Map.of(
-            "d", CLIConstants.ANSI_BRIGHT_GREEN,
-            "k", CLIConstants.ANSI_BRIGHT_YELLOW,
-            "w", CLIConstants.ANSI_BRIGHT_MAGENTA,
-            "s", CLIConstants.ANSI_BRIGHT_CYAN);
-    /**
      * Map of available tower colors.
      */
     protected static final Map<String, String> AVAILABLE_TOWER_COLORS = Map.of(
@@ -83,15 +75,6 @@ public abstract class View {
             "g", "Green Frog",
             "r", "Red Dragon",
             "p", "Pink Fairy");
-    /**
-     * Mappings for token colors' cli colors.
-     */
-    protected static final Map<String, String> TOKEN_COLORS_CLI_COLORS = Map.of(
-            "y", CLIConstants.ANSI_BRIGHT_YELLOW,
-            "b", CLIConstants.ANSI_BRIGHT_BLUE,
-            "g", CLIConstants.ANSI_BRIGHT_GREEN,
-            "r", CLIConstants.ANSI_BRIGHT_RED,
-            "p", CLIConstants.ANSI_BRIGHT_MAGENTA);
     /**
      * Locking object for view update wait.
      */

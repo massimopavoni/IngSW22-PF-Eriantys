@@ -41,7 +41,7 @@ public class ClientLauncher {
     private static String chooseServerAddress() {
         System.out.printf("> Please specify server address [default: %s127.0.0.1%s]: ",
                 CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
-        String serverAddress = input.nextLine();
+        String serverAddress = ClientLauncher.input.nextLine().strip();
         return !serverAddress.isEmpty() ? serverAddress : DEFAULT_SERVER_ADDRESS;
     }
 
@@ -57,7 +57,7 @@ public class ClientLauncher {
                 CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
         while (serverPort < 0 || serverPort > 65535) {
             try {
-                serverPortString = input.nextLine();
+                serverPortString = ClientLauncher.input.nextLine().strip();
                 serverPort = !serverPortString.isEmpty() ? Integer.parseInt(serverPortString) : DEFAULT_SERVER_PORT;
                 if (serverPort < 0 || serverPort > 65535)
                     throw new NumberFormatException();
@@ -79,7 +79,7 @@ public class ClientLauncher {
         System.out.printf("> Select preferred gameplay interface [%scli%s/%sgui%s]: ",
                 CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
         while (gameplayInterface.isEmpty()) {
-            gameplayInterface = input.nextLine().toLowerCase();
+            gameplayInterface = ClientLauncher.input.nextLine().strip().toLowerCase();
             if (!availableInterfaces.contains(gameplayInterface)) {
                 System.out.printf("> Invalid input, please select preferred gameplay interface [%scli%s/%sgui%s]: ",
                         CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
@@ -103,8 +103,8 @@ public class ClientLauncher {
         CLI.clear();
         System.out.printf("%sWelcome to Eriantys%s%n%n", CLIConstants.ANSI_BRIGHT_MAGENTA, CLIConstants.ANSI_RESET);
         while (directivesParser == null || directivesDispatcher == null) {
-            serverAddress = chooseServerAddress();
-            serverPort = chooseServerPort();
+            serverAddress = ClientLauncher.chooseServerAddress();
+            serverPort = ClientLauncher.chooseServerPort();
             try {
                 directivesParser = DirectivesParser.getInstance();
                 networkManager = NetworkManager.getInstance(serverAddress, serverPort, directivesParser);
@@ -120,7 +120,7 @@ public class ClientLauncher {
             }
         }
         System.out.printf("%sConnected!%s%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
-        String gameplayInterface = chooseGameplayInterface();
+        String gameplayInterface = ClientLauncher.chooseGameplayInterface();
         switch (gameplayInterface) {
             case "cli" -> {
                 DirectivesDispatcher finalDirectivesDispatcher = directivesDispatcher;
