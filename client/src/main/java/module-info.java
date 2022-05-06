@@ -4,6 +4,7 @@ module it.polimi.ingsw.eriantysclient {
     requires java.logging;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires java.desktop;
 
     exports it.polimi.ingsw.javangers.client.view.gui;
     exports it.polimi.ingsw.javangers.client.controller;

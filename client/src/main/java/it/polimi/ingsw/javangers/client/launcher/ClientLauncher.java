@@ -7,6 +7,7 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.cli.CLI;
 import it.polimi.ingsw.javangers.client.view.cli.CLIConstants;
 import it.polimi.ingsw.javangers.client.view.gui.GUILauncherApplication;
+import it.polimi.ingsw.javangers.client.view.gui.GUILauncherController;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,8 +40,7 @@ public class ClientLauncher {
      * @return server address string
      */
     private static String chooseServerAddress() {
-        System.out.printf("> Please specify server address [default: %s127.0.0.1%s]: ",
-                CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+        System.out.printf("> Please specify server address [default: %s127.0.0.1%s]: ", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
         String serverAddress = input.nextLine();
         return !serverAddress.isEmpty() ? serverAddress : DEFAULT_SERVER_ADDRESS;
     }
@@ -53,17 +53,14 @@ public class ClientLauncher {
     public static int chooseServerPort() {
         String serverPortString = "";
         int serverPort = -1;
-        System.out.printf("> Please specify server port [default: %s50666%s]: ",
-                CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+        System.out.printf("> Please specify server port [default: %s50666%s]: ", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
         while (serverPort < 0 || serverPort > 65535) {
             try {
                 serverPortString = input.nextLine();
                 serverPort = !serverPortString.isEmpty() ? Integer.parseInt(serverPortString) : DEFAULT_SERVER_PORT;
-                if (serverPort < 0 || serverPort > 65535)
-                    throw new NumberFormatException();
+                if (serverPort < 0 || serverPort > 65535) throw new NumberFormatException();
             } catch (NumberFormatException e) {
-                System.out.printf("> Invalid input, please specify server port [default: %s50666%s]: ",
-                        CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+                System.out.printf("> Invalid input, please specify server port [default: %s50666%s]: ", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
             }
         }
         return serverPort;
@@ -76,13 +73,11 @@ public class ClientLauncher {
      */
     public static String chooseGameplayInterface() {
         String gameplayInterface = "";
-        System.out.printf("> Select preferred gameplay interface [%scli%s/%sgui%s]: ",
-                CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+        System.out.printf("> Select preferred gameplay interface [%scli%s/%sgui%s]: ", CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
         while (gameplayInterface.isEmpty()) {
             gameplayInterface = input.nextLine().toLowerCase();
             if (!availableInterfaces.contains(gameplayInterface)) {
-                System.out.printf("> Invalid input, please select preferred gameplay interface [%scli%s/%sgui%s]: ",
-                        CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+                System.out.printf("> Invalid input, please select preferred gameplay interface [%scli%s/%sgui%s]: ", CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
                 gameplayInterface = "";
             }
         }
@@ -107,8 +102,8 @@ public class ClientLauncher {
             try {
                 directivesParser = DirectivesParser.getInstance();
                 networkManager = NetworkManager.getInstance(serverAddress, serverPort, directivesParser);
-                directivesDispatcher = DirectivesDispatcher.getInstance(
-                        MessageHandler.getInstance(networkManager));
+                new Thread(networkManager).start();
+                directivesDispatcher = DirectivesDispatcher.getInstance(MessageHandler.getInstance(networkManager));
             } catch (NetworkManager.NetworkManagerException e) {
                 System.out.printf("%sNetwork error (%s)%s%n", CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
                 System.out.printf("%sPlease try again%s%n", CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
@@ -124,7 +119,10 @@ public class ClientLauncher {
                 new CLI(directivesDispatcher, directivesParser);
                 new Thread(() -> CLI.main(args)).start();
             }
-            case "gui" -> new Thread(() -> GUILauncherApplication.main(args)).start();
+            case "gui" -> {
+                GUILauncherApplication.setDirectives(directivesDispatcher, directivesParser);
+                new Thread(() -> GUILauncherApplication.main(args)).start();
+            }
             default ->
                     throw new ClientLauncherException(String.format("Invalid gameplay interface (%s)", gameplayInterface));
         }
