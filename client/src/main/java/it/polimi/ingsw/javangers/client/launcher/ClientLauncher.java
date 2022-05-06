@@ -6,7 +6,7 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatch
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.cli.CLI;
 import it.polimi.ingsw.javangers.client.view.cli.CLIConstants;
-import it.polimi.ingsw.javangers.client.view.gui.GUILauncherApplication;
+import it.polimi.ingsw.javangers.client.view.gui.GUI;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +51,7 @@ public class ClientLauncher {
      * @return server port number
      */
     public static int chooseServerPort() {
-        String serverPortString = "";
+        String serverPortString;
         int serverPort = -1;
         System.out.printf("> Please specify server port [default: %s50666%s]: ",
                 CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
@@ -77,12 +77,12 @@ public class ClientLauncher {
     public static String chooseGameplayInterface() {
         String gameplayInterface = "";
         System.out.printf("> Select preferred gameplay interface [%scli%s/%sgui%s]: ",
-                CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+                CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
         while (gameplayInterface.isEmpty()) {
             gameplayInterface = input.nextLine().toLowerCase();
             if (!availableInterfaces.contains(gameplayInterface)) {
                 System.out.printf("> Invalid input, please select preferred gameplay interface [%scli%s/%sgui%s]: ",
-                        CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+                        CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
                 gameplayInterface = "";
             }
         }
@@ -98,8 +98,9 @@ public class ClientLauncher {
         String serverAddress;
         int serverPort;
         DirectivesParser directivesParser = null;
-        NetworkManager networkManager = null;
+        NetworkManager networkManager;
         DirectivesDispatcher directivesDispatcher = null;
+        CLI.clear();
         System.out.printf("%sWelcome to Eriantys%s%n%n", CLIConstants.ANSI_BRIGHT_MAGENTA, CLIConstants.ANSI_RESET);
         while (directivesParser == null || directivesDispatcher == null) {
             serverAddress = chooseServerAddress();
@@ -107,6 +108,7 @@ public class ClientLauncher {
             try {
                 directivesParser = DirectivesParser.getInstance();
                 networkManager = NetworkManager.getInstance(serverAddress, serverPort, directivesParser);
+                new Thread(networkManager).start();
                 directivesDispatcher = DirectivesDispatcher.getInstance(
                         MessageHandler.getInstance(networkManager));
             } catch (NetworkManager.NetworkManagerException e) {
@@ -121,10 +123,15 @@ public class ClientLauncher {
         String gameplayInterface = chooseGameplayInterface();
         switch (gameplayInterface) {
             case "cli" -> {
-                new CLI(directivesDispatcher, directivesParser);
-                new Thread(() -> CLI.main(args)).start();
+                DirectivesDispatcher finalDirectivesDispatcher = directivesDispatcher;
+                DirectivesParser finalDirectivesParser = directivesParser;
+                new Thread(() -> new CLI(finalDirectivesDispatcher, finalDirectivesParser).main(args)).start();
             }
-            case "gui" -> new Thread(() -> GUILauncherApplication.main(args)).start();
+            case "gui" -> {
+                DirectivesDispatcher finalDirectivesDispatcher = directivesDispatcher;
+                DirectivesParser finalDirectivesParser = directivesParser;
+                new Thread(() -> new GUI(finalDirectivesDispatcher, finalDirectivesParser).main(args)).start();
+            }
             default ->
                     throw new ClientLauncherException(String.format("Invalid gameplay interface (%s)", gameplayInterface));
         }

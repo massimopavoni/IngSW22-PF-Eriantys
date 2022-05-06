@@ -4,13 +4,22 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatch
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/**
+ * Class representing the cli view.
+ */
 public class CLI extends View {
+    /**
+     * The scanner for user input.
+     */
     private static final Scanner input = new Scanner(System.in);
+    /**
+     * Constant for list options.
+     */
+    private static final String LIST_OPTION = "- %s%s [%s]%s%n";
 
     /**
      * Constructor for cli, initializing directives dispatcher and parser.
@@ -22,243 +31,249 @@ public class CLI extends View {
         super(directivesDispatcher, directivesParser);
     }
 
-    private static boolean isValidUsername(String username) {
-        Pattern pattern = Pattern.compile(USERNAME_REGEX);
-        Matcher matcher = pattern.matcher(username);
-        return matcher.matches();
+    /**
+     * Method for cli clear.
+     */
+    public static void clear() {
+        try {
+            String os = System.getProperty("os.name");
+            ProcessBuilder pb;
+            if (os.contains("Windows"))
+                pb = new ProcessBuilder("cmd", "/c", "cls");
+            else
+                pb = new ProcessBuilder("clear");
+            pb.inheritIO().start().waitFor();
+        } catch (IOException | InterruptedException e) {
+            System.err.printf("%sError while clearing console (%s)%s%n",
+                    CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
+            Thread.currentThread().interrupt();
+            System.exit(1);
+        }
     }
 
-//    private static boolean confirm() {
-//        String confirmString = null;
-//        System.out.println(">Do you want to confirm? [" + constantsMap.get("GREEN") + "y" + constantsMap.get("RST") + "/" + constantsMap.get("RED") + "n" + constantsMap.get("RST") + "]:");
-//        System.out.print(">");
-//        while (true) {
-//            confirmString = input.nextLine();=
-//            if (confirmString != null) {
-//                if (confirmString.equalsIgnoreCase("y") || confirmString.equalsIgnoreCase("n")) {
-//                    return confirmString.equalsIgnoreCase("y");
-//                } else {
-//                    System.out.println("Please insert correct input [" + constantsMap.get("GREEN") + "y" + constantsMap.get("RST") + "/" + constantsMap.get("RED") + "n" + constantsMap.get("RST") + "]:");
-//                    System.out.print(">");
-//                }
-//            }
-//        }
-//    }
-
-//    private static String chooseUsername() {
-//        String username = null;
-//        System.out.println(">Insert your " + constantsMap.get("YELLOW_BRIGHT") + "username " + constantsMap.get("RST") + "(start with a letter, 3-30 characters):");
-//        System.out.print(">");
-//        while (username == null) {
-//            username = input.nextLine();
-//            if (!isValidUsername(username)) {
-//                username = null;
-//                System.out.println(">Please insert correct input (start with a letter, 3-30 characters):");
-//                System.out.print(">");
-//            }
-//        }
-//        return username;
-//    }
-
-    public static int chooseNumberOfPlayers() {
-        String numberOfPlayersString = null;
-        int numberOfPlayers = 0;
-        System.out.println(">Insert if you want to play in 2 or 3 players:");
-        System.out.print(">");
-        while (numberOfPlayersString == null) {
-            numberOfPlayersString = input.nextLine();
-            if (numberOfPlayersString != null) {
-                if (numberOfPlayersString.equalsIgnoreCase("2") || numberOfPlayersString.equalsIgnoreCase("3")) {
-                    numberOfPlayers = Integer.parseInt(numberOfPlayersString);
-                } else {
-                    numberOfPlayersString = null;
-                    System.out.println(">Please insert correct input [2/3]:");
-                    System.out.print(">");
-                }
+    /**
+     * Make user choose the exact number of players for the game.
+     */
+    private void chooseExactPlayersNumber() {
+        this.exactPlayersNumber = 0;
+        String exactPlayersNumberString = "";
+        System.out.printf("> Insert exact number of players for the game [%s2%s/%s3%s]: ",
+                CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+        while (this.exactPlayersNumber < MIN_PLAYERS_NUMBER || this.exactPlayersNumber > MAX_PLAYERS_NUMBER) {
+            try {
+                exactPlayersNumberString = input.nextLine();
+                this.exactPlayersNumber = Integer.parseInt(exactPlayersNumberString);
+                if (exactPlayersNumber < MIN_PLAYERS_NUMBER || exactPlayersNumber > MAX_PLAYERS_NUMBER)
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.printf("> Invalid input, insert exact number of players for the game [%s2%s/%s3%s]: ",
+                        CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
             }
         }
-        return numberOfPlayers;
     }
 
-//    private static boolean chooseExpertMode() {
-//        String expertModeString;
-//        System.out.println(">Insert if you want to play in expert mode [" + constantsMap.get("GREEN") + "y" + constantsMap.get("RST") + "/" + constantsMap.get("RED") + "n" + constantsMap.get("RST") + "]:");
-//        System.out.print(">");
-//        while (true) {
-//            expertModeString = null;
-//            expertModeString = input.nextLine();
-//            if (expertModeString != null) {
-//                if (expertModeString.equalsIgnoreCase("y")) {
-//                    return true;
-//                } else if (expertModeString.equalsIgnoreCase("n")) {
-//                    return false;
-//                } else {
-//                    System.out.println(">Please insert correct input [y/n]:");
-//                    System.out.print(">");
-//                }
-//            }
-//        }
-//    }
-
-    private static String chooseWizardType() {
-        String wizardType = null;
-        System.out.println(">Insert which type of wizard you want to be between:");
-        System.out.println(">Druid [d]");
-        System.out.println(">King [k]");
-        System.out.println(">Sensei [s]");
-        System.out.println(">Witch [w]");
-        System.out.print(">");
-        while (wizardType == null) {
-            wizardType = input.nextLine();
-            if (wizardType != null) {
-                if (wizardType.equalsIgnoreCase("d")) wizardType = "DRUID";
-                else if (wizardType.equalsIgnoreCase("k")) wizardType = "KING";
-                else if (wizardType.equalsIgnoreCase("s")) wizardType = "SENSEI";
-                else if (wizardType.equalsIgnoreCase("w")) wizardType = "WITCH";
-                else {
-                    wizardType = null;
-                    System.out.println(">Please insert correct input [d/k/s/w]:");
-                    System.out.print(">");
-                }
+    /**
+     * Make user insert their username.
+     */
+    private void chooseUsername() {
+        this.username = "";
+        System.out.print("> Insert your username (min 4/max 32 characters, alphanumeric + underscores): ");
+        while (this.username.isEmpty()) {
+            this.username = input.nextLine();
+            if (!View.isValidUsername(this.username)) {
+                this.username = "";
+                System.out.print("> Invalid input, insert your username (min 4/max 32 characters, alphanumeric + underscores): ");
             }
         }
-        return wizardType;
     }
 
-    private static String chooseTowerColor() {
-        String towerColor = null;
-        System.out.println(">Insert which color of tower you want to be between:");
-        System.out.println(">White [w]");
-        System.out.println(">Black [b]");
-        System.out.println(">Gray [g]");
-        System.out.print(">");
-        while (towerColor == null) {
-            towerColor = input.nextLine();
-            if (towerColor != null) {
-                if (towerColor.equalsIgnoreCase("w")) towerColor = "WHITE";
-                else if (towerColor.equalsIgnoreCase("b")) towerColor = "BLACK";
-                else if (towerColor.equalsIgnoreCase("g")) towerColor = "GRAY";
-                else {
-                    System.out.println(">Please insert correct input [w/b/g]:");
-                    System.out.print(">");
-                    towerColor = null;
-                }
+    /**
+     * Make user select expert mode.
+     */
+    private void chooseExpertMode() {
+        System.out.printf("> Use expert mode? [%sY%s/%sn%s] ",
+                CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+        String expertModeString = input.nextLine().toLowerCase();
+        expertModeString = !expertModeString.isEmpty() ? expertModeString : "true";
+        this.expertMode = Boolean.parseBoolean(expertModeString);
+    }
+
+    /**
+     * Make user select their wizard type.
+     */
+    private void chooseWizardType() {
+        this.wizardType = "";
+        System.out.println("> Choose wizard type:");
+        WIZARD_TYPES_MAPPINGS.forEach((key, value) -> System.out.printf(LIST_OPTION,
+                WIZARD_TYPES_CLI_COLORS.get(key), value, key, CLIConstants.ANSI_RESET));
+        System.out.print("> ");
+        while (this.wizardType.isEmpty()) {
+            this.wizardType = input.nextLine().toLowerCase();
+            this.wizardType = AVAILABLE_WIZARD_TYPES.get(this.wizardType);
+            if (this.wizardType == null) {
+                this.wizardType = "";
+                System.out.println("> Invalid input, choose wizard type:");
+                WIZARD_TYPES_MAPPINGS.forEach((key, value) -> System.out.printf(LIST_OPTION,
+                        WIZARD_TYPES_CLI_COLORS.get(key), value, key, CLIConstants.ANSI_RESET));
+                System.out.print("> ");
             }
         }
-        return towerColor;
     }
 
-    public static void main(String[] args) {
-        System.out.printf("%s%s%s%n%n", CLIConstants.ANSI_BRIGHT_MAGENTA, CLIConstants.ERIANTYS_TITLE, CLIConstants.ANSI_RESET);
-        String selection = null;
-        String username;
-        String numberOfPlayersString;
-        String expertModeString;
-        int numberOfPlayers = 0;
-        boolean expertMode = false;
-        boolean confirmation = false;
-        String wizardType;
-        String towerColor;
-
-
-//        System.out.println(">Insert if you want to create a new game or join one [" + constantsMap.get("BLUE") + "c" + constantsMap.get("RST") + "/" + constantsMap.get("RED") + "j" + constantsMap.get("RST") + "]:");
-//        System.out.print(">");
-//        while (selection == null) {
-//            selection = input.nextLine();
-//            if (selection != null) {
-//                if (selection.equalsIgnoreCase("c")) {
-//                    do {
-//                        username = chooseUsername();
-//                        numberOfPlayers = chooseNumberOfPlayers();
-//                        expertMode = chooseExpertMode();
-//                        wizardType = chooseWizardType();
-//                        towerColor = chooseTowerColor();
-//                    } while (!confirm());
-//                    directivesDispatcher.createGame(username, numberOfPlayers, expertMode, wizardType, towerColor);
-//                    synchronized (newDataLock) {
-//                        try {
-//                            newDataLock.wait();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    System.out.println(constantsMap.get("GREEN_BRIGHT") + ">Game created correctly!" + constantsMap.get("RST"));
-//                    System.out.println(constantsMap.get("YELLOW_BRIGHT") + ">Waiting for other players to join..." + constantsMap.get("RST"));
-//                } else if (selection.equalsIgnoreCase("j")) {
-//                    do {
-//                        username = chooseUsername();
-//                        wizardType = chooseWizardType();
-//                        towerColor = chooseTowerColor();
-//                    } while (!confirm());
-//                    System.out.println(constantsMap.get("GREEN_BRIGHT") + ">Game joined correctly!" + constantsMap.get("RST"));
-//                    System.out.println(constantsMap.get("YELLOW_BRIGHT") + ">Waiting for starting the game..." + constantsMap.get("RST"));
-//                } else {
-//                    System.out.println(">Please insert correct input [c/j]:");
-//                    System.out.print(">");
-//                    selection = null;
-//                }
-//            }
-//        }
-//
-//        System.out.println(constantsMap.get("GREEN_BRIGHT") + ">Let's play!" + constantsMap.get("RST"));
-//
-//
-//        System.out.println(constantsMap.get("BLUE") + ">Now it's your turn!" + constantsMap.get("RST"));
+    /**
+     * Make user select their tower color.
+     */
+    private void chooseTowerColor() {
+        this.towerColor = "";
+        System.out.println("> Choose tower color:");
+        TOWER_COLORS_MAPPINGS.forEach((key, value) -> System.out.printf(LIST_OPTION,
+                CLIConstants.ANSI_BRIGHT_WHITE, value, key, CLIConstants.ANSI_RESET));
+        System.out.print("> ");
+        while (this.towerColor.isEmpty()) {
+            this.towerColor = input.nextLine().toLowerCase();
+            this.towerColor = AVAILABLE_TOWER_COLORS.get(this.towerColor);
+            if (this.towerColor == null) {
+                this.towerColor = "";
+                System.out.println("> Invalid input, choose tower color:");
+                TOWER_COLORS_MAPPINGS.forEach((key, value) -> System.out.printf(LIST_OPTION,
+                        CLIConstants.ANSI_BRIGHT_WHITE, value, key, CLIConstants.ANSI_RESET));
+                System.out.print("> ");
+            }
+        }
     }
 
+    /**
+     * Main method for cli starting.
+     *
+     * @param args arguments
+     */
+    @Override
+    public void main(String[] args) {
+        CLI.clear();
+        System.out.printf("%n%s%s%s%n%n", CLIConstants.ANSI_BRIGHT_MAGENTA, CLIConstants.ERIANTYS_TITLE, CLIConstants.ANSI_RESET);
+        System.out.printf("> Do you want to create the game or join it? [%sc%s/%sj%s] ",
+                CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+        String choice = "";
+        while (choice.isEmpty()) {
+            choice = input.nextLine().toLowerCase();
+            switch (choice) {
+                case "c" -> this.createGame();
+                case "j" -> this.joinGame();
+                default ->
+                        System.out.printf("> Invalid input, do you want to create the game or join it? [%sc%s/%sj%s] ",
+                                CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+            }
+        }
+    }
+
+    /**
+     * Create game method.
+     */
     @Override
     protected void createGame() {
-
+        this.chooseExactPlayersNumber();
+        this.chooseUsername();
+        this.chooseExpertMode();
+        this.chooseWizardType();
+        this.chooseTowerColor();
+        this.directivesDispatcher.createGame(this.username, this.exactPlayersNumber, this.expertMode, this.wizardType, this.towerColor);
     }
 
+    /**
+     * Join game method.
+     */
     @Override
     protected void joinGame() {
-
+        this.chooseUsername();
+        this.chooseWizardType();
+        this.chooseTowerColor();
+        this.directivesDispatcher.addPlayer(this.username, this.wizardType, this.towerColor);
     }
 
+    /**
+     * Wait for start method.
+     */
     @Override
     protected void waitForStart() {
 
     }
 
+    /**
+     * Start game method.
+     */
     @Override
     protected void startGame() {
 
     }
 
+    /**
+     * Start showing method.
+     */
     @Override
     protected void startShow() {
 
     }
 
+    /**
+     * Update game method.
+     */
     @Override
     protected void updateGame() {
 
     }
 
+    /**
+     * Show abort method.
+     *
+     * @param message abort message
+     */
     @Override
     protected void showAbort(String message) {
 
     }
 
+    /**
+     * Show error method.
+     *
+     * @param message error message
+     */
     @Override
     protected void showError(String message) {
 
     }
 
+    /**
+     * Close game method.
+     *
+     * @param winners list of winners
+     */
     @Override
     protected void closeGame(List<String> winners) {
 
     }
 
+    /**
+     * Enable actions method.
+     */
     @Override
     protected void enableActions() {
 
     }
 
+    /**
+     * Wait turn method.
+     */
     @Override
     protected void waitTurn() {
         System.out.printf("%sWait for your turn.%s%n", CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+    }
+
+    /**
+     * Return to main menu method.
+     */
+    @Override
+    protected void returnToMainMenu() {
+        this.main(null);
     }
 }
 
