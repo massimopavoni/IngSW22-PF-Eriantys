@@ -1,6 +1,7 @@
 package it.polimi.ingsw.javangers.client.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.logging.Level;
@@ -23,22 +24,17 @@ public class MessageHandler {
      */
     private final NetworkManager networkManager;
     /**
-     * Locking object for sending message.
-     */
-    private final Object sendMessageLock;
-    /**
      * Object mapper for json serialization/deserialization.
      */
     private final ObjectMapper jsonMapper;
 
     /**
-     * Constructor for message handler, initializing network manager, locking object and json mapper.
+     * Constructor for message handler, initializing network manager and json mapper.
      *
      * @param networkManager network manager singleton instance
      */
     private MessageHandler(NetworkManager networkManager) {
         this.networkManager = networkManager;
-        this.sendMessageLock = new Object();
         this.jsonMapper = new ObjectMapper();
     }
 
@@ -59,10 +55,10 @@ public class MessageHandler {
      *
      * @param messageType     type of the message
      * @param messageUsername username of the player sending the message
-     * @param messageContent  message content json string
+     * @param messageContent  message content json node
      * @return serialized message
      */
-    private String composeJSONMessage(MessageType messageType, String messageUsername, String messageContent) {
+    private String composeJSONMessage(MessageType messageType, String messageUsername, JsonNode messageContent) {
         try {
             return this.jsonMapper.writeValueAsString(new Message(messageType, messageUsername, messageContent));
         } catch (JsonProcessingException e) {
@@ -78,21 +74,10 @@ public class MessageHandler {
      *
      * @param type     type of the message
      * @param username username of the player sending the message
-     * @param content  message content json string
+     * @param content  message content json node
      */
-    public void sendOutgoingDirective(MessageType type, String username, String content) {
-        synchronized (this.sendMessageLock) {
-            this.networkManager.setOutgoingDirective(this.composeJSONMessage(type, username, content));
-        }
-    }
-
-    /**
-     * Get incoming directive.
-     *
-     * @return incoming directive string
-     */
-    public String getIncomingDirective() {
-        return this.networkManager.getIncomingDirective();
+    public void sendOutgoingDirective(MessageType type, String username, JsonNode content) {
+        this.networkManager.setOutgoingDirective(this.composeJSONMessage(type, username, content));
     }
 
     /**
