@@ -61,6 +61,16 @@ public class CLI extends View {
     }
 
     /**
+     * Stop loading thread animation.
+     */
+    private static void stopLoading() {
+        if (CLI.loadingThread != null) {
+            CLI.loadingThread.interrupt();
+            CLI.loadingThread = null;
+        }
+    }
+
+    /**
      * Make user choose the exact number of players for the game.
      */
     private void chooseExactPlayersNumber() {
@@ -207,7 +217,7 @@ public class CLI extends View {
     @Override
     protected void waitForStart() {
         CLI.loadingThread = new Thread(() -> {
-            while (this.previousMessageType == MessageType.CREATE || this.previousMessageType == MessageType.PLAYER) {
+            while (!Thread.currentThread().isInterrupted()) {
                 for (int i = 0; i < 4; i++) {
                     System.out.printf("%sWait for game start %s%s\r",
                             CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i), CLIConstants.ANSI_RESET);
@@ -236,6 +246,7 @@ public class CLI extends View {
      */
     @Override
     protected void startShow() {
+        CLI.stopLoading();
         CLI.clear();
     }
 
@@ -244,7 +255,6 @@ public class CLI extends View {
      */
     @Override
     protected void updateGame() {
-        CLI.clear();
     }
 
     /**
@@ -254,7 +264,10 @@ public class CLI extends View {
      */
     @Override
     protected void showAbort(String message) {
-
+        CLI.stopLoading();
+        System.out.printf("%sAbort: %s%nPress enter to continue.%s",
+                CLIConstants.ANSI_BRIGHT_RED, message, CLIConstants.ANSI_RESET);
+        CLI.input.nextLine();
     }
 
     /**
@@ -264,7 +277,10 @@ public class CLI extends View {
      */
     @Override
     protected void showError(String message) {
-
+        CLI.stopLoading();
+        System.out.printf("%sError: %s%nPress enter to continue.%s",
+                CLIConstants.ANSI_BRIGHT_RED, message, CLIConstants.ANSI_RESET);
+        CLI.input.nextLine();
     }
 
     /**
@@ -274,7 +290,11 @@ public class CLI extends View {
      */
     @Override
     protected void closeGame(List<String> winners) {
-
+        CLI.stopLoading();
+        System.out.printf("%sGame is ended (%s)%nWinner%s: %s%nPress enter to continue.%s",
+                CLIConstants.ANSI_BRIGHT_GREEN, this.directivesParser.getEndGame(), this.winners.size() == 1 ? "" : "s",
+                String.join(", ", this.winners), CLIConstants.ANSI_RESET);
+        CLI.input.nextLine();
     }
 
     /**
@@ -290,7 +310,20 @@ public class CLI extends View {
      */
     @Override
     protected void waitTurn() {
-        System.out.printf("%sWait for your turn.%s%n", CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+        CLI.loadingThread = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                for (int i = 0; i < 4; i++) {
+                    System.out.printf("%sWait for your turn %s%s\r",
+                            CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i), CLIConstants.ANSI_RESET);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+        });
+        CLI.loadingThread.start();
     }
 
     /**

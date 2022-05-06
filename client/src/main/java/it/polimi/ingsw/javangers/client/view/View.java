@@ -75,6 +75,15 @@ public abstract class View {
             "r", "Red Dragon",
             "p", "Pink Fairy");
     /**
+     * Mappings for possible endgames.
+     */
+    protected static final Map<String, String> POSSIBLE_ENDGAMES = Map.of(
+            "ALL_TOWERS", "Player placed all of their towers",
+            "FEW_ISLANDS", "Archipelago was reduced to too few islands",
+            "EMPTY_BAG", "Students bag was emptied",
+            "NO_ASSISTANTS", "No assistant cards left"
+    );
+    /**
      * Locking object for view update wait.
      */
     protected final Object updateLock = new Object();
@@ -255,19 +264,17 @@ public abstract class View {
      * @param messageContent message content
      */
     protected void checkStart(String messageContent) {
-        if (messageContent.equals("FULL") && this.gameCreator) {
-            this.startGame();
+        if (messageContent.equals("FULL")) {
+            if (this.gameCreator)
+                this.startGame();
+        } else if (this.previousMessageType != MessageType.START)
             this.checkWaitForStart(messageContent);
-        } else {
-            this.checkWaitForStart(messageContent);
-        }
     }
 
     /**
-     * Update from action outcomes.
+     * Update winners after action.
      */
-    protected void updateFromAction() {
-        this.updateGame();
+    protected void checkWinners() {
         try {
             this.winners = this.directivesParser.getWinners();
         } catch (DirectivesParser.DirectivesParserException e) {
@@ -321,10 +328,12 @@ public abstract class View {
                     case PLAYER -> this.checkStart(messageContent);
                     case START -> {
                         this.startShow();
+                        this.updateGame();
                         this.continueGame();
                     }
                     case ACTION -> {
-                        this.updateFromAction();
+                        this.updateGame();
+                        this.checkWinners();
                         this.continueGame();
                     }
                     case ABORT -> {
