@@ -122,7 +122,7 @@ public class DirectivesDispatcher {
         firstPlayerInfoJSON.put(createMappings.get("wizardType"), wizardType);
         firstPlayerInfoJSON.put(createMappings.get("towerColor"), towerColor);
         contentJSON.set(createMappings.get("firstPlayerInfo"), firstPlayerInfoJSON);
-        this.messageHandler.sendOutgoingDirective(MessageType.CREATE, username, contentJSON.toString());
+        this.messageHandler.sendOutgoingDirective(MessageType.CREATE, username, contentJSON);
     }
 
     /**
@@ -137,7 +137,7 @@ public class DirectivesDispatcher {
         Map<String, String> addPlayerMappings = this.directivesTypesMappings.get(MessageType.PLAYER);
         contentJSON.put(addPlayerMappings.get("wizardType"), wizardType);
         contentJSON.put(addPlayerMappings.get("towerColor"), towerColor);
-        this.messageHandler.sendOutgoingDirective(MessageType.PLAYER, username, contentJSON.toString());
+        this.messageHandler.sendOutgoingDirective(MessageType.PLAYER, username, contentJSON);
     }
 
     /**
@@ -147,7 +147,7 @@ public class DirectivesDispatcher {
      */
     public void startGame(String username) {
         ObjectNode contentJSON = this.jsonMapper.createObjectNode();
-        this.messageHandler.sendOutgoingDirective(MessageType.START, username, contentJSON.toString());
+        this.messageHandler.sendOutgoingDirective(MessageType.START, username, contentJSON);
     }
 
     /**
@@ -162,7 +162,7 @@ public class DirectivesDispatcher {
         Map<String, String> actionMappings = this.directivesTypesMappings.get(MessageType.ACTION);
         contentJSON.put(actionMappings.get(ACTION_KEY), action);
         contentJSON.set(actionMappings.get("args"), args);
-        this.messageHandler.sendOutgoingDirective(MessageType.ACTION, username, contentJSON.toString());
+        this.messageHandler.sendOutgoingDirective(MessageType.ACTION, username, contentJSON);
     }
 
     /**
