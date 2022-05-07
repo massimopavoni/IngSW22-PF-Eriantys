@@ -75,7 +75,7 @@ public class CLI extends View {
      */
     private void chooseExactPlayersNumber() {
         this.exactPlayersNumber = 0;
-        String exactPlayersNumberString = "";
+        String exactPlayersNumberString;
         System.out.printf("> Insert exact number of players for the game [%s2%s/%s3%s]: ",
                 CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
         while (this.exactPlayersNumber < MIN_PLAYERS_NUMBER || this.exactPlayersNumber > MAX_PLAYERS_NUMBER) {
@@ -178,9 +178,11 @@ public class CLI extends View {
             switch (choice) {
                 case "c" -> this.createGame();
                 case "j" -> this.joinGame();
-                default ->
-                        System.out.printf("> Invalid input, do you want to create the game or join it? [%sc%s/%sj%s] ",
-                                CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+                default -> {
+                    choice = "";
+                    System.out.printf("> Invalid input, do you want to create the game or join it? [%sc%s/%sj%s] ",
+                            CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
+                }
             }
         }
     }
@@ -248,6 +250,7 @@ public class CLI extends View {
     protected void startShow() {
         CLI.stopLoading();
         CLI.clear();
+        System.out.printf("%sGame started.%s%n%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
     }
 
     /**
