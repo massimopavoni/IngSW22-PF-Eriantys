@@ -328,7 +328,6 @@ public abstract class View {
                     case PLAYER -> this.checkStart(messageContent);
                     case START -> {
                         this.startShow();
-                        this.updateGame();
                         this.continueGame();
                     }
                     case ACTION -> {

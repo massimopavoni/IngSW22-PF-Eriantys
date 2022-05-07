@@ -29,6 +29,10 @@ public class CLI extends View {
      * Thread for loading animation.
      */
     private static Thread loadingThread;
+    /**
+     * CLI game printer singleton instance.
+     */
+    private final CLIGamePrinter gamePrinter;
 
     /**
      * Constructor for cli, initializing directives dispatcher and parser.
@@ -38,6 +42,7 @@ public class CLI extends View {
      */
     public CLI(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser) {
         super(directivesDispatcher, directivesParser);
+        gamePrinter = CLIGamePrinter.getInstance(this.directivesParser);
     }
 
     /**
@@ -53,7 +58,7 @@ public class CLI extends View {
                 pb = new ProcessBuilder("clear");
             pb.inheritIO().start().waitFor();
         } catch (IOException | InterruptedException e) {
-            System.err.printf("%sError while clearing console (%s)%s%n",
+            System.err.printf("%n%sError while clearing console (%s)%s%n",
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
             Thread.currentThread().interrupt();
             System.exit(1);
@@ -248,9 +253,19 @@ public class CLI extends View {
      */
     @Override
     protected void startShow() {
+        CLIGamePrinter.getInstance(this.directivesParser);
         CLI.stopLoading();
         CLI.clear();
-        System.out.printf("%sGame started.%s%n%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
+        System.out.printf("%sGame started.%s%n%s%s%s%n",
+                CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
+                "-".repeat(64), CLIConstants.ANSI_RESET);
+        try {
+            this.gamePrinter.printGame(this.username);
+        } catch (DirectivesParser.DirectivesParserException e) {
+            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+                    CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
+            System.exit(1);
+        }
     }
 
     /**
@@ -258,6 +273,15 @@ public class CLI extends View {
      */
     @Override
     protected void updateGame() {
+        CLI.stopLoading();
+        CLI.clear();
+        try {
+            this.gamePrinter.printGame(this.username);
+        } catch (DirectivesParser.DirectivesParserException e) {
+            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+                    CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
+            System.exit(1);
+        }
     }
 
     /**
@@ -268,7 +292,7 @@ public class CLI extends View {
     @Override
     protected void showAbort(String message) {
         CLI.stopLoading();
-        System.out.printf("%sAbort: %s%nPress enter to continue.%s",
+        System.out.printf("%n%sAbort: %s%nPress enter to continue.%s",
                 CLIConstants.ANSI_BRIGHT_RED, message, CLIConstants.ANSI_RESET);
         CLI.input.nextLine();
     }
@@ -281,7 +305,7 @@ public class CLI extends View {
     @Override
     protected void showError(String message) {
         CLI.stopLoading();
-        System.out.printf("%sError: %s%nPress enter to continue.%s",
+        System.out.printf("%n%sError: %s%nPress enter to continue.%s",
                 CLIConstants.ANSI_BRIGHT_RED, message, CLIConstants.ANSI_RESET);
         CLI.input.nextLine();
     }
@@ -305,7 +329,6 @@ public class CLI extends View {
      */
     @Override
     protected void enableActions() {
-
     }
 
     /**
