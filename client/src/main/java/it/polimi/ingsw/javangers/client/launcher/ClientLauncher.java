@@ -6,7 +6,7 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatch
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.cli.CLI;
 import it.polimi.ingsw.javangers.client.view.cli.CLIConstants;
-import it.polimi.ingsw.javangers.client.view.gui.GUI;
+import it.polimi.ingsw.javangers.client.view.gui.GUIApplication;
 
 import java.util.Arrays;
 import java.util.List;
@@ -128,9 +128,8 @@ public class ClientLauncher {
                 new Thread(() -> new CLI(finalDirectivesDispatcher, finalDirectivesParser).main(args)).start();
             }
             case "gui" -> {
-                DirectivesDispatcher finalDirectivesDispatcher = directivesDispatcher;
-                DirectivesParser finalDirectivesParser = directivesParser;
-                new Thread(() -> new GUI(finalDirectivesDispatcher, finalDirectivesParser).main(args)).start();
+                GUIApplication.setDirectives(directivesDispatcher, directivesParser);
+                new Thread(() -> GUIApplication.main(args)).start();
             }
             default ->
                     throw new ClientLauncherException(String.format("Invalid gameplay interface (%s)", gameplayInterface));

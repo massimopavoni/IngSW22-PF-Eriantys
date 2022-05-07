@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17">
+    <children>
+      <Label fx:id="welcomeText" layoutX="279.0" layoutY="287.0" />
+      <MenuButton fx:id="create_join_MenuBotton" layoutX="215.0" layoutY="95.0" mnemonicParsing="false" text="What do you want to do?">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#switchToCreateMenu" text="Create a new game" />
+          <MenuItem mnemonicParsing="false" onAction="#joinGame" text="Join a game" />
+        </items>
+      </MenuButton>
+    </children>
+</AnchorPane>
