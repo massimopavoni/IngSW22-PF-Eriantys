@@ -51,6 +51,11 @@ public class GUIController extends View implements Initializable {
         towerColor = new ChoiceBox<>();
     }
 
+    @Override
+    public void main(String[] args) {
+
+    }
+
 
     @FXML
     @Override
@@ -127,6 +132,11 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void waitTurn() {
+
+    }
+
+    @Override
+    protected void returnToMainMenu() {
 
     }
 
