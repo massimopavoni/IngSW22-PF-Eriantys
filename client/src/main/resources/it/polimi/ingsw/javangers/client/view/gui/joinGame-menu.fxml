@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="468.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="225.0" layoutY="32.0" text="Username" />
+      <TextField fx:id="username" layoutX="226.0" layoutY="49.0" />
+      <Label layoutX="226.0" layoutY="92.0" text="Tower Color" />
+      <ChoiceBox fx:id="towerColor" layoutX="226.0" layoutY="109.0" prefWidth="150.0" />
+      <ImageView fx:id="DRUID" fitHeight="200.0" fitWidth="135.0" layoutX="9.0" layoutY="168.0" onMouseClicked="#selectWizard">
+         <image>
+            <Image url="@images/MAGO%201_1.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="KING" fitHeight="200.0" fitWidth="135.0" layoutX="161.0" layoutY="169.0" onMouseClicked="#selectWizard">
+         <image>
+            <Image url="@images/MAGO%202_1.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="WITCH" fitHeight="200.0" fitWidth="135.0" layoutX="307.0" layoutY="168.0" onMouseClicked="#selectWizard">
+         <image>
+            <Image url="@images/MAGO%203_1_correzioni.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="SENSEI" fitHeight="200.0" fitWidth="135.0" layoutX="457.0" layoutY="167.0" onMouseClicked="#selectWizard">
+         <image>
+            <Image url="@images/MAGO%204_1.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="finishButton" layoutX="276.0" layoutY="401.0" mnemonicParsing="false" onAction="#joinGame" text="Finish" />
+   </children>
+</AnchorPane>

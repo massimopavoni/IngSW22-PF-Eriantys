@@ -1,5 +1,6 @@
 package it.polimi.ingsw.javangers.client.view.gui;
 
+import it.polimi.ingsw.javangers.client.controller.MessageType;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
@@ -32,11 +33,13 @@ public class GUIController extends View implements Initializable {
     private Scene scene;
     private Parent root;
     @FXML
-    private MenuButton create_join_MenuBotton;
+    private MenuButton create_join_MenuButton;
+    @FXML
+    private Button finishButton;
     @FXML
     private TextField username;
     @FXML
-    private ToggleButton expertMode;
+    private CheckBox expertMode;
 
 
     /**
@@ -61,7 +64,26 @@ public class GUIController extends View implements Initializable {
     @Override
     protected void createGame() {
         //da continuare
+        /*System.out.println(username.getCharacters().toString());
+        System.out.println(exactPlayersNumber.getValue());
+        System.out.println(expertMode.isSelected());
+        System.out.println(wizardType);
+        System.out.println(towerColor.getValue());*/
         directivesDispatcher.createGame(username.getCharacters().toString(),exactPlayersNumber.getValue(),expertMode.isSelected(),wizardType,towerColor.getValue());
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("loading-page.fxml"));
+            fxmlLoader.setController(this);
+            root = fxmlLoader.load();
+            stage = (Stage) finishButton.getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch(IOException e){
+            throw new RuntimeException(e);
+        }
+       // MessageType createType = directivesParser.getMessageType();
+       // if(createType==CREATE)
     }
 
     @FXML
@@ -70,7 +92,26 @@ public class GUIController extends View implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("createGame-menu.fxml"));
             fxmlLoader.setController(this);
             root = fxmlLoader.load();
-            stage = (Stage) create_join_MenuBotton.getScene().getWindow();
+            stage = (Stage) create_join_MenuButton.getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            //va cambiato
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    protected void switchToJoinMenu() {
+        try {
+            //CANE;
+            //DA CONTROLLARE CHE ESISTA UNA PARTITA GIA` CREATA
+
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("joinGame-menu.fxml"));
+            fxmlLoader.setController(this);
+            root = fxmlLoader.load();
+            stage = (Stage) create_join_MenuButton.getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -88,6 +129,25 @@ public class GUIController extends View implements Initializable {
     @FXML
     @Override
     protected void joinGame() {
+        //da continuare
+        System.out.println(username.getCharacters().toString());
+        System.out.println(wizardType);
+        System.out.println(towerColor.getValue());
+        directivesDispatcher.addPlayer(username.getCharacters().toString(),wizardType,towerColor.getValue());
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("loading-page.fxml"));
+            fxmlLoader.setController(this);
+            root = fxmlLoader.load();
+            stage = (Stage) finishButton.getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch(IOException e){
+            throw new RuntimeException(e);
+        }
+        // MessageType createType = directivesParser.getMessageType();
+        // if(createType==CREATE)
     }
 
     @Override
