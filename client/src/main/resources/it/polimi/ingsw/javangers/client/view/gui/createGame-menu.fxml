@@ -18,26 +18,32 @@
       <Label layoutX="228.0" layoutY="132.0" text="Tower Color" />
       <ChoiceBox fx:id="towerColor" layoutX="228.0" layoutY="149.0" prefWidth="150.0" />
       <CheckBox fx:id="expertMode" layoutX="230.0" layoutY="196.0" mnemonicParsing="false" text="Expert Mode" />
-      <ImageView fx:id="DRUID" fitHeight="200.0" fitWidth="135.0" layoutX="17.0" layoutY="255.0" onMouseClicked="#selectWizard">
+      <ImageView fx:id="DRUID" fitHeight="200.0" fitWidth="135.0" layoutX="17.0" layoutY="263.0" onMouseClicked="#selectWizard">
          <image>
             <Image url="@images/MAGO%201_1.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="KING" fitHeight="200.0" fitWidth="135.0" layoutX="169.0" layoutY="256.0" onMouseClicked="#selectWizard">
+      <ImageView fx:id="KING" fitHeight="200.0" fitWidth="135.0" layoutX="169.0" layoutY="264.0" onMouseClicked="#selectWizard">
          <image>
             <Image url="@images/MAGO%202_1.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="WITCH" fitHeight="200.0" fitWidth="135.0" layoutX="315.0" layoutY="255.0" onMouseClicked="#selectWizard">
+      <ImageView fx:id="WITCH" fitHeight="200.0" fitWidth="135.0" layoutX="315.0" layoutY="263.0" onMouseClicked="#selectWizard">
          <image>
             <Image url="@images/MAGO%203_1_correzioni.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="SENSEI" fitHeight="200.0" fitWidth="135.0" layoutX="465.0" layoutY="254.0" onMouseClicked="#selectWizard">
+      <ImageView fx:id="SENSEI" fitHeight="200.0" fitWidth="135.0" layoutX="465.0" layoutY="262.0" onMouseClicked="#selectWizard">
          <image>
             <Image url="@images/MAGO%204_1.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="finishButton" layoutX="283.0" layoutY="479.0" mnemonicParsing="false" onAction="#createGame" text="Finish" />
+      <Button fx:id="confirmButton" layoutX="283.0" layoutY="515.0" mnemonicParsing="false" onAction="#createGame" text="Finish" />
+      <Label layoutX="228.0" layoutY="222.0" text="Select the type of wizard" />
+      <Label layoutX="63.0" layoutY="470.0" text="Druid" />
+      <Label layoutX="228.0" layoutY="239.0" text="that you want to be" />
+      <Label layoutX="215.0" layoutY="470.0" text="King" />
+      <Label layoutX="363.0" layoutY="470.0" text="Witch" />
+      <Label layoutX="518.0" layoutY="470.0" text="Sensei" />
    </children>
 </AnchorPane>

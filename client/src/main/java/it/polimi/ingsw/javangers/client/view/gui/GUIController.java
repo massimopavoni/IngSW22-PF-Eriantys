@@ -23,6 +23,7 @@ public class GUIController extends View implements Initializable {
 
     private final Integer[] possibleNumberOfPlayer = {2, 3};
     private final String[] possibleTowerColor = {"BLACK", "WHITE", "GRAY"};
+    private final String[] possibleCreateJoin = {"CREATE", "JOIN"};
     @FXML
     //non deve essere final
     private ChoiceBox<Integer> exactPlayersNumber;
@@ -33,13 +34,17 @@ public class GUIController extends View implements Initializable {
     private Scene scene;
     private Parent root;
     @FXML
-    private MenuButton create_join_MenuButton;
-    @FXML
-    private Button finishButton;
+    //non deve essere final
+    private ChoiceBox<String> create_join_ChoiceBox;
     @FXML
     private TextField username;
     @FXML
     private CheckBox expertMode;
+    @FXML
+    private Label errorMessage;
+    @FXML
+    private Button confirmButton;
+    Alert errorAlert;
 
 
     /**
@@ -52,6 +57,8 @@ public class GUIController extends View implements Initializable {
         super(directivesDispatcher, directivesParser);
         exactPlayersNumber = new ChoiceBox<>();
         towerColor = new ChoiceBox<>();
+        create_join_ChoiceBox = new ChoiceBox<>();
+        errorAlert = new Alert(Alert.AlertType.ERROR);
     }
 
     @Override
@@ -60,99 +67,84 @@ public class GUIController extends View implements Initializable {
     }
 
 
+    protected void openNewStage(Button button, String resourceName) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resourceName));
+            fxmlLoader.setController(this);
+            root = fxmlLoader.load();
+            stage = (Stage) button.getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            //va cambiato
+            throw new RuntimeException(e);
+        }
+    }
+
+
     @FXML
     @Override
     protected void createGame() {
-        //da continuare
-        /*System.out.println(username.getCharacters().toString());
-        System.out.println(exactPlayersNumber.getValue());
-        System.out.println(expertMode.isSelected());
-        System.out.println(wizardType);
-        System.out.println(towerColor.getValue());*/
-        directivesDispatcher.createGame(username.getCharacters().toString(),exactPlayersNumber.getValue(),expertMode.isSelected(),wizardType,towerColor.getValue());
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("loading-page.fxml"));
-            fxmlLoader.setController(this);
-            root = fxmlLoader.load();
-            stage = (Stage) finishButton.getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
-        catch(IOException e){
-            throw new RuntimeException(e);
-        }
-       // MessageType createType = directivesParser.getMessageType();
-       // if(createType==CREATE)
-    }
-
-    @FXML
-    protected void switchToCreateMenu() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("createGame-menu.fxml"));
-            fxmlLoader.setController(this);
-            root = fxmlLoader.load();
-            stage = (Stage) create_join_MenuButton.getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            //va cambiato
-            throw new RuntimeException(e);
+        if (username.getCharacters() == null || exactPlayersNumber.getValue() == null || wizardType == null || towerColor.getValue() == null)
+            alertMessage("Empty field", "Please fill all the fields");
+        else {
+            if (!isValidUsername(username.getCharacters().toString())) {
+                alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+            } else {
+                directivesDispatcher.createGame(username.getCharacters().toString(), exactPlayersNumber.getValue(), expertMode.isSelected(), wizardType, towerColor.getValue());
+                this.previousMessageType = MessageType.CREATE;
+                // MessageType createType = directivesParser.getMessageType();
+                // if(createType==CREATE)
+            }
         }
     }
 
-    @FXML
-    protected void switchToJoinMenu() {
-        try {
-            //CANE;
-            //DA CONTROLLARE CHE ESISTA UNA PARTITA GIA` CREATA
+    protected void alertMessage(String headerText, String contentText) {
+        errorAlert.setHeaderText(headerText);
+        errorAlert.setContentText(contentText);
+        errorAlert.showAndWait();
+    }
 
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("joinGame-menu.fxml"));
-            fxmlLoader.setController(this);
-            root = fxmlLoader.load();
-            stage = (Stage) create_join_MenuButton.getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            //va cambiato
-            throw new RuntimeException(e);
+    @FXML
+    protected void switchCreateJoin() {
+        if (create_join_ChoiceBox.getValue() != null) {
+            if (create_join_ChoiceBox.getValue().equals("CREATE"))
+                openNewStage(confirmButton, "createGame-menu.fxml");
+            else
+                openNewStage(confirmButton, "joinGame-menu.fxml");
+        } else {
+            alertMessage("Empty choice", "Please select one option");
         }
+
     }
 
     @FXML
     protected void selectWizard(MouseEvent event) {
-        wizardType = ((ImageView)event.getSource()).getId();
+        wizardType = ((ImageView) event.getSource()).getId();
     }
 
     @FXML
     @Override
     protected void joinGame() {
-        //da continuare
-        System.out.println(username.getCharacters().toString());
-        System.out.println(wizardType);
-        System.out.println(towerColor.getValue());
-        directivesDispatcher.addPlayer(username.getCharacters().toString(),wizardType,towerColor.getValue());
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("loading-page.fxml"));
-            fxmlLoader.setController(this);
-            root = fxmlLoader.load();
-            stage = (Stage) finishButton.getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+        if (username.getCharacters() == null || wizardType == null || towerColor.getValue() == null)
+            alertMessage("Empty field", "Please fill all the fields");
+        else {
+            if (!isValidUsername(username.getCharacters().toString()))
+                alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+            else {
+                directivesDispatcher.addPlayer(username.getCharacters().toString(), wizardType, towerColor.getValue());
+                this.previousMessageType = MessageType.PLAYER;
+                // MessageType createType = directivesParser.getMessageType();
+                // if(createType==CREATE)
+            }
         }
-        catch(IOException e){
-            throw new RuntimeException(e);
-        }
-        // MessageType createType = directivesParser.getMessageType();
-        // if(createType==CREATE)
     }
 
     @Override
+    @FXML
     protected void waitForStart() {
-
+        //openNewStage(null, "loading-page.fxml");
     }
 
     @Override
@@ -204,5 +196,6 @@ public class GUIController extends View implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         exactPlayersNumber.getItems().addAll(possibleNumberOfPlayer);
         towerColor.getItems().addAll(possibleTowerColor);
+        create_join_ChoiceBox.getItems().addAll(possibleCreateJoin);
     }
 }
