@@ -49,6 +49,8 @@ public class CLIGamePrinter {
     public void printGame(String username) throws DirectivesParser.DirectivesParserException {
         this.printGamePhase();
         this.printPlayersOrder(username);
+        this.printCloud();
+        this.printCharacterCard();
     }
 
     /**
@@ -75,4 +77,29 @@ public class CLIGamePrinter {
                         : CLIConstants.ANSI_BRIGHT_WHITE, player, CLIConstants.ANSI_RESET)));
         System.out.printf("%s (You are %s)%n", String.join(", ", coloredPlayersOrder), username);
     }
-}
+
+    private void printCloud() throws DirectivesParser.DirectivesParserException {
+        System.out.printf("%sClouds:%s%n", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+        int cloud = this.directivesParser.getCloudsSize();
+        for (int i = 0; i < cloud; i++) {
+            System.out.printf("%s - %s%n", i + 1, this.directivesParser.getCloudTokens(i));
+        }
+    }
+
+    private void printCharacterCard() throws DirectivesParser.DirectivesParserException {
+        if (this.directivesParser.isExpertMode()) {
+            System.out.printf("%sCharacter card:%s%n", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+            for (String name : this.directivesParser.getCharacterCardNames()){
+                        System.out.printf("%s%n - cost: %s%n",
+                                name,
+                                this.directivesParser.getCharacterCardCost(name).getKey() + this.directivesParser.getCharacterCardCost(name).getValue(),
+                                this.directivesParser.getCharacterCardMultipurposeCounter(name));
+                                if (this.directivesParser.getCharacterCardTokens(name).size() > 0) {
+                                    System.out.printf("- tokens: %s%n", this.directivesParser.getCharacterCardTokens(name));
+                        };
+                    }
+                }
+
+            };
+        }
+
