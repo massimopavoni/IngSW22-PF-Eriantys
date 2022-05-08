@@ -24,6 +24,7 @@ public class GUIController extends View implements Initializable {
     private final Integer[] possibleNumberOfPlayer = {2, 3};
     private final String[] possibleTowerColor = {"BLACK", "WHITE", "GRAY"};
     private final String[] possibleCreateJoin = {"CREATE", "JOIN"};
+    private GUIApplication application;
     @FXML
     //non deve essere final
     private ChoiceBox<Integer> exactPlayersNumber;
@@ -55,6 +56,7 @@ public class GUIController extends View implements Initializable {
      */
     protected GUIController(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser) {
         super(directivesDispatcher, directivesParser);
+        application = new GUIApplication();
         exactPlayersNumber = new ChoiceBox<>();
         towerColor = new ChoiceBox<>();
         create_join_ChoiceBox = new ChoiceBox<>();
@@ -94,8 +96,7 @@ public class GUIController extends View implements Initializable {
             } else {
                 directivesDispatcher.createGame(username.getCharacters().toString(), exactPlayersNumber.getValue(), expertMode.isSelected(), wizardType, towerColor.getValue());
                 this.previousMessageType = MessageType.CREATE;
-                // MessageType createType = directivesParser.getMessageType();
-                // if(createType==CREATE)
+                application.switchScene("loading-page.fxml");
             }
         }
     }
@@ -135,8 +136,7 @@ public class GUIController extends View implements Initializable {
             else {
                 directivesDispatcher.addPlayer(username.getCharacters().toString(), wizardType, towerColor.getValue());
                 this.previousMessageType = MessageType.PLAYER;
-                // MessageType createType = directivesParser.getMessageType();
-                // if(createType==CREATE)
+                application.switchScene("loading-page.fxml");
             }
         }
     }
@@ -144,7 +144,8 @@ public class GUIController extends View implements Initializable {
     @Override
     @FXML
     protected void waitForStart() {
-        //openNewStage(null, "loading-page.fxml");
+        //questa funzione viene chiamata dalla view che è sbloccata dal parser
+        //visualizzare schermata attendo nuovi player
     }
 
     @Override

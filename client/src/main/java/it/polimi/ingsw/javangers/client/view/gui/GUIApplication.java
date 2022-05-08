@@ -14,6 +14,8 @@ public class GUIApplication extends Application {
 
     private static DirectivesDispatcher directivesDispatcher;
     private static DirectivesParser directivesParser;
+    private Stage stage = new Stage();
+
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -28,55 +30,26 @@ public class GUIApplication extends Application {
     }
 
 
-
     public static void main(String[] args) {
         launch(args);
     }
 
-    public static void setDirectives(DirectivesDispatcher newDirectivesDispatcher, DirectivesParser newDirectivesParser ){
+    public static void setDirectives(DirectivesDispatcher newDirectivesDispatcher, DirectivesParser newDirectivesParser) {
         directivesDispatcher = newDirectivesDispatcher;
         directivesParser = newDirectivesParser;
     }
 
-    /*
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(GUIApplication.class.getResource("/it/polimi/ingsw/javangers/client/view/gui/gui-launcher-view.fxml")));
-        Scene scene = new Scene(root, 620, 620, Color.BLACK);
-        Image icon = new Image(Objects.requireNonNull(GUIApplication.class.getResource("/it/polimi/ingsw/javangers/client/view/gui/images/logo-cranio.png")).toString());
-        stage.getIcons().addAll(icon);
-        stage.setTitle("Eriantys");
-        stage.setScene(scene);
-        stage.show();
+    public void switchScene(String fxmlFile) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+        Parent root;
+        try {
+            root = (Parent) loader.load();
+            this.stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
-
-     */
-
-
-
-
-    /*
-    @Override
-    public void start(Stage stage) throws Exception {
-        Group root = new Group();
-        Scene scene = new Scene(root, 620, 620, Color.BLACK);
-        Image icon = new Image(Objects.requireNonNull(GUIApplication.class.getResource("/it/polimi/ingsw/javangers/client/view/gui/logo-cranio.png")).toString());
-        stage.getIcons().addAll(icon);
-        stage.setTitle("Eriantys");
-
-        Text text = new Text();
-        text.setText("Eriantys");
-        text.setX(50);
-        text.setY(50);
-        text.setFont(Font.font("Impact", 50));
-        text.setFill(Color.PURPLE);
-
-
-        root.getChildren().add(text);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-     */
 
 }
