@@ -6,6 +6,7 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -119,6 +120,10 @@ public class CLI extends View {
                 CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
         String expertModeString = CLI.input.nextLine().strip().toLowerCase();
         expertModeString = !expertModeString.isEmpty() ? expertModeString : "true";
+        if (Arrays.asList("y", "yes").contains(expertModeString))
+            expertModeString = "true";
+        else if (Arrays.asList("n", "no").contains(expertModeString))
+            expertModeString = "false";
         this.expertMode = Boolean.parseBoolean(expertModeString);
     }
 
