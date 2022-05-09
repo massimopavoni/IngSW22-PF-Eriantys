@@ -22,6 +22,7 @@
   "dashboardHallTokens": "/gameEngine/gameState/playerDashboards/%s/hall/colorCounts",
   "dashboardCardsBack": "/gameEngine/gameState/playerDashboards/%s/cardsBack",
   "dashboardTowers": "/gameEngine/gameState/playerDashboards/%s/towers",
+  "dashboardCoinsNumber": "/gameEngine/gameState/playerDashboards/%s/coinsNumber",
   "dashboardLastDiscardedAssistantCard": "/gameEngine/gameState/playerDashboards/%s/lastDiscardedAssistantCard",
   "dashboardAssistantCards": "/gameEngine/gameState/playerDashboards/%s/assistantCards",
   "dashboardDiscardedAssistantCards": "/gameEngine/gameState/playerDashboards/%s/discardedAssistantCards",

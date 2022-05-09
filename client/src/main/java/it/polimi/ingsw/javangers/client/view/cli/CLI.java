@@ -132,7 +132,7 @@ public class CLI extends View {
      */
     private void chooseWizardType() {
         this.wizardType = "";
-        System.out.println("> Choose wizard type:");
+        System.out.println("> Choose wizard:");
         View.WIZARD_TYPES_MAPPINGS.forEach((key, value) -> System.out.printf(CLI.LIST_OPTION,
                 CLIConstants.WIZARD_TYPES_CLI_COLORS.get(key), value, key, CLIConstants.ANSI_RESET));
         System.out.print("> ");

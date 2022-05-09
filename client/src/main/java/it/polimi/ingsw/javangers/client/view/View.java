@@ -29,7 +29,7 @@ public abstract class View {
     /**
      * Map of available wizard types.
      */
-    protected static final Map<String, String> AVAILABLE_WIZARD_TYPES = Map.of(
+    public static final Map<String, String> AVAILABLE_WIZARD_TYPES = Map.of(
             "d", "DRUID",
             "k", "KING",
             "w", "WITCH",
@@ -37,7 +37,7 @@ public abstract class View {
     /**
      * Mappings for wizard types.
      */
-    protected static final Map<String, String> WIZARD_TYPES_MAPPINGS = Map.of(
+    public static final Map<String, String> WIZARD_TYPES_MAPPINGS = Map.of(
             "d", "Druid",
             "k", "King",
             "w", "Witch",
@@ -45,21 +45,21 @@ public abstract class View {
     /**
      * Map of available tower colors.
      */
-    protected static final Map<String, String> AVAILABLE_TOWER_COLORS = Map.of(
+    public static final Map<String, String> AVAILABLE_TOWER_COLORS = Map.of(
             "w", "WHITE",
             "b", "BLACK",
             "g", "GRAY");
     /**
      * Mappings for tower colors.
      */
-    protected static final Map<String, String> TOWER_COLORS_MAPPINGS = Map.of(
+    public static final Map<String, String> TOWER_COLORS_MAPPINGS = Map.of(
             "w", "White",
             "b", "Black",
             "g", "Gray");
     /**
      * Map of available token colors.
      */
-    protected static final Map<String, String> AVAILABLE_TOKEN_COLORS = Map.of(
+    public static final Map<String, String> AVAILABLE_TOKEN_COLORS = Map.of(
             "y", "YELLOW_ELF",
             "b", "BLUE_UNICORN",
             "g", "GREEN_FROG",
@@ -68,7 +68,7 @@ public abstract class View {
     /**
      * Mappings for token colors.
      */
-    protected static final Map<String, String> TOKEN_COLORS_MAPPINGS = Map.of(
+    public static final Map<String, String> TOKEN_COLORS_MAPPINGS = Map.of(
             "y", "Yellow Elf",
             "b", "Blue Unicorn",
             "g", "Green Frog",
@@ -77,7 +77,7 @@ public abstract class View {
     /**
      * Mappings for possible endgames.
      */
-    protected static final Map<String, String> POSSIBLE_ENDGAMES = Map.of(
+    public static final Map<String, String> POSSIBLE_ENDGAMES = Map.of(
             "ALL_TOWERS", "Player placed all of their towers",
             "FEW_ISLANDS", "Archipelago was reduced to too few islands",
             "EMPTY_BAG", "Students bag was emptied",
