@@ -182,6 +182,26 @@ public class DirectivesParser {
     }
 
     /**
+     * Get a specific island's enabled counter.
+     *
+     * @param islandIndex island index
+     * @return enabled counter
+     */
+    public int getIslandEnabled(int islandIndex) {
+        return this.getJSONInteger(String.format(this.gameJSONMappings.get("islandEnabled"), islandIndex));
+    }
+
+    /**
+     * Get a specific dashboard's coins number.
+     *
+     * @param username player username
+     * @return dashboard coins number
+     */
+    public int getDashboardCoins(String username) {
+        return this.getJSONInteger(String.format(this.gameJSONMappings.get("dashboardCoinsNumber"), username));
+    }
+
+    /**
      * Get additional mother nature steps.
      *
      * @return additional mother nature steps
@@ -207,16 +227,6 @@ public class DirectivesParser {
      */
     public int getCharacterCardMultipurposeCounter(String cardName) {
         return this.getJSONInteger(String.format(this.gameJSONMappings.get("characterCardMultipurposeCounter"), cardName));
-    }
-
-    /**
-     * Get a specific island's enabled flag.
-     *
-     * @param islandIndex island index
-     * @return enabled flag
-     */
-    public boolean isIslandEnabled(int islandIndex) {
-        return this.getJSONInteger(String.format(this.gameJSONMappings.get("islandEnabled"), islandIndex)) == 0;
     }
 
     /**
@@ -376,8 +386,9 @@ public class DirectivesParser {
      */
     private Map<String, Integer> getJSONMap(String jsonPath) throws DirectivesParserException {
         try {
-            return this.jsonMapper.readValue(this.messageContent.at(jsonPath).toString(), new TypeReference<>() {
-            });
+            return this.jsonMapper.readValue(this.messageContent.at(jsonPath).toString(),
+                    new TypeReference<LinkedHashMap<String, Integer>>() {
+                    });
         } catch (JsonProcessingException e) {
             throw new DirectivesParserException((String.format(GAME_JSON_EXPLORATION_ERROR, e.getMessage())), e);
         }
@@ -516,7 +527,7 @@ public class DirectivesParser {
      * @return map of string and pairs of string and integer
      */
     private Map<String, Pair<Integer, Integer>> getJSONMapPair(String jsonPath) {
-        Map<String, Pair<Integer, Integer>> mapPair = new HashMap<>();
+        Map<String, Pair<Integer, Integer>> mapPair = new LinkedHashMap<>();
         this.messageContent.at(jsonPath).fieldNames().forEachRemaining(key -> {
             JsonNode pair = this.messageContent.at(jsonPath).get(key);
             mapPair.put(key, new Pair<>(pair.get("value").intValue(), pair.get("steps").intValue()));
@@ -580,7 +591,8 @@ public class DirectivesParser {
     public Map<String, String> getTeachers() throws DirectivesParserException {
         try {
             Map<String, Map<String, String>> teachers = this.jsonMapper.readValue(
-                    this.messageContent.at(this.gameJSONMappings.get("teachers")).toString(), new TypeReference<>() {
+                    this.messageContent.at(this.gameJSONMappings.get("teachers")).toString(),
+                    new TypeReference<LinkedHashMap<String, Map<String, String>>>() {
                     });
             return teachers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get("ownerUsername")));
         } catch (JsonProcessingException e) {
