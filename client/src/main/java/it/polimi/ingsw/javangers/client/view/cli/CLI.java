@@ -6,6 +6,7 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,7 +29,11 @@ public class CLI extends View {
     /**
      * Thread for loading animation.
      */
-    private static Thread loadingThread;
+    private Thread loadingThread;
+    /**
+     * CLI game printer singleton instance.
+     */
+    private final CLIGamePrinter gamePrinter;
 
     /**
      * Constructor for cli, initializing directives dispatcher and parser.
@@ -38,6 +43,7 @@ public class CLI extends View {
      */
     public CLI(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser) {
         super(directivesDispatcher, directivesParser);
+        gamePrinter = CLIGamePrinter.getInstance(this.directivesParser);
     }
 
     /**
@@ -53,7 +59,7 @@ public class CLI extends View {
                 pb = new ProcessBuilder("clear");
             pb.inheritIO().start().waitFor();
         } catch (IOException | InterruptedException e) {
-            System.err.printf("%sError while clearing console (%s)%s%n",
+            System.err.printf("%n%sError while clearing console (%s)%s%n",
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
             Thread.currentThread().interrupt();
             System.exit(1);
@@ -63,10 +69,10 @@ public class CLI extends View {
     /**
      * Stop loading thread animation.
      */
-    private static void stopLoading() {
-        if (CLI.loadingThread != null) {
-            CLI.loadingThread.interrupt();
-            CLI.loadingThread = null;
+    private void stopLoading() {
+        if (this.loadingThread != null) {
+            this.loadingThread.interrupt();
+            this.loadingThread = null;
         }
     }
 
@@ -114,6 +120,10 @@ public class CLI extends View {
                 CLIConstants.ANSI_BRIGHT_CYAN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_YELLOW, CLIConstants.ANSI_RESET);
         String expertModeString = CLI.input.nextLine().strip().toLowerCase();
         expertModeString = !expertModeString.isEmpty() ? expertModeString : "true";
+        if (Arrays.asList("y", "yes").contains(expertModeString))
+            expertModeString = "true";
+        else if (Arrays.asList("n", "no").contains(expertModeString))
+            expertModeString = "false";
         this.expertMode = Boolean.parseBoolean(expertModeString);
     }
 
@@ -122,7 +132,7 @@ public class CLI extends View {
      */
     private void chooseWizardType() {
         this.wizardType = "";
-        System.out.println("> Choose wizard type:");
+        System.out.println("> Choose wizard:");
         View.WIZARD_TYPES_MAPPINGS.forEach((key, value) -> System.out.printf(CLI.LIST_OPTION,
                 CLIConstants.WIZARD_TYPES_CLI_COLORS.get(key), value, key, CLIConstants.ANSI_RESET));
         System.out.print("> ");
@@ -218,7 +228,7 @@ public class CLI extends View {
      */
     @Override
     protected void waitForStart() {
-        CLI.loadingThread = new Thread(() -> {
+        this.loadingThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 for (int i = 0; i < 4; i++) {
                     System.out.printf("%sWait for game start %s%s\r",
@@ -231,7 +241,7 @@ public class CLI extends View {
                 }
             }
         });
-        CLI.loadingThread.start();
+        this.loadingThread.start();
     }
 
     /**
@@ -248,9 +258,19 @@ public class CLI extends View {
      */
     @Override
     protected void startShow() {
-        CLI.stopLoading();
+        CLIGamePrinter.getInstance(this.directivesParser);
+        this.stopLoading();
         CLI.clear();
-        System.out.printf("%sGame started.%s%n%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
+        System.out.printf("%sGame started.%s%n%n%s%s%s%n%n",
+                CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
+                "-".repeat(64), CLIConstants.ANSI_RESET);
+        try {
+            this.gamePrinter.printGame(this.username);
+        } catch (DirectivesParser.DirectivesParserException e) {
+            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+                    CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
+            System.exit(1);
+        }
     }
 
     /**
@@ -258,6 +278,18 @@ public class CLI extends View {
      */
     @Override
     protected void updateGame() {
+        System.out.printf("%sGame updated.%s%n%n%s%s%s%n%n",
+                CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
+                "-".repeat(64), CLIConstants.ANSI_RESET);
+        this.stopLoading();
+        CLI.clear();
+        try {
+            this.gamePrinter.printGame(this.username);
+        } catch (DirectivesParser.DirectivesParserException e) {
+            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+                    CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
+            System.exit(1);
+        }
     }
 
     /**
@@ -267,8 +299,8 @@ public class CLI extends View {
      */
     @Override
     protected void showAbort(String message) {
-        CLI.stopLoading();
-        System.out.printf("%sAbort: %s%nPress enter to continue.%s",
+        this.stopLoading();
+        System.out.printf("%n%sAbort: %s%nPress enter to continue.%s",
                 CLIConstants.ANSI_BRIGHT_RED, message, CLIConstants.ANSI_RESET);
         CLI.input.nextLine();
     }
@@ -280,8 +312,8 @@ public class CLI extends View {
      */
     @Override
     protected void showError(String message) {
-        CLI.stopLoading();
-        System.out.printf("%sError: %s%nPress enter to continue.%s",
+        this.stopLoading();
+        System.out.printf("%n%sError: %s%nPress enter to continue.%s",
                 CLIConstants.ANSI_BRIGHT_RED, message, CLIConstants.ANSI_RESET);
         CLI.input.nextLine();
     }
@@ -293,7 +325,7 @@ public class CLI extends View {
      */
     @Override
     protected void closeGame(List<String> winners) {
-        CLI.stopLoading();
+        this.stopLoading();
         System.out.printf("%sGame is ended (%s)%nWinner%s: %s%nPress enter to continue.%s",
                 CLIConstants.ANSI_BRIGHT_GREEN, this.directivesParser.getEndGame(), this.winners.size() == 1 ? "" : "s",
                 String.join(", ", this.winners), CLIConstants.ANSI_RESET);
@@ -305,7 +337,6 @@ public class CLI extends View {
      */
     @Override
     protected void enableActions() {
-
     }
 
     /**
@@ -313,7 +344,7 @@ public class CLI extends View {
      */
     @Override
     protected void waitTurn() {
-        CLI.loadingThread = new Thread(() -> {
+        this.loadingThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 for (int i = 0; i < 4; i++) {
                     System.out.printf("%sWait for your turn %s%s\r",
@@ -326,7 +357,7 @@ public class CLI extends View {
                 }
             }
         });
-        CLI.loadingThread.start();
+        this.loadingThread.start();
     }
 
     /**
