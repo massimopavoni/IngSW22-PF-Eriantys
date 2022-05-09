@@ -4,16 +4,29 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Class representing the cli printer for game information.
  */
 public class CLIGamePrinter {
+    /**
+     * Map for cardinal numbers strings.
+     */
+    private static final Map<Integer, String> CARDINALITY_MAP = Map.ofEntries(
+            Map.entry(0, "1st"),
+            Map.entry(1, "2nd"),
+            Map.entry(2, "3rd"),
+            Map.entry(3, "4th"),
+            Map.entry(4, "5th"),
+            Map.entry(5, "6th"),
+            Map.entry(6, "7th"),
+            Map.entry(7, "8th"),
+            Map.entry(8, "9th"),
+            Map.entry(9, "10th"),
+            Map.entry(10, "11th"),
+            Map.entry(11, "12th"));
     /**
      * CLI game printer singleton instance.
      */
@@ -69,6 +82,9 @@ public class CLIGamePrinter {
         this.printTeachers(username);
         this.printSeparator();
 
+        this.printArchipelago();
+        this.printSeparator();
+
         this.printCharacterCardsEffects();
         this.printCharacterCards();
         this.printSeparator();
@@ -97,10 +113,12 @@ public class CLIGamePrinter {
         System.out.printf("%sPlayers order: ", CLIConstants.ANSI_BRIGHT_BLUE);
         String currentPlayer = this.directivesParser.getCurrentPlayer();
         List<String> coloredPlayersOrder = new ArrayList<>();
-        this.directivesParser.getPlayersOrder().forEach(player -> coloredPlayersOrder.add(
-                String.format("%s%s%s", player.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
-                                : (player.equals(username) ? CLIConstants.ANSI_BRIGHT_BLUE : CLIConstants.ANSI_BRIGHT_WHITE),
-                        player, CLIConstants.ANSI_RESET)));
+        this.directivesParser.getPlayersOrder().forEach(player -> {
+            String notCurrentPlayerColor = player.equals(username) ? CLIConstants.ANSI_BRIGHT_BLUE : CLIConstants.ANSI_BRIGHT_WHITE;
+            coloredPlayersOrder.add(
+                    String.format("%s%s%s", player.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
+                            : notCurrentPlayerColor, player, CLIConstants.ANSI_RESET));
+        });
         System.out.printf("%s (You are %s%s%s)%n", String.join(", ", coloredPlayersOrder),
                 username.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
                         : CLIConstants.ANSI_BRIGHT_BLUE, username, CLIConstants.ANSI_RESET);
@@ -126,10 +144,11 @@ public class CLIGamePrinter {
      * @param tabbing tabbing string for different sections
      */
     private void printTowers(Pair<String, Integer> towers, String tabbing) {
-        String towerColorID = View.AVAILABLE_TOWER_COLORS.entrySet().stream()
-                .filter(entry -> entry.getValue().equals(towers.getKey())).findFirst().orElseThrow().getKey();
-        System.out.printf("%n%s%sTowers: %d %s%s", tabbing, CLIConstants.ANSI_BRIGHT_WHITE,
-                towers.getValue(), View.TOWER_COLORS_MAPPINGS.get(towerColorID), CLIConstants.ANSI_RESET);
+        Optional<Map.Entry<String, String>> towerColorEntry = View.AVAILABLE_TOWER_COLORS.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(towers.getKey())).findFirst();
+        System.out.printf("%n%s%sTowers: %d %s%s", tabbing, CLIConstants.ANSI_BRIGHT_WHITE, towers.getValue(),
+                towerColorEntry.isPresent() ? View.TOWER_COLORS_MAPPINGS.get(towerColorEntry.get().getKey())
+                        : "none", CLIConstants.ANSI_RESET);
     }
 
     /**
@@ -152,7 +171,7 @@ public class CLIGamePrinter {
      * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
      */
     private void printStudentsBag() throws DirectivesParser.DirectivesParserException {
-        System.out.printf("%n%sStudents bag:%s %s%n", CLIConstants.ANSI_BRIGHT_WHITE, CLIConstants.ANSI_RESET,
+        System.out.printf("%n%sStudents bag:%s %s%n", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET,
                 this.formatColorCounts(this.directivesParser.getStudentsBagTokens()));
     }
 
@@ -270,12 +289,40 @@ public class CLIGamePrinter {
         teachers.forEach((teacher, owner) -> {
             String teacherColorID = View.AVAILABLE_TOKEN_COLORS.entrySet().stream()
                     .filter(entry -> entry.getValue().equals(teacher)).findFirst().orElseThrow().getKey();
+            String ownerColor = owner.equals(username) ? CLIConstants.ANSI_BRIGHT_BLUE : CLIConstants.ANSI_BRIGHT_WHITE;
+            String ownerName = owner.equals(username) ? "You" : owner;
+            if (ownerName.isEmpty())
+                ownerName = "none";
             String formattedOwner = String.format("%s%s", owner.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
-                            : (owner.equals(username) ? CLIConstants.ANSI_BRIGHT_BLUE : CLIConstants.ANSI_BRIGHT_WHITE),
-                    owner.isEmpty() ? "none" : (owner.equals(username) ? "You" : owner));
+                    : ownerColor, ownerName);
             System.out.printf("  %s%-12s%s => %s%n", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(teacherColorID),
                     View.TOKEN_COLORS_MAPPINGS.get(teacherColorID), CLIConstants.ANSI_BRIGHT_WHITE, formattedOwner);
         });
+    }
+
+    /**
+     * Print archipelago's islands information.
+     *
+     * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
+     */
+    private void printArchipelago() throws DirectivesParser.DirectivesParserException {
+        System.out.printf("%n%sArchipelago:%n", CLIConstants.ANSI_BRIGHT_BLUE);
+        int motherNaturePosition = this.directivesParser.getMotherNaturePosition();
+        System.out.printf("  %sMother nature position: %s%s island%s%n",
+                CLIConstants.ANSI_BRIGHT_WHITE, CLIConstants.ANSI_BRIGHT_GREEN,
+                CARDINALITY_MAP.get(motherNaturePosition), CLIConstants.ANSI_RESET);
+        System.out.printf("  %sIslands:%n", CLIConstants.ANSI_BRIGHT_WHITE);
+        for (int i = 0; i < this.directivesParser.getIslandsSize(); i++) {
+            int enabled = this.directivesParser.getIslandEnabled(i);
+            System.out.printf("%s%s%s" +
+                            "%n%s%sEnabled: %s%d", " ".repeat(4), motherNaturePosition == i
+                            ? CLIConstants.ANSI_BRIGHT_GREEN : CLIConstants.ANSI_BRIGHT_WHITE, CARDINALITY_MAP.get(i),
+                    " ".repeat(6), CLIConstants.ANSI_BRIGHT_WHITE, enabled > 0 ? CLIConstants.ANSI_BRIGHT_RED
+                            : CLIConstants.ANSI_BRIGHT_GREEN, enabled);
+            this.printTowers(this.directivesParser.getIslandTowers(i), " ".repeat(6));
+            System.out.printf("%n%s%sTokens: %s%n", " ".repeat(6), CLIConstants.ANSI_BRIGHT_WHITE,
+                    this.formatColorCounts(this.directivesParser.getIslandTokens(i)));
+        }
     }
 
     /**

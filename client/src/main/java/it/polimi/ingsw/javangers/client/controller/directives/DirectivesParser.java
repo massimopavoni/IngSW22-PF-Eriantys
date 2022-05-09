@@ -182,7 +182,18 @@ public class DirectivesParser {
     }
 
     /**
+     * Get a specific island's enabled counter.
+     *
+     * @param islandIndex island index
+     * @return enabled counter
+     */
+    public int getIslandEnabled(int islandIndex) {
+        return this.getJSONInteger(String.format(this.gameJSONMappings.get("islandEnabled"), islandIndex));
+    }
+
+    /**
      * Get a specific dashboard's coins number.
+     *
      * @param username player username
      * @return dashboard coins number
      */
@@ -216,16 +227,6 @@ public class DirectivesParser {
      */
     public int getCharacterCardMultipurposeCounter(String cardName) {
         return this.getJSONInteger(String.format(this.gameJSONMappings.get("characterCardMultipurposeCounter"), cardName));
-    }
-
-    /**
-     * Get a specific island's enabled flag.
-     *
-     * @param islandIndex island index
-     * @return enabled flag
-     */
-    public boolean isIslandEnabled(int islandIndex) {
-        return this.getJSONInteger(String.format(this.gameJSONMappings.get("islandEnabled"), islandIndex)) == 0;
     }
 
     /**

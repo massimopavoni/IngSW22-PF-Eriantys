@@ -261,7 +261,7 @@ public class CLI extends View {
         CLIGamePrinter.getInstance(this.directivesParser);
         this.stopLoading();
         CLI.clear();
-        System.out.printf("%sGame started.%s%n%s%s%s%n",
+        System.out.printf("%sGame started.%s%n%n%s%s%s%n%n",
                 CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
                 "-".repeat(64), CLIConstants.ANSI_RESET);
         try {
@@ -278,6 +278,9 @@ public class CLI extends View {
      */
     @Override
     protected void updateGame() {
+        System.out.printf("%sGame updated.%s%n%n%s%s%s%n%n",
+                CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
+                "-".repeat(64), CLIConstants.ANSI_RESET);
         this.stopLoading();
         CLI.clear();
         try {
