@@ -4,17 +4,22 @@ import it.polimi.ingsw.javangers.client.controller.MessageType;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -56,11 +61,11 @@ public class GUIController extends View implements Initializable {
      */
     protected GUIController(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser) {
         super(directivesDispatcher, directivesParser);
-        application = new GUIApplication();
-        exactPlayersNumber = new ChoiceBox<>();
-        towerColor = new ChoiceBox<>();
-        create_join_ChoiceBox = new ChoiceBox<>();
-        errorAlert = new Alert(Alert.AlertType.ERROR);
+        this.application = new GUIApplication();
+        this.exactPlayersNumber = new ChoiceBox<>();
+        this.towerColor = new ChoiceBox<>();
+        this.create_join_ChoiceBox = new ChoiceBox<>();
+        this.errorAlert = new Alert(Alert.AlertType.ERROR);
     }
 
     @Override
@@ -88,32 +93,32 @@ public class GUIController extends View implements Initializable {
     @FXML
     @Override
     protected void createGame() {
-        if (username.getCharacters() == null || exactPlayersNumber.getValue() == null || wizardType == null || towerColor.getValue() == null)
+        if (this.username.getCharacters() == null || this.exactPlayersNumber.getValue() == null || this.wizardType == null || this.towerColor.getValue() == null)
             alertMessage("Empty field", "Please fill all the fields");
         else {
             if (!isValidUsername(username.getCharacters().toString())) {
                 alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
             } else {
-                directivesDispatcher.createGame(username.getCharacters().toString(), exactPlayersNumber.getValue(), expertMode.isSelected(), wizardType, towerColor.getValue());
+                this.directivesDispatcher.createGame(this.username.getCharacters().toString(), this.exactPlayersNumber.getValue(), this.expertMode.isSelected(), this.wizardType, this.towerColor.getValue());
                 this.previousMessageType = MessageType.CREATE;
-                application.switchScene("loading-page.fxml");
+                //this.application.switchScene(this.application.getStage(), "loading-page.fxml");
             }
         }
     }
 
     protected void alertMessage(String headerText, String contentText) {
-        errorAlert.setHeaderText(headerText);
-        errorAlert.setContentText(contentText);
-        errorAlert.showAndWait();
+        this.errorAlert.setHeaderText(headerText);
+        this.errorAlert.setContentText(contentText);
+        this.errorAlert.showAndWait();
     }
 
     @FXML
     protected void switchCreateJoin() {
-        if (create_join_ChoiceBox.getValue() != null) {
-            if (create_join_ChoiceBox.getValue().equals("CREATE"))
-                openNewStage(confirmButton, "createGame-menu.fxml");
+        if (this.create_join_ChoiceBox.getValue() != null) {
+            if (this.create_join_ChoiceBox.getValue().equals("CREATE"))
+                openNewStage(this.confirmButton, "createGame-menu.fxml");
             else
-                openNewStage(confirmButton, "joinGame-menu.fxml");
+                openNewStage(this.confirmButton, "joinGame-menu.fxml");
         } else {
             alertMessage("Empty choice", "Please select one option");
         }
@@ -122,21 +127,21 @@ public class GUIController extends View implements Initializable {
 
     @FXML
     protected void selectWizard(MouseEvent event) {
-        wizardType = ((ImageView) event.getSource()).getId();
+        this.wizardType = ((ImageView) event.getSource()).getId();
     }
 
     @FXML
     @Override
     protected void joinGame() {
-        if (username.getCharacters() == null || wizardType == null || towerColor.getValue() == null)
+        if (this.username.getCharacters() == null || wizardType == null || towerColor.getValue() == null)
             alertMessage("Empty field", "Please fill all the fields");
         else {
-            if (!isValidUsername(username.getCharacters().toString()))
+            if (!isValidUsername(this.username.getCharacters().toString()))
                 alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
             else {
-                directivesDispatcher.addPlayer(username.getCharacters().toString(), wizardType, towerColor.getValue());
+                this.directivesDispatcher.addPlayer(this.username.getCharacters().toString(), this.wizardType, this.towerColor.getValue());
                 this.previousMessageType = MessageType.PLAYER;
-                application.switchScene("loading-page.fxml");
+
             }
         }
     }
@@ -144,18 +149,21 @@ public class GUIController extends View implements Initializable {
     @Override
     @FXML
     protected void waitForStart() {
+        Platform.runLater(() -> this.application.switchScene(this.application.getStage(),"loading-page.fxml"));
+
         //questa funzione viene chiamata dalla view che è sbloccata dal parser
         //visualizzare schermata attendo nuovi player
     }
 
     @Override
     protected void startGame() {
-
+        this.directivesDispatcher.startGame(this.username.getCharacters().toString());
+        this.previousMessageType = MessageType.START;
     }
 
     @Override
-    protected void startShow() {
-
+    protected void startShow(){
+        Platform.runLater(() -> this.application.getStage().close());
     }
 
     @Override

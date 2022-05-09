@@ -39,17 +39,21 @@ public class GUIApplication extends Application {
         directivesParser = newDirectivesParser;
     }
 
-    public void switchScene(String fxmlFile) {
+    public void switchScene(Stage stage, String fxmlFile) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root;
         try {
             root = (Parent) loader.load();
-            this.stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public Stage getStage(){
+        return this.stage;
     }
 
 }
