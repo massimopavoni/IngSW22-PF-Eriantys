@@ -11,15 +11,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -50,6 +46,8 @@ public class GUIController extends View implements Initializable {
     private Label errorMessage;
     @FXML
     private Button confirmButton;
+    @FXML
+    private Label loadingInfo;
     Alert errorAlert;
 
 
@@ -89,6 +87,24 @@ public class GUIController extends View implements Initializable {
         }
     }
 
+    /*
+    protected void openNewStage(String resourceName) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resourceName));
+            fxmlLoader.setController(this);
+            root = fxmlLoader.load();
+            stage = (Stage) this.application.getStage().getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            //va cambiato
+            throw new RuntimeException(e);
+        }
+    }
+
+     */
+
 
     @FXML
     @Override
@@ -110,6 +126,7 @@ public class GUIController extends View implements Initializable {
         this.errorAlert.setHeaderText(headerText);
         this.errorAlert.setContentText(contentText);
         this.errorAlert.showAndWait();
+
     }
 
     @FXML
@@ -146,10 +163,14 @@ public class GUIController extends View implements Initializable {
         }
     }
 
+
     @Override
     @FXML
     protected void waitForStart() {
-        Platform.runLater(() -> this.application.switchScene(this.application.getStage(),"loading-page.fxml"));
+        Platform.runLater(() -> {
+            this.application.switchScene("loading-page.fxml");
+            this.loadingInfo.setText("Waiting start game");
+        });
 
         //questa funzione viene chiamata dalla view che è sbloccata dal parser
         //visualizzare schermata attendo nuovi player
@@ -162,7 +183,7 @@ public class GUIController extends View implements Initializable {
     }
 
     @Override
-    protected void startShow(){
+    protected void startShow() {
         Platform.runLater(() -> this.application.getStage().close());
     }
 
@@ -178,7 +199,10 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void showError(String message) {
-
+        Platform.runLater(() -> {
+            stage.close();
+            alertMessage(message, "Please retry");
+       });
     }
 
     @Override
@@ -199,6 +223,9 @@ public class GUIController extends View implements Initializable {
     @Override
     protected void returnToMainMenu() {
 
+        Platform.runLater(() -> {
+            application.switchScene("create-join.fxml");
+       });
     }
 
     @Override
@@ -207,4 +234,6 @@ public class GUIController extends View implements Initializable {
         towerColor.getItems().addAll(possibleTowerColor);
         create_join_ChoiceBox.getItems().addAll(possibleCreateJoin);
     }
+
+
 }
