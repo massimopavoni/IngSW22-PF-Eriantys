@@ -27,13 +27,13 @@ public class CLI extends View {
      */
     private static final List<String> LOADING_ANIMATION_FRAMES = List.of("▖", "▘", "▝", "▗");
     /**
-     * Thread for loading animation.
-     */
-    private Thread loadingThread;
-    /**
      * CLI game printer singleton instance.
      */
     private final CLIGamePrinter gamePrinter;
+    /**
+     * Thread for loading animation.
+     */
+    private Thread loadingThread;
 
     /**
      * Constructor for cli, initializing directives dispatcher and parser.
@@ -43,7 +43,7 @@ public class CLI extends View {
      */
     public CLI(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser) {
         super(directivesDispatcher, directivesParser);
-        gamePrinter = CLIGamePrinter.getInstance(this.directivesParser);
+        this.gamePrinter = CLIGamePrinter.getInstance(this.directivesParser);
     }
 
     /**
@@ -258,7 +258,6 @@ public class CLI extends View {
      */
     @Override
     protected void startShow() {
-        CLIGamePrinter.getInstance(this.directivesParser);
         this.stopLoading();
         CLI.clear();
         System.out.printf("%sGame started.%s%n%n%s%s%s%n%n",
@@ -278,11 +277,11 @@ public class CLI extends View {
      */
     @Override
     protected void updateGame() {
+        this.stopLoading();
+        CLI.clear();
         System.out.printf("%sGame updated.%s%n%n%s%s%s%n%n",
                 CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
                 "-".repeat(64), CLIConstants.ANSI_RESET);
-        this.stopLoading();
-        CLI.clear();
         try {
             this.gamePrinter.printGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
@@ -344,6 +343,7 @@ public class CLI extends View {
      */
     @Override
     protected void waitTurn() {
+        System.out.println();
         this.loadingThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 for (int i = 0; i < 4; i++) {

@@ -296,7 +296,7 @@ public abstract class View {
      * Continue game if winners is empty.
      */
     protected void continueGame() {
-        if (!this.winners.isEmpty()) {
+        if (this.winners.isEmpty()) {
             if (this.directivesParser.getCurrentPlayer().equals(this.username)) {
                 this.enableActions();
             } else {
