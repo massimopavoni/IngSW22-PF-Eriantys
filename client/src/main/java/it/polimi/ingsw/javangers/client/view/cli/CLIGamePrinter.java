@@ -32,14 +32,14 @@ public class CLIGamePrinter {
      */
     private static CLIGamePrinter singleton = null;
     /**
-     * Client directives dispatcher instance.
+     * Client directives parser instance.
      */
     private final DirectivesParser directivesParser;
 
     /**
      * Private constructor for utility class.
      *
-     * @param directivesParser client directives dispatcher instance
+     * @param directivesParser client directives parser instance
      */
     private CLIGamePrinter(DirectivesParser directivesParser) {
         this.directivesParser = directivesParser;
@@ -48,7 +48,7 @@ public class CLIGamePrinter {
     /**
      * Get cli game printer singleton instance.
      *
-     * @param directivesParser client directives dispatcher instance
+     * @param directivesParser client directives parser instance
      * @return singleton instance
      */
     public static CLIGamePrinter getInstance(DirectivesParser directivesParser) {
