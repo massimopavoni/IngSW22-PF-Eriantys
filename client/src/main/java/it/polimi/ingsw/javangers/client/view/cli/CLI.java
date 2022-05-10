@@ -31,12 +31,16 @@ public class CLI extends View {
      */
     private final CLIGamePrinter gamePrinter;
     /**
+     * CLI actions executor singleton instance.
+     */
+    private final CLIActionsExecutor actionsExecutor;
+    /**
      * Thread for loading animation.
      */
     private Thread loadingThread;
 
     /**
-     * Constructor for cli, initializing directives dispatcher and parser.
+     * Constructor for cli, initializing directives dispatcher and parser, game printer and actions executor.
      *
      * @param directivesDispatcher directives dispatcher instance
      * @param directivesParser     directives parser instance
@@ -44,6 +48,7 @@ public class CLI extends View {
     public CLI(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser) {
         super(directivesDispatcher, directivesParser);
         this.gamePrinter = CLIGamePrinter.getInstance(this.directivesParser);
+        this.actionsExecutor = CLIActionsExecutor.getInstance(this.directivesDispatcher, this.directivesParser);
     }
 
     /**
@@ -228,6 +233,7 @@ public class CLI extends View {
      */
     @Override
     protected void waitForStart() {
+        System.out.println();
         this.loadingThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 for (int i = 0; i < 4; i++) {
@@ -336,6 +342,14 @@ public class CLI extends View {
      */
     @Override
     protected void enableActions() {
+        System.out.printf("%n%sIt's your turn.%s%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
+        try {
+            this.actionsExecutor.listAvailableActions();
+        } catch (DirectivesParser.DirectivesParserException e) {
+            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+                    CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
+            System.exit(1);
+        }
     }
 
     /**
