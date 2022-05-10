@@ -3,6 +3,9 @@ package it.polimi.ingsw.javangers.client.view.cli;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Class representing the cli actions executor for playing the game.
  */
@@ -44,7 +47,22 @@ public class CLIActionsExecutor {
         return singleton;
     }
 
-    public void listAvailableActions(){
-        System.out.printf("%s"," ");
+    /**
+     * List available actions for current phase.
+     *
+     * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
+     */
+    public void listAvailableActions() throws DirectivesParser.DirectivesParserException {
+        System.out.println("> Choose an action:");
+        List<String> availableActions = this.directivesParser.getAvailableActions();
+        String actionName;
+        List<String> actionNameArgs;
+        for (int i = 0; i < availableActions.size(); i++) {
+            actionName = availableActions.get(i);
+            actionNameArgs = Arrays.stream(actionName.split("(?=\\p{Lu})")).toList();
+            actionName = actionNameArgs.get(0) + actionNameArgs.stream().skip(1).map(s -> " " + s).reduce("", String::concat);
+            System.out.printf("- %s%s [%d]%s%n", CLIConstants.ANSI_BRIGHT_WHITE, actionName, i + 1, CLIConstants.ANSI_RESET);
+        }
+        System.out.print("> ");
     }
 }

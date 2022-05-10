@@ -1,7 +1,7 @@
 {
   "exactPlayersNumber": "/exactPlayersNumber",
   "expertMode": "/expertMode",
-  "availableActions": "/gameMacroPhases/%d/phases/%d/availableActions",
+  "availableActions": "/gameMacroPhases/%s/phases/%s/availableActions",
   "currentPhase": "/currentPhase",
   "playersOrder": "/playersOrder",
   "currentPlayer": "/currentPlayer",
