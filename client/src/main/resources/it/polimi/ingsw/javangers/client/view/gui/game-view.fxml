@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="942.0" prefWidth="1219.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="characterCard1" fitHeight="188.0" fitWidth="130.0" layoutX="1075.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="characterCard2" fitHeight="188.0" fitWidth="130.0" layoutX="1075.0" layoutY="312.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="characterCard3" fitHeight="188.0" fitWidth="130.0" layoutX="1075.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="currentPhase" layoutX="23.0" layoutY="20.0" prefHeight="23.0" prefWidth="211.0" />
+      <Label fx:id="playersOrder" layoutX="997.0" layoutY="23.0" prefHeight="17.0" prefWidth="211.0" />
+   </children>
+</AnchorPane>

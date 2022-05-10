@@ -49,6 +49,7 @@ public class GUIController extends View implements Initializable {
     @FXML
     private Label loadingInfo;
     Alert errorAlert;
+    private final GUIGameDisplayer guiGameDisplayer;
 
 
     /**
@@ -64,6 +65,7 @@ public class GUIController extends View implements Initializable {
         this.towerColor = new ChoiceBox<>();
         this.create_join_ChoiceBox = new ChoiceBox<>();
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
+        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser);
     }
 
     @Override
@@ -168,6 +170,7 @@ public class GUIController extends View implements Initializable {
     @FXML
     protected void waitForStart() {
         Platform.runLater(() -> {
+            this.stage.close();
             this.application.switchScene("loading-page.fxml");
             this.loadingInfo.setText("Waiting start game");
         });
@@ -184,7 +187,15 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        Platform.runLater(() -> this.application.getStage().close());
+        Platform.runLater(() ->{
+            this.application.getStage().close();
+            guiGameDisplayer.openNewStage();
+        });
+        try {
+            guiGameDisplayer.displayGame(username.getCharacters().toString());
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
