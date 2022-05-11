@@ -19,16 +19,16 @@ class GameConfigurationTest {
                 8, 3, 1);
         assertAll(
                 () -> assertEquals("/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
-                        gameConfiguration.getAssistantCardsResourceLocation()),
+                        gameConfiguration.assistantCardsResourceLocation()),
                 () -> assertEquals("/it/polimi/ingsw/javangers/server/model/game_mechanics/character_cards.json",
-                        gameConfiguration.getCharacterCardsResourceLocation()),
-                () -> assertEquals(12, gameConfiguration.getNumberOfIslands()),
-                () -> assertEquals(26, gameConfiguration.getStudentsPerColor()),
-                () -> assertEquals(3, gameConfiguration.getStudentsPerCloud()),
-                () -> assertEquals(7, gameConfiguration.getStudentsPerEntrance()),
-                () -> assertEquals(8, gameConfiguration.getTowersPerDashboard()),
-                () -> assertEquals(3, gameConfiguration.getNumberOfCharacterCards()),
-                () -> assertEquals(1, gameConfiguration.getCoinsPerDashBoard())
+                        gameConfiguration.characterCardsResourceLocation()),
+                () -> assertEquals(12, gameConfiguration.numberOfIslands()),
+                () -> assertEquals(26, gameConfiguration.studentsPerColor()),
+                () -> assertEquals(3, gameConfiguration.studentsPerCloud()),
+                () -> assertEquals(7, gameConfiguration.studentsPerEntrance()),
+                () -> assertEquals(8, gameConfiguration.towersPerDashboard()),
+                () -> assertEquals(3, gameConfiguration.numberOfCharacterCards()),
+                () -> assertEquals(1, gameConfiguration.coinsPerDashBoard())
         );
     }
 }

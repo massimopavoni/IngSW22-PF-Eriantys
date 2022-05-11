@@ -64,7 +64,7 @@ public class TokenContainer {
      * Check if tokens list contains passed tokens.
      *
      * @param tokens list of tokens to check
-     * @return true if tokens list contains all the tokens in the passed list, false otherwise
+     * @return true if tokens list contains all the tokens in the provided list, false otherwise
      */
     public boolean containsSubList(List<TokenColor> tokens) {
         List<TokenColor> tokensCopy = getTokens();

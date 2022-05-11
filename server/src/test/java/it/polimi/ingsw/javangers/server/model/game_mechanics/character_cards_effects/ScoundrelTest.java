@@ -26,7 +26,7 @@ class ScoundrelTest {
     void setUp() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                 "test_loadAllCharacterCards",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("Strange", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Panther", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));
                 }}, true);

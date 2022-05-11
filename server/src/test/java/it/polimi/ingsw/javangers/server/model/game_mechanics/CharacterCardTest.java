@@ -56,7 +56,7 @@ class CharacterCardTest {
     void activateEffect_correct() throws GameEngine.GameEngineException {
         GameEngine gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                 "test_loadAllCharacterCards",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("Aragorn II Elessar", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Elrond", new Pair<>(WizardType.KING, TowerColor.WHITE));
                 }}, true);
