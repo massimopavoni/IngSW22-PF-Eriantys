@@ -14,27 +14,26 @@ public class CLIGamePrinter {
     /**
      * Map for cardinal numbers strings.
      */
-    private static final Map<Integer, String> CARDINALITY_MAP;
+    public static final Map<Integer, String> CARDINALITY_MAP;
     /**
      * CLI game printer singleton instance.
      */
     private static CLIGamePrinter singleton = null;
 
     static {
-        Map<Integer, String> cardinalityMap = new HashMap<>();
-        cardinalityMap.put(0, "1st");
-        cardinalityMap.put(1, "2nd");
-        cardinalityMap.put(2, "3rd");
-        cardinalityMap.put(3, "4th");
-        cardinalityMap.put(4, "5th");
-        cardinalityMap.put(5, "6th");
-        cardinalityMap.put(6, "7th");
-        cardinalityMap.put(7, "8th");
-        cardinalityMap.put(8, "9th");
-        cardinalityMap.put(9, "10th");
-        cardinalityMap.put(10, "11th");
-        cardinalityMap.put(11, "12th");
-        CARDINALITY_MAP = Collections.unmodifiableMap(cardinalityMap);
+        CARDINALITY_MAP = Map.ofEntries(
+                Map.entry(0, "1st"),
+                Map.entry(1, "2nd"),
+                Map.entry(2, "3rd"),
+                Map.entry(3, "4th"),
+                Map.entry(4, "5th"),
+                Map.entry(5, "6th"),
+                Map.entry(6, "7th"),
+                Map.entry(7, "8th"),
+                Map.entry(8, "9th"),
+                Map.entry(9, "10th"),
+                Map.entry(10, "11th"),
+                Map.entry(11, "12th"));
     }
 
     /**

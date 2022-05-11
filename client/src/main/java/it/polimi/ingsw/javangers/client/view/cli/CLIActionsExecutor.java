@@ -132,8 +132,16 @@ public class CLIActionsExecutor {
 
     private void playAssistantCard(String username) {
         List<String> assistantCardNames = this.directivesParser.getDashboardAssistantCards(username).keySet().stream().toList();
-        System.out.printf("%n> Choose an assistant card to play (from the ones you have on your dashboard): ");
-        // not implemented
+        System.out.print("> Choose an assistant card to play (from the ones you have on your dashboard): ");
+        String chosenAssistantCardName = "";
+        while (chosenAssistantCardName.isEmpty()) {
+            chosenAssistantCardName = input.nextLine().strip().toLowerCase();
+            if (!assistantCardNames.contains(chosenAssistantCardName)) {
+                System.out.print("> Invalid input, choose an assistant card to play (from the ones you have on your dashboard): ");
+                chosenAssistantCardName = "";
+            }
+        }
+        this.directivesDispatcher.actionPlayAssistantCard(username, chosenAssistantCardName);
     }
 
     private void moveStudents(String username) {
