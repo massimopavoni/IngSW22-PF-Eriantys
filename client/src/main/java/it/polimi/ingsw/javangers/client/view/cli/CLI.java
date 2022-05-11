@@ -22,6 +22,7 @@ public class CLI extends View {
      * Constant for list options.
      */
     private static final String LIST_OPTION = "- %s%s [%s]%s%n";
+    private static final String DATA_RETRIEVAL_ERROR_MESSAGE = "%n%sError while retrieving game data (%s)%s%n";
     /**
      * List of loading animation frames.
      */
@@ -272,7 +273,7 @@ public class CLI extends View {
         try {
             this.gamePrinter.printGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
-            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+            System.err.printf(DATA_RETRIEVAL_ERROR_MESSAGE,
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
             System.exit(1);
         }
@@ -291,7 +292,7 @@ public class CLI extends View {
         try {
             this.gamePrinter.printGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
-            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+            System.err.printf(DATA_RETRIEVAL_ERROR_MESSAGE,
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
             System.exit(1);
         }
@@ -344,9 +345,9 @@ public class CLI extends View {
     protected void enableActions() {
         System.out.printf("%n%sIt's your turn.%s%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
         try {
-            this.actionsExecutor.chooseAction(this.username);
-        } catch (DirectivesParser.DirectivesParserException e) {
-            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+            this.actionsExecutor.executeAction(this.username);
+        } catch (CLIActionsExecutor.CLIActionsExecutorException e) {
+            System.err.printf("%n%sError while executing action (%s)%s%n",
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
             System.exit(1);
         }
