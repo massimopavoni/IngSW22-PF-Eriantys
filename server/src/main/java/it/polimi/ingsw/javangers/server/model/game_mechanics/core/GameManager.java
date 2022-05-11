@@ -162,6 +162,9 @@ public class GameManager {
         this.playersOrder.forEach(playersOrderJSON::add);
         gameJSON.set("playersOrder", playersOrderJSON);
         gameJSON.put("currentPlayer", this.getCurrentPlayer());
+        ObjectNode playersEnabledCharacterCard = this.jsonMapper.createObjectNode();
+        this.getPlayersEnabledCharacterCard().forEach(playersEnabledCharacterCard::put);
+        gameJSON.set("playersEnabledCharacterCard", playersEnabledCharacterCard);
         gameJSON.put("endgame", this.endgame.name());
         ArrayNode winnersJSON = this.jsonMapper.createArrayNode();
         this.winners.forEach(winnersJSON::add);
