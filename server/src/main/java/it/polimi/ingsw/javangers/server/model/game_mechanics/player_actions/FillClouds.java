@@ -26,7 +26,7 @@ public class FillClouds implements ActionStrategy {
         List<TokenColor> studentsBagTokens = studentsBag.getTokenContainer().getTokens();
         for (Cloud cloud : gameEngine.getGameState().getClouds()) {
             if (studentsBagTokens.isEmpty()) break;
-            cloud.getTokenContainer().addTokens(studentsBag.grabTokens(gameEngine.getGameConfiguration().getStudentsPerCloud()));
+            cloud.getTokenContainer().addTokens(studentsBag.grabTokens(gameEngine.getGameConfiguration().studentsPerCloud()));
         }
     }
     //endregion

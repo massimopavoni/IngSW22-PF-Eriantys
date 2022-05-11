@@ -7,7 +7,10 @@ import it.polimi.ingsw.javangers.server.controller.network.ConnectionsPool;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +45,10 @@ public class ServerLauncher {
     /**
      * Default arguments for the server.
      */
-    private static final Map<String, Integer> DEFAULT_SERVER_ARGS;
+    private static final Map<String, Integer> DEFAULT_SERVER_ARGS = Map.of(
+            PORT_ARG, 50666,
+            MAX_CONNECTIONS_ARG, 4,
+            POLLING_INTERVAL_ARG, 200);
     /**
      * Default resource locations for server and game configuration.
      */
@@ -51,15 +57,6 @@ public class ServerLauncher {
      * Connections pool singleton instance.
      */
     private static ConnectionsPool connectionsPool;
-
-    // Static block for default server args map initialization.
-    static {
-        Map<String, Integer> defaultServerArgs = new HashMap<>();
-        defaultServerArgs.put(PORT_ARG, 50666);
-        defaultServerArgs.put(MAX_CONNECTIONS_ARG, 4);
-        defaultServerArgs.put(POLLING_INTERVAL_ARG, 200);
-        DEFAULT_SERVER_ARGS = Collections.unmodifiableMap(defaultServerArgs);
-    }
 
     /**
      * Server bootstrap main method.
@@ -94,8 +91,12 @@ public class ServerLauncher {
         }
         if (serverResourceLocations.isEmpty())
             serverResourceLocations = DEFAULT_SERVER_RESOURCE_LOCATIONS;
-        LOGGER.log(Level.INFO, "Server arguments\nPort: {0}\nMax connections: {1}" +
-                        "\nResource locations: {3}\nPolling interval: {2}",
+        LOGGER.log(Level.INFO, """
+                        Server arguments
+                        Port: {0}
+                        Max connections: {1}
+                        Resource locations: {3}
+                        Polling interval: {2}""",
                 new Object[]{serverArgs.get(PORT_ARG).toString(), serverArgs.get(MAX_CONNECTIONS_ARG).toString(),
                         serverArgs.get(POLLING_INTERVAL_ARG).toString(), serverResourceLocations});
         LOGGER.info("Server bootstrap - creating server launcher");
@@ -107,7 +108,7 @@ public class ServerLauncher {
             ObjectMapper jsonMapper = new ObjectMapper();
             InputStream jsonInputStream = ServerLauncher.class.getResourceAsStream(serverResourceLocations);
             Map<String, String> serverResourceLocationsMap = jsonMapper
-                    .readValue(jsonInputStream, new TypeReference<Map<String, String>>() {
+                    .readValue(jsonInputStream, new TypeReference<>() {
                     });
             LOGGER.info("Server bootstrap - starting message handler");
             ServerLauncher.startMessageHandler(serverResourceLocationsMap, serverArgs.get(POLLING_INTERVAL_ARG));

@@ -86,17 +86,17 @@ public class GameEngine {
         try {
             // Get game configuration based on number of players
             InputStream jsonInputStream = GameEngine.class.getResourceAsStream(gameConfigurationsResourceLocation);
-            Map<String, GameConfiguration> gameConfigurations = jsonMapper.readValue(jsonInputStream, new TypeReference<Map<String, GameConfiguration>>() {
+            Map<String, GameConfiguration> gameConfigurations = jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
             });
             this.gameConfiguration = gameConfigurations.get(configurationName);
             this.expertMode = expertMode;
 
             // Create game state based on game configuration, player info and expert mode
             Map<TokenColor, Integer> studentsBagMap = new EnumMap<>(TokenColor.class);
-            Arrays.stream(TokenColor.values()).forEach(color -> studentsBagMap.put(color, this.gameConfiguration.getStudentsPerColor()));
-            this.gameState = new GameState(this.gameConfiguration.getAssistantCardsResourceLocation(), playersInfo,
-                    this.gameConfiguration.getTowersPerDashboard(), this.gameConfiguration.getNumberOfIslands(), studentsBagMap,
-                    this.expertMode ? this.gameConfiguration.getCoinsPerDashBoard() : 0);
+            Arrays.stream(TokenColor.values()).forEach(color -> studentsBagMap.put(color, this.gameConfiguration.studentsPerColor()));
+            this.gameState = new GameState(this.gameConfiguration.assistantCardsResourceLocation(), playersInfo,
+                    this.gameConfiguration.towersPerDashboard(), this.gameConfiguration.numberOfIslands(), studentsBagMap,
+                    this.expertMode ? this.gameConfiguration.coinsPerDashBoard() : 0);
 
             // Create random instance for later game initialization
             this.initializationRandom = new Random();
@@ -104,12 +104,12 @@ public class GameEngine {
             this.characterCardsMap = new HashMap<>();
             // Read character cards and select some random ones if expert mode is enabled
             if (this.expertMode) {
-                jsonInputStream = GameEngine.class.getResourceAsStream(this.gameConfiguration.getCharacterCardsResourceLocation());
-                Map<String, CharacterCard> allCharacterCardsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<Map<String, CharacterCard>>() {
+                jsonInputStream = GameEngine.class.getResourceAsStream(this.gameConfiguration.characterCardsResourceLocation());
+                Map<String, CharacterCard> allCharacterCardsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
                 });
                 List<String> characterCardsKeys = new ArrayList<>(allCharacterCardsMap.keySet());
                 Collections.shuffle(characterCardsKeys, this.initializationRandom);
-                characterCardsKeys.subList(0, this.gameConfiguration.getNumberOfCharacterCards())
+                characterCardsKeys.subList(0, this.gameConfiguration.numberOfCharacterCards())
                         .forEach(key -> this.characterCardsMap.put(key, allCharacterCardsMap.get(key)));
             }
 
@@ -269,7 +269,7 @@ public class GameEngine {
         List<TokenColor> initialIslandsTokens = new ArrayList<>();
         List<Island> islandsWithTokens = islands.stream().filter(island -> !Arrays.asList(archipelago.getMotherNaturePosition(),
                         (archipelago.getMotherNaturePosition() + islands.size() / 2) % islands.size())
-                .contains(islands.indexOf(island))).collect(Collectors.toList());
+                .contains(islands.indexOf(island))).toList();
         int tokensPerColor = (int) Math.ceil((double) islandsWithTokens.size() / TokenColor.values().length);
         Arrays.stream(TokenColor.values()).forEach(color -> initialIslandsTokens
                 .addAll(Collections.nCopies(tokensPerColor, color)));
@@ -280,7 +280,7 @@ public class GameEngine {
                         .addTokens(Collections.singletonList(initialIslandsTokens.remove(i.intValue()))));
         // Fill dashboards' entrances
         this.gameState.getPlayerDashboards().values().forEach(dashboard -> dashboard.getEntrance()
-                .addTokens(this.gameState.getStudentsBag().grabTokens(this.gameConfiguration.getStudentsPerEntrance())));
+                .addTokens(this.gameState.getStudentsBag().grabTokens(this.gameConfiguration.studentsPerEntrance())));
         // Fill token containers of character cards, if needed
         for (CharacterCard characterCard : this.characterCardsMap.values())
             if (characterCard.getTokenContainerSize() > 0)
@@ -350,7 +350,7 @@ public class GameEngine {
             // Find all players with the highest power
             int highestPower = Collections.max(playersPower.values());
             List<String> islandWinners = playersPower.entrySet().stream()
-                    .filter(entry -> entry.getValue() == highestPower).map(Map.Entry::getKey).collect(Collectors.toList());
+                    .filter(entry -> entry.getValue() == highestPower).map(Map.Entry::getKey).toList();
 
             // Make changes based on island winners
             // "There can be only one (one, one, one)"

@@ -22,10 +22,10 @@ class GameStateTest {
         assertAll(
                 () -> assertDoesNotThrow(
                         () -> gameState = new GameState("/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
-                                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                                new HashMap<>() {{
                                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
-                                }}, 8, 12, new HashMap<TokenColor, Integer>() {{
+                                }}, 8, 12, new HashMap<>() {{
                             put(TokenColor.RED_DRAGON, 26);
                             put(TokenColor.BLUE_UNICORN, 26);
                             put(TokenColor.GREEN_FROG, 26);
@@ -54,10 +54,10 @@ class GameStateTest {
     void GameState_gameStateException() {
         assertThrowsExactly(GameState.GameStateException.class,
                 () -> gameState = new GameState("/it/polimi/ingsw/javangers/server/model/game_data/AssistantCard.class",
-                        new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                        new HashMap<>() {{
                             put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                             put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
-                        }}, 8, 12, new HashMap<TokenColor, Integer>() {{
+                        }}, 8, 12, new HashMap<>() {{
                     put(TokenColor.RED_DRAGON, 26);
                     put(TokenColor.BLUE_UNICORN, 26);
                     put(TokenColor.GREEN_FROG, 26);
@@ -70,10 +70,10 @@ class GameStateTest {
     @DisplayName("Test getPlayerDashboards for getting a shallow copy")
     void getPlayerDashboards_shallow() throws GameState.GameStateException {
         GameState gameState = new GameState("/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
-                }}, 8, 12, new HashMap<TokenColor, Integer>() {{
+                }}, 8, 12, new HashMap<>() {{
             put(TokenColor.RED_DRAGON, 26);
             put(TokenColor.BLUE_UNICORN, 26);
             put(TokenColor.GREEN_FROG, 26);
@@ -93,10 +93,10 @@ class GameStateTest {
     @DisplayName("Test getTeachers for getting a shallow copy")
     void getTeachers_shallow() throws GameState.GameStateException {
         GameState gameState = new GameState("/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
-                }}, 8, 12, new HashMap<TokenColor, Integer>() {{
+                }}, 8, 12, new HashMap<>() {{
             put(TokenColor.RED_DRAGON, 26);
             put(TokenColor.BLUE_UNICORN, 26);
             put(TokenColor.GREEN_FROG, 26);
@@ -117,10 +117,10 @@ class GameStateTest {
     @DisplayName("Test getCloudsList for getting shallow copy")
     void getCloudsList_shallow() throws GameState.GameStateException {
         GameState gameState = new GameState("/it/polimi/ingsw/javangers/server/model/game_data/assistant_cards.json",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
-                }}, 8, 12, new HashMap<TokenColor, Integer>() {{
+                }}, 8, 12, new HashMap<>() {{
             put(TokenColor.RED_DRAGON, 26);
             put(TokenColor.BLUE_UNICORN, 26);
             put(TokenColor.GREEN_FROG, 26);
