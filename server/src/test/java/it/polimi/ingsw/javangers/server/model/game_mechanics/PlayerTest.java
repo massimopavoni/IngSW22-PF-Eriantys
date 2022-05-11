@@ -39,7 +39,7 @@ class PlayerTest {
     void executeAction() throws GameEngine.GameEngineException {
         GameEngine gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                 "test_loadAllCharacterCards",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("William Wallace", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Murron MacClannough", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                 }}, false);

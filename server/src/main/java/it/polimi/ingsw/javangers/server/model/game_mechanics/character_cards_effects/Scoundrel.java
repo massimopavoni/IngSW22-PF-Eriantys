@@ -9,7 +9,6 @@ import it.polimi.ingsw.javangers.server.model.game_mechanics.CharacterCard;
 import it.polimi.ingsw.javangers.server.model.game_mechanics.core.GameEngine;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 /**
  * Class representing the scoundrel character card effect.
@@ -51,7 +50,7 @@ public class Scoundrel implements EffectStrategy {
         int tokenCount;
         CharacterCard scoundrel = gameEngine.getCharacterCards().get(this.getClass().getSimpleName().toLowerCase());
         for (TokenContainer playerHall : gameEngine.getGameState().getPlayerDashboards().values().stream()
-                .map(PlayerDashboard::getHall).collect(Collectors.toList())) {
+                .map(PlayerDashboard::getHall).toList()) {
             tokenCount = playerHall.getColorCounts().get(this.tokenColor) != null ? playerHall.getColorCounts().get(this.tokenColor) : 0;
             if (tokenCount > 0) {
                 gameEngine.getGameState().getStudentsBag().getTokenContainer()
