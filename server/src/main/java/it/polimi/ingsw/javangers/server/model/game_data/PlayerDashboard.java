@@ -67,7 +67,7 @@ public class PlayerDashboard {
         ObjectMapper jsonMapper = new ObjectMapper();
         try {
             InputStream jsonInputStream = PlayerDashboard.class.getResourceAsStream(assistantCardsResourceLocation);
-            this.assistantCardsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<Map<String, AssistantCard>>() {
+            this.assistantCardsMap = jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
             });
         } catch (IOException e) {
             throw new IOException("Error while reading assistant cards json file", e);
@@ -122,8 +122,10 @@ public class PlayerDashboard {
     public Map.Entry<String, AssistantCard> getLastDiscardedAssistantCard() {
         if (this.discardedAssistantCardsMap.isEmpty())
             return null;
-        String lastDiscardedAssistantCardName = this.discardedAssistantCardsMap.keySet().toArray()[this.discardedAssistantCardsMap.size() - 1].toString();
-        return new AbstractMap.SimpleEntry<>(lastDiscardedAssistantCardName, this.discardedAssistantCardsMap.get(lastDiscardedAssistantCardName));
+        String lastDiscardedAssistantCardName = this.discardedAssistantCardsMap.keySet()
+                .toArray()[this.discardedAssistantCardsMap.size() - 1].toString();
+        return new AbstractMap.SimpleEntry<>(lastDiscardedAssistantCardName,
+                this.discardedAssistantCardsMap.get(lastDiscardedAssistantCardName));
     }
 
     /**

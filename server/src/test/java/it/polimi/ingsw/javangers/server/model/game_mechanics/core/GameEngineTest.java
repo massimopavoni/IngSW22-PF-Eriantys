@@ -15,7 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +25,7 @@ class GameEngineTest {
     void setUp() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                 "test_loadAllCharacterCards",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                 }}, true);
@@ -38,7 +37,7 @@ class GameEngineTest {
         assertThrowsExactly(GameEngine.GameEngineException.class,
                 () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/GameConfiguration.class",
                         "2_players",
-                        new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                        new HashMap<>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                             put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                         }}, true));
@@ -50,7 +49,7 @@ class GameEngineTest {
         assertThrowsExactly(GameEngine.GameEngineException.class,
                 () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                         "test_invalidAssistantCardsResourceLocation",
-                        new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                        new HashMap<>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                             put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                         }}, true));
@@ -62,7 +61,7 @@ class GameEngineTest {
         assertThrowsExactly(GameEngine.GameEngineException.class,
                 () -> new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                         "test_invalidCharacterCardsResourceLocation",
-                        new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                        new HashMap<>() {{
                             put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                             put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.WHITE));
                         }}, true));
@@ -72,7 +71,7 @@ class GameEngineTest {
     @DisplayName("Test constructor for correct initialization")
     void GameEngine_correctConstructor() {
         assertAll(
-                () -> assertEquals(3, gameEngine.getGameConfiguration().getStudentsPerCloud()),
+                () -> assertEquals(3, gameEngine.getGameConfiguration().studentsPerCloud()),
                 () -> assertEquals(1, gameEngine.getGameState().getPlayerDashboards().get("Neo").getCoinsNumber()),
                 () -> assertEquals(12, gameEngine.getCharacterCards().size()),
                 () -> assertTrue(gameEngine.isExpertMode()),
@@ -142,7 +141,7 @@ class GameEngineTest {
         List<Island> voidIslands = Arrays.asList(allIslands.get(archipelago.getMotherNaturePosition()),
                 allIslands.get((archipelago.getMotherNaturePosition() + allIslands.size() / 2) % allIslands.size()));
         List<Island> islandsWithTokens = archipelago.getIslands().stream()
-                .filter(island -> !voidIslands.contains(island)).collect(Collectors.toList());
+                .filter(island -> !voidIslands.contains(island)).toList();
         assertAll(
                 () -> voidIslands.forEach(island -> assertEquals(0, island.getTokenContainer().getTokens().size())),
                 () -> islandsWithTokens.forEach(island -> assertEquals(1, island.getTokenContainer().getTokens().size())),
@@ -157,7 +156,7 @@ class GameEngineTest {
     void initializeGame_correctInitialization6Islands() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                 "3_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("Neo", new Pair<>(WizardType.KING, TowerColor.BLACK));
                     put("Trinity", new Pair<>(WizardType.DRUID, TowerColor.GRAY));
                     put("Morpheus", new Pair<>(WizardType.SENSEI, TowerColor.WHITE));

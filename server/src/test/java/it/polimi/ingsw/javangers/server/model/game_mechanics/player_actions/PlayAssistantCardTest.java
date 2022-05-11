@@ -23,7 +23,7 @@ class PlayAssistantCardTest {
         PlayAssistantCard playAssistantCard = new PlayAssistantCard("test");
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
@@ -37,7 +37,7 @@ class PlayAssistantCardTest {
         PlayAssistantCard playAssistantCard = new PlayAssistantCard("cheetah");
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
@@ -52,7 +52,7 @@ class PlayAssistantCardTest {
         PlayAssistantCard playAssistantCard = new PlayAssistantCard("cheetah");
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
@@ -66,7 +66,7 @@ class PlayAssistantCardTest {
     void doAction_useCardAlreadyPlayed() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
@@ -81,7 +81,7 @@ class PlayAssistantCardTest {
     void doAction_useCardAlreadyPlayedButWithNoChoice() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);

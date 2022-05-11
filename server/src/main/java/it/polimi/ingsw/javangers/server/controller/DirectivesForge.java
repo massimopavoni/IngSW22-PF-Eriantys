@@ -45,13 +45,11 @@ public class DirectivesForge {
         try {
             this.jsonMapper = new ObjectMapper();
             InputStream jsonInputStream = DirectivesForge.class.getResourceAsStream(actionStrategyClassMappingsResourceLocation);
-            this.actionStrategyClassMappings = this.jsonMapper.readValue(jsonInputStream,
-                    new TypeReference<Map<String, Class<? extends ActionStrategy>>>() {
-                    });
+            this.actionStrategyClassMappings = this.jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
+            });
             jsonInputStream = DirectivesForge.class.getResourceAsStream(effectStrategyClassMappingsResourceLocation);
-            this.effectStrategyClassMappings = this.jsonMapper.readValue(jsonInputStream,
-                    new TypeReference<Map<String, Class<? extends EffectStrategy>>>() {
-                    });
+            this.effectStrategyClassMappings = this.jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
+            });
         } catch (IOException e) {
             throw new DirectivesForgeException(String.format("Error while loading class mappings (%s)", e.getMessage()), e);
         }

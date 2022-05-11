@@ -160,7 +160,7 @@ public class MessageHandler implements Runnable {
             List<Integer> allowedPlayerConnectionIDs = this.modelGate.getPlayerConnectionIDs();
             List<PlayerConnection> allowedPlayerConnections = playerConnections.stream()
                     .filter(playerConnection -> allowedPlayerConnectionIDs
-                            .contains(playerConnection.getID())).collect(Collectors.toList());
+                            .contains(playerConnection.getID())).toList();
             String outgoingDirective;
             if (!new HashSet<>(playerConnectionsIDs).containsAll(allowedPlayerConnectionIDs)) {
                 LOGGER.severe("Aborting game because of missing player connections");
