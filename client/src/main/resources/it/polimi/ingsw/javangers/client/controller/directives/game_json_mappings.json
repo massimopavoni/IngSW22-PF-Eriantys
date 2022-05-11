@@ -5,6 +5,7 @@
   "currentPhase": "/currentPhase",
   "playersOrder": "/playersOrder",
   "currentPlayer": "/currentPlayer",
+  "playersEnabledCharacterCard": "/playersEnabledCharacterCard",
   "endgame": "/endgame",
   "winners": "/winners",
   "studentsPerCloud": "/gameEngine/gameConfiguration/studentsPerCloud",
