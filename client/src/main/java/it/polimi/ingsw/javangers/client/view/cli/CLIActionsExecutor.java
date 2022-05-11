@@ -5,11 +5,16 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Class representing the cli actions executor for playing the game.
  */
 public class CLIActionsExecutor {
+    /**
+     * The scanner for user input.
+     */
+    private static final Scanner input = new Scanner(System.in);
     /**
      * CLI actions executor singleton instance.
      */
@@ -48,21 +53,35 @@ public class CLIActionsExecutor {
     }
 
     /**
-     * List available actions for current phase.
+     * Choose an action from the available ones for current phase.
      *
+     * @param username player username
      * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
      */
-    public void listAvailableActions() throws DirectivesParser.DirectivesParserException {
-        System.out.println("> Choose an action:");
+    public void chooseAction(String username) throws DirectivesParser.DirectivesParserException {
         List<String> availableActions = this.directivesParser.getAvailableActions();
-        String actionName;
+        if (!this.directivesParser.getPlayersEnabledCharacterCard().get(username))
+            availableActions.remove("ActivateCharacterCard");
         List<String> actionNameArgs;
-        for (int i = 0; i < availableActions.size(); i++) {
-            actionName = availableActions.get(i);
-            actionNameArgs = Arrays.stream(actionName.split("(?=\\p{Lu})")).toList();
-            actionName = actionNameArgs.get(0) + actionNameArgs.stream().skip(1).map(s -> " " + s).reduce("", String::concat);
-            System.out.printf("- %s%s [%d]%s%n", CLIConstants.ANSI_BRIGHT_WHITE, actionName, i + 1, CLIConstants.ANSI_RESET);
+        int chosenAction = -1;
+        String chosenActionString;
+        System.out.printf("%n> Choose an action:");
+        while (chosenAction < 0 || chosenAction >= availableActions.size()) {
+            for (int i = 0; i < availableActions.size(); i++) {
+                actionNameArgs = Arrays.stream(availableActions.get(i).split("(?=\\p{Lu})")).toList();
+                System.out.printf("- %s%s [%d]%s%n", CLIConstants.ANSI_BRIGHT_WHITE,
+                        actionNameArgs.stream().skip(1).map(s -> " " + s).reduce(actionNameArgs.get(0), String::concat),
+                        i + 1, CLIConstants.ANSI_RESET);
+            }
+            System.out.print("> ");
+            try {
+                chosenActionString = input.nextLine().strip();
+                chosenAction = Integer.parseInt(chosenActionString) - 1;
+                if (chosenAction < 0 || chosenAction >= availableActions.size())
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.println("> Invalid input, choose an action:");
+            }
         }
-        System.out.print("> ");
     }
 }

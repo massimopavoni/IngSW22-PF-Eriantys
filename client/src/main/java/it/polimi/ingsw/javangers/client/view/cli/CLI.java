@@ -266,7 +266,7 @@ public class CLI extends View {
     protected void startShow() {
         this.stopLoading();
         CLI.clear();
-        System.out.printf("%sGame started.%s%n%n%s%s%s%n%n",
+        System.out.printf("%sGame started.%s%n%n%s%s%s%n",
                 CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
                 "-".repeat(64), CLIConstants.ANSI_RESET);
         try {
@@ -285,7 +285,7 @@ public class CLI extends View {
     protected void updateGame() {
         this.stopLoading();
         CLI.clear();
-        System.out.printf("%sGame updated.%s%n%n%s%s%s%n%n",
+        System.out.printf("%sGame updated.%s%n%n%s%s%s%n",
                 CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
                 "-".repeat(64), CLIConstants.ANSI_RESET);
         try {
@@ -344,7 +344,7 @@ public class CLI extends View {
     protected void enableActions() {
         System.out.printf("%n%sIt's your turn.%s%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
         try {
-            this.actionsExecutor.listAvailableActions();
+            this.actionsExecutor.chooseAction(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
             System.err.printf("%n%sError while retrieving game data (%s)%s%n",
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);

@@ -583,6 +583,22 @@ public class DirectivesParser {
     }
 
     /**
+     * Get players' enabled character card flags map.
+     *
+     * @return players' enabled character card flags map
+     * @throws DirectivesParserException if there was an error while exploring the json
+     */
+    public Map<String, Boolean> getPlayersEnabledCharacterCard() throws DirectivesParserException {
+        try {
+            return this.jsonMapper.readValue(this.messageContent.at(
+                    this.gameJSONMappings.get("playersEnabledCharacterCard")).toString(), new TypeReference<>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new DirectivesParserException(String.format(GAME_JSON_EXPLORATION_ERROR, e.getMessage()), e);
+        }
+    }
+
+    /**
      * Get teachers map with owners usernames.
      *
      * @return teachers map
