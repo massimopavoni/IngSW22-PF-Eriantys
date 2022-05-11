@@ -37,7 +37,7 @@ public class MoveMotherNature implements ActionStrategy {
     public void doAction(GameEngine gameEngine, String username) {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<String, PlayerDashboard> playerDashboards = gameEngine.getGameState().getPlayerDashboards();
-        if (this.steps < 1 || this.steps > playerDashboards.get(username).getLastDiscardedAssistantCard().getValue().getSteps()
+        if (this.steps < 1 || this.steps > playerDashboards.get(username).getLastDiscardedAssistantCard().getValue().steps()
                 + gameEngine.getAdditionalMotherNatureSteps())
             throw new IllegalStateException("Illegal number of steps");
         // Get new mother nature position with cyclic movement

@@ -21,14 +21,14 @@ class MoveStudentsTest {
     void doAction_illegalNumberOfStudentsLess() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
         gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance().addTokens(
                 Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN,
                         TokenColor.BLUE_UNICORN, TokenColor.GREEN_FROG, TokenColor.GREEN_FROG, TokenColor.GREEN_FROG));
-        Map<Integer, List<TokenColor>> studentsToIsland = new HashMap<Integer, List<TokenColor>>() {{
+        Map<Integer, List<TokenColor>> studentsToIsland = new HashMap<>() {{
             put(3, Collections.singletonList(TokenColor.BLUE_UNICORN));
         }};
         moveStudents = new MoveStudents(Collections.singletonList(TokenColor.BLUE_UNICORN), studentsToIsland);
@@ -40,14 +40,14 @@ class MoveStudentsTest {
     void doAction_illegalNumberOfStudentsMore() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
         gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance().addTokens(
                 Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN,
                         TokenColor.BLUE_UNICORN, TokenColor.GREEN_FROG, TokenColor.GREEN_FROG, TokenColor.GREEN_FROG));
-        Map<Integer, List<TokenColor>> studentsToIsland = new HashMap<Integer, List<TokenColor>>() {{
+        Map<Integer, List<TokenColor>> studentsToIsland = new HashMap<>() {{
             put(3, Collections.singletonList(TokenColor.BLUE_UNICORN));
             put(4, Collections.singletonList(TokenColor.GREEN_FROG));
         }};
@@ -60,14 +60,14 @@ class MoveStudentsTest {
     void doAction_correctMovements() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
         gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance().addTokens(
                 Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN,
                         TokenColor.BLUE_UNICORN, TokenColor.GREEN_FROG, TokenColor.GREEN_FROG, TokenColor.GREEN_FROG));
-        Map<Integer, List<TokenColor>> studentsToIsland = new HashMap<Integer, List<TokenColor>>() {{
+        Map<Integer, List<TokenColor>> studentsToIsland = new HashMap<>() {{
             put(3, Collections.singletonList(TokenColor.BLUE_UNICORN));
             put(4, Collections.singletonList(TokenColor.GREEN_FROG));
         }};
@@ -86,7 +86,7 @@ class MoveStudentsTest {
     void doAction_correctCoins() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, true);
@@ -110,13 +110,13 @@ class MoveStudentsTest {
     void doAction_exceptionMovement() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/game_configurations.json",
                 "2_players",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, false);
         gameEngine.getGameState().getPlayerDashboards().get("pippo").getEntrance().addTokens(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.GREEN_FROG));
         List<TokenColor> studentToHall = Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN);
-        Map<Integer, List<TokenColor>> studentToIsland = new HashMap<Integer, List<TokenColor>>() {{
+        Map<Integer, List<TokenColor>> studentToIsland = new HashMap<>() {{
             put(4, Collections.singletonList(TokenColor.GREEN_FROG));
         }};
         moveStudents = new MoveStudents(studentToHall, studentToIsland);

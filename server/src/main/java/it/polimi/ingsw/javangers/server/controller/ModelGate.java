@@ -217,7 +217,7 @@ public class ModelGate {
     private Pair<MessageType, String> getOutgoingDirective(int playerConnectionID, MessageType type, String username, String content)
             throws GameManager.GameManagerException, DirectivesForge.DirectivesForgeException {
         switch (type) {
-            case CREATE:
+            case CREATE -> {
                 if (this.gameManager != null) {
                     LOGGER.warning("Game already created");
                     return new Pair<>(MessageType.ERROR, "\"Game already created\"");
@@ -228,7 +228,8 @@ public class ModelGate {
                         creationParameters.getValue1(), username, creationParameters.getValue2());
                 this.playerConnectionsIDsList.add(playerConnectionID);
                 return new Pair<>(type, SUCCESS_MESSAGE);
-            case PLAYER:
+            }
+            case PLAYER -> {
                 if (this.gameManager == null) {
                     LOGGER.warning("Cannot add player - game not created yet");
                     return new Pair<>(MessageType.ERROR, "\"Cannot add player: game not created yet\"");
@@ -240,7 +241,8 @@ public class ModelGate {
                     this.playerConnectionsIDsList.add(playerConnectionID);
                 this.checkGameFull();
                 return new Pair<>(type, SUCCESS_MESSAGE);
-            case START:
+            }
+            case START -> {
                 if (this.gameManager == null) {
                     LOGGER.warning("Cannot start - game not created yet");
                     return new Pair<>(MessageType.ERROR, "\"Cannot start: game not created yet\"");
@@ -252,7 +254,8 @@ public class ModelGate {
                 LOGGER.info("Initializing game");
                 this.gameManager.initializeGame();
                 return new Pair<>(type, this.gameManager.getGameJSON());
-            case ACTION:
+            }
+            case ACTION -> {
                 if (this.gameManager == null) {
                     LOGGER.warning("Cannot execute action - game not created yet");
                     return new Pair<>(MessageType.ERROR, "\"Cannot execute action: game not created yet\"");
@@ -267,9 +270,11 @@ public class ModelGate {
                 String gameJSON = this.gameManager.getGameJSON();
                 this.checkGameEnded();
                 return new Pair<>(type, gameJSON);
-            default:
+            }
+            default -> {
                 LOGGER.warning("Unsupported directive message type");
                 return new Pair<>(type, "\"Unsupported directive message type\"");
+            }
         }
     }
 

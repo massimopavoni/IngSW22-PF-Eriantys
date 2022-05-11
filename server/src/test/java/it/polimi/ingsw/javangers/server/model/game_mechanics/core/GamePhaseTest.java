@@ -15,24 +15,24 @@ class GamePhaseTest {
     @Test
     @DisplayName("Test GamePhase constructor")
     void GameConfiguration_constructor() {
-        gamePhase = new GamePhase(new ArrayList<String>() {{
+        gamePhase = new GamePhase(new ArrayList<>() {{
             add("FillClouds");
         }}, false, true);
         assertAll(
-                () -> assertEquals(Collections.singletonList("FillClouds"), gamePhase.getAvailableActions()),
-                () -> assertFalse(gamePhase.isRepeat()),
-                () -> assertTrue(gamePhase.isChangePlayer())
+                () -> assertEquals(Collections.singletonList("FillClouds"), gamePhase.availableActions()),
+                () -> assertFalse(gamePhase.repeat()),
+                () -> assertTrue(gamePhase.changePlayer())
         );
     }
 
     @Test
     @DisplayName("Test getAvailableActions for shallow copy")
     void getAvailableActions_shallowCopy() {
-        gamePhase = new GamePhase(new ArrayList<String>() {{
+        gamePhase = new GamePhase(new ArrayList<>() {{
             add("FillClouds");
         }}, false, true);
-        List<String> availableActionsCopy = gamePhase.getAvailableActions();
+        List<String> availableActionsCopy = gamePhase.availableActions();
         availableActionsCopy.remove(0);
-        assertEquals(Collections.singletonList("FillClouds"), gamePhase.getAvailableActions());
+        assertEquals(Collections.singletonList("FillClouds"), gamePhase.availableActions());
     }
 }

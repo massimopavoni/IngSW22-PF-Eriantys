@@ -27,8 +27,8 @@ class PlayerDashboardTest {
                 () -> assertNotNull(playerDashboard.getAssistantCards()),
                 () -> assertEquals(10, playerDashboard.getAssistantCards().size()),
                 () -> assertEquals("eagle", playerDashboard.getAssistantCards().keySet().toArray()[3]),
-                () -> assertEquals(4, playerDashboard.getAssistantCards().get("eagle").getValue()),
-                () -> assertEquals(2, playerDashboard.getAssistantCards().get("eagle").getSteps()),
+                () -> assertEquals(4, playerDashboard.getAssistantCards().get("eagle").value()),
+                () -> assertEquals(2, playerDashboard.getAssistantCards().get("eagle").steps()),
                 () -> assertNotNull(playerDashboard.getDiscardedAssistantCards()),
                 () -> assertTrue(playerDashboard.getDiscardedAssistantCards().isEmpty()),
                 () -> assertEquals(WizardType.DRUID, playerDashboard.getCardsBack()),
@@ -64,8 +64,8 @@ class PlayerDashboardTest {
         playerDashboard.getDiscardedAssistantCards().put("octopus", playerDashboard.getAssistantCards().remove("octopus"));
         assertAll(
                 () -> assertEquals("octopus", playerDashboard.getLastDiscardedAssistantCard().getKey()),
-                () -> assertEquals(7, playerDashboard.getLastDiscardedAssistantCard().getValue().getValue()),
-                () -> assertEquals(4, playerDashboard.getLastDiscardedAssistantCard().getValue().getSteps())
+                () -> assertEquals(7, playerDashboard.getLastDiscardedAssistantCard().getValue().value()),
+                () -> assertEquals(4, playerDashboard.getLastDiscardedAssistantCard().getValue().steps())
         );
     }
 

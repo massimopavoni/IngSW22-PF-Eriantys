@@ -14,23 +14,28 @@ public class CLIGamePrinter {
     /**
      * Map for cardinal numbers strings.
      */
-    private static final Map<Integer, String> CARDINALITY_MAP = Map.ofEntries(
-            Map.entry(0, "1st"),
-            Map.entry(1, "2nd"),
-            Map.entry(2, "3rd"),
-            Map.entry(3, "4th"),
-            Map.entry(4, "5th"),
-            Map.entry(5, "6th"),
-            Map.entry(6, "7th"),
-            Map.entry(7, "8th"),
-            Map.entry(8, "9th"),
-            Map.entry(9, "10th"),
-            Map.entry(10, "11th"),
-            Map.entry(11, "12th"));
+    public static final Map<Integer, String> CARDINALITY_MAP;
     /**
      * CLI game printer singleton instance.
      */
     private static CLIGamePrinter singleton = null;
+
+    static {
+        CARDINALITY_MAP = Map.ofEntries(
+                Map.entry(0, "1st"),
+                Map.entry(1, "2nd"),
+                Map.entry(2, "3rd"),
+                Map.entry(3, "4th"),
+                Map.entry(4, "5th"),
+                Map.entry(5, "6th"),
+                Map.entry(6, "7th"),
+                Map.entry(7, "8th"),
+                Map.entry(8, "9th"),
+                Map.entry(9, "10th"),
+                Map.entry(10, "11th"),
+                Map.entry(11, "12th"));
+    }
+
     /**
      * Client directives parser instance.
      */
@@ -64,10 +69,6 @@ public class CLIGamePrinter {
      * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
      */
     public void printGame(String username) throws DirectivesParser.DirectivesParserException {
-        this.printGamePhase();
-        this.printPlayersOrder(username);
-        this.printSeparator();
-
         this.printStudentsBag();
         this.printClouds();
         this.printSeparator();
@@ -85,43 +86,19 @@ public class CLIGamePrinter {
         this.printArchipelago();
         this.printSeparator();
 
-        this.printCharacterCardsEffects();
-        this.printCharacterCards();
+        if (this.directivesParser.isExpertMode()) {
+            this.printCharacterCardsEffects();
+            this.printCharacterCards();
+            this.printSeparator();
+        }
+
+        this.printGamePhase();
+        this.printPlayersOrder(username);
         this.printSeparator();
     }
 
     private void printSeparator() {
         System.out.printf("%n%s%s%n", CLIConstants.ANSI_BRIGHT_WHITE, "-".repeat(64));
-    }
-
-    /**
-     * Print current game phase information.
-     */
-    private void printGamePhase() {
-        Pair<String, String> currentPhase = this.directivesParser.getCurrentPhase();
-        System.out.printf("%sCurrent phase: %s%s => %s%s%n", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_BRIGHT_WHITE,
-                currentPhase.getKey(), currentPhase.getValue(), CLIConstants.ANSI_RESET);
-    }
-
-    /**
-     * Print players order and current player information.
-     *
-     * @param username player username
-     * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
-     */
-    private void printPlayersOrder(String username) throws DirectivesParser.DirectivesParserException {
-        System.out.printf("%sPlayers order: ", CLIConstants.ANSI_BRIGHT_BLUE);
-        String currentPlayer = this.directivesParser.getCurrentPlayer();
-        List<String> coloredPlayersOrder = new ArrayList<>();
-        this.directivesParser.getPlayersOrder().forEach(player -> {
-            String notCurrentPlayerColor = player.equals(username) ? CLIConstants.ANSI_BRIGHT_BLUE : CLIConstants.ANSI_BRIGHT_WHITE;
-            coloredPlayersOrder.add(
-                    String.format("%s%s%s", player.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
-                            : notCurrentPlayerColor, player, CLIConstants.ANSI_RESET));
-        });
-        System.out.printf("%s (You are %s%s%s)%n", String.join(", ", coloredPlayersOrder),
-                username.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
-                        : CLIConstants.ANSI_BRIGHT_BLUE, username, CLIConstants.ANSI_RESET);
     }
 
     /**
@@ -234,10 +211,11 @@ public class CLIGamePrinter {
      * @param username client player username
      */
     private void printDashboardAssistantCards(String username) {
-        Map.Entry<String, Pair<Integer, Integer>> assistantCard = this.directivesParser.getDashboardLastDiscardedAssistantCard(username);
-        if (assistantCard != null) {
+        Map.Entry<String, Pair<Integer, Integer>> lastDiscardedAssistantCard =
+                this.directivesParser.getDashboardLastDiscardedAssistantCard(username);
+        if (lastDiscardedAssistantCard != null) {
             System.out.printf("%n  %sLast discarded assistant card:%s %s", CLIConstants.ANSI_BRIGHT_WHITE,
-                    CLIConstants.ANSI_RESET, this.formatAssistantCard(assistantCard));
+                    CLIConstants.ANSI_RESET, this.formatAssistantCard(lastDiscardedAssistantCard));
         }
         Map<String, Pair<Integer, Integer>> assistantCards = this.directivesParser.getDashboardAssistantCards(username);
         if (!assistantCards.isEmpty()) {
@@ -361,21 +339,49 @@ public class CLIGamePrinter {
      * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
      */
     private void printCharacterCards() throws DirectivesParser.DirectivesParserException {
-        if (this.directivesParser.isExpertMode()) {
-            System.out.printf("%n%sCharacter cards:%s%n", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
-            for (String cardName : this.directivesParser.getCharacterCardNames()) {
-                Pair<Integer, Integer> cardCost = this.directivesParser.getCharacterCardCost(cardName);
-                Map<String, Integer> cardTokens = this.directivesParser.getCharacterCardTokens(cardName);
-                System.out.printf(
-                        "  %s%s%n%sCost: %s%d+%d%s%n%sCounter: %s%d%s%n", CLIConstants.ANSI_BRIGHT_WHITE,
-                        cardName.substring(0, 1).toUpperCase() + cardName.substring(1), " ".repeat(4),
-                        CLIConstants.ANSI_BRIGHT_YELLOW, cardCost.getKey(), cardCost.getValue(), CLIConstants.ANSI_BRIGHT_WHITE,
-                        " ".repeat(4), CLIConstants.ANSI_BRIGHT_CYAN,
-                        this.directivesParser.getCharacterCardMultipurposeCounter(cardName),
-                        cardTokens.size() < 1 ? CLIConstants.ANSI_RESET : String.format("%n%s%sTokens: %s%s", " ".repeat(4),
-                                CLIConstants.ANSI_BRIGHT_WHITE, this.formatColorCounts(cardTokens), CLIConstants.ANSI_RESET));
-            }
+        System.out.printf("%n%sCharacter cards:%s%n", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_RESET);
+        for (String cardName : this.directivesParser.getCharacterCardNames()) {
+            Pair<Integer, Integer> cardCost = this.directivesParser.getCharacterCardCost(cardName);
+            Map<String, Integer> cardTokens = this.directivesParser.getCharacterCardTokens(cardName);
+            System.out.printf(
+                    "  %s%s%n%sCost: %s%d+%d%s%n%sCounter: %s%d%s%n", CLIConstants.ANSI_BRIGHT_WHITE,
+                    cardName.substring(0, 1).toUpperCase() + cardName.substring(1), " ".repeat(4),
+                    CLIConstants.ANSI_BRIGHT_YELLOW, cardCost.getKey(), cardCost.getValue(), CLIConstants.ANSI_BRIGHT_WHITE,
+                    " ".repeat(4), CLIConstants.ANSI_BRIGHT_CYAN,
+                    this.directivesParser.getCharacterCardMultipurposeCounter(cardName),
+                    cardTokens.size() < 1 ? CLIConstants.ANSI_RESET : String.format("%n%s%sTokens: %s%s", " ".repeat(4),
+                            CLIConstants.ANSI_BRIGHT_WHITE, this.formatColorCounts(cardTokens), CLIConstants.ANSI_RESET));
         }
+    }
+
+    /**
+     * Print current game phase information.
+     */
+    private void printGamePhase() {
+        Pair<String, String> currentPhase = this.directivesParser.getCurrentPhase();
+        System.out.printf("%n%sCurrent phase: %s%s => %s%s%n", CLIConstants.ANSI_BRIGHT_BLUE, CLIConstants.ANSI_BRIGHT_WHITE,
+                currentPhase.getKey(), currentPhase.getValue(), CLIConstants.ANSI_RESET);
+    }
+
+    /**
+     * Print players order and current player information.
+     *
+     * @param username player username
+     * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
+     */
+    private void printPlayersOrder(String username) throws DirectivesParser.DirectivesParserException {
+        System.out.printf("%sPlayers order: ", CLIConstants.ANSI_BRIGHT_BLUE);
+        String currentPlayer = this.directivesParser.getCurrentPlayer();
+        List<String> coloredPlayersOrder = new ArrayList<>();
+        this.directivesParser.getPlayersOrder().forEach(player -> {
+            String notCurrentPlayerColor = player.equals(username) ? CLIConstants.ANSI_BRIGHT_BLUE : CLIConstants.ANSI_BRIGHT_WHITE;
+            coloredPlayersOrder.add(
+                    String.format("%s%s%s", player.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
+                            : notCurrentPlayerColor, player, CLIConstants.ANSI_RESET));
+        });
+        System.out.printf("%s (You are %s%s%s)%n", String.join(", ", coloredPlayersOrder),
+                username.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
+                        : CLIConstants.ANSI_BRIGHT_BLUE, username, CLIConstants.ANSI_RESET);
     }
 }
 

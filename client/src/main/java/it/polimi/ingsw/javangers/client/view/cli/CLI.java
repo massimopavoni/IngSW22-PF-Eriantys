@@ -23,6 +23,10 @@ public class CLI extends View {
      */
     private static final String LIST_OPTION = "- %s%s [%s]%s%n";
     /**
+     * Message for errors while retrieving game data from parser.
+     */
+    private static final String DATA_RETRIEVAL_ERROR_MESSAGE = "%n%sError while retrieving game data (%s)%s%n";
+    /**
      * List of loading animation frames.
      */
     private static final List<String> LOADING_ANIMATION_FRAMES = List.of("▖", "▘", "▝", "▗");
@@ -235,16 +239,16 @@ public class CLI extends View {
     protected void waitForStart() {
         System.out.println();
         this.loadingThread = new Thread(() -> {
+            int i = 0;
             while (!Thread.currentThread().isInterrupted()) {
-                for (int i = 0; i < 4; i++) {
-                    System.out.printf("%sWait for game start %s%s\r",
-                            CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i), CLIConstants.ANSI_RESET);
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
+                System.out.printf("%sWait for game start %s%s\r",
+                        CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i % 4), CLIConstants.ANSI_RESET);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
+                i++;
             }
         });
         this.loadingThread.start();
@@ -266,13 +270,13 @@ public class CLI extends View {
     protected void startShow() {
         this.stopLoading();
         CLI.clear();
-        System.out.printf("%sGame started.%s%n%n%s%s%s%n%n",
+        System.out.printf("%sGame started.%s%n%n%s%s%s%n",
                 CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
                 "-".repeat(64), CLIConstants.ANSI_RESET);
         try {
             this.gamePrinter.printGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
-            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+            System.err.printf(DATA_RETRIEVAL_ERROR_MESSAGE,
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
             System.exit(1);
         }
@@ -285,13 +289,13 @@ public class CLI extends View {
     protected void updateGame() {
         this.stopLoading();
         CLI.clear();
-        System.out.printf("%sGame updated.%s%n%n%s%s%s%n%n",
+        System.out.printf("%sGame updated.%s%n%n%s%s%s%n",
                 CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET, CLIConstants.ANSI_BRIGHT_WHITE,
                 "-".repeat(64), CLIConstants.ANSI_RESET);
         try {
             this.gamePrinter.printGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
-            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+            System.err.printf(DATA_RETRIEVAL_ERROR_MESSAGE,
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
             System.exit(1);
         }
@@ -344,9 +348,9 @@ public class CLI extends View {
     protected void enableActions() {
         System.out.printf("%n%sIt's your turn.%s%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
         try {
-            this.actionsExecutor.listAvailableActions();
-        } catch (DirectivesParser.DirectivesParserException e) {
-            System.err.printf("%n%sError while retrieving game data (%s)%s%n",
+            this.actionsExecutor.executeAction(this.username);
+        } catch (CLIActionsExecutor.CLIActionsExecutorException e) {
+            System.err.printf("%n%sError while executing action (%s)%s%n",
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
             System.exit(1);
         }
@@ -359,16 +363,16 @@ public class CLI extends View {
     protected void waitTurn() {
         System.out.println();
         this.loadingThread = new Thread(() -> {
+            int i = 0;
             while (!Thread.currentThread().isInterrupted()) {
-                for (int i = 0; i < 4; i++) {
-                    System.out.printf("%sWait for your turn %s%s\r",
-                            CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i), CLIConstants.ANSI_RESET);
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
+                System.out.printf("%sWait for your turn %s%s\r",
+                        CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i % 4), CLIConstants.ANSI_RESET);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
+                i++;
             }
         });
         this.loadingThread.start();

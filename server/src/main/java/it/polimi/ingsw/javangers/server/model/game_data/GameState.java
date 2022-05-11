@@ -73,7 +73,7 @@ public class GameState {
         this.archipelago = new Archipelago(numberOfIslands);
         this.studentsBag = new StudentsBag(studentsBagInfo);
         this.cloudsList = new ArrayList<>();
-        this.cloudsList.addAll(Stream.generate(Cloud::new).limit(playerInfo.size()).collect(java.util.stream.Collectors.toList()));
+        this.cloudsList.addAll(Stream.generate(Cloud::new).limit(playerInfo.size()).toList());
     }
 
     /**

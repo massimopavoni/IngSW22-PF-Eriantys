@@ -16,17 +16,17 @@ class GameMacroPhaseTest {
     @DisplayName("Test GamePhase constructor")
     void GameConfiguration_constructor() {
         gameMacroPhase = new GameMacroPhase(
-                new ArrayList<GamePhase>() {{
-                    add(new GamePhase(new ArrayList<String>() {{
+                new ArrayList<>() {{
+                    add(new GamePhase(new ArrayList<>() {{
                         add("FillClouds");
                     }}, false, true));
                 }},
                 false);
         assertAll(
-                () -> assertEquals(Collections.singletonList("FillClouds"), gameMacroPhase.getPhases().get(0).getAvailableActions()),
-                () -> assertFalse(gameMacroPhase.getPhases().get(0).isRepeat()),
-                () -> assertTrue(gameMacroPhase.getPhases().get(0).isChangePlayer()),
-                () -> assertFalse(gameMacroPhase.isRepeat())
+                () -> assertEquals(Collections.singletonList("FillClouds"), gameMacroPhase.phases().get(0).availableActions()),
+                () -> assertFalse(gameMacroPhase.phases().get(0).repeat()),
+                () -> assertTrue(gameMacroPhase.phases().get(0).changePlayer()),
+                () -> assertFalse(gameMacroPhase.repeat())
         );
     }
 
@@ -34,14 +34,14 @@ class GameMacroPhaseTest {
     @DisplayName("Test getAvailableActions for shallow copy")
     void getAvailableActions_shallowCopy() {
         gameMacroPhase = new GameMacroPhase(
-                new ArrayList<GamePhase>() {{
-                    add(new GamePhase(new ArrayList<String>() {{
+                new ArrayList<>() {{
+                    add(new GamePhase(new ArrayList<>() {{
                         add("FillClouds");
                     }}, false, true));
                 }},
                 false);
-        List<GamePhase> phasesCopy = gameMacroPhase.getPhases();
+        List<GamePhase> phasesCopy = gameMacroPhase.phases();
         phasesCopy.remove(0);
-        assertEquals(Collections.singletonList("FillClouds"), gameMacroPhase.getPhases().get(0).getAvailableActions());
+        assertEquals(Collections.singletonList("FillClouds"), gameMacroPhase.phases().get(0).availableActions());
     }
 }

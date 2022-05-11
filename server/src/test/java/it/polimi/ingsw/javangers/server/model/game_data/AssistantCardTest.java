@@ -14,8 +14,8 @@ class AssistantCardTest {
     void AssistantCard_constructor() {
         assistantCard = new AssistantCard(1, 1);
         assertAll(
-                () -> assertEquals(1, assistantCard.getValue()),
-                () -> assertEquals(1, assistantCard.getSteps())
+                () -> assertEquals(1, assistantCard.value()),
+                () -> assertEquals(1, assistantCard.steps())
         );
     }
 }

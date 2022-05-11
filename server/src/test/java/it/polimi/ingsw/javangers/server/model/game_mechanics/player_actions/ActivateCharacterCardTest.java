@@ -22,7 +22,7 @@ class ActivateCharacterCardTest {
     void doAction_coinException() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                 "test_loadAllCharacterCards",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, true);
@@ -37,7 +37,7 @@ class ActivateCharacterCardTest {
     void doAction_assignEffect() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                 "test_loadAllCharacterCards",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, true);
@@ -57,7 +57,7 @@ class ActivateCharacterCardTest {
     void doAction_illegalEffect() throws GameEngine.GameEngineException {
         gameEngine = new GameEngine("/it/polimi/ingsw/javangers/server/model/game_mechanics/core/test_game_configurations.json",
                 "test_loadAllCharacterCards",
-                new HashMap<String, Pair<WizardType, TowerColor>>() {{
+                new HashMap<>() {{
                     put("pippo", new Pair<>(WizardType.KING, TowerColor.WHITE));
                     put("pluto", new Pair<>(WizardType.DRUID, TowerColor.BLACK));
                 }}, true);

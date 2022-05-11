@@ -121,7 +121,7 @@ public class GameManager {
         this.winners = Collections.emptyList();
         try {
             InputStream jsonInputStream = GameManager.class.getResourceAsStream(gamePhasesResourceLocation);
-            this.gameMacroPhases = jsonMapper.readValue(jsonInputStream, new TypeReference<Map<Integer, GameMacroPhase>>() {
+            this.gameMacroPhases = jsonMapper.readValue(jsonInputStream, new TypeReference<>() {
             });
             this.currentPhase = new Pair<>(0, 0);
         } catch (IOException e) {
@@ -147,9 +147,8 @@ public class GameManager {
      * Get a serialized copy of the full game information.
      *
      * @return full game information serialized copy
-     * @throws GameManagerException if there was an error while serializing the full game information
      */
-    public String getGameJSON() throws GameManagerException {
+    public String getGameJSON() {
         ObjectNode gameJSON = this.jsonMapper.createObjectNode();
         gameJSON.put("exactPlayersNumber", this.exactPlayersNumber);
         gameJSON.put("expertMode", this.expertMode);
@@ -162,6 +161,9 @@ public class GameManager {
         this.playersOrder.forEach(playersOrderJSON::add);
         gameJSON.set("playersOrder", playersOrderJSON);
         gameJSON.put("currentPlayer", this.getCurrentPlayer());
+        ObjectNode playersEnabledCharacterCard = this.jsonMapper.createObjectNode();
+        this.getPlayersEnabledCharacterCard().forEach(playersEnabledCharacterCard::put);
+        gameJSON.set("playersEnabledCharacterCard", playersEnabledCharacterCard);
         gameJSON.put("endgame", this.endgame.name());
         ArrayNode winnersJSON = this.jsonMapper.createArrayNode();
         this.winners.forEach(winnersJSON::add);
@@ -260,7 +262,7 @@ public class GameManager {
     public List<WizardType> getAvailableWizardTypes() {
         return Arrays.stream(WizardType.values())
                 .filter(wizardType -> this.playersInfo.values().stream().noneMatch(value -> value.getValue0() == wizardType))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -272,7 +274,7 @@ public class GameManager {
         return Arrays.stream(TowerColor.values())
                 .filter(towerColor -> this.playersInfo.values().stream().noneMatch(value -> value.getValue1() == towerColor)
                         && towerColor != TowerColor.NONE)
-                .collect(Collectors.toList());
+                .toList();
     }
     //endregion
 
@@ -348,7 +350,7 @@ public class GameManager {
             throw new GameManagerException("Game has already ended");
         String playerActionClassString = playerAction.getClass().getSimpleName();
         if (!this.gameMacroPhases.get(this.currentPhase.getValue0())
-                .getPhases().get(this.currentPhase.getValue1()).getAvailableActions()
+                .phases().get(this.currentPhase.getValue1()).availableActions()
                 .contains(playerActionClassString))
             throw new GameManagerException("Specified action is not playable during the current phase");
 
@@ -394,21 +396,21 @@ public class GameManager {
         int macroPhaseIndex = this.currentPhase.getValue0();
         int phaseIndex = this.currentPhase.getValue1();
         GameMacroPhase macroPhase = this.gameMacroPhases.get(macroPhaseIndex);
-        GamePhase phase = macroPhase.getPhases().get(phaseIndex);
+        GamePhase phase = macroPhase.phases().get(phaseIndex);
         int nextPlayerIndex = (this.currentPlayerIndex + 1) % this.playersOrder.size();
 
         // First, change current phase if needed
-        if (!phase.isRepeat() || nextPlayerIndex == 0) {
-            if ((!macroPhase.isRepeat() || nextPlayerIndex == 0)
-                    && phaseIndex == macroPhase.getPhases().size() - 1) {
+        if (!phase.repeat() || nextPlayerIndex == 0) {
+            if ((!macroPhase.repeat() || nextPlayerIndex == 0)
+                    && phaseIndex == macroPhase.phases().size() - 1) {
                 this.currentPhase = new Pair<>((macroPhaseIndex + 1) % this.gameMacroPhases.size(), 0);
             } else {
-                this.currentPhase = this.currentPhase.setAt1((phaseIndex + 1) % macroPhase.getPhases().size());
+                this.currentPhase = this.currentPhase.setAt1((phaseIndex + 1) % macroPhase.phases().size());
             }
         }
 
         // Second, change current player
-        if (phase.isChangePlayer()) {
+        if (phase.changePlayer()) {
             // Reset character cards parameters and flag for current player
             this.gameEngine.resetCharacterCardsParameters();
             this.playersMap.get(this.playersOrder.get(this.currentPlayerIndex)).setEnabledCharacterCard(true);
@@ -424,7 +426,7 @@ public class GameManager {
         Map<Integer, String> assistantCardsValuesPlayed = new HashMap<>();
         Map<String, PlayerDashboard> playerDashboardsMap = this.gameEngine.getGameState().getPlayerDashboards();
         this.playersOrder.forEach(username ->
-                assistantCardsValuesPlayed.put(playerDashboardsMap.get(username).getLastDiscardedAssistantCard().getValue().getValue(), username));
+                assistantCardsValuesPlayed.put(playerDashboardsMap.get(username).getLastDiscardedAssistantCard().getValue().value(), username));
         this.playersOrder = new ArrayList<>(assistantCardsValuesPlayed.values());
     }
 
@@ -461,10 +463,10 @@ public class GameManager {
                     .map(Map.Entry::getKey).collect(Collectors.toList());
         } else if (this.endgame == Endgame.FEW_ISLANDS
                 || (this.endgame != Endgame.NONE
-                && this.currentPhase.getValue1() == this.gameMacroPhases.get(this.currentPhase.getValue0()).getPhases().size() - 1
+                && this.currentPhase.getValue1() == this.gameMacroPhases.get(this.currentPhase.getValue0()).phases().size() - 1
                 && this.currentPlayerIndex == this.playersOrder.size() - 1 && !isCharacterCard)) {
             int lowestTowersNumber = Collections.min(playerDashboards.values().stream()
-                    .map(PlayerDashboard::getTowers).map(Pair::getValue1).collect(Collectors.toList()));
+                    .map(PlayerDashboard::getTowers).map(Pair::getValue1).toList());
             this.winners = playerDashboards.entrySet().stream()
                     .filter(entry -> entry.getValue().getTowers().getValue1() == lowestTowersNumber)
                     .map(Map.Entry::getKey).collect(Collectors.toList());
