@@ -22,6 +22,9 @@ public class CLI extends View {
      * Constant for list options.
      */
     private static final String LIST_OPTION = "- %s%s [%s]%s%n";
+    /**
+     * Message for errors while retrieving game data from parser.
+     */
     private static final String DATA_RETRIEVAL_ERROR_MESSAGE = "%n%sError while retrieving game data (%s)%s%n";
     /**
      * List of loading animation frames.
@@ -236,16 +239,16 @@ public class CLI extends View {
     protected void waitForStart() {
         System.out.println();
         this.loadingThread = new Thread(() -> {
+            int i = 0;
             while (!Thread.currentThread().isInterrupted()) {
-                for (int i = 0; i < 4; i++) {
-                    System.out.printf("%sWait for game start %s%s\r",
-                            CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i), CLIConstants.ANSI_RESET);
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
+                System.out.printf("%sWait for game start %s%s\r",
+                        CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i % 4), CLIConstants.ANSI_RESET);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
+                i++;
             }
         });
         this.loadingThread.start();
@@ -360,16 +363,16 @@ public class CLI extends View {
     protected void waitTurn() {
         System.out.println();
         this.loadingThread = new Thread(() -> {
+            int i = 0;
             while (!Thread.currentThread().isInterrupted()) {
-                for (int i = 0; i < 4; i++) {
-                    System.out.printf("%sWait for your turn %s%s\r",
-                            CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i), CLIConstants.ANSI_RESET);
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
+                System.out.printf("%sWait for your turn %s%s\r",
+                        CLIConstants.ANSI_BRIGHT_YELLOW, CLI.LOADING_ANIMATION_FRAMES.get(i % 4), CLIConstants.ANSI_RESET);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
+                i++;
             }
         });
         this.loadingThread.start();
