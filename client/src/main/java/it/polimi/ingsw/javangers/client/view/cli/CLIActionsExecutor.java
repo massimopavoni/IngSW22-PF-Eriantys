@@ -281,7 +281,23 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void moveMotherNature(String username) {
+        System.out.printf("> Choose how far you want to move mother nature:%n");
+        int lastDiscardedAssistantCard = this.directivesParser.getDashboardLastDiscardedAssistantCard(username).getValue().getValue();
+        int additionalMoveMotherNature = this.directivesParser.getAdditionalMotherNatureSteps();
+        int chooseMovementMotherNature = -1;
+        while (chooseMovementMotherNature <= 0 || chooseMovementMotherNature > lastDiscardedAssistantCard + additionalMoveMotherNature) {
+            System.out.print("> ");
+            try {
+                chooseMovementMotherNature = Integer.parseInt(input.nextLine().strip());
+                if (chooseMovementMotherNature <= 0 || chooseMovementMotherNature > lastDiscardedAssistantCard + additionalMoveMotherNature)
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                chooseMovementMotherNature = -1;
+                System.out.printf("> Invalid input, choose how far you want to move mother nature:%n");
+            }
 
+        }
+        this.directivesDispatcher.actionMoveMotherNature(username, chooseMovementMotherNature);
     }
 
     /**
@@ -290,6 +306,24 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void chooseCloud(String username) {
+        System.out.printf("> Choose a cloud:%n");
+        int cloudSize = this.directivesParser.getCloudsSize();
+        for (int i = 0; i < cloudSize; i++)
+            System.out.printf("- %s %s%n", CLIGamePrinter.CARDINALITY_MAP.get(i), "Cloud");
+        int chooseCloud = -1;
+        while (chooseCloud <= 0 || chooseCloud > cloudSize) {
+            System.out.print("> ");
+            try {
+                chooseCloud = Integer.parseInt(input.nextLine().strip());
+                if (chooseCloud <= 0 || chooseCloud > cloudSize)
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                chooseCloud = -1;
+                System.out.printf("> Invalid input, choose a cloud:%n");
+            }
+
+        }
+        this.directivesDispatcher.actionChooseCloud(username, chooseCloud - 1 );
 
     }
 
