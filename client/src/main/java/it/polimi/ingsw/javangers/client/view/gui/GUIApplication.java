@@ -22,7 +22,7 @@ public class GUIApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("create-join.fxml"));
-        controller = new GUIController(directivesDispatcher, directivesParser);
+        controller = new GUIController(directivesDispatcher, directivesParser, stage);
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 620, 640);

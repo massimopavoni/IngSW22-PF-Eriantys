@@ -39,7 +39,7 @@ public class GUIController extends View implements Initializable {
     //non deve essere final
     private ChoiceBox<String> create_join_ChoiceBox;
     @FXML
-    private TextField username;
+    private TextField fxmlUsername;
     @FXML
     private CheckBox expertMode;
     @FXML
@@ -58,21 +58,21 @@ public class GUIController extends View implements Initializable {
      * @param directivesDispatcher directives dispatcher instance
      * @param directivesParser     directives parser instance
      */
-    protected GUIController(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser) {
+    protected GUIController(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser, Stage stage) {
         super(directivesDispatcher, directivesParser);
+        this.stage = stage;
         this.application = new GUIApplication();
         this.exactPlayersNumber = new ChoiceBox<>();
         this.towerColor = new ChoiceBox<>();
         this.create_join_ChoiceBox = new ChoiceBox<>();
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
-        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser);
+        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser, this.stage);
     }
 
     @Override
     public void main(String[] args) {
 
     }
-
 
     protected void openNewStage(Button button, String resourceName) {
         try {
@@ -89,39 +89,25 @@ public class GUIController extends View implements Initializable {
         }
     }
 
-    /*
+
     protected void openNewStage(String resourceName) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resourceName));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
             fxmlLoader.setController(this);
             root = fxmlLoader.load();
-            stage = (Stage) this.application.getStage().getScene().getWindow();
+            //stage = (Stage) this.application.getStage().getScene().getWindow();
             scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            this.stage.setScene(scene);
+            this.stage.show();
         } catch (IOException e) {
             //va cambiato
             throw new RuntimeException(e);
         }
     }
 
-     */
-
-
     @FXML
-    @Override
-    protected void createGame() {
-        if (this.username.getCharacters() == null || this.exactPlayersNumber.getValue() == null || this.wizardType == null || this.towerColor.getValue() == null)
-            alertMessage("Empty field", "Please fill all the fields");
-        else {
-            if (!isValidUsername(username.getCharacters().toString())) {
-                alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
-            } else {
-                this.directivesDispatcher.createGame(this.username.getCharacters().toString(), this.exactPlayersNumber.getValue(), this.expertMode.isSelected(), this.wizardType, this.towerColor.getValue());
-                this.previousMessageType = MessageType.CREATE;
-                //this.application.switchScene(this.application.getStage(), "loading-page.fxml");
-            }
-        }
+    protected void selectWizard(MouseEvent event) {
+        this.wizardType = ((ImageView) event.getSource()).getId();
     }
 
     protected void alertMessage(String headerText, String contentText) {
@@ -145,33 +131,45 @@ public class GUIController extends View implements Initializable {
     }
 
     @FXML
-    protected void selectWizard(MouseEvent event) {
-        this.wizardType = ((ImageView) event.getSource()).getId();
+    @Override
+    protected void createGame() {
+        if (this.fxmlUsername.getCharacters() == null || this.exactPlayersNumber.getValue() == null || this.wizardType == null || this.towerColor.getValue() == null)
+            alertMessage("Empty field", "Please fill all the fields");
+        else {
+            if (!isValidUsername(fxmlUsername.getCharacters().toString())) {
+                alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+            } else {
+                this.username = this.fxmlUsername.getCharacters().toString();
+                this.directivesDispatcher.createGame(this.username, this.exactPlayersNumber.getValue(), this.expertMode.isSelected(), this.wizardType, this.towerColor.getValue());
+                this.previousMessageType = MessageType.CREATE;
+                //this.application.switchScene(this.application.getStage(), "loading-page.fxml");
+            }
+        }
     }
 
     @FXML
     @Override
     protected void joinGame() {
-        if (this.username.getCharacters() == null || wizardType == null || towerColor.getValue() == null)
+        if (this.fxmlUsername.getCharacters() == null || wizardType == null || towerColor.getValue() == null)
             alertMessage("Empty field", "Please fill all the fields");
         else {
-            if (!isValidUsername(this.username.getCharacters().toString()))
+            if (!isValidUsername(this.fxmlUsername.getCharacters().toString()))
                 alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
             else {
-                this.directivesDispatcher.addPlayer(this.username.getCharacters().toString(), this.wizardType, this.towerColor.getValue());
+                this.username = this.fxmlUsername.getCharacters().toString();
+                this.directivesDispatcher.addPlayer(username, this.wizardType, this.towerColor.getValue());
                 this.previousMessageType = MessageType.PLAYER;
 
             }
         }
     }
 
-
     @Override
     @FXML
     protected void waitForStart() {
         Platform.runLater(() -> {
             this.stage.close();
-            this.application.switchScene("loading-page.fxml");
+            openNewStage("loading-page.fxml");
             this.loadingInfo.setText("Waiting start game");
         });
 
@@ -181,18 +179,18 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startGame() {
-        this.directivesDispatcher.startGame(this.username.getCharacters().toString());
+        this.directivesDispatcher.startGame(this.fxmlUsername.getCharacters().toString());
         this.previousMessageType = MessageType.START;
     }
 
     @Override
     protected void startShow() {
         Platform.runLater(() ->{
-            this.application.getStage().close();
+            this.stage.close();
             guiGameDisplayer.openNewStage();
         });
         try {
-            guiGameDisplayer.displayGame(username.getCharacters().toString());
+            this.guiGameDisplayer.displayGame(fxmlUsername.getCharacters().toString());
         } catch (DirectivesParser.DirectivesParserException e) {
             throw new RuntimeException(e);
         }
@@ -212,7 +210,7 @@ public class GUIController extends View implements Initializable {
     protected void showError(String message) {
         Platform.runLater(() -> {
             stage.close();
-            alertMessage(message, "Please retry");
+            Platform.runLater(() -> alertMessage(message, "Please retry"));
        });
     }
 
@@ -224,18 +222,21 @@ public class GUIController extends View implements Initializable {
     @Override
     protected void enableActions() {
 
+
     }
 
     @Override
     protected void waitTurn() {
-
+        Platform.runLater(() -> {
+            openNewStage("loading-page.fxml");
+            this.loadingInfo.setText("Waiting your turn");
+        });
     }
 
     @Override
     protected void returnToMainMenu() {
-
         Platform.runLater(() -> {
-            application.switchScene("create-join.fxml");
+            this.openNewStage("create-join.fxml");
        });
     }
 

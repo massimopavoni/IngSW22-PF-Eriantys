@@ -11,7 +11,7 @@
 <AnchorPane prefHeight="550.0" prefWidth="611.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="225.0" layoutY="32.0" text="Username" />
-      <TextField fx:id="username" layoutX="226.0" layoutY="49.0" />
+      <TextField fx:id="fxmlUsername" layoutX="226.0" layoutY="49.0" />
       <Label layoutX="226.0" layoutY="92.0" text="Tower Color" />
       <ChoiceBox fx:id="towerColor" layoutX="226.0" layoutY="109.0" prefWidth="150.0" />
       <ImageView fx:id="DRUID" fitHeight="200.0" fitWidth="135.0" layoutX="14.0" layoutY="208.0" onMouseClicked="#selectWizard">

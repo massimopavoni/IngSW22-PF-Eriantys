@@ -6,29 +6,24 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class GUIGameDisplayer {
 
+    private final DirectivesParser directivesParser;
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private final DirectivesParser directivesParser;
-    private GUIApplication application;
+    //private GUIApplication application;
     @FXML
     private ImageView characterCard1;
     @FXML
@@ -41,10 +36,10 @@ public class GUIGameDisplayer {
     private Label playersOrder;
 
 
-
-    protected GUIGameDisplayer(DirectivesParser directivesParser){
+    protected GUIGameDisplayer(DirectivesParser directivesParser, Stage stage) {
         this.directivesParser = directivesParser;
-        application = new GUIApplication();
+        this.stage = stage;
+        //this.application = new GUIApplication();
     }
 
     protected void openNewStage() {
@@ -52,7 +47,7 @@ public class GUIGameDisplayer {
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("game-view.fxml"));
             fxmlLoader.setController(this);
             this.root = fxmlLoader.load();
-            this.stage = this.application.getStage();
+            //this.stage = this.application.getStage();
             this.scene = new Scene(root);
             this.stage.setScene(scene);
             this.stage.show();
@@ -65,7 +60,7 @@ public class GUIGameDisplayer {
     //bisogna togliere il run later ma non funziona senza
     private void displayCurrentPhase() {
         Pair<String, String> currentPhasePair = this.directivesParser.getCurrentPhase();
-        Platform.runLater(()-> this.currentPhase.setText("Current phase: "+currentPhasePair.getKey()+" => "+currentPhasePair.getValue()));
+        Platform.runLater(() -> this.currentPhase.setText("Current phase: " + currentPhasePair.getKey() + " => " + currentPhasePair.getValue()));
     }
 
     //bisogna togliere il run later ma non funziona senza
@@ -73,20 +68,21 @@ public class GUIGameDisplayer {
         Platform.runLater(() -> {
             //non va fatto in un try catch
             try {
-                playersOrder.setText("You are "+username+" player's order is:"+directivesParser.getPlayersOrder().toString());
+                playersOrder.setText("You are " + username + "Player's order is: " + directivesParser.getPlayersOrder().toString());
             } catch (DirectivesParser.DirectivesParserException e) {
                 throw new RuntimeException(e);
             }
         });
     }
-    private void displayCharacterCards(){
-        if(directivesParser.isExpertMode()){
+
+    private void displayCharacterCards() {
+        if (directivesParser.isExpertMode()) {
             List<Image> imageList = new ArrayList<>();
             for (int i = 0; i < directivesParser.getCharacterCardNames().size(); i++) {
                 Image image = null;
                 String cardName = directivesParser.getCharacterCardNames().get(i).toLowerCase();
                 try {
-                    image = new Image((GUIGameDisplayer.class.getResource("images/characterCards/"+cardName+".jpg")).toURI().toString());
+                    image = new Image((GUIGameDisplayer.class.getResource("images/characterCards/" + cardName + ".jpg")).toURI().toString());
                 } catch (URISyntaxException e) {
                     throw new RuntimeException(e);
                 }
@@ -106,7 +102,5 @@ public class GUIGameDisplayer {
 
 
     }
-
-
 
 }
