@@ -23,6 +23,10 @@ public class CLIActionsExecutor {
      */
     private static final Map<String, Method> ACTION_METHOD_MAPPINGS;
     /**
+     * Map for methods corresponding to character cards effects.
+     */
+    private static final Map<String, Method> EFFECT_METHOD_MAPPINGS;
+    /**
      * Message for requesting a tokens list from the user.
      */
     private static final String TOKENS_LIST_MESSAGE = "> Provide a list of tokens in the form of [y/b/g/r/p][number], " +
@@ -38,6 +42,7 @@ public class CLIActionsExecutor {
 
     static {
         Map<String, Method> actionMethodMappings = new HashMap<>();
+        Map<String, Method> effectMethodMappings = new HashMap<>();
         try {
             actionMethodMappings.put("FillClouds",
                     CLIActionsExecutor.class.getDeclaredMethod("fillClouds", String.class));
@@ -51,11 +56,37 @@ public class CLIActionsExecutor {
                     CLIActionsExecutor.class.getDeclaredMethod("chooseCloud", String.class));
             actionMethodMappings.put("ActivateCharacterCard",
                     CLIActionsExecutor.class.getDeclaredMethod("activateCharacterCard", String.class));
+
+            effectMethodMappings.put("monk",
+                    CLIActionsExecutor.class.getDeclaredMethod("monk", String.class));
+            effectMethodMappings.put("innkeeper",
+                    CLIActionsExecutor.class.getDeclaredMethod("innkeeper", String.class));
+            effectMethodMappings.put("herald",
+                    CLIActionsExecutor.class.getDeclaredMethod("herald", String.class));
+            effectMethodMappings.put("mailman",
+                    CLIActionsExecutor.class.getDeclaredMethod("mailman", String.class));
+            effectMethodMappings.put("herbalist",
+                    CLIActionsExecutor.class.getDeclaredMethod("herbalist", String.class));
+            effectMethodMappings.put("centaur",
+                    CLIActionsExecutor.class.getDeclaredMethod("centaur", String.class));
+            effectMethodMappings.put("jester",
+                    CLIActionsExecutor.class.getDeclaredMethod("jester", String.class));
+            effectMethodMappings.put("knight",
+                    CLIActionsExecutor.class.getDeclaredMethod("knight", String.class));
+            effectMethodMappings.put("mushroomer",
+                    CLIActionsExecutor.class.getDeclaredMethod("mushroomer", String.class));
+            effectMethodMappings.put("bard",
+                    CLIActionsExecutor.class.getDeclaredMethod("bard", String.class));
+            effectMethodMappings.put("queen",
+                    CLIActionsExecutor.class.getDeclaredMethod("queen", String.class));
+            effectMethodMappings.put("scoundrel",
+                    CLIActionsExecutor.class.getDeclaredMethod("scoundrel", String.class));
         } catch (NoSuchMethodException e) {
-            System.err.printf("Error while creating action method mappings (%s)", e.getMessage());
+            System.err.printf("Error while creating action/effect method mappings (%s)", e.getMessage());
             System.exit(1);
         }
         ACTION_METHOD_MAPPINGS = Collections.unmodifiableMap(actionMethodMappings);
+        EFFECT_METHOD_MAPPINGS = Collections.unmodifiableMap(effectMethodMappings);
     }
 
     /**
@@ -267,7 +298,142 @@ public class CLIActionsExecutor {
      *
      * @param username player username
      */
-    private void activateCharacterCard(String username) {
+    private void activateCharacterCard(String username) throws CLIActionsExecutorException {
+        List<String> characterCardNames = this.directivesParser.getCharacterCardNames();
+        System.out.println("> Choose a character card:");
+        int chosenCard = -1;
+        String chosenCardString;
+        while (chosenCard < 0 || chosenCard >= characterCardNames.size()) {
+            String cardName;
+            for (int i = 0; i < characterCardNames.size(); i++) {
+                cardName = characterCardNames.get(i);
+                System.out.printf("- %s%s [%d]%s%n", CLIConstants.ANSI_BRIGHT_WHITE,
+                        cardName.substring(0, 1).toUpperCase() + cardName.substring(1),
+                        i + 1, CLIConstants.ANSI_RESET);
+            }
+            System.out.print("> ");
+            try {
+                chosenCardString = CLIActionsExecutor.input.nextLine().strip();
+                chosenCard = Integer.parseInt(chosenCardString) - 1;
+                if (chosenCard < 0 || chosenCard >= characterCardNames.size())
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.println("> Invalid input, choose a character card:");
+            }
+        }
+        try {
+            EFFECT_METHOD_MAPPINGS.get(characterCardNames.get(chosenCard)).invoke(this, username);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new CLIActionsExecutorException(
+                    String.format("Error while invoking effect method (%s)", e.getMessage()), e);
+        }
+    }
+
+    /**
+     * Activate innkeeper character card effect.
+     *
+     * @param username player username
+     */
+    private void innkeeper(String username) {
+        this.directivesDispatcher.activateInnkeeper(username);
+    }
+
+    /**
+     * Activate mailman character card effect.
+     *
+     * @param username player username
+     */
+    private void mailman(String username) {
+        this.directivesDispatcher.activateMailman(username);
+    }
+
+    /**
+     * Activate centaur character card effect.
+     *
+     * @param username player username
+     */
+    private void centaur(String username) {
+        this.directivesDispatcher.activateCentaur(username);
+    }
+
+    /**
+     * Activate knight character card effect.
+     *
+     * @param username player username
+     */
+    private void knight(String username) {
+        this.directivesDispatcher.activateKnight(username);
+    }
+
+    /**
+     * Activate monk character card effect.
+     *
+     * @param username player username
+     */
+    private void monk(String username) {
+
+    }
+
+    /**
+     * Activate herald character card effect.
+     *
+     * @param username player username
+     */
+    private void herald(String username) {
+
+    }
+
+    /**
+     * Activate herbalist character card effect.
+     *
+     * @param username player username
+     */
+    private void herbalist(String username) {
+
+    }
+
+    /**
+     * Activate jester character card effect.
+     *
+     * @param username player username
+     */
+    private void jester(String username) {
+
+    }
+
+    /**
+     * Activate mushroomer character card effect.
+     *
+     * @param username player username
+     */
+    private void mushroomer(String username) {
+
+    }
+
+    /**
+     * Activate bard character card effect.
+     *
+     * @param username player username
+     */
+    private void bard(String username) {
+
+    }
+
+    /**
+     * Activate queen character card effect.
+     *
+     * @param username player username
+     */
+    private void queen(String username) {
+
+    }
+
+    /**
+     * Activate scoundrel character card effect.
+     *
+     * @param username player username
+     */
+    private void scoundrel(String username) {
 
     }
 
