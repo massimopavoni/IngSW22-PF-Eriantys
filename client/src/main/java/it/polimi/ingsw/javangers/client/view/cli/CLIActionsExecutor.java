@@ -281,23 +281,23 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void moveMotherNature(String username) {
-        System.out.printf("> Choose how far you want to move mother nature:%n");
-        int lastDiscardedAssistantCard = this.directivesParser.getDashboardLastDiscardedAssistantCard(username).getValue().getValue();
-        int additionalMoveMotherNature = this.directivesParser.getAdditionalMotherNatureSteps();
-        int chooseMovementMotherNature = -1;
-        while (chooseMovementMotherNature <= 0 || chooseMovementMotherNature > lastDiscardedAssistantCard + additionalMoveMotherNature) {
-            System.out.print("> ");
+        System.out.print("> Choose the number of steps for mother nature: ");
+        int baseSteps = this.directivesParser.getDashboardLastDiscardedAssistantCard(username).getValue().getValue();
+        int additionalSteps = this.directivesParser.getAdditionalMotherNatureSteps();
+        String motherNatureStepsString;
+        int motherNatureSteps = 0;
+        while (motherNatureSteps < 1 || motherNatureSteps > baseSteps + additionalSteps) {
             try {
-                chooseMovementMotherNature = Integer.parseInt(input.nextLine().strip());
-                if (chooseMovementMotherNature <= 0 || chooseMovementMotherNature > lastDiscardedAssistantCard + additionalMoveMotherNature)
+                motherNatureStepsString = input.nextLine().strip();
+                motherNatureSteps = Integer.parseInt(motherNatureStepsString);
+                if (motherNatureSteps < 1 || motherNatureSteps > baseSteps + additionalSteps)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
-                chooseMovementMotherNature = -1;
-                System.out.printf("> Invalid input, choose how far you want to move mother nature:%n");
+                motherNatureSteps = 0;
+                System.out.print("> Invalid input, choose the number of steps for mother nature: ");
             }
-
         }
-        this.directivesDispatcher.actionMoveMotherNature(username, chooseMovementMotherNature);
+        this.directivesDispatcher.actionMoveMotherNature(username, motherNatureSteps);
     }
 
     /**
@@ -306,25 +306,25 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void chooseCloud(String username) {
-        System.out.printf("> Choose a cloud:%n");
+        System.out.println("> Choose a cloud:");
         int cloudSize = this.directivesParser.getCloudsSize();
-        for (int i = 0; i < cloudSize; i++)
-            System.out.printf("- %s %s%n", CLIGamePrinter.CARDINALITY_MAP.get(i), "Cloud");
-        int chooseCloud = -1;
-        while (chooseCloud <= 0 || chooseCloud > cloudSize) {
+        String cloudIndexString;
+        int cloudIndex = -1;
+        while (cloudIndex < 0 || cloudIndex >= cloudSize) {
+            for (int i = 0; i < cloudSize; i++)
+                System.out.printf("- %s%s cloud [%s]%s%n", CLIConstants.ANSI_BRIGHT_WHITE,
+                        CLIGamePrinter.CARDINALITY_MAP.get(i), i + 1, CLIConstants.ANSI_RESET);
             System.out.print("> ");
             try {
-                chooseCloud = Integer.parseInt(input.nextLine().strip());
-                if (chooseCloud <= 0 || chooseCloud > cloudSize)
+                cloudIndexString = input.nextLine().strip();
+                cloudIndex = Integer.parseInt(cloudIndexString) - 1;
+                if (cloudIndex < 0 || cloudIndex >= cloudSize)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
-                chooseCloud = -1;
-                System.out.printf("> Invalid input, choose a cloud:%n");
+                System.out.println("> Invalid input, choose a cloud:");
             }
-
         }
-        this.directivesDispatcher.actionChooseCloud(username, chooseCloud - 1 );
-
+        this.directivesDispatcher.actionChooseCloud(username, cloudIndex);
     }
 
     /**
