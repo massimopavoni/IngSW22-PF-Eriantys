@@ -14,10 +14,10 @@
       <Label layoutX="230.0" layoutY="14.0" text="Username" />
       <TextField fx:id="fxmlUsername" layoutX="228.0" layoutY="39.0" />
       <Label layoutX="230.0" layoutY="80.0" text="Number of Players" />
-      <ChoiceBox fx:id="exactPlayersNumber" layoutX="228.0" layoutY="97.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="fxmlExactPlayersNumber" layoutX="228.0" layoutY="97.0" prefWidth="150.0" />
       <Label layoutX="228.0" layoutY="132.0" text="Tower Color" />
-      <ChoiceBox fx:id="towerColor" layoutX="228.0" layoutY="149.0" prefWidth="150.0" />
-      <CheckBox fx:id="expertMode" layoutX="230.0" layoutY="196.0" mnemonicParsing="false" text="Expert Mode" />
+      <ChoiceBox fx:id="fxmlTowerColor" layoutX="228.0" layoutY="149.0" prefWidth="150.0" />
+      <CheckBox fx:id="fxmlExpertMode" layoutX="230.0" layoutY="196.0" mnemonicParsing="false" text="Expert Mode" />
       <ImageView fx:id="DRUID" fitHeight="200.0" fitWidth="135.0" layoutX="17.0" layoutY="263.0" onMouseClicked="#selectWizard">
          <image>
             <Image url="@images/MAGO%201_1.jpg" />

@@ -3,7 +3,6 @@ package it.polimi.ingsw.javangers.client.view.gui;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,14 +14,14 @@ public class GUIApplication extends Application {
 
     private static DirectivesDispatcher directivesDispatcher;
     private static DirectivesParser directivesParser;
-    private Stage stage = new Stage();
-    private static GUIController controller;
+    //private Stage stage = new Stage();
+    //private static GUIController controller;
 
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("create-join.fxml"));
-        controller = new GUIController(directivesDispatcher, directivesParser, stage);
+        GUIController controller = new GUIController(directivesDispatcher, directivesParser, stage);
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 620, 640);
@@ -41,6 +40,7 @@ public class GUIApplication extends Application {
         directivesParser = newDirectivesParser;
     }
 
+    /*
     public void switchScene(String fxmlFile) {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
         fxmlLoader.setController(controller);
@@ -54,8 +54,13 @@ public class GUIApplication extends Application {
         }
     }
 
+     */
+
+    /*
     public Stage getStage(){
         return this.stage;
     }
+
+     */
 
 }

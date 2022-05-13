@@ -22,16 +22,16 @@ import java.util.ResourceBundle;
 
 public class GUIController extends View implements Initializable {
 
-    private final Integer[] possibleNumberOfPlayer = {2, 3};
-    private final String[] possibleTowerColor = {"BLACK", "WHITE", "GRAY"};
+    private final Integer[] possibleNumberOfPlayer = {MIN_PLAYERS_NUMBER, MAX_PLAYERS_NUMBER};
+    private final String[] possibleTowerColor = {AVAILABLE_TOWER_COLORS.get("b"), AVAILABLE_TOWER_COLORS.get("w"), AVAILABLE_TOWER_COLORS.get("g")};
     private final String[] possibleCreateJoin = {"CREATE", "JOIN"};
-    private GUIApplication application;
+    //private GUIApplication application;
     @FXML
     //non deve essere final
-    private ChoiceBox<Integer> exactPlayersNumber;
+    private ChoiceBox<Integer> fxmlExactPlayersNumber;
     @FXML
     //non deve essere final
-    private ChoiceBox<String> towerColor;
+    private ChoiceBox<String> fxmlTowerColor;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -41,14 +41,14 @@ public class GUIController extends View implements Initializable {
     @FXML
     private TextField fxmlUsername;
     @FXML
-    private CheckBox expertMode;
+    private CheckBox fxmlExpertMode;
     @FXML
     private Label errorMessage;
     @FXML
     private Button confirmButton;
     @FXML
     private Label loadingInfo;
-    Alert errorAlert;
+    private final Alert errorAlert;
     private final GUIGameDisplayer guiGameDisplayer;
 
 
@@ -61,9 +61,9 @@ public class GUIController extends View implements Initializable {
     protected GUIController(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser, Stage stage) {
         super(directivesDispatcher, directivesParser);
         this.stage = stage;
-        this.application = new GUIApplication();
-        this.exactPlayersNumber = new ChoiceBox<>();
-        this.towerColor = new ChoiceBox<>();
+        //this.application = new GUIApplication();
+        this.fxmlExactPlayersNumber = new ChoiceBox<>();
+        this.fxmlTowerColor = new ChoiceBox<>();
         this.create_join_ChoiceBox = new ChoiceBox<>();
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
         this.guiGameDisplayer = new GUIGameDisplayer(directivesParser, this.stage);
@@ -133,14 +133,17 @@ public class GUIController extends View implements Initializable {
     @FXML
     @Override
     protected void createGame() {
-        if (this.fxmlUsername.getCharacters() == null || this.exactPlayersNumber.getValue() == null || this.wizardType == null || this.towerColor.getValue() == null)
+        if (this.fxmlUsername.getCharacters() == null || this.fxmlExactPlayersNumber.getValue() == null || this.wizardType == null || this.fxmlTowerColor.getValue() == null)
             alertMessage("Empty field", "Please fill all the fields");
         else {
             if (!isValidUsername(fxmlUsername.getCharacters().toString())) {
                 alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
             } else {
                 this.username = this.fxmlUsername.getCharacters().toString();
-                this.directivesDispatcher.createGame(this.username, this.exactPlayersNumber.getValue(), this.expertMode.isSelected(), this.wizardType, this.towerColor.getValue());
+                this.exactPlayersNumber = this.fxmlExactPlayersNumber.getValue();
+                this.expertMode = this.fxmlExpertMode.isSelected();
+                this.towerColor = this.fxmlTowerColor.getValue();
+                this.directivesDispatcher.createGame(this.username, this.exactPlayersNumber, this.expertMode, this.wizardType, this.towerColor);
                 this.previousMessageType = MessageType.CREATE;
                 //this.application.switchScene(this.application.getStage(), "loading-page.fxml");
             }
@@ -150,14 +153,15 @@ public class GUIController extends View implements Initializable {
     @FXML
     @Override
     protected void joinGame() {
-        if (this.fxmlUsername.getCharacters() == null || wizardType == null || towerColor.getValue() == null)
+        if (this.fxmlUsername.getCharacters() == null || wizardType == null || fxmlTowerColor.getValue() == null)
             alertMessage("Empty field", "Please fill all the fields");
         else {
             if (!isValidUsername(this.fxmlUsername.getCharacters().toString()))
                 alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
             else {
                 this.username = this.fxmlUsername.getCharacters().toString();
-                this.directivesDispatcher.addPlayer(username, this.wizardType, this.towerColor.getValue());
+                this.towerColor = this.fxmlTowerColor.getValue();
+                this.directivesDispatcher.addPlayer(this.username, this.wizardType, this.towerColor);
                 this.previousMessageType = MessageType.PLAYER;
 
             }
@@ -179,7 +183,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startGame() {
-        this.directivesDispatcher.startGame(this.fxmlUsername.getCharacters().toString());
+        this.directivesDispatcher.startGame(this.username);
         this.previousMessageType = MessageType.START;
     }
 
@@ -190,7 +194,7 @@ public class GUIController extends View implements Initializable {
             guiGameDisplayer.openNewStage();
         });
         try {
-            this.guiGameDisplayer.displayGame(fxmlUsername.getCharacters().toString());
+            this.guiGameDisplayer.displayGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
             throw new RuntimeException(e);
         }
@@ -221,7 +225,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void enableActions() {
-
+    // preso in considerazione da thom da continuare
 
     }
 
@@ -235,15 +239,13 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void returnToMainMenu() {
-        Platform.runLater(() -> {
-            this.openNewStage("create-join.fxml");
-       });
+        Platform.runLater(() -> this.openNewStage("create-join.fxml"));
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        exactPlayersNumber.getItems().addAll(possibleNumberOfPlayer);
-        towerColor.getItems().addAll(possibleTowerColor);
+        fxmlExactPlayersNumber.getItems().addAll(possibleNumberOfPlayer);
+        fxmlTowerColor.getItems().addAll(possibleTowerColor);
         create_join_ChoiceBox.getItems().addAll(possibleCreateJoin);
     }
 

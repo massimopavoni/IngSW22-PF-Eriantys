@@ -11,6 +11,9 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="loadingInfo" layoutX="241.0" layoutY="192.0" />
+      <Label fx:id="loadingInfo" layoutX="241.0" layoutY="192.0" prefHeight="20.0" prefWidth="258.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>
