@@ -14,8 +14,6 @@ public class GUIApplication extends Application {
 
     private static DirectivesDispatcher directivesDispatcher;
     private static DirectivesParser directivesParser;
-    //private Stage stage = new Stage();
-    //private static GUIController controller;
 
 
     @Override
@@ -39,28 +37,4 @@ public class GUIApplication extends Application {
         directivesDispatcher = newDirectivesDispatcher;
         directivesParser = newDirectivesParser;
     }
-
-    /*
-    public void switchScene(String fxmlFile) {
-        FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
-        fxmlLoader.setController(controller);
-        Parent root;
-        try {
-            root = fxmlLoader.load();
-            this.stage.setScene(new Scene(root));
-            this.stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-     */
-
-    /*
-    public Stage getStage(){
-        return this.stage;
-    }
-
-     */
-
 }

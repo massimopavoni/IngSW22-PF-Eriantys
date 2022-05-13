@@ -54,6 +54,7 @@ public class GUIController extends View implements Initializable {
     private Label loadingInfo;
 
 
+
     /**
      * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
      *
@@ -68,7 +69,7 @@ public class GUIController extends View implements Initializable {
         this.fxmlTowerColor = new ChoiceBox<>();
         this.create_join_ChoiceBox = new ChoiceBox<>();
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
-        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser, this.stage);
+        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser,directivesDispatcher, this.stage);
     }
 
     @Override
@@ -152,7 +153,6 @@ public class GUIController extends View implements Initializable {
                 this.towerColor = this.fxmlTowerColor.getValue();
                 this.directivesDispatcher.createGame(this.username, this.exactPlayersNumber, this.expertMode, this.wizardType, this.towerColor);
                 this.previousMessageType = MessageType.CREATE;
-                //this.application.switchScene(this.application.getStage(), "loading-page.fxml");
             }
         }
     }
@@ -178,7 +178,6 @@ public class GUIController extends View implements Initializable {
     @Override
     @FXML
     protected void waitForStart() {
-        //this.stage.close();
         openNewStage("loading-page.fxml");
         this.loadingInfo.setText("Waiting start game");
 
@@ -194,7 +193,6 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        //this.stage.close();
         guiGameDisplayer.openNewStage();
         try {
             this.guiGameDisplayer.displayGame(this.username);
@@ -215,9 +213,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void showError(String message) {
-        //stage.close();
         alertMessage(message, "Please retry");
-
     }
 
     @Override
@@ -227,16 +223,43 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void enableActions() {
-        // preso in considerazione da thom da continuare
-
+        this.enableActionButtons();
+        //forse da continuare
+        //aggiungere è il tuo turno
     }
 
     @Override
     protected void waitTurn() {
-
-        openNewStage("loading-page.fxml");
-        this.loadingInfo.setText("Waiting your turn");
+        this.disableAllButtons();
+        //da aggiungere in una label il wait turn
     }
+
+    private void enableActionButtons(){
+        // da aggiungere controlli
+        try {
+            for (String action: directivesParser.getAvailableActions()) {
+                switch (action){
+                    case "FillClouds" -> guiGameDisplayer.getFillCloudsButton().setDisable(false);
+                    case "PlayAssistantCard" -> guiGameDisplayer.getPlayAssistantCard().setDisable(false);
+                    //da continuare
+                }
+            }
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new ViewException(e.getMessage());
+        }
+    }
+
+    private void disableAllButtons(){
+        guiGameDisplayer.getFillCloudsButton().setDisable(true);
+        guiGameDisplayer.getPlayAssistantCard().setDisable(true);
+        guiGameDisplayer.getMoveStudents().setDisable(true);
+        guiGameDisplayer.getMoveMotherNature().setDisable(true);
+        guiGameDisplayer.getChooseCloud().setDisable(true);
+        guiGameDisplayer.getActivateCharacterCard().setDisable(true);
+
+    }
+
+
 
     @Override
     protected void returnToMainMenu() {

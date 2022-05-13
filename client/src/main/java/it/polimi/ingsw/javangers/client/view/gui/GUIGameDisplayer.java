@@ -1,10 +1,12 @@
 package it.polimi.ingsw.javangers.client.view.gui;
 
+import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +21,7 @@ import java.util.List;
 public class GUIGameDisplayer {
 
     private final DirectivesParser directivesParser;
+    private final DirectivesDispatcher directivesDispatcher;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -45,12 +48,25 @@ public class GUIGameDisplayer {
     private ImageView playerDashboard2;
     @FXML
     private ImageView playerDashboard3;
+    private String username;
+    @FXML
+    private Button fillCloudsButton;
+    @FXML
+    private Button playAssistantCard;
+    @FXML
+    private Button moveStudents;
+    @FXML
+    private Button moveMotherNature;
+    @FXML
+    private Button chooseCloud;
+    @FXML
+    private Button activateCharacterCard;
 
 
-    protected GUIGameDisplayer(DirectivesParser directivesParser, Stage stage) {
+    protected GUIGameDisplayer(DirectivesParser directivesParser,DirectivesDispatcher directivesDispatcher, Stage stage) {
         this.directivesParser = directivesParser;
+        this.directivesDispatcher = directivesDispatcher;
         this.stage = stage;
-        //this.application = new GUIApplication();
     }
 
     protected void openNewStage() {
@@ -58,7 +74,6 @@ public class GUIGameDisplayer {
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("game-view.fxml"));
             fxmlLoader.setController(this);
             this.root = fxmlLoader.load();
-            //this.stage = this.application.getStage();
             this.scene = new Scene(root);
             this.stage.setScene(scene);
             this.stage.show();
@@ -68,20 +83,16 @@ public class GUIGameDisplayer {
         }
     }
 
-    //bisogna togliere il run later ma non funziona senza
+
     private void displayCurrentPhase() {
         Pair<String, String> currentPhasePair = this.directivesParser.getCurrentPhase();
         this.currentPhase.setText("Current phase: " + currentPhasePair.getKey() + " => " + currentPhasePair.getValue());
     }
 
-    //bisogna togliere il run later ma non funziona senza
     private void displayPlayersOrder(String username) throws DirectivesParser.DirectivesParserException {
-        //non va fatto in un try catch
-        try {
-            playersOrder.setText("You are " + username + ", Player's order is: " + directivesParser.getPlayersOrder().toString());
-        } catch (DirectivesParser.DirectivesParserException e) {
-            throw new RuntimeException(e);
-        }
+
+        playersOrder.setText("You are " + username + ", Player's order is: " + directivesParser.getPlayersOrder().toString());
+
         /* da sistemare non visualizzate in modo corretto
         fxmlUsername1.setText(username);
         fxmlUsername2.setText(directivesParser.getDashboardNames().get(1));
@@ -125,11 +136,40 @@ public class GUIGameDisplayer {
 
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
+        this.username = username;
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         this.displayCharacterCards();
         this.printPlayersDashboard();
     }
 
+    @FXML
+    private void fillClouds(){
+        directivesDispatcher.actionFillClouds(this.username);
+    }
 
+
+   protected Button getFillCloudsButton(){
+        return fillCloudsButton;
+   }
+
+    protected Button getPlayAssistantCard() {
+        return playAssistantCard;
+    }
+
+    protected Button getMoveStudents() {
+        return moveStudents;
+    }
+
+    protected Button getMoveMotherNature() {
+        return moveMotherNature;
+    }
+
+    protected Button getChooseCloud() {
+        return chooseCloud;
+    }
+
+    protected Button getActivateCharacterCard() {
+        return activateCharacterCard;
+    }
 }
