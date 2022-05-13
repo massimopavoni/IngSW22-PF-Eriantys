@@ -22,7 +22,9 @@ import java.util.ResourceBundle;
 
 public class GUIController extends View implements Initializable {
 
+    // si puo rendere piu generica
     private final Integer[] possibleNumberOfPlayer = {MIN_PLAYERS_NUMBER, MAX_PLAYERS_NUMBER};
+    // si puo rendere piu generica
     private final String[] possibleTowerColor = {AVAILABLE_TOWER_COLORS.get("b"), AVAILABLE_TOWER_COLORS.get("w"), AVAILABLE_TOWER_COLORS.get("g")};
     private final String[] possibleCreateJoin = {"CREATE", "JOIN"};
     //private GUIApplication application;
@@ -207,7 +209,10 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void showAbort(String message) {
-
+        Platform.runLater(() -> {
+            stage.close();
+            Platform.runLater(() -> alertMessage(message, "Please create a new game or wait to join a new game"));
+        });
     }
 
     @Override

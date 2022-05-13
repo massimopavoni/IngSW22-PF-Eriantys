@@ -34,6 +34,18 @@ public class GUIGameDisplayer {
     private Label currentPhase;
     @FXML
     private Label playersOrder;
+    @FXML
+    private Label fxmlUsername1;
+    @FXML
+    private Label fxmlUsername2;
+    @FXML
+    private Label fxmlUsername3;
+    @FXML
+    private ImageView playerDashboard1;
+    @FXML
+    private ImageView playerDashboard2;
+    @FXML
+    private ImageView playerDashboard3;
 
 
     protected GUIGameDisplayer(DirectivesParser directivesParser, Stage stage) {
@@ -68,10 +80,17 @@ public class GUIGameDisplayer {
         Platform.runLater(() -> {
             //non va fatto in un try catch
             try {
-                playersOrder.setText("You are " + username + "Player's order is: " + directivesParser.getPlayersOrder().toString());
+                playersOrder.setText("You are " + username + ", Player's order is: " + directivesParser.getPlayersOrder().toString());
             } catch (DirectivesParser.DirectivesParserException e) {
                 throw new RuntimeException(e);
             }
+            /* da sistemare non visualizzate in modo corretto
+            fxmlUsername1.setText(username);
+            fxmlUsername2.setText(directivesParser.getDashboardNames().get(1));
+            if(directivesParser.getExactPlayersNumber() == 3)
+                fxmlUsername3.setText(directivesParser.getDashboardNames().get(2));
+
+             */
         });
     }
 
@@ -94,13 +113,26 @@ public class GUIGameDisplayer {
         }
     }
 
+    private void printPlayersDashboard() {
+        Image image = null;
+        try {
+            image = new Image((GUIGameDisplayer.class.getResource("images/PLANCIA GIOCO_2.png")).toURI().toString());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        playerDashboard1.setImage(image);
+        playerDashboard2.setImage(image);
+        if(directivesParser.getExactPlayersNumber() == 3)
+            playerDashboard3.setImage(image);
+    }
+
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         this.displayCharacterCards();
-
-
+        this.printPlayersDashboard();
     }
+
 
 }
