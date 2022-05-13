@@ -260,7 +260,6 @@ public class CLI extends View {
     @Override
     protected void startGame() {
         this.directivesDispatcher.startGame(this.username);
-        this.previousMessageType = MessageType.START;
     }
 
     /**
@@ -275,6 +274,7 @@ public class CLI extends View {
                 "-".repeat(64), CLIConstants.ANSI_RESET);
         try {
             this.gamePrinter.printGame(this.username);
+            this.previousMessageType = MessageType.START;
         } catch (DirectivesParser.DirectivesParserException e) {
             System.err.printf(DATA_RETRIEVAL_ERROR_MESSAGE,
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);
@@ -335,8 +335,9 @@ public class CLI extends View {
     @Override
     protected void closeGame(List<String> winners) {
         this.stopLoading();
-        System.out.printf("%sGame is ended (%s)%nWinner%s: %s%nPress enter to continue.%s",
-                CLIConstants.ANSI_BRIGHT_GREEN, this.directivesParser.getEndGame(), this.winners.size() == 1 ? "" : "s",
+        System.out.printf("%n%sGame is ended (%s)%nWinner%s: %s%nPress enter to continue.%s",
+                CLIConstants.ANSI_BRIGHT_GREEN, View.POSSIBLE_ENDGAMES.get(this.directivesParser.getEndGame()),
+                this.winners.size() == 1 ? "" : "s",
                 String.join(", ", this.winners), CLIConstants.ANSI_RESET);
         CLI.input.nextLine();
     }
@@ -349,6 +350,7 @@ public class CLI extends View {
         System.out.printf("%n%sIt's your turn.%s%n", CLIConstants.ANSI_BRIGHT_GREEN, CLIConstants.ANSI_RESET);
         try {
             this.actionsExecutor.executeAction(this.username);
+            this.previousMessageType = MessageType.ACTION;
         } catch (CLIActionsExecutor.CLIActionsExecutorException e) {
             System.err.printf("%n%sError while executing action (%s)%s%n",
                     CLIConstants.ANSI_BRIGHT_RED, e.getMessage(), CLIConstants.ANSI_RESET);

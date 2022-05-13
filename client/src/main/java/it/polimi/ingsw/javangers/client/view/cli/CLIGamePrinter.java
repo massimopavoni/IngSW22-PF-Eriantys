@@ -125,7 +125,7 @@ public class CLIGamePrinter {
                 .filter(entry -> entry.getValue().equals(towers.getKey())).findFirst();
         System.out.printf("%n%s%sTowers: %d %s%s", tabbing, CLIConstants.ANSI_BRIGHT_WHITE, towers.getValue(),
                 towerColorEntry.isPresent() ? View.TOWER_COLORS_MAPPINGS.get(towerColorEntry.get().getKey())
-                        : "none", CLIConstants.ANSI_RESET);
+                        : "", CLIConstants.ANSI_RESET);
     }
 
     /**
@@ -270,7 +270,7 @@ public class CLIGamePrinter {
             String ownerColor = owner.equals(username) ? CLIConstants.ANSI_BRIGHT_BLUE : CLIConstants.ANSI_BRIGHT_WHITE;
             String ownerName = owner.equals(username) ? "You" : owner;
             if (ownerName.isEmpty())
-                ownerName = "none";
+                ownerName = "";
             String formattedOwner = String.format("%s%s", owner.equals(currentPlayer) ? CLIConstants.ANSI_BRIGHT_GREEN
                     : ownerColor, ownerName);
             System.out.printf("  %s%-12s%s => %s%n", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(teacherColorID),
@@ -329,8 +329,8 @@ public class CLIGamePrinter {
                 CLIConstants.ANSI_BRIGHT_WHITE, additionalPower > 0
                         ? CLIConstants.ANSI_BRIGHT_GREEN : CLIConstants.ANSI_BRIGHT_RED, additionalPower,
                 CLIConstants.ANSI_BRIGHT_WHITE, forbiddenColor != null
-                        ? CLIConstants.TOKEN_COLORS_CLI_COLORS.get(forbiddenColorID) : CLIConstants.ANSI_BRIGHT_WHITE,
-                forbiddenColor != null ? View.TOKEN_COLORS_MAPPINGS.get(forbiddenColorID) : "none", CLIConstants.ANSI_RESET);
+                        ? CLIConstants.TOKEN_COLORS_CLI_COLORS.get(forbiddenColorID) : "",
+                forbiddenColor != null ? View.TOKEN_COLORS_MAPPINGS.get(forbiddenColorID) : "", CLIConstants.ANSI_RESET);
     }
 
     /**
