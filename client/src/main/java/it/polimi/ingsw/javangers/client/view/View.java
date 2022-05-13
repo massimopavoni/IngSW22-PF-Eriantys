@@ -15,18 +15,6 @@ import java.util.regex.Pattern;
  */
 public abstract class View {
     /**
-     * Regex for valid usernames.
-     */
-    protected static final String USERNAME_REGEX = "^\\w{4,32}$";
-    /**
-     * Minimum number of players.
-     */
-    protected static final int MIN_PLAYERS_NUMBER = 2;
-    /**
-     * Maximum number of players.
-     */
-    protected static final int MAX_PLAYERS_NUMBER = 3;
-    /**
      * Map of available wizard types.
      */
     public static final Map<String, String> AVAILABLE_WIZARD_TYPES = Map.of(
@@ -84,9 +72,17 @@ public abstract class View {
             "NO_ASSISTANTS", "No assistant cards left"
     );
     /**
-     * Locking object for view update wait.
+     * Regex for valid usernames.
      */
-    protected final Object updateLock = new Object();
+    protected static final String USERNAME_REGEX = "^\\w{4,32}$";
+    /**
+     * Minimum number of players.
+     */
+    protected static final int MIN_PLAYERS_NUMBER = 2;
+    /**
+     * Maximum number of players.
+     */
+    protected static final int MAX_PLAYERS_NUMBER = 3;
     /**
      * Directives dispatcher instance for this view.
      */
@@ -138,7 +134,6 @@ public abstract class View {
         this.directivesDispatcher = directivesDispatcher;
         this.directivesParser = directivesParser;
         this.directivesParser.setView(this);
-        this.startMainLoopThread();
     }
 
     /**
@@ -151,15 +146,6 @@ public abstract class View {
         Pattern pattern = Pattern.compile(USERNAME_REGEX);
         Matcher matcher = pattern.matcher(username);
         return matcher.matches();
-    }
-
-    /**
-     * Method called to unlock the view update wait object.
-     */
-    public void unlockUpdate() {
-        synchronized (this.updateLock) {
-            this.updateLock.notifyAll();
-        }
     }
 
     /**
@@ -306,55 +292,47 @@ public abstract class View {
     }
 
     /**
-     * Main loop thread method, for updating view according to received directive type.
+     * Method called to update the view according to received directive type.
      */
-    protected void startMainLoopThread() {
-        new Thread(() -> {
-            while (this.winners.isEmpty()) {
-                try {
-                    synchronized (this.updateLock) {
-                        this.updateLock.wait();
-                    }
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new ViewException(String.format("View update wait was interrupted (%s)", e.getMessage()), e);
-                }
-                String messageContent = this.directivesParser.getMessageContent();
-                switch (this.directivesParser.getMessageType()) {
-                    case CREATE -> {
-                        this.checkWaitForStart(messageContent);
-                        this.gameCreator = true;
-                    }
-                    case PLAYER -> this.checkStart(messageContent);
-                    case START -> {
-                        this.startShow();
-                        this.continueGame();
-                    }
-                    case ACTION -> {
-                        this.updateGame();
-                        this.checkWinners();
-                        this.continueGame();
-                    }
-                    case ABORT -> {
-                        this.checkEmptyContent(messageContent);
-                        this.showAbort(messageContent);
-                        this.reset();
-                        this.returnToMainMenu();
-                    }
-                    case ERROR -> {
-                        this.checkEmptyContent(messageContent);
-                        this.showError(messageContent);
-                        if (this.previousMessageType == MessageType.CREATE || this.previousMessageType == MessageType.PLAYER) {
-                            this.reset();
-                            this.returnToMainMenu();
-                        } else {
-                            this.continueGame();
-                        }
-                    }
+    public void updateView() {
+        String messageContent = this.directivesParser.getMessageContent();
+        switch (this.directivesParser.getMessageType()) {
+            case CREATE -> {
+                this.checkWaitForStart(messageContent);
+                this.gameCreator = true;
+            }
+            case PLAYER -> this.checkStart(messageContent);
+            case START -> {
+                this.startShow();
+                this.continueGame();
+            }
+            case ACTION -> {
+                this.updateGame();
+                this.checkWinners();
+                if (!this.winners.isEmpty()) {
+                    this.closeGame(this.winners);
+                    this.returnToMainMenu();
+                } else {
+                    this.continueGame();
                 }
             }
-            this.closeGame(this.winners);
-        }).start();
+            case ABORT -> {
+                this.checkEmptyContent(messageContent);
+                this.showAbort(messageContent);
+                this.reset();
+                this.returnToMainMenu();
+            }
+            case ERROR -> {
+                this.checkEmptyContent(messageContent);
+                this.showError(messageContent);
+                if (this.previousMessageType == MessageType.CREATE || this.previousMessageType == MessageType.PLAYER) {
+                    this.reset();
+                    this.returnToMainMenu();
+                } else {
+                    this.continueGame();
+                }
+            }
+        }
     }
 
     /**

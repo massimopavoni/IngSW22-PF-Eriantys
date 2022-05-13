@@ -135,7 +135,7 @@ public class DirectivesParser {
             this.messageContent = this.jsonMapper.readTree(directiveTree.get("content").toString());
             if (this.messageType == MessageType.START || this.messageType == MessageType.ACTION)
                 this.gameJSON = this.messageContent;
-            this.view.unlockUpdate();
+            this.view.updateView();
         } catch (JsonProcessingException e) {
             throw new DirectivesParserException((String.format("Error while deserializing directive (%s)", e.getMessage())), e);
         }
