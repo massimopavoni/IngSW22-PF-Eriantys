@@ -29,16 +29,21 @@ public class CLIActionsExecutor {
     /**
      * Message for requesting a tokens list from the user.
      */
-    private static final String TOKENS_LIST_MESSAGE = "> Provide a list of tokens in the form of [y/b/g/r/p][number], " +
-            "separated by a whitespace (e.g. y1 r4 p2): ";
+    private static final String TOKENS_LIST_MESSAGE = String.format(
+            "> Provide a list of tokens in the form of [%s][number], ",
+            String.join("/", View.AVAILABLE_TOKEN_COLORS.keySet().stream()
+                    .map(key -> String.format("%s%s%s", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
+                            key, CLIConstants.ANSI_RESET)).toList()))
+            + "separated by a whitespace (e.g. y1 r4 p2): ";
     /**
      * Regex for parsing color of tokens.
      */
-    private static final String TOKEN_COLOR_REGEX = "([ybgrp])";
+    private static final String TOKEN_COLORS_REGEX = String.format("([%s])",
+            String.join("", View.AVAILABLE_TOKEN_COLORS.keySet()));
     /**
      * Regex for parsing a list of tokens.
      */
-    private static final String TOKENS_LIST_REGEX = TOKEN_COLOR_REGEX + "(\\d)";
+    private static final String TOKENS_LIST_REGEX = TOKEN_COLORS_REGEX + "(\\d)";
     /**
      * CLI actions executor singleton instance.
      */
@@ -409,19 +414,18 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void herald(String username) {
-        System.out.println("> Choose an island:");
+        System.out.print("> Choose an island: ");
         int islandsSize = this.directivesParser.getIslandsSize();
         String islandIndexString;
         int islandIndex = -1;
         while (islandIndex < 0 || islandIndex >= islandsSize) {
-            System.out.print("> ");
             try {
                 islandIndexString = input.nextLine().strip();
                 islandIndex = Integer.parseInt(islandIndexString) - 1;
                 if (islandIndex < 0 || islandIndex >= islandsSize)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
-                System.out.println("> Invalid input, choose an island:");
+                System.out.print("> Invalid input, choose an island: ");
             }
         }
         this.directivesDispatcher.activateHerald(username, islandIndex);
@@ -433,19 +437,18 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void herbalist(String username) {
-        System.out.println("> Choose an island:");
+        System.out.print("> Choose an island: ");
         int islandsSize = this.directivesParser.getIslandsSize();
         String islandIndexString;
         int islandIndex = -1;
         while (islandIndex < 0 || islandIndex >= islandsSize) {
-            System.out.print("> ");
             try {
                 islandIndexString = input.nextLine().strip();
                 islandIndex = Integer.parseInt(islandIndexString) - 1;
                 if (islandIndex < 0 || islandIndex >= islandsSize)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
-                System.out.println("> Invalid input, choose an island:");
+                System.out.print("> Invalid input, choose an island: ");
             }
         }
         this.directivesDispatcher.activateHerbalist(username, islandIndex);
@@ -474,7 +477,29 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void monk(String username) {
-
+        System.out.print("> Select an island: ");
+        List<String> studentsToIsland = new ArrayList<>();
+        int islandsSize = this.directivesParser.getIslandsSize();
+        int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("monk");
+        int islandIndex = -1;
+        String choice;
+        while (islandIndex < 0 || islandIndex >= islandsSize ||
+                studentsToIsland.size() < 1 || studentsToIsland.size() > maxStudents) {
+            choice = CLIActionsExecutor.input.nextLine().strip();
+            try {
+                islandIndex = Integer.parseInt(choice) - 1;
+                if (islandIndex < 0 || islandIndex >= islandsSize)
+                    throw new NumberFormatException();
+                System.out.print(TOKENS_LIST_MESSAGE);
+                choice = CLIActionsExecutor.input.nextLine().toLowerCase();
+                studentsToIsland = this.parseTokensList(choice);
+                if (studentsToIsland.size() < 1 || studentsToIsland.size() > maxStudents)
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.print("> Invalid input, select an island: ");
+            }
+        }
+        this.directivesDispatcher.activateMonk(username, studentsToIsland, islandIndex);
     }
 
     /**
