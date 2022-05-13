@@ -142,7 +142,7 @@ public class CLIActionsExecutor {
         List<String> actionNameArgs;
         int chosenAction = -1;
         String chosenActionString;
-        System.out.printf("%n> Choose an action:%n");
+        System.out.printf("%n> Choose an action [default: 1]:%n");
         while (chosenAction < 0 || chosenAction >= availableActions.size()) {
             for (int i = 0; i < availableActions.size(); i++) {
                 actionNameArgs = Arrays.stream(availableActions.get(i).split("(?=\\p{Lu})")).toList();
@@ -155,11 +155,11 @@ public class CLIActionsExecutor {
             System.out.print("> ");
             try {
                 chosenActionString = CLIActionsExecutor.input.nextLine().strip();
-                chosenAction = Integer.parseInt(chosenActionString) - 1;
+                chosenAction = !chosenActionString.isEmpty() ? Integer.parseInt(chosenActionString) - 1 : 0;
                 if (chosenAction < 0 || chosenAction >= availableActions.size())
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
-                System.out.println("> Invalid input, choose an action:");
+                System.out.println("> Invalid input, choose an action [default: 1]:");
             }
         }
         try {
@@ -281,9 +281,9 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void moveMotherNature(String username) {
-        System.out.print("> Choose the number of steps for mother nature: ");
         int baseSteps = this.directivesParser.getDashboardLastDiscardedAssistantCard(username).getValue().getValue();
         int additionalSteps = this.directivesParser.getAdditionalMotherNatureSteps();
+        System.out.printf("> Choose the number of steps for mother nature (max %d): ", baseSteps + additionalSteps);
         String motherNatureStepsString;
         int motherNatureSteps = 0;
         while (motherNatureSteps < 1 || motherNatureSteps > baseSteps + additionalSteps) {
@@ -293,8 +293,8 @@ public class CLIActionsExecutor {
                 if (motherNatureSteps < 1 || motherNatureSteps > baseSteps + additionalSteps)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
-                motherNatureSteps = 0;
-                System.out.print("> Invalid input, choose the number of steps for mother nature: ");
+                System.out.printf("> Invalid input, choose the number of steps for mother nature (max %d): ",
+                        baseSteps + additionalSteps);
             }
         }
         this.directivesDispatcher.actionMoveMotherNature(username, motherNatureSteps);
