@@ -32,9 +32,13 @@ public class CLIActionsExecutor {
     private static final String TOKENS_LIST_MESSAGE = "> Provide a list of tokens in the form of [y/b/g/r/p][number], " +
             "separated by a whitespace (e.g. y1 r4 p2): ";
     /**
+     * Regex for parsing color of tokens.
+     */
+    private static final String TOKEN_COLOR_REGEX = "([ybgrp])";
+    /**
      * Regex for parsing a list of tokens.
      */
-    private static final String TOKENS_LIST_REGEX = "([ybgrp])(\\d)";
+    private static final String TOKENS_LIST_REGEX = TOKEN_COLOR_REGEX + "(\\d)";
     /**
      * CLI actions executor singleton instance.
      */
@@ -400,6 +404,71 @@ public class CLIActionsExecutor {
     }
 
     /**
+     * Activate herald character card effect.
+     *
+     * @param username player username
+     */
+    private void herald(String username) {
+        System.out.println("> Choose an island:");
+        int islandsSize = this.directivesParser.getIslandsSize();
+        String islandIndexString;
+        int islandIndex = -1;
+        while (islandIndex < 0 || islandIndex >= islandsSize) {
+            System.out.print("> ");
+            try {
+                islandIndexString = input.nextLine().strip();
+                islandIndex = Integer.parseInt(islandIndexString) - 1;
+                if (islandIndex < 0 || islandIndex >= islandsSize)
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.println("> Invalid input, choose an island:");
+            }
+        }
+        this.directivesDispatcher.activateHerald(username, islandIndex);
+    }
+
+    /**
+     * Activate herbalist character card effect.
+     *
+     * @param username player username
+     */
+    private void herbalist(String username) {
+        System.out.println("> Choose an island:");
+        int islandsSize = this.directivesParser.getIslandsSize();
+        String islandIndexString;
+        int islandIndex = -1;
+        while (islandIndex < 0 || islandIndex >= islandsSize) {
+            System.out.print("> ");
+            try {
+                islandIndexString = input.nextLine().strip();
+                islandIndex = Integer.parseInt(islandIndexString) - 1;
+                if (islandIndex < 0 || islandIndex >= islandsSize)
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.println("> Invalid input, choose an island:");
+            }
+        }
+        this.directivesDispatcher.activateHerbalist(username, islandIndex);
+    }
+
+    /**
+     * Activate mushroomer character card effect.
+     *
+     * @param username player username
+     */
+    private void mushroomer(String username) {
+    }
+
+    /**
+     * Activate scoundrel character card effect.
+     *
+     * @param username player username
+     */
+    private void scoundrel(String username) {
+    }
+
+
+    /**
      * Activate monk character card effect.
      *
      * @param username player username
@@ -409,38 +478,11 @@ public class CLIActionsExecutor {
     }
 
     /**
-     * Activate herald character card effect.
-     *
-     * @param username player username
-     */
-    private void herald(String username) {
-
-    }
-
-    /**
-     * Activate herbalist character card effect.
-     *
-     * @param username player username
-     */
-    private void herbalist(String username) {
-
-    }
-
-    /**
      * Activate jester character card effect.
      *
      * @param username player username
      */
     private void jester(String username) {
-
-    }
-
-    /**
-     * Activate mushroomer character card effect.
-     *
-     * @param username player username
-     */
-    private void mushroomer(String username) {
 
     }
 
@@ -459,15 +501,6 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void queen(String username) {
-
-    }
-
-    /**
-     * Activate scoundrel character card effect.
-     *
-     * @param username player username
-     */
-    private void scoundrel(String username) {
 
     }
 
