@@ -1,7 +1,6 @@
 package it.polimi.ingsw.javangers.client.view.gui;
 
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -72,26 +71,24 @@ public class GUIGameDisplayer {
     //bisogna togliere il run later ma non funziona senza
     private void displayCurrentPhase() {
         Pair<String, String> currentPhasePair = this.directivesParser.getCurrentPhase();
-        Platform.runLater(() -> this.currentPhase.setText("Current phase: " + currentPhasePair.getKey() + " => " + currentPhasePair.getValue()));
+        this.currentPhase.setText("Current phase: " + currentPhasePair.getKey() + " => " + currentPhasePair.getValue());
     }
 
     //bisogna togliere il run later ma non funziona senza
     private void displayPlayersOrder(String username) throws DirectivesParser.DirectivesParserException {
-        Platform.runLater(() -> {
-            //non va fatto in un try catch
-            try {
-                playersOrder.setText("You are " + username + ", Player's order is: " + directivesParser.getPlayersOrder().toString());
-            } catch (DirectivesParser.DirectivesParserException e) {
-                throw new RuntimeException(e);
-            }
-            /* da sistemare non visualizzate in modo corretto
-            fxmlUsername1.setText(username);
-            fxmlUsername2.setText(directivesParser.getDashboardNames().get(1));
-            if(directivesParser.getExactPlayersNumber() == 3)
-                fxmlUsername3.setText(directivesParser.getDashboardNames().get(2));
+        //non va fatto in un try catch
+        try {
+            playersOrder.setText("You are " + username + ", Player's order is: " + directivesParser.getPlayersOrder().toString());
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new RuntimeException(e);
+        }
+        /* da sistemare non visualizzate in modo corretto
+        fxmlUsername1.setText(username);
+        fxmlUsername2.setText(directivesParser.getDashboardNames().get(1));
+        if(directivesParser.getExactPlayersNumber() == 3)
+            fxmlUsername3.setText(directivesParser.getDashboardNames().get(2));
 
-             */
-        });
+         */
     }
 
     private void displayCharacterCards() {
@@ -122,7 +119,7 @@ public class GUIGameDisplayer {
         }
         playerDashboard1.setImage(image);
         playerDashboard2.setImage(image);
-        if(directivesParser.getExactPlayersNumber() == 3)
+        if (directivesParser.getExactPlayersNumber() == 3)
             playerDashboard3.setImage(image);
     }
 

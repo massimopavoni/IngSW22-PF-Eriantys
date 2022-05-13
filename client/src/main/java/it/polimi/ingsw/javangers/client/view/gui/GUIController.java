@@ -27,6 +27,8 @@ public class GUIController extends View implements Initializable {
     // si puo rendere piu generica
     private final String[] possibleTowerColor = {AVAILABLE_TOWER_COLORS.get("b"), AVAILABLE_TOWER_COLORS.get("w"), AVAILABLE_TOWER_COLORS.get("g")};
     private final String[] possibleCreateJoin = {"CREATE", "JOIN"};
+    private final Alert errorAlert;
+    private final GUIGameDisplayer guiGameDisplayer;
     //private GUIApplication application;
     @FXML
     //non deve essere final
@@ -50,8 +52,6 @@ public class GUIController extends View implements Initializable {
     private Button confirmButton;
     @FXML
     private Label loadingInfo;
-    private final Alert errorAlert;
-    private final GUIGameDisplayer guiGameDisplayer;
 
 
     /**
@@ -74,6 +74,11 @@ public class GUIController extends View implements Initializable {
     @Override
     public void main(String[] args) {
 
+    }
+
+    @Override
+    public void updateView() {
+        Platform.runLater(super::updateView);
     }
 
     protected void openNewStage(Button button, String resourceName) {
@@ -173,11 +178,9 @@ public class GUIController extends View implements Initializable {
     @Override
     @FXML
     protected void waitForStart() {
-        Platform.runLater(() -> {
-            this.stage.close();
-            openNewStage("loading-page.fxml");
-            this.loadingInfo.setText("Waiting start game");
-        });
+        //this.stage.close();
+        openNewStage("loading-page.fxml");
+        this.loadingInfo.setText("Waiting start game");
 
         //questa funzione viene chiamata dalla view che è sbloccata dal parser
         //visualizzare schermata attendo nuovi player
@@ -191,10 +194,8 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        Platform.runLater(() ->{
-            this.stage.close();
-            guiGameDisplayer.openNewStage();
-        });
+        //this.stage.close();
+        guiGameDisplayer.openNewStage();
         try {
             this.guiGameDisplayer.displayGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
@@ -209,18 +210,14 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void showAbort(String message) {
-        Platform.runLater(() -> {
-            stage.close();
-            Platform.runLater(() -> alertMessage(message, "Please create a new game or wait to join a new game"));
-        });
+        alertMessage(message, "Please create a new game or wait to join a new game");
     }
 
     @Override
     protected void showError(String message) {
-        Platform.runLater(() -> {
-            stage.close();
-            Platform.runLater(() -> alertMessage(message, "Please retry"));
-       });
+        //stage.close();
+        alertMessage(message, "Please retry");
+
     }
 
     @Override
@@ -230,21 +227,20 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void enableActions() {
-    // preso in considerazione da thom da continuare
+        // preso in considerazione da thom da continuare
 
     }
 
     @Override
     protected void waitTurn() {
-        Platform.runLater(() -> {
-            openNewStage("loading-page.fxml");
-            this.loadingInfo.setText("Waiting your turn");
-        });
+
+        openNewStage("loading-page.fxml");
+        this.loadingInfo.setText("Waiting your turn");
     }
 
     @Override
     protected void returnToMainMenu() {
-        Platform.runLater(() -> this.openNewStage("create-join.fxml"));
+        this.openNewStage("create-join.fxml");
     }
 
     @Override
