@@ -52,15 +52,15 @@ public class GUIGameDisplayer {
     @FXML
     private Button fillCloudsButton;
     @FXML
-    private Button playAssistantCard;
+    private Button playAssistantCardButton;
     @FXML
-    private Button moveStudents;
+    private Button moveStudentsButton;
     @FXML
-    private Button moveMotherNature;
+    private Button moveMotherNatureButton;
     @FXML
-    private Button chooseCloud;
+    private Button chooseCloudButton;
     @FXML
-    private Button activateCharacterCard;
+    private Button activateCharacterCardButton;
 
 
     protected GUIGameDisplayer(DirectivesParser directivesParser,DirectivesDispatcher directivesDispatcher, Stage stage) {
@@ -69,9 +69,9 @@ public class GUIGameDisplayer {
         this.stage = stage;
     }
 
-    protected void openNewStage() {
+    protected void openNewStage(String resource) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("game-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resource));
             fxmlLoader.setController(this);
             this.root = fxmlLoader.load();
             this.scene = new Scene(root);
@@ -148,28 +148,56 @@ public class GUIGameDisplayer {
         directivesDispatcher.actionFillClouds(this.username);
     }
 
+    @FXML
+    private void playAssistantCard(){
+        openNewStage("");
+        String cardChosen="";
+        directivesDispatcher.actionPlayAssistantCard(this.username, cardChosen);
+    }
+
+    @FXML
+    private void moveStudents(){
+        directivesDispatcher.actionFillClouds(this.username);
+    }
+
+    @FXML
+    private void moveMotherNature(){
+        directivesDispatcher.actionFillClouds(this.username);
+    }
+
+    @FXML
+    private void chooseCloud(){
+        directivesDispatcher.actionFillClouds(this.username);
+    }
+
+    @FXML
+    private void activateCharacterCard(){
+        directivesDispatcher.actionFillClouds(this.username);
+    }
+
+
 
    protected Button getFillCloudsButton(){
         return fillCloudsButton;
    }
 
-    protected Button getPlayAssistantCard() {
-        return playAssistantCard;
+    protected Button getPlayAssistantCardButton() {
+        return playAssistantCardButton;
     }
 
-    protected Button getMoveStudents() {
-        return moveStudents;
+    protected Button getMoveStudentsButton() {
+        return moveStudentsButton;
     }
 
-    protected Button getMoveMotherNature() {
-        return moveMotherNature;
+    protected Button getMoveMotherNatureButton() {
+        return moveMotherNatureButton;
     }
 
-    protected Button getChooseCloud() {
-        return chooseCloud;
+    protected Button getChooseCloudButton() {
+        return chooseCloudButton;
     }
 
-    protected Button getActivateCharacterCard() {
-        return activateCharacterCard;
+    protected Button getActivateCharacterCardButton() {
+        return activateCharacterCardButton;
     }
 }

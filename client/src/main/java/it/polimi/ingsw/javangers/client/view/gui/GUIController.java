@@ -193,7 +193,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        guiGameDisplayer.openNewStage();
+        guiGameDisplayer.openNewStage("game-view.fxml");
         try {
             this.guiGameDisplayer.displayGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
@@ -223,6 +223,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void enableActions() {
+        this.disableAllButtons();
         this.enableActionButtons();
         //forse da continuare
         //aggiungere è il tuo turno
@@ -240,8 +241,11 @@ public class GUIController extends View implements Initializable {
             for (String action: directivesParser.getAvailableActions()) {
                 switch (action){
                     case "FillClouds" -> guiGameDisplayer.getFillCloudsButton().setDisable(false);
-                    case "PlayAssistantCard" -> guiGameDisplayer.getPlayAssistantCard().setDisable(false);
-                    //da continuare
+                    case "PlayAssistantCard" -> guiGameDisplayer.getPlayAssistantCardButton().setDisable(false);
+                    case "MoveStudents" -> guiGameDisplayer.getMoveStudentsButton().setDisable(false);
+                    case "MoveMotherNature" -> guiGameDisplayer.getMoveMotherNatureButton().setDisable(false);
+                    case "ChooseCloud" -> guiGameDisplayer.getChooseCloudButton().setDisable(false);
+                    case "ActivateCharacterCard" -> guiGameDisplayer.getActivateCharacterCardButton().setDisable(false);
                 }
             }
         } catch (DirectivesParser.DirectivesParserException e) {
@@ -251,11 +255,11 @@ public class GUIController extends View implements Initializable {
 
     private void disableAllButtons(){
         guiGameDisplayer.getFillCloudsButton().setDisable(true);
-        guiGameDisplayer.getPlayAssistantCard().setDisable(true);
-        guiGameDisplayer.getMoveStudents().setDisable(true);
-        guiGameDisplayer.getMoveMotherNature().setDisable(true);
-        guiGameDisplayer.getChooseCloud().setDisable(true);
-        guiGameDisplayer.getActivateCharacterCard().setDisable(true);
+        guiGameDisplayer.getPlayAssistantCardButton().setDisable(true);
+        guiGameDisplayer.getMoveStudentsButton().setDisable(true);
+        guiGameDisplayer.getMoveMotherNatureButton().setDisable(true);
+        guiGameDisplayer.getChooseCloudButton().setDisable(true);
+        guiGameDisplayer.getActivateCharacterCardButton().setDisable(true);
 
     }
 
