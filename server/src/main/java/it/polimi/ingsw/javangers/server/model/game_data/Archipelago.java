@@ -4,6 +4,7 @@ import it.polimi.ingsw.javangers.server.model.game_data.token_containers.Island;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
@@ -62,7 +63,9 @@ public class Archipelago {
     public void setMotherNaturePosition(int position) {
         if (position < 0 || position >= this.getIslands().size())
             throw new IllegalArgumentException("Invalid mother nature position");
+        this.islandsList.get(this.motherNaturePosition).setMotherNature(false);
         this.motherNaturePosition = position;
+        this.islandsList.get(this.motherNaturePosition).setMotherNature(true);
     }
     //endregion
 
@@ -86,7 +89,10 @@ public class Archipelago {
             Island rightIsland = this.islandsList.remove((this.islandsList.indexOf(selectedIsland) + 1) % this.islandsList.size());
             selectedIsland.mergeWith(rightIsland);
         }
-        this.motherNaturePosition = this.islandsList.indexOf(selectedIsland);
+        Optional<Island> motherNatureIsland = this.islandsList.stream().filter(Island::hasMotherNature).findFirst();
+        if (motherNatureIsland.isEmpty())
+            throw new IllegalStateException("No island has mother nature on it");
+        this.motherNaturePosition = this.islandsList.indexOf(motherNatureIsland.get());
     }
     //endregion
 }
