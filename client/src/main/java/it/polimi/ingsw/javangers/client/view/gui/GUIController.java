@@ -203,7 +203,12 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void updateGame() {
-
+        //forse da completare
+        try {
+            this.guiGameDisplayer.displayGame(this.username);
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GUIGameDisplayer {
 
@@ -25,7 +28,8 @@ public class GUIGameDisplayer {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    //private GUIApplication application;
+    private Stage popUpStage;
+    private String assistantCardChosen;
     @FXML
     private ImageView characterCard1;
     @FXML
@@ -48,6 +52,26 @@ public class GUIGameDisplayer {
     private ImageView playerDashboard2;
     @FXML
     private ImageView playerDashboard3;
+    @FXML
+    private ImageView cat;
+    @FXML
+    private ImageView cheetah;
+    @FXML
+    private ImageView dog;
+    @FXML
+    private ImageView eagle;
+    @FXML
+    private ImageView elephant;
+    @FXML
+    private ImageView fox;
+    @FXML
+    private ImageView octopus;
+    @FXML
+    private ImageView ostrich;
+    @FXML
+    private ImageView snake;
+    @FXML
+    private ImageView turtle;
     private String username;
     @FXML
     private Button fillCloudsButton;
@@ -69,9 +93,9 @@ public class GUIGameDisplayer {
         this.stage = stage;
     }
 
-    protected void openNewStage(String resource) {
+    protected void openNewStage(String fxmlFile) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resource));
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
             fxmlLoader.setController(this);
             this.root = fxmlLoader.load();
             this.scene = new Scene(root);
@@ -82,6 +106,25 @@ public class GUIGameDisplayer {
             throw new RuntimeException(e);
         }
     }
+
+
+    public void openPopUp(String fxmlFile) {
+        FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
+        fxmlLoader.setController(this);
+        Parent root;
+        popUpStage = new Stage();
+        try {
+            root = fxmlLoader.load();
+            popUpStage.setScene(new Scene(root));
+            popUpStage.initModality(Modality.APPLICATION_MODAL);
+            popUpStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
     private void displayCurrentPhase() {
@@ -143,6 +186,50 @@ public class GUIGameDisplayer {
         this.printPlayersDashboard();
     }
 
+
+
+    private void displayAvailableAssistantCards() throws URISyntaxException {
+        Map<String,Pair<Integer,Integer>> discardedAssistantCardsMap = directivesParser.getDashboardDiscardedAssistantCards(this.username);
+                cat.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/cat.png")).toURI().toString()));
+                cheetah.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/cheetah.png")).toURI().toString()));
+                dog.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/dog.png")).toURI().toString()));
+                eagle.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/eagle.png")).toURI().toString()));
+                elephant.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/elephant.png")).toURI().toString()));
+                fox.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/fox.png")).toURI().toString()));
+                octopus.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/octopus.png")).toURI().toString()));
+                ostrich.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/ostrich.png")).toURI().toString()));
+                snake.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/snake.png")).toURI().toString()));
+                turtle.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/turtle.png")).toURI().toString()));
+
+        for (String cardName:discardedAssistantCardsMap.keySet()) {
+            if(cardName.toLowerCase().equals("cat"))
+                cat.setDisable(true);
+            if(cardName.toLowerCase().equals("cheetah"))
+                cheetah.setDisable(true);
+            if(cardName.toLowerCase().equals("dog"))
+                dog.setDisable(true);
+            if(cardName.toLowerCase().equals("eagle"))
+                eagle.setDisable(true);
+            if(cardName.toLowerCase().equals("elephant"))
+                elephant.setDisable(true);
+            if(cardName.toLowerCase().equals("fox"))
+                fox.setDisable(true);
+            if(cardName.toLowerCase().equals("octopus"))
+                octopus.setDisable(true);
+            if(cardName.toLowerCase().equals("ostrich"))
+                ostrich.setDisable(true);
+            if(cardName.toLowerCase().equals("snake"))
+                snake.setDisable(true);
+            if(cardName.toLowerCase().equals("turtle"))
+                turtle.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void selectAssistantCard(MouseEvent event){
+        assistantCardChosen = ((ImageView) event.getSource()).getId();
+    }
+
     @FXML
     private void fillClouds(){
         directivesDispatcher.actionFillClouds(this.username);
@@ -150,29 +237,40 @@ public class GUIGameDisplayer {
 
     @FXML
     private void playAssistantCard(){
-        openNewStage("");
-        String cardChosen="";
-        directivesDispatcher.actionPlayAssistantCard(this.username, cardChosen);
+        openPopUp("assistantCardsChoice.fxml");
+        try {
+            this.displayAvailableAssistantCards();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
+    private void confirmAssistantCard(){
+        popUpStage.close();
+        this.directivesDispatcher.actionPlayAssistantCard(this.username, this.assistantCardChosen);
+    }
+
+
+
+    @FXML
     private void moveStudents(){
-        directivesDispatcher.actionFillClouds(this.username);
+
     }
 
     @FXML
     private void moveMotherNature(){
-        directivesDispatcher.actionFillClouds(this.username);
+
     }
 
     @FXML
     private void chooseCloud(){
-        directivesDispatcher.actionFillClouds(this.username);
+
     }
 
     @FXML
     private void activateCharacterCard(){
-        directivesDispatcher.actionFillClouds(this.username);
+
     }
 
 
