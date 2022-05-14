@@ -26,13 +26,14 @@ public class CLIActionsExecutor {
      * Map for methods corresponding to character cards effects.
      */
     private static final Map<String, Method> EFFECT_METHOD_MAPPINGS;
+    private static final String TOKEN_LITERAL = "%s%s%s";
     /**
      * Message for requesting a tokens list from the user.
      */
     private static final String TOKENS_LIST_MESSAGE = String.format(
             "Provide a list of tokens in the form of [%s][number], ",
             String.join("/", View.AVAILABLE_TOKEN_COLORS.keySet().stream()
-                    .map(key -> String.format("%s%s%s", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
+                    .map(key -> String.format(TOKEN_LITERAL, CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
                             key, CLIConstants.ANSI_RESET)).toList()))
             + "separated by a whitespace (e.g. y1 r4 p2): ";
     /**
@@ -62,30 +63,13 @@ public class CLIActionsExecutor {
             actionMethodMappings.put("ActivateCharacterCard",
                     CLIActionsExecutor.class.getDeclaredMethod("activateCharacterCard", String.class));
 
-            effectMethodMappings.put("monk",
-                    CLIActionsExecutor.class.getDeclaredMethod("monk", String.class));
-            effectMethodMappings.put("innkeeper",
-                    CLIActionsExecutor.class.getDeclaredMethod("innkeeper", String.class));
-            effectMethodMappings.put("herald",
-                    CLIActionsExecutor.class.getDeclaredMethod("herald", String.class));
-            effectMethodMappings.put("mailman",
-                    CLIActionsExecutor.class.getDeclaredMethod("mailman", String.class));
-            effectMethodMappings.put("herbalist",
-                    CLIActionsExecutor.class.getDeclaredMethod("herbalist", String.class));
-            effectMethodMappings.put("centaur",
-                    CLIActionsExecutor.class.getDeclaredMethod("centaur", String.class));
-            effectMethodMappings.put("jester",
-                    CLIActionsExecutor.class.getDeclaredMethod("jester", String.class));
-            effectMethodMappings.put("knight",
-                    CLIActionsExecutor.class.getDeclaredMethod("knight", String.class));
-            effectMethodMappings.put("mushroomer",
-                    CLIActionsExecutor.class.getDeclaredMethod("mushroomer", String.class));
-            effectMethodMappings.put("bard",
-                    CLIActionsExecutor.class.getDeclaredMethod("bard", String.class));
-            effectMethodMappings.put("queen",
-                    CLIActionsExecutor.class.getDeclaredMethod("queen", String.class));
-            effectMethodMappings.put("scoundrel",
-                    CLIActionsExecutor.class.getDeclaredMethod("scoundrel", String.class));
+            List<String> availableEffects = Arrays.asList(
+                    "monk", "innkeeper", "herald", "mailman", "herbalist", "centaur",
+                    "jester", "knight", "mushroomer", "bard", "queen", "scoundrel");
+            for (String effect : availableEffects) {
+                effectMethodMappings.put(effect,
+                        CLIActionsExecutor.class.getDeclaredMethod(effect, String.class));
+            }
         } catch (NoSuchMethodException e) {
             System.err.printf("Error while creating action/effect method mappings (%s)", e.getMessage());
             System.exit(1);
@@ -458,7 +442,7 @@ public class CLIActionsExecutor {
     private void mushroomer(String username) {
         List<String> availableTokenColors = View.AVAILABLE_TOKEN_COLORS.keySet().stream().toList();
         String availableTokenColorsString = String.join("/", availableTokenColors.stream()
-                .map(key -> String.format("%s%s%s", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
+                .map(key -> String.format(TOKEN_LITERAL, CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
                         key, CLIConstants.ANSI_RESET)).toList());
         System.out.printf("> Choose a Student color (%s): ", availableTokenColorsString);
         String tokenColor = "";
@@ -478,7 +462,7 @@ public class CLIActionsExecutor {
     private void scoundrel(String username) {
         List<String> availableTokenColors = View.AVAILABLE_TOKEN_COLORS.keySet().stream().toList();
         String availableTokenColorsString = String.join("/", availableTokenColors.stream()
-                .map(key -> String.format("%s%s%s", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
+                .map(key -> String.format(TOKEN_LITERAL, CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
                         key, CLIConstants.ANSI_RESET)).toList());
         System.out.printf("> Choose a Student color (%s): ", availableTokenColorsString);
         String tokenColor = "";
@@ -508,7 +492,7 @@ public class CLIActionsExecutor {
                 islandIndex = Integer.parseInt(choice) - 1;
                 if (islandIndex < 0 || islandIndex >= islandsSize)
                     throw new NumberFormatException();
-                System.out.printf("> %s",TOKENS_LIST_MESSAGE);
+                System.out.printf("> %s", TOKENS_LIST_MESSAGE);
                 choice = CLIActionsExecutor.input.nextLine().toLowerCase();
                 studentsToIsland = this.parseTokensList(choice);
                 if (studentsToIsland.size() != maxStudents)
@@ -526,7 +510,7 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void queen(String username) {
-        System.out.printf("> %s",TOKENS_LIST_MESSAGE);
+        System.out.printf("> %s", TOKENS_LIST_MESSAGE);
         List<String> studentsToHall = new ArrayList<>();
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("queen");
         String choice;
@@ -546,7 +530,7 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void jester(String username) {
-        System.out.printf("> Tokens from entrance. %s",TOKENS_LIST_MESSAGE);
+        System.out.printf("> Tokens from entrance. %s", TOKENS_LIST_MESSAGE);
         List<String> tokensFromEntrance = new ArrayList<>();
         List<String> tokensToEntrance = new ArrayList<>();
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("jester");
@@ -557,7 +541,7 @@ public class CLIActionsExecutor {
             if (tokensFromEntrance.size() != maxStudents) {
                 System.out.printf("> Invalid input, tokens from entrance. %s", TOKENS_LIST_MESSAGE);
             } else {
-                System.out.printf("> Tokens to entrance. %s",TOKENS_LIST_MESSAGE);
+                System.out.printf("> Tokens to entrance. %s", TOKENS_LIST_MESSAGE);
                 choice = CLIActionsExecutor.input.nextLine().toLowerCase();
                 tokensToEntrance = this.parseTokensList(choice);
                 if (tokensToEntrance.size() != maxStudents)
@@ -573,7 +557,7 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void bard(String username) {
-        System.out.printf("> Tokens from hall. %s",TOKENS_LIST_MESSAGE);
+        System.out.printf("> Tokens from hall. %s", TOKENS_LIST_MESSAGE);
         List<String> tokensFromHall = new ArrayList<>();
         List<String> tokensFromEntrance = new ArrayList<>();
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("bard");
@@ -584,7 +568,7 @@ public class CLIActionsExecutor {
             if (tokensFromHall.size() != maxStudents) {
                 System.out.printf("> Invalid input, tokens from hall. %s", TOKENS_LIST_MESSAGE);
             } else {
-                System.out.printf("> Tokens from entrance. %s",TOKENS_LIST_MESSAGE);
+                System.out.printf("> Tokens from entrance. %s", TOKENS_LIST_MESSAGE);
                 choice = CLIActionsExecutor.input.nextLine().toLowerCase();
                 tokensFromEntrance = this.parseTokensList(choice);
                 if (tokensFromEntrance.size() != maxStudents)
