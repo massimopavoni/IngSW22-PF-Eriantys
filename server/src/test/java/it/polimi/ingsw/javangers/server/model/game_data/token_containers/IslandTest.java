@@ -29,7 +29,8 @@ class IslandTest {
                 () -> assertTrue(island.getTokenContainer().getTokens().isEmpty()),
                 () -> assertNotNull(island.getTowers()),
                 () -> assertEquals(new Pair<>(TowerColor.NONE, 0), island.getTowers()),
-                () -> assertEquals(0, island.getEnabled())
+                () -> assertEquals(0, island.getEnabled()),
+                () -> assertFalse(island.hasMotherNature())
         );
     }
 
@@ -56,11 +57,19 @@ class IslandTest {
     }
 
     @Test
+    @DisplayName("Test setMotherNature for flag")
+    void setMotherNature_changeFlag() {
+        island.setMotherNature(true);
+        assertTrue(island.hasMotherNature());
+    }
+
+    @Test
     @DisplayName("Test mergeWith for correct information merging")
     void mergeWith_correctInfo() {
         island.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         island.setTowers(new Pair<>(TowerColor.WHITE, 1));
         island.setEnabled(1);
+        island.setMotherNature(true);
         Island islandToMerge = new Island(1);
         islandToMerge.getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.PINK_FAIRY));
         islandToMerge.setTowers(new Pair<>(TowerColor.WHITE, 2));
@@ -72,7 +81,8 @@ class IslandTest {
                     put(TokenColor.PINK_FAIRY, 1);
                 }}, island.getTokenContainer().getColorCounts()),
                 () -> assertEquals(new Pair<>(TowerColor.WHITE, 3), island.getTowers()),
-                () -> assertEquals(1, island.getEnabled())
+                () -> assertEquals(1, island.getEnabled()),
+                () -> assertTrue(island.hasMotherNature())
         );
     }
 }
