@@ -460,6 +460,22 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void mushroomer(String username) {
+        Pattern pattern = Pattern.compile(TOKEN_COLORS_REGEX);
+        System.out.println("> Choose a Student color (e.g. y r p):");
+        String tokenColor = "";
+        Matcher matcher = pattern.matcher(tokenColor);
+        while (!matcher.find()) {
+            System.out.print("> ");
+            try {
+                tokenColor = input.nextLine().strip();
+                matcher = pattern.matcher(tokenColor);
+                if (!matcher.find())
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.println("> Invalid input, choose a student color:");
+            }
+        }
+        this.directivesDispatcher.activateMushroomer(username, tokenColor);
     }
 
     /**
@@ -468,8 +484,23 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void scoundrel(String username) {
+        Pattern pattern = Pattern.compile(TOKEN_COLORS_REGEX);
+        System.out.println("> Choose a Student color (e.g. y r p):");
+        String tokenColor = "";
+        Matcher matcher = pattern.matcher(tokenColor);
+        while (!matcher.find()) {
+            System.out.print("> ");
+            try {
+                tokenColor = input.nextLine().strip();
+                matcher = pattern.matcher(tokenColor);
+                if (!matcher.find())
+                    throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                System.out.println("> Invalid input, choose a student color:");
+            }
+        }
+        this.directivesDispatcher.activateScoundrel(username, tokenColor);
     }
-
 
     /**
      * Activate monk character card effect.
