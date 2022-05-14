@@ -30,20 +30,16 @@ public class CLIActionsExecutor {
      * Message for requesting a tokens list from the user.
      */
     private static final String TOKENS_LIST_MESSAGE = String.format(
-            "> Provide a list of tokens in the form of [%s][number], ",
+            "Provide a list of tokens in the form of [%s][number], ",
             String.join("/", View.AVAILABLE_TOKEN_COLORS.keySet().stream()
                     .map(key -> String.format("%s%s%s", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
                             key, CLIConstants.ANSI_RESET)).toList()))
             + "separated by a whitespace (e.g. y1 r4 p2): ";
     /**
-     * Regex for parsing color of tokens.
-     */
-    private static final String TOKEN_COLORS_REGEX = String.format("([%s])",
-            String.join("", View.AVAILABLE_TOKEN_COLORS.keySet()));
-    /**
      * Regex for parsing a list of tokens.
      */
-    private static final String TOKENS_LIST_REGEX = TOKEN_COLORS_REGEX + "(\\d)";
+    private static final String TOKENS_LIST_REGEX = String.format("([%s])(\\d)",
+            String.join("", View.AVAILABLE_TOKEN_COLORS.keySet()));
     /**
      * CLI actions executor singleton instance.
      */
@@ -242,7 +238,7 @@ public class CLIActionsExecutor {
                     islandIndex = Integer.parseInt(choice) - 1;
                     if (islandIndex < 0 || islandIndex >= islandsSize)
                         throw new NumberFormatException();
-                    System.out.print(TOKENS_LIST_MESSAGE);
+                    System.out.printf("> %s", TOKENS_LIST_MESSAGE);
                     choice = CLIActionsExecutor.input.nextLine().toLowerCase();
                     studentsToIslands.put(islandIndex, this.parseTokensList(choice));
                     islandIndex = -1;
@@ -261,7 +257,7 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void moveStudents(String username) {
-        System.out.printf("> Students from entrance to hall (press enter for none).%n%s", TOKENS_LIST_MESSAGE);
+        System.out.printf("> Students from entrance to hall (press enter for none).%n> %s", TOKENS_LIST_MESSAGE);
         List<String> studentsToHall = new ArrayList<>();
         Map<Integer, List<String>> studentsToIslands = new HashMap<>();
         String tokensListString;
@@ -275,7 +271,7 @@ public class CLIActionsExecutor {
             if (studentsToHall.size() + studentsToIslands.values().stream()
                     .mapToInt(List::size).sum() != studentsPerCloud) {
                 System.out.printf("> Invalid input, you have to move exactly %d students from the entrance.%n" +
-                                "> Students from entrance to hall (press enter for none).%n%s",
+                                "> Students from entrance to hall (press enter for none).%n> %s",
                         studentsPerCloud, TOKENS_LIST_MESSAGE);
                 studentsToHall = new ArrayList<>();
                 studentsToIslands = new HashMap<>();
@@ -297,7 +293,7 @@ public class CLIActionsExecutor {
         int motherNatureSteps = 0;
         while (motherNatureSteps < 1 || motherNatureSteps > baseSteps + additionalSteps) {
             try {
-                motherNatureStepsString = input.nextLine().strip();
+                motherNatureStepsString = CLIActionsExecutor.input.nextLine().strip();
                 motherNatureSteps = Integer.parseInt(motherNatureStepsString);
                 if (motherNatureSteps < 1 || motherNatureSteps > baseSteps + additionalSteps)
                     throw new NumberFormatException();
@@ -325,7 +321,7 @@ public class CLIActionsExecutor {
                         CLIGamePrinter.CARDINALITY_MAP.get(i), i + 1, CLIConstants.ANSI_RESET);
             System.out.print("> ");
             try {
-                cloudIndexString = input.nextLine().strip();
+                cloudIndexString = CLIActionsExecutor.input.nextLine().strip();
                 cloudIndex = Integer.parseInt(cloudIndexString) - 1;
                 if (cloudIndex < 0 || cloudIndex >= cloudSize)
                     throw new NumberFormatException();
@@ -420,7 +416,7 @@ public class CLIActionsExecutor {
         int islandIndex = -1;
         while (islandIndex < 0 || islandIndex >= islandsSize) {
             try {
-                islandIndexString = input.nextLine().strip();
+                islandIndexString = CLIActionsExecutor.input.nextLine().strip();
                 islandIndex = Integer.parseInt(islandIndexString) - 1;
                 if (islandIndex < 0 || islandIndex >= islandsSize)
                     throw new NumberFormatException();
@@ -443,7 +439,7 @@ public class CLIActionsExecutor {
         int islandIndex = -1;
         while (islandIndex < 0 || islandIndex >= islandsSize) {
             try {
-                islandIndexString = input.nextLine().strip();
+                islandIndexString = CLIActionsExecutor.input.nextLine().strip();
                 islandIndex = Integer.parseInt(islandIndexString) - 1;
                 if (islandIndex < 0 || islandIndex >= islandsSize)
                     throw new NumberFormatException();
@@ -460,20 +456,16 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void mushroomer(String username) {
-        Pattern pattern = Pattern.compile(TOKEN_COLORS_REGEX);
-        System.out.println("> Choose a Student color (e.g. y r p):");
+        List<String> availableTokenColors = View.AVAILABLE_TOKEN_COLORS.keySet().stream().toList();
+        String availableTokenColorsString = String.join("/", availableTokenColors.stream()
+                .map(key -> String.format("%s%s%s", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
+                        key, CLIConstants.ANSI_RESET)).toList());
+        System.out.printf("> Choose a Student color (%s): ", availableTokenColorsString);
         String tokenColor = "";
-        Matcher matcher = pattern.matcher(tokenColor);
-        while (!matcher.find()) {
-            System.out.print("> ");
-            try {
-                tokenColor = input.nextLine().strip();
-                matcher = pattern.matcher(tokenColor);
-                if (!matcher.find())
-                    throw new NumberFormatException();
-            } catch (NumberFormatException e) {
-                System.out.println("> Invalid input, choose a student color:");
-            }
+        while (!availableTokenColors.contains(tokenColor)) {
+            tokenColor = CLIActionsExecutor.input.nextLine().strip().toLowerCase();
+            if (!availableTokenColors.contains(tokenColor))
+                System.out.printf("> Invalid input, choose a student color (%s): ", availableTokenColorsString);
         }
         this.directivesDispatcher.activateMushroomer(username, tokenColor);
     }
@@ -484,20 +476,16 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void scoundrel(String username) {
-        Pattern pattern = Pattern.compile(TOKEN_COLORS_REGEX);
-        System.out.println("> Choose a Student color (e.g. y r p):");
+        List<String> availableTokenColors = View.AVAILABLE_TOKEN_COLORS.keySet().stream().toList();
+        String availableTokenColorsString = String.join("/", availableTokenColors.stream()
+                .map(key -> String.format("%s%s%s", CLIConstants.TOKEN_COLORS_CLI_COLORS.get(key),
+                        key, CLIConstants.ANSI_RESET)).toList());
+        System.out.printf("> Choose a Student color (%s): ", availableTokenColorsString);
         String tokenColor = "";
-        Matcher matcher = pattern.matcher(tokenColor);
-        while (!matcher.find()) {
-            System.out.print("> ");
-            try {
-                tokenColor = input.nextLine().strip();
-                matcher = pattern.matcher(tokenColor);
-                if (!matcher.find())
-                    throw new NumberFormatException();
-            } catch (NumberFormatException e) {
-                System.out.println("> Invalid input, choose a student color:");
-            }
+        while (!availableTokenColors.contains(tokenColor)) {
+            tokenColor = CLIActionsExecutor.input.nextLine().strip().toLowerCase();
+            if (!availableTokenColors.contains(tokenColor))
+                System.out.printf("> Invalid input, choose a student color (%s): ", availableTokenColorsString);
         }
         this.directivesDispatcher.activateScoundrel(username, tokenColor);
     }
@@ -514,17 +502,16 @@ public class CLIActionsExecutor {
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("monk");
         int islandIndex = -1;
         String choice;
-        while (islandIndex < 0 || islandIndex >= islandsSize ||
-                studentsToIsland.size() < 1 || studentsToIsland.size() > maxStudents) {
+        while (islandIndex < 0 || islandIndex >= islandsSize || studentsToIsland.size() != maxStudents) {
             choice = CLIActionsExecutor.input.nextLine().strip();
             try {
                 islandIndex = Integer.parseInt(choice) - 1;
                 if (islandIndex < 0 || islandIndex >= islandsSize)
                     throw new NumberFormatException();
-                System.out.print(TOKENS_LIST_MESSAGE);
+                System.out.printf("> %s",TOKENS_LIST_MESSAGE);
                 choice = CLIActionsExecutor.input.nextLine().toLowerCase();
                 studentsToIsland = this.parseTokensList(choice);
-                if (studentsToIsland.size() < 1 || studentsToIsland.size() > maxStudents)
+                if (studentsToIsland.size() != maxStudents)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
                 System.out.print("> Invalid input, select an island: ");
@@ -534,12 +521,50 @@ public class CLIActionsExecutor {
     }
 
     /**
+     * Activate queen character card effect.
+     *
+     * @param username player username
+     */
+    private void queen(String username) {
+        System.out.printf("> %s",TOKENS_LIST_MESSAGE);
+        List<String> studentsToHall = new ArrayList<>();
+        int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("queen");
+        String choice;
+        while (studentsToHall.size() != maxStudents) {
+            choice = CLIActionsExecutor.input.nextLine().toLowerCase();
+            studentsToHall = this.parseTokensList(choice);
+            if (studentsToHall.size() != maxStudents) {
+                System.out.printf("> Invalid input. %s", TOKENS_LIST_MESSAGE);
+            }
+        }
+        this.directivesDispatcher.activateQueen(username, studentsToHall);
+    }
+
+    /**
      * Activate jester character card effect.
      *
      * @param username player username
      */
     private void jester(String username) {
-
+        System.out.printf("> Tokens from entrance. %s",TOKENS_LIST_MESSAGE);
+        List<String> tokensFromEntrance = new ArrayList<>();
+        List<String> tokensToEntrance = new ArrayList<>();
+        int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("jester");
+        String choice;
+        while (tokensFromEntrance.size() != maxStudents && tokensToEntrance.size() != maxStudents) {
+            choice = CLIActionsExecutor.input.nextLine().toLowerCase();
+            tokensFromEntrance = this.parseTokensList(choice);
+            if (tokensFromEntrance.size() != maxStudents) {
+                System.out.printf("> Invalid input, tokens from entrance. %s", TOKENS_LIST_MESSAGE);
+            } else {
+                System.out.printf("> Tokens to entrance. %s",TOKENS_LIST_MESSAGE);
+                choice = CLIActionsExecutor.input.nextLine().toLowerCase();
+                tokensToEntrance = this.parseTokensList(choice);
+                if (tokensToEntrance.size() != maxStudents)
+                    System.out.printf("> Invalid input, tokens from entrance. %s", TOKENS_LIST_MESSAGE);
+            }
+        }
+        this.directivesDispatcher.activateJester(username, tokensFromEntrance, tokensToEntrance);
     }
 
     /**
@@ -548,16 +573,25 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void bard(String username) {
-
-    }
-
-    /**
-     * Activate queen character card effect.
-     *
-     * @param username player username
-     */
-    private void queen(String username) {
-
+        System.out.printf("> Tokens from hall. %s",TOKENS_LIST_MESSAGE);
+        List<String> tokensFromHall = new ArrayList<>();
+        List<String> tokensFromEntrance = new ArrayList<>();
+        int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("bard");
+        String choice;
+        while (tokensFromHall.size() != maxStudents && tokensFromEntrance.size() != maxStudents) {
+            choice = CLIActionsExecutor.input.nextLine().toLowerCase();
+            tokensFromHall = this.parseTokensList(choice);
+            if (tokensFromHall.size() != maxStudents) {
+                System.out.printf("> Invalid input, tokens from hall. %s", TOKENS_LIST_MESSAGE);
+            } else {
+                System.out.printf("> Tokens from entrance. %s",TOKENS_LIST_MESSAGE);
+                choice = CLIActionsExecutor.input.nextLine().toLowerCase();
+                tokensFromEntrance = this.parseTokensList(choice);
+                if (tokensFromEntrance.size() != maxStudents)
+                    System.out.printf("> Invalid input, tokens from hall. %s", TOKENS_LIST_MESSAGE);
+            }
+        }
+        this.directivesDispatcher.activateBard(username, tokensFromHall, tokensFromEntrance);
     }
 
     /**
