@@ -25,6 +25,10 @@ public class Island {
      * Counter for island power computation.
      */
     private int enabled;
+    /**
+     * Mother nature position flag.
+     */
+    private boolean motherNature;
     //endregion
 
     //--------------------------------------------------------------------------------------------------------------------------------
@@ -40,6 +44,7 @@ public class Island {
         this.tokenContainer = new TokenContainer();
         this.towers = new Pair<>(TowerColor.NONE, 0);
         this.enabled = 0;
+        this.motherNature = false;
     }
 
     /**
@@ -95,6 +100,24 @@ public class Island {
     public void setEnabled(int enabled) {
         this.enabled = enabled;
     }
+
+    /**
+     * Get mother nature position flag.
+     *
+     * @return mother nature position flag
+     */
+    public boolean hasMotherNature() {
+        return this.motherNature;
+    }
+
+    /**
+     * Set mother nature position flag.
+     *
+     * @param motherNature mother nature position flag
+     */
+    public void setMotherNature(boolean motherNature) {
+        this.motherNature = motherNature;
+    }
     //endregion
 
     //--------------------------------------------------------------------------------------------------------------------------------
@@ -109,6 +132,7 @@ public class Island {
         this.tokenContainer.addTokens(island.tokenContainer.getTokens());
         this.towers = new Pair<>(this.towers.getValue0(), this.towers.getValue1() + island.towers.getValue1());
         this.enabled = this.enabled + island.enabled;
+        this.motherNature = this.motherNature || island.motherNature;
     }
     //endregion
 }

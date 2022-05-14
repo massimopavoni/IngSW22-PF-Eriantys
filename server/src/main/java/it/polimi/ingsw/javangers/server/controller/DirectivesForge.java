@@ -121,7 +121,7 @@ public class DirectivesForge {
             }
             return actionArgs != null ? this.jsonMapper.readValue(actionArgs, this.actionStrategyClassMappings.get(actionStrategyClass))
                     : this.actionStrategyClassMappings.get(actionStrategyClass).getConstructor().newInstance();
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException | NullPointerException e) {
             throw new DirectivesForgeException(String.format("Error while deserializing action arguments (%s)", e.getMessage()), e);
         } catch (NoSuchMethodException | InstantiationException |
                  IllegalAccessException | InvocationTargetException e) {
