@@ -41,6 +41,7 @@ class HeraldTest {
                     Arrays.asList(TokenColor.YELLOW_ELF, TokenColor.RED_DRAGON));
         Herald heraldEffect = new Herald(11);
         herald.setEffect(heraldEffect);
+        gameEngine.getGameState().getArchipelago().setMotherNaturePosition(0);
         herald.activateEffect(gameEngine, "Thor");
         assertAll(
                 () -> assertEquals(TowerColor.WHITE, gameEngine.getGameState().getArchipelago().getIslands().get(11).getTowers().getValue0()),

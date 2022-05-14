@@ -347,6 +347,7 @@ class GameEngineTest {
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
         teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
+        archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Trinity");
         assertAll(
                 () -> assertEquals(TowerColor.BLACK, archipelago.getIslands().get(0).getTowers().getValue0()),
@@ -364,6 +365,7 @@ class GameEngineTest {
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         gameEngine.setEnabledIslandTowers(false);
+        archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Neo");
         assertAll(
                 () -> assertEquals(TowerColor.WHITE, archipelago.getIslands().get(0).getTowers().getValue0()),
@@ -380,6 +382,7 @@ class GameEngineTest {
         teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.YELLOW_ELF, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
+        archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Neo");
         assertAll(
                 () -> assertEquals(TowerColor.WHITE, archipelago.getIslands().get(0).getTowers().getValue0()),
@@ -397,6 +400,7 @@ class GameEngineTest {
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN));
         gameEngine.setAdditionalPower(2);
+        archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Trinity");
         assertAll(
                 () -> assertEquals(TowerColor.WHITE, archipelago.getIslands().get(0).getTowers().getValue0()),
@@ -414,6 +418,7 @@ class GameEngineTest {
         gameEngine.getGameState().getPlayerDashboards().get("Trinity").setTowersNumber(1);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 2));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
+        archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Neo");
         assertAll(
                 () -> assertEquals(TowerColor.WHITE, archipelago.getIslands().get(0).getTowers().getValue0()),
@@ -430,6 +435,7 @@ class GameEngineTest {
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
         archipelago.getIslands().get(11).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
+        archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Neo");
         assertAll(
                 () -> assertEquals(11, archipelago.getIslands().size()),
@@ -448,6 +454,7 @@ class GameEngineTest {
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
         archipelago.getIslands().get(1).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
+        archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Neo");
         assertAll(
                 () -> assertEquals(11, archipelago.getIslands().size()),
@@ -467,6 +474,7 @@ class GameEngineTest {
         archipelago.getIslands().get(11).setTowers(new Pair<>(TowerColor.BLACK, 1));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Collections.singletonList(TokenColor.RED_DRAGON));
         archipelago.getIslands().get(1).setTowers(new Pair<>(TowerColor.BLACK, 1));
+        archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Neo");
         assertAll(
                 () -> assertEquals(10, archipelago.getIslands().size()),
