@@ -58,14 +58,29 @@ class ArchipelagoTest {
     @Test
     @DisplayName("Test setMotherNaturePosition for setting correct index")
     void setMotherNaturePosition_correctSet() {
+        boolean previousMotherNatureFlag = archipelago.getIslands().get(1).hasMotherNature();
         archipelago.setMotherNaturePosition(1);
-        assertEquals(1, archipelago.getMotherNaturePosition());
+        assertAll(
+                () -> assertFalse(previousMotherNatureFlag),
+                () -> assertTrue(archipelago.getIslands().get(1).hasMotherNature()),
+                () -> assertEquals(1, archipelago.getMotherNaturePosition())
+        );
+    }
+
+    @Test
+    @DisplayName("Test mergeIslands for exception")
+    void mergeIslands_exception() {
+        archipelago.getIslands().get(2).setEnabled(1);
+        Island otherIsland = archipelago.getIslands().get(1);
+        assertThrowsExactly(IllegalStateException.class, () ->
+                archipelago.mergeIslands(0, true, false));
     }
 
     @Test
     @DisplayName("Test mergeIslands for only left merge")
     void mergeIslands_leftMerge() {
         archipelago.getIslands().get(2).setEnabled(1);
+        archipelago.getIslands().get(2).setMotherNature(true);
         Island otherIsland = archipelago.getIslands().get(1);
         archipelago.mergeIslands(0, true, false);
         assertAll(
@@ -81,6 +96,7 @@ class ArchipelagoTest {
     void mergeIslands_rightMerge() {
         archipelago.getIslands().get(2).setTowers(new Pair<>(TowerColor.WHITE, 1));
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.WHITE, 1));
+        archipelago.getIslands().get(0).setMotherNature(true);
         Island otherIsland = archipelago.getIslands().get(1);
         archipelago.mergeIslands(2, false, true);
         assertAll(
@@ -96,6 +112,7 @@ class ArchipelagoTest {
     void mergeIslands_leftAndRightMerge() {
         archipelago.getIslands().get(2).getTokenContainer().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.YELLOW_ELF));
         archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
+        archipelago.getIslands().get(0).setMotherNature(true);
         archipelago.getIslands().get(1).getTokenContainer().addTokens(Arrays.asList(TokenColor.GREEN_FROG, TokenColor.GREEN_FROG));
         archipelago.mergeIslands(0, true, true);
         assertAll(
