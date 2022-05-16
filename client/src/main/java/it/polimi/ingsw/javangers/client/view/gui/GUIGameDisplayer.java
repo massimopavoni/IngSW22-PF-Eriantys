@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -52,26 +53,6 @@ public class GUIGameDisplayer {
     private ImageView playerDashboard2;
     @FXML
     private ImageView playerDashboard3;
-    @FXML
-    private ImageView cat;
-    @FXML
-    private ImageView cheetah;
-    @FXML
-    private ImageView dog;
-    @FXML
-    private ImageView eagle;
-    @FXML
-    private ImageView elephant;
-    @FXML
-    private ImageView fox;
-    @FXML
-    private ImageView octopus;
-    @FXML
-    private ImageView ostrich;
-    @FXML
-    private ImageView snake;
-    @FXML
-    private ImageView turtle;
     private String username;
     @FXML
     private Button fillCloudsButton;
@@ -85,6 +66,8 @@ public class GUIGameDisplayer {
     private Button chooseCloudButton;
     @FXML
     private Button activateCharacterCardButton;
+    @FXML
+    private GridPane assistantCardsGridPane;
 
 
     protected GUIGameDisplayer(DirectivesParser directivesParser,DirectivesDispatcher directivesDispatcher, Stage stage) {
@@ -164,7 +147,7 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void printPlayersDashboard() {
+    private void displayPlayersDashboard() {
         Image image = null;
         try {
             image = new Image((GUIGameDisplayer.class.getResource("images/PLANCIA GIOCO_2.png")).toURI().toString());
@@ -183,45 +166,27 @@ public class GUIGameDisplayer {
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         this.displayCharacterCards();
-        this.printPlayersDashboard();
+        this.displayPlayersDashboard();
     }
 
 
 
     private void displayAvailableAssistantCards() throws URISyntaxException {
-        Map<String,Pair<Integer,Integer>> discardedAssistantCardsMap = directivesParser.getDashboardDiscardedAssistantCards(this.username);
-                cat.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/cat.png")).toURI().toString()));
-                cheetah.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/cheetah.png")).toURI().toString()));
-                dog.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/dog.png")).toURI().toString()));
-                eagle.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/eagle.png")).toURI().toString()));
-                elephant.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/elephant.png")).toURI().toString()));
-                fox.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/fox.png")).toURI().toString()));
-                octopus.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/octopus.png")).toURI().toString()));
-                ostrich.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/ostrich.png")).toURI().toString()));
-                snake.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/snake.png")).toURI().toString()));
-                turtle.setImage(new Image((GUIGameDisplayer.class.getResource("images/assistantCards/turtle.png")).toURI().toString()));
-
-        for (String cardName:discardedAssistantCardsMap.keySet()) {
-            if(cardName.toLowerCase().equals("cat"))
-                cat.setDisable(true);
-            if(cardName.toLowerCase().equals("cheetah"))
-                cheetah.setDisable(true);
-            if(cardName.toLowerCase().equals("dog"))
-                dog.setDisable(true);
-            if(cardName.toLowerCase().equals("eagle"))
-                eagle.setDisable(true);
-            if(cardName.toLowerCase().equals("elephant"))
-                elephant.setDisable(true);
-            if(cardName.toLowerCase().equals("fox"))
-                fox.setDisable(true);
-            if(cardName.toLowerCase().equals("octopus"))
-                octopus.setDisable(true);
-            if(cardName.toLowerCase().equals("ostrich"))
-                ostrich.setDisable(true);
-            if(cardName.toLowerCase().equals("snake"))
-                snake.setDisable(true);
-            if(cardName.toLowerCase().equals("turtle"))
-                turtle.setDisable(true);
+        Image image = null;
+        List<String> cardNameList = new ArrayList<> (directivesParser.getDashboardAssistantCards(this.username).keySet());
+        for (int i = 0; i < cardNameList.size(); i++) {
+            try {
+                image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/"+cardNameList.get(i)+".png").toURI().toString());
+                ImageView imv = new ImageView();
+                imv.setImage(image);
+                imv.setId(cardNameList.get(i));
+                imv.setFitWidth(109);
+                imv.setFitHeight(160);
+                imv.setOnMouseClicked(this::selectAssistantCard);
+                assistantCardsGridPane.add(imv,i % 5,i/5);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

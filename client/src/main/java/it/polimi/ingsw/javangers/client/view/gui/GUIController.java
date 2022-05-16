@@ -11,25 +11,25 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class GUIController extends View implements Initializable {
 
-    // si puo rendere piu generica
-    private final Integer[] possibleNumberOfPlayer = {MIN_PLAYERS_NUMBER, MAX_PLAYERS_NUMBER};
-    // si puo rendere piu generica
-    private final String[] possibleTowerColor = {AVAILABLE_TOWER_COLORS.get("b"), AVAILABLE_TOWER_COLORS.get("w"), AVAILABLE_TOWER_COLORS.get("g")};
-    private final String[] possibleCreateJoin = {"CREATE", "JOIN"};
+
     private final Alert errorAlert;
     private final GUIGameDisplayer guiGameDisplayer;
-    //private GUIApplication application;
+    private boolean isInCreate;
     @FXML
     //non deve essere final
     private ChoiceBox<Integer> fxmlExactPlayersNumber;
@@ -40,9 +40,6 @@ public class GUIController extends View implements Initializable {
     private Scene scene;
     private Parent root;
     @FXML
-    //non deve essere final
-    private ChoiceBox<String> create_join_ChoiceBox;
-    @FXML
     private TextField fxmlUsername;
     @FXML
     private CheckBox fxmlExpertMode;
@@ -51,7 +48,16 @@ public class GUIController extends View implements Initializable {
     @FXML
     private Button confirmButton;
     @FXML
+    private Button createButton;
+    @FXML
+    private Button joinButton;
+    @FXML
     private Label loadingInfo;
+    @FXML
+    private Label labelNumberOfPlayers;
+    @FXML
+    private GridPane wizardsGridPane;
+
 
 
 
@@ -64,10 +70,8 @@ public class GUIController extends View implements Initializable {
     protected GUIController(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser, Stage stage) {
         super(directivesDispatcher, directivesParser);
         this.stage = stage;
-        //this.application = new GUIApplication();
         this.fxmlExactPlayersNumber = new ChoiceBox<>();
         this.fxmlTowerColor = new ChoiceBox<>();
-        this.create_join_ChoiceBox = new ChoiceBox<>();
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
         this.guiGameDisplayer = new GUIGameDisplayer(directivesParser,directivesDispatcher, this.stage);
     }
@@ -125,20 +129,49 @@ public class GUIController extends View implements Initializable {
 
     }
 
-    @FXML
-    protected void switchCreateJoin() {
-        if (this.create_join_ChoiceBox.getValue() != null) {
-            if (this.create_join_ChoiceBox.getValue().equals("CREATE"))
-                openNewStage(this.confirmButton, "createGame-menu.fxml");
-            else
-                openNewStage(this.confirmButton, "joinGame-menu.fxml");
-        } else {
-            alertMessage("Empty choice", "Please select one option");
+    private void displayWizards(){
+        Image image = null;
+        List<String> cardNameList = new ArrayList<> (AVAILABLE_WIZARD_TYPES.values());
+        for (int i = 0; i < cardNameList.size(); i++) {
+            try {
+                image = new Image(GUIController.class.getResource("images/wizards/"+cardNameList.get(i).toLowerCase()+".jpg").toURI().toString());
+                ImageView imv = new ImageView();
+                imv.setImage(image);
+                imv.setId(cardNameList.get(i));
+                imv.setFitWidth(81);
+                imv.setFitHeight(120);
+                imv.setOnMouseClicked(this::selectWizard);
+                wizardsGridPane.add(imv,i % 2,i/2);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         }
-
     }
 
     @FXML
+    private void switchCreate() {
+        this.isInCreate = true;
+        openNewStage(this.createButton, "start-menu.fxml");
+        this.displayWizards();
+        }
+    @FXML
+    private void switchJoin() {
+        this.isInCreate = false;
+        openNewStage(this.joinButton, "start-menu.fxml");
+        this.displayWizards();
+        fxmlExactPlayersNumber.setVisible(false);
+        fxmlExpertMode.setVisible(false);
+        labelNumberOfPlayers.setVisible(false);
+    }
+
+    @FXML
+    private void redirectCreateJoin() {
+        if(this.isInCreate)
+            this.createGame();
+        else
+            this.joinGame();
+    }
+
     @Override
     protected void createGame() {
         if (this.fxmlUsername.getCharacters() == null || this.fxmlExactPlayersNumber.getValue() == null || this.wizardType == null || this.fxmlTowerColor.getValue() == null)
@@ -157,7 +190,6 @@ public class GUIController extends View implements Initializable {
         }
     }
 
-    @FXML
     @Override
     protected void joinGame() {
         if (this.fxmlUsername.getCharacters() == null || wizardType == null || fxmlTowerColor.getValue() == null)
@@ -170,7 +202,6 @@ public class GUIController extends View implements Initializable {
                 this.towerColor = this.fxmlTowerColor.getValue();
                 this.directivesDispatcher.addPlayer(this.username, this.wizardType, this.towerColor);
                 this.previousMessageType = MessageType.PLAYER;
-
             }
         }
     }
@@ -188,7 +219,6 @@ public class GUIController extends View implements Initializable {
     @Override
     protected void startGame() {
         this.directivesDispatcher.startGame(this.username);
-        this.previousMessageType = MessageType.START;
     }
 
     @Override
@@ -196,9 +226,11 @@ public class GUIController extends View implements Initializable {
         guiGameDisplayer.openNewStage("game-view.fxml");
         try {
             this.guiGameDisplayer.displayGame(this.username);
+            this.previousMessageType = MessageType.START;
         } catch (DirectivesParser.DirectivesParserException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -230,6 +262,7 @@ public class GUIController extends View implements Initializable {
     protected void enableActions() {
         this.disableAllButtons();
         this.enableActionButtons();
+        this.previousMessageType = MessageType.ACTION;
         //forse da continuare
         //aggiungere è il tuo turno
     }
@@ -277,9 +310,8 @@ public class GUIController extends View implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        fxmlExactPlayersNumber.getItems().addAll(possibleNumberOfPlayer);
-        fxmlTowerColor.getItems().addAll(possibleTowerColor);
-        create_join_ChoiceBox.getItems().addAll(possibleCreateJoin);
+        fxmlExactPlayersNumber.getItems().addAll(MIN_PLAYERS_NUMBER, MAX_PLAYERS_NUMBER);
+        fxmlTowerColor.getItems().addAll(AVAILABLE_TOWER_COLORS.values());
     }
 
 
