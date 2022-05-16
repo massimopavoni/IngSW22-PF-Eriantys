@@ -14,7 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -45,12 +45,6 @@ public class GUIController extends View implements Initializable {
     private CheckBox fxmlExpertMode;
     @FXML
     private Label errorMessage;
-    @FXML
-    private Button confirmButton;
-    @FXML
-    private Button createButton;
-    @FXML
-    private Button joinButton;
     @FXML
     private Label loadingInfo;
     @FXML
@@ -86,6 +80,7 @@ public class GUIController extends View implements Initializable {
         Platform.runLater(super::updateView);
     }
 
+    /*
     protected void openNewStage(Button button, String resourceName, int width, int height) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resourceName));
@@ -103,8 +98,20 @@ public class GUIController extends View implements Initializable {
         }
     }
 
+     */
 
-    protected void openNewStage(String resourceName, int width, int height) {
+    private Background displayBackGround(String resource) throws URISyntaxException {
+        Image img = new Image(GUIGameDisplayer.class.getResource(resource).toURI().toString());
+        BackgroundImage bImg = new BackgroundImage(img,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT);
+        return new Background(bImg);
+    }
+
+
+    protected void openNewStage(String resourceName, int width, int height, String backGroundResource) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
             fxmlLoader.setController(this);
@@ -114,9 +121,13 @@ public class GUIController extends View implements Initializable {
             this.stage.setScene(scene);
             this.stage.setWidth(width);
             this.stage.setHeight(height);
+            AnchorPane anchorPane = fxmlLoader.getRoot();
+            anchorPane.setBackground(this.displayBackGround(backGroundResource));
             this.stage.show();
         } catch (IOException e) {
             //va cambiato
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -155,13 +166,13 @@ public class GUIController extends View implements Initializable {
     @FXML
     private void switchCreate() {
         this.isInCreate = true;
-        openNewStage(this.createButton, "start-menu.fxml",440, 330 );
+        openNewStage("start-menu.fxml",440, 330, "images/start-menuBG.png");
         this.displayWizards();
         }
     @FXML
     private void switchJoin() {
         this.isInCreate = false;
-        openNewStage(this.joinButton, "start-menu.fxml", 440, 330);
+        openNewStage("start-menu.fxml", 440, 330, "images/start-menuBG.png");
         this.displayWizards();
         fxmlExactPlayersNumber.setVisible(false);
         fxmlExpertMode.setVisible(false);
@@ -213,7 +224,7 @@ public class GUIController extends View implements Initializable {
     @Override
     @FXML
     protected void waitForStart() {
-        openNewStage("loading-page.fxml", 400,300);
+        openNewStage("loading-page.fxml", 400,300, "images/start-menuBG.png");
         this.loadingInfo.setText("Waiting start game");
 
         //questa funzione viene chiamata dalla view che è sbloccata dal parser
@@ -227,7 +238,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        guiGameDisplayer.openNewStage("game-view.fxml", 1280, 720);
+        guiGameDisplayer.openNewStage("game-view.fxml", 1280, 720,"images/game-board.png" );
         try {
             this.guiGameDisplayer.displayGame(this.username);
             this.previousMessageType = MessageType.START;
@@ -309,7 +320,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void returnToMainMenu() {
-        this.openNewStage("create-join.fxml",400,300);
+        this.openNewStage("create-join.fxml",400,300, "images/start-menuBG.png");
     }
 
     @Override
