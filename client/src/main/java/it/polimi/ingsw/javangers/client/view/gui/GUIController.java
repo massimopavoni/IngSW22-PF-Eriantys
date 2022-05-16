@@ -224,7 +224,7 @@ public class GUIController extends View implements Initializable {
     @Override
     @FXML
     protected void waitForStart() {
-        openNewStage("loading-page.fxml", 400,300, "images/start-menuBG.png");
+        openNewStage("loading-page.fxml", 400,300, "images/loading.gif");
         this.loadingInfo.setText("Waiting start game");
 
         //questa funzione viene chiamata dalla view che è sbloccata dal parser
