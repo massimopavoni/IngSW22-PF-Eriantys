@@ -86,15 +86,17 @@ public class GUIController extends View implements Initializable {
         Platform.runLater(super::updateView);
     }
 
-    protected void openNewStage(Button button, String resourceName) {
+    protected void openNewStage(Button button, String resourceName, int width, int height) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resourceName));
             fxmlLoader.setController(this);
-            root = fxmlLoader.load();
-            stage = (Stage) button.getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            this.root = fxmlLoader.load();
+            this.stage = (Stage) button.getScene().getWindow();
+            this.scene = new Scene(root);
+            this.stage.setScene(scene);
+            this.stage.setWidth(width);
+            this.stage.setHeight(height);
+            this.stage.show();
         } catch (IOException e) {
             //va cambiato
             throw new RuntimeException(e);
@@ -102,14 +104,16 @@ public class GUIController extends View implements Initializable {
     }
 
 
-    protected void openNewStage(String resourceName) {
+    protected void openNewStage(String resourceName, int width, int height) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
             fxmlLoader.setController(this);
-            root = fxmlLoader.load();
-            //stage = (Stage) this.application.getStage().getScene().getWindow();
-            scene = new Scene(root);
+            this.root = fxmlLoader.load();
+            this.scene = new Scene(root);
             this.stage.setScene(scene);
+            this.stage.setScene(scene);
+            this.stage.setWidth(width);
+            this.stage.setHeight(height);
             this.stage.show();
         } catch (IOException e) {
             //va cambiato
@@ -151,13 +155,13 @@ public class GUIController extends View implements Initializable {
     @FXML
     private void switchCreate() {
         this.isInCreate = true;
-        openNewStage(this.createButton, "start-menu.fxml");
+        openNewStage(this.createButton, "start-menu.fxml",440, 330 );
         this.displayWizards();
         }
     @FXML
     private void switchJoin() {
         this.isInCreate = false;
-        openNewStage(this.joinButton, "start-menu.fxml");
+        openNewStage(this.joinButton, "start-menu.fxml", 440, 330);
         this.displayWizards();
         fxmlExactPlayersNumber.setVisible(false);
         fxmlExpertMode.setVisible(false);
@@ -209,7 +213,7 @@ public class GUIController extends View implements Initializable {
     @Override
     @FXML
     protected void waitForStart() {
-        openNewStage("loading-page.fxml");
+        openNewStage("loading-page.fxml", 400,300);
         this.loadingInfo.setText("Waiting start game");
 
         //questa funzione viene chiamata dalla view che è sbloccata dal parser
@@ -223,7 +227,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        guiGameDisplayer.openNewStage("game-view.fxml");
+        guiGameDisplayer.openNewStage("game-view.fxml", 1280, 720);
         try {
             this.guiGameDisplayer.displayGame(this.username);
             this.previousMessageType = MessageType.START;
@@ -305,7 +309,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void returnToMainMenu() {
-        this.openNewStage("create-join.fxml");
+        this.openNewStage("create-join.fxml",400,300);
     }
 
     @Override

@@ -76,13 +76,15 @@ public class GUIGameDisplayer {
         this.stage = stage;
     }
 
-    protected void openNewStage(String fxmlFile) {
+    protected void openNewStage(String fxmlFile, int width, int height) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
             fxmlLoader.setController(this);
             this.root = fxmlLoader.load();
             this.scene = new Scene(root);
             this.stage.setScene(scene);
+            this.stage.setWidth(width);
+            this.stage.setHeight(height);
             this.stage.show();
         } catch (IOException e) {
             //va cambiato
@@ -91,16 +93,24 @@ public class GUIGameDisplayer {
     }
 
 
-    public void openPopUp(String fxmlFile) {
+    public void openPopUp(String fxmlFile,int width, int height) {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
         fxmlLoader.setController(this);
         Parent root;
-        popUpStage = new Stage();
+        this.popUpStage = new Stage();
         try {
             root = fxmlLoader.load();
-            popUpStage.setScene(new Scene(root));
-            popUpStage.initModality(Modality.APPLICATION_MODAL);
-            popUpStage.show();
+            this.popUpStage.setScene(new Scene(root));
+            this.popUpStage.initModality(Modality.APPLICATION_MODAL);
+            try {
+                stage.getIcons().add(new Image(GUIGameDisplayer.class.getResource("images/logo-cranio.png").toURI().toString()));
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+            this.popUpStage.setWidth(width);
+            this.popUpStage.setHeight(height);
+            this.popUpStage.setResizable(false);
+            this.popUpStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -202,7 +212,7 @@ public class GUIGameDisplayer {
 
     @FXML
     private void playAssistantCard(){
-        openPopUp("assistantCardsChoice.fxml");
+        openPopUp("assistantCardsChoice.fxml", 645, 450);
         try {
             this.displayAvailableAssistantCards();
         } catch (URISyntaxException e) {

@@ -6,9 +6,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class GUIApplication extends Application {
 
@@ -23,6 +25,14 @@ public class GUIApplication extends Application {
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 620, 640);
+        try {
+            stage.getIcons().add(new Image(GUIApplication.class.getResource("images/logo-cranio.png").toURI().toString()));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setWidth(400);
+        stage.setHeight(300);
+        stage.setResizable(false);
         stage.setTitle("Eriantys");
         stage.setScene(scene);
         stage.show();
