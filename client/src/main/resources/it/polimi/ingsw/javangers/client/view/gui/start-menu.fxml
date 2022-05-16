@@ -15,11 +15,11 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="15.0" layoutY="14.0" text="Username" />
-      <TextField fx:id="fxmlUsername" layoutX="13.0" layoutY="39.0" />
+      <TextField fx:id="fxmlUsername" layoutX="13.0" layoutY="39.0" prefHeight="25.0" prefWidth="150.0" />
       <Label fx:id="labelNumberOfPlayers" layoutX="20.0" layoutY="154.0" text="Number of Players" />
       <ChoiceBox fx:id="fxmlExactPlayersNumber" layoutX="18.0" layoutY="171.0" prefWidth="150.0" />
       <Label layoutX="18.0" layoutY="85.0" text="Tower Color" />
-      <ChoiceBox fx:id="fxmlTowerColor" layoutX="18.0" layoutY="102.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="fxmlTowerColor" layoutX="18.0" layoutY="102.0" prefHeight="25.0" prefWidth="150.0" />
       <CheckBox fx:id="fxmlExpertMode" layoutX="18.0" layoutY="220.0" mnemonicParsing="false" text="Expert Mode" />
       <Label layoutX="213.0" layoutY="14.0" text="Chose Wizard" />
       <GridPane fx:id="wizardsGridPane" hgap="10.0" layoutX="213.0" layoutY="30.0" prefHeight="270.0" prefWidth="192.0" vgap="10.0">
@@ -35,7 +35,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </GridPane>
-      <ImageView fitHeight="26.0" fitWidth="77.0" layoutX="20.0" layoutY="264.0" onMouseClicked="#redirectCreateJoin">
+      <ImageView fitHeight="52.0" fitWidth="150.0" layoutX="13.0" layoutY="248.0" onMouseClicked="#redirectCreateJoin">
          <image>
             <Image url="@images/confirm-button.png" />
          </image>

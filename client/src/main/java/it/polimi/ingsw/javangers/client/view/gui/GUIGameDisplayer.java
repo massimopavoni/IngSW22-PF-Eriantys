@@ -159,7 +159,7 @@ public class GUIGameDisplayer {
         Image image = null;
         for (int i = 0; i < directivesParser.getCharacterCardNames().size(); i++) {
             try {
-                image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" +directivesParser.getCharacterCardNames().get(i)+".jpg").toURI().toString());
+                image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" +directivesParser.getCharacterCardNames().get(i)+".png").toURI().toString());
                 ImageView imv = new ImageView();
                 imv.setImage(image);
                 imv.setId(directivesParser.getCharacterCardNames().get(i));

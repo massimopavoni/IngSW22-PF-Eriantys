@@ -149,7 +149,7 @@ public class GUIController extends View implements Initializable {
         List<String> cardNameList = new ArrayList<> (AVAILABLE_WIZARD_TYPES.values());
         for (int i = 0; i < cardNameList.size(); i++) {
             try {
-                image = new Image(GUIController.class.getResource("images/wizards/"+cardNameList.get(i).toLowerCase()+".jpg").toURI().toString());
+                image = new Image(GUIController.class.getResource("images/wizards/"+cardNameList.get(i).toLowerCase()+".png").toURI().toString());
                 ImageView imv = new ImageView();
                 imv.setImage(image);
                 imv.setId(cardNameList.get(i));
@@ -166,13 +166,13 @@ public class GUIController extends View implements Initializable {
     @FXML
     private void switchCreate() {
         this.isInCreate = true;
-        openNewStage("start-menu.fxml",440, 330, "images/start-menuBG.png");
+        openNewStage("start-menu.fxml",440, 350, "images/start-menuBG.png");
         this.displayWizards();
         }
     @FXML
     private void switchJoin() {
         this.isInCreate = false;
-        openNewStage("start-menu.fxml", 440, 330, "images/start-menuBG.png");
+        openNewStage("start-menu.fxml", 440, 350, "images/start-menuBG.png");
         this.displayWizards();
         fxmlExactPlayersNumber.setVisible(false);
         fxmlExpertMode.setVisible(false);

@@ -30,8 +30,8 @@ public class GUIApplication extends Application {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        stage.setWidth(400);
-        stage.setHeight(300);
+        stage.setWidth(415);
+        stage.setHeight(335);
         stage.setResizable(false);
         stage.setTitle("Eriantys");
         stage.setScene(scene);
