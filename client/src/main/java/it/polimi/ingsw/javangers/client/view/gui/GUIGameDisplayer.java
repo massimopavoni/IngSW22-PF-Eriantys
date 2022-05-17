@@ -30,6 +30,7 @@ public class GUIGameDisplayer {
     private Scene scene;
     private Parent root;
     private Stage popUpStage;
+    private AnchorPane anchorPane;
     private String assistantCardChosen;
     private String characterCardChosen;
     @FXML
@@ -59,7 +60,6 @@ public class GUIGameDisplayer {
     private GridPane assistantCardsGridPane;
     @FXML
     private GridPane characterCardsGridPane;
-    private AnchorPane anchorPane;
 
 
 
@@ -108,7 +108,7 @@ public class GUIGameDisplayer {
         this.popUpStage = new Stage();
         try {
             root = fxmlLoader.load();
-            AnchorPane anchorPane =fxmlLoader.getRoot();
+            this.anchorPane = fxmlLoader.getRoot();
             anchorPane.setBackground(this.displayBackGround(backGroundResource));
             this.popUpStage.setScene(new Scene(root));
             this.popUpStage.initModality(Modality.APPLICATION_MODAL);
@@ -185,6 +185,27 @@ public class GUIGameDisplayer {
         }
     }
 
+    private void displayArchipelago(){
+        int archipelagoSize = this.directivesParser.getIslandsSize();
+        double deltaDeg = 2*Math.PI/archipelagoSize;
+        double currentRad = 0;
+        Image image = null;
+        for(int i=0; i<archipelagoSize; i++){
+            try {
+                image = new Image(GUIGameDisplayer.class.getResource("images/islands/island"+Integer.toString(i%3)+".png").toURI().toString());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            ImageView imv = new ImageView();
+            imv.setImage(image);
+            imv.setFitWidth(80);
+            imv.setFitHeight(80);
+            imv.setX(600+260*Math.cos(currentRad));
+            imv.setY(270+130*Math.sin(currentRad));
+            currentRad += deltaDeg;
+            this.anchorPane.getChildren().add(imv);
+        }
+    }
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         this.username = username;
@@ -194,6 +215,7 @@ public class GUIGameDisplayer {
             activateCharacterCardButton.setVisible(false);
         if (directivesParser.getExactPlayersNumber() == 3)
             this.displayPlayerDashboard();
+        this.displayArchipelago();
     }
 
 
