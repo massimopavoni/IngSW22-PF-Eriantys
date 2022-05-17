@@ -42,12 +42,6 @@ public class GUIGameDisplayer {
     private Label fxmlUsername2;
     @FXML
     private Label fxmlUsername3;
-    @FXML
-    private ImageView playerDashboard1;
-    @FXML
-    private ImageView playerDashboard2;
-    @FXML
-    private ImageView playerDashboard3;
     private String username;
     @FXML
     private Button fillCloudsButton;
@@ -65,6 +59,7 @@ public class GUIGameDisplayer {
     private GridPane assistantCardsGridPane;
     @FXML
     private GridPane characterCardsGridPane;
+    private AnchorPane anchorPane;
 
 
 
@@ -93,8 +88,8 @@ public class GUIGameDisplayer {
             this.stage.setScene(scene);
             this.stage.setWidth(width);
             this.stage.setHeight(height);
-            AnchorPane anchorPane = fxmlLoader.getRoot();
-            anchorPane.setBackground(this.displayBackGround(backGroundResource));
+            this.anchorPane = fxmlLoader.getRoot();
+            this.anchorPane.setBackground(this.displayBackGround(backGroundResource));
             this.stage.show();
             this.stage.show();
         } catch (IOException e) {
@@ -173,17 +168,21 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void displayPlayersDashboard() {
+    private void displayPlayerDashboard() {
         Image image = null;
         try {
-            image = new Image((GUIGameDisplayer.class.getResource("images/PLANCIA GIOCO_2.png")).toURI().toString());
+            image = new Image((GUIGameDisplayer.class.getResource("images/Plancia Aggiuntiva 3.png")).toURI().toString());
+            ImageView imv = new ImageView();
+            imv.setImage(image);
+            imv.setFitWidth(366);
+            imv.setFitHeight(202);
+            imv.setX(-90);
+            imv.setY(200);
+            imv.setRotate(-90);
+            this.anchorPane.getChildren().add(imv);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        playerDashboard1.setImage(image);
-        playerDashboard2.setImage(image);
-        if (directivesParser.getExactPlayersNumber() == 3)
-            playerDashboard3.setImage(image);
     }
 
 
@@ -193,7 +192,8 @@ public class GUIGameDisplayer {
         this.displayPlayersOrder(username);
         if (!directivesParser.isExpertMode())
             activateCharacterCardButton.setVisible(false);
-        //this.displayPlayersDashboard();
+        if (directivesParser.getExactPlayersNumber() == 3)
+            this.displayPlayerDashboard();
     }
 
 
