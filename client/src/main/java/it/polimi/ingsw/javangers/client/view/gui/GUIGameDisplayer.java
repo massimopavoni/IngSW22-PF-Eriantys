@@ -150,7 +150,7 @@ public class GUIGameDisplayer {
     private void displayPlayersDashboard() {
         Image image = null;
         try {
-            image = new Image((GUIGameDisplayer.class.getResource("images/PLANCIA GIOCO_2.png")).toURI().toString());
+            image = new Image((GUIGameDisplayer.class.getResource("images/PLANCIA_GIOCO_2.png")).toURI().toString());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
