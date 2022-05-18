@@ -171,7 +171,7 @@ public class GUIGameDisplayer {
     private void displayPlayerDashboard() {
         Image image = null;
         try {
-            image = new Image((GUIGameDisplayer.class.getResource("images/Plancia Aggiuntiva 3.png")).toURI().toString());
+            image = new Image((GUIGameDisplayer.class.getResource("images/plancia aggiuntiva.png")).toURI().toString());
             ImageView imv = new ImageView();
             imv.setImage(image);
             imv.setFitWidth(366);
