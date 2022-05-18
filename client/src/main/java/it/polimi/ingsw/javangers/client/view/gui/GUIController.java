@@ -55,6 +55,7 @@ public class GUIController extends View implements Initializable {
 
 
 
+
     /**
      * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
      *
@@ -276,6 +277,7 @@ public class GUIController extends View implements Initializable {
     protected void enableActions() {
         this.disableAllButtons();
         this.enableActionButtons();
+        this.guiGameDisplayer.setYourTurnMessage("It's your turn!");
         this.previousMessageType = MessageType.ACTION;
         //forse da continuare
         //aggiungere è il tuo turno
@@ -284,6 +286,7 @@ public class GUIController extends View implements Initializable {
     @Override
     protected void waitTurn() {
         this.disableAllButtons();
+        this.guiGameDisplayer.setYourTurnMessage("Wait your turn!");
         //da aggiungere in una label il wait turn
     }
 

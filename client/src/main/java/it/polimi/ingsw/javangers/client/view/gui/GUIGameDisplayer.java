@@ -63,7 +63,12 @@ public class GUIGameDisplayer {
     private GridPane assistantCardsGridPane;
     @FXML
     private GridPane characterCardsGridPane;
+    @FXML
+    private Label yourTurn;
 
+    public void setYourTurnMessage(String message) {
+        this.yourTurn.setText(message);
+    }
 
     protected GUIGameDisplayer(DirectivesParser directivesParser, DirectivesDispatcher directivesDispatcher, Stage stage) {
         this.directivesParser = directivesParser;
@@ -233,11 +238,23 @@ public class GUIGameDisplayer {
         this.displayPlayersOrder(username);
         if (!directivesParser.isExpertMode())
             activateCharacterCardButton.setVisible(false);
-        if (directivesParser.getExactPlayersNumber() == 3)
+        if (directivesParser.getExactPlayersNumber() == 3) {
             this.displayPlayerDashboard();
+            this.displayCloud();
+        }
         this.displayArchipelago();
     }
 
+    private void displayCloud() {
+        Image image = new Image((GUIGameDisplayer.class.getResource("images/CloudToAddOnDashboard.png")).toString());;
+        ImageView imv = new ImageView();
+        imv.setImage(image);
+        imv.setFitWidth(100);
+        imv.setFitHeight(94);
+        imv.setX(570);
+        imv.setY(250);
+        this.anchorPane.getChildren().add(imv);
+    }
 
     private void displayAvailableAssistantCards() throws URISyntaxException {
         Image image = null;
