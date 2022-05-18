@@ -256,7 +256,7 @@ public class GUIGameDisplayer {
     @FXML
     private void playAssistantCard(){
         //va cambiato il bg
-        openPopUp("assistantCardsChoice.fxml", 645, 450, "images/assistantCardsChoicheBG.png");
+        openPopUp("assistantCardsChoice.fxml", 645, 450, "images/assistantCardsChoiceBG.png");
         try {
             this.displayAvailableAssistantCards();
         } catch (URISyntaxException e) {

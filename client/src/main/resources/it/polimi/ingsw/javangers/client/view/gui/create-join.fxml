@@ -8,7 +8,7 @@
    <children>
       <ImageView fitHeight="300.0" fitWidth="400.0">
          <image>
-            <Image url="@images/choiche.png" />
+            <Image url="@images/choice.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="60.0" fitWidth="152.0" layoutX="221.0" layoutY="194.0" onMouseClicked="#switchJoin" pickOnBounds="true" preserveRatio="true" />
