@@ -111,18 +111,17 @@ public class GUIController extends View implements Initializable {
     }
 
 
-    protected void openNewStage(String resourceName, int width, int height, String backGroundResource) {
+    protected void openNewStage(String resourceName, String backGroundResource) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
             fxmlLoader.setController(this);
             this.root = fxmlLoader.load();
             this.scene = new Scene(root);
             this.stage.setScene(scene);
-            this.stage.setScene(scene);
-            this.stage.setWidth(width);
-            this.stage.setHeight(height);
+            this.stage.sizeToScene();
             AnchorPane anchorPane = fxmlLoader.getRoot();
             anchorPane.setBackground(this.displayBackGround(backGroundResource));
+            this.stage.hide();
             this.stage.show();
         } catch (IOException e) {
             //va cambiato
@@ -166,13 +165,13 @@ public class GUIController extends View implements Initializable {
     @FXML
     private void switchCreate() {
         this.isInCreate = true;
-        openNewStage("start-menu.fxml",440, 350, "images/start-menuBG.png");
+        openNewStage("start-menu.fxml", "images/start-menuBG.png");
         this.displayWizards();
         }
     @FXML
     private void switchJoin() {
         this.isInCreate = false;
-        openNewStage("start-menu.fxml", 440, 350, "images/start-menuBG.png");
+        openNewStage("start-menu.fxml", "images/start-menuBG.png");
         this.displayWizards();
         fxmlExactPlayersNumber.setVisible(false);
         fxmlExpertMode.setVisible(false);
@@ -224,7 +223,7 @@ public class GUIController extends View implements Initializable {
     @Override
     @FXML
     protected void waitForStart() {
-        openNewStage("loading-page.fxml", 400,300, "images/loading.gif");
+        openNewStage("loading-page.fxml", "images/loading.gif");
         this.loadingInfo.setText("Waiting start game");
 
         //questa funzione viene chiamata dalla view che è sbloccata dal parser
@@ -238,7 +237,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        guiGameDisplayer.openNewStage("game-view.fxml", 1280, 720,"images/gameboardv2.png" );
+        guiGameDisplayer.openNewStage("game-view.fxml", "images/gameboardv2.png" );
         try {
             this.guiGameDisplayer.displayGame(this.username);
             this.previousMessageType = MessageType.START;
@@ -320,7 +319,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void returnToMainMenu() {
-        this.openNewStage("create-join.fxml",400,300, "images/start-menuBG.png");
+        this.openNewStage("create-join.fxml", "images/start-menuBG.png");
     }
 
     @Override

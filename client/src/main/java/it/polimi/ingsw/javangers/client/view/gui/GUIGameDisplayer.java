@@ -79,18 +79,17 @@ public class GUIGameDisplayer {
         this.stage = stage;
     }
 
-    protected void openNewStage(String fxmlFile, int width, int height,  String backGroundResource) {
+    protected void openNewStage(String fxmlFile, String backGroundResource) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
             fxmlLoader.setController(this);
             this.root = fxmlLoader.load();
             this.scene = new Scene(root);
             this.stage.setScene(scene);
-            this.stage.setWidth(width);
-            this.stage.setHeight(height);
+            this.stage.sizeToScene();
             this.anchorPane = fxmlLoader.getRoot();
             this.anchorPane.setBackground(this.displayBackGround(backGroundResource));
-            this.stage.show();
+            this.stage.hide();
             this.stage.show();
         } catch (IOException e) {
             //va cambiato
