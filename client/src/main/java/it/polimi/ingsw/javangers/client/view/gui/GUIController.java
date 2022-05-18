@@ -237,7 +237,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        guiGameDisplayer.openNewStage("game-view.fxml", "images/game_board.png" );
+        guiGameDisplayer.openNewStage("game-view.fxml", "images/game-board.png" );
         try {
             this.guiGameDisplayer.displayGame(this.username);
             this.previousMessageType = MessageType.START;
