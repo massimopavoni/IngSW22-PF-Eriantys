@@ -18,7 +18,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +52,6 @@ public class GUIController extends View implements Initializable {
     private GridPane wizardsGridPane;
 
 
-
-
-
     /**
      * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
      *
@@ -68,7 +64,7 @@ public class GUIController extends View implements Initializable {
         this.fxmlExactPlayersNumber = new ChoiceBox<>();
         this.fxmlTowerColor = new ChoiceBox<>();
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
-        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser,directivesDispatcher, this.stage);
+        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser, directivesDispatcher, this.stage);
     }
 
     @Override
@@ -101,8 +97,8 @@ public class GUIController extends View implements Initializable {
 
      */
 
-    private Background displayBackGround(String resource) throws URISyntaxException {
-        Image img = new Image(GUIGameDisplayer.class.getResource(resource).toURI().toString());
+    private Background displayBackGround(String resource) {
+        Image img = new Image(GUIGameDisplayer.class.getResource(resource).toString());
         BackgroundImage bImg = new BackgroundImage(img,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
@@ -127,8 +123,6 @@ public class GUIController extends View implements Initializable {
         } catch (IOException e) {
             //va cambiato
             throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -144,22 +138,18 @@ public class GUIController extends View implements Initializable {
 
     }
 
-    private void displayWizards(){
+    private void displayWizards() {
         Image image = null;
-        List<String> cardNameList = new ArrayList<> (AVAILABLE_WIZARD_TYPES.values());
+        List<String> cardNameList = new ArrayList<>(AVAILABLE_WIZARD_TYPES.values());
         for (int i = 0; i < cardNameList.size(); i++) {
-            try {
-                image = new Image(GUIController.class.getResource("images/wizards/"+cardNameList.get(i).toLowerCase()+".png").toURI().toString());
-                ImageView imv = new ImageView();
-                imv.setImage(image);
-                imv.setId(cardNameList.get(i));
-                imv.setFitWidth(81);
-                imv.setFitHeight(120);
-                imv.setOnMouseClicked(this::selectWizard);
-                wizardsGridPane.add(imv,i % 2,i/2);
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
+            image = new Image(GUIController.class.getResource("images/wizards/" + cardNameList.get(i).toLowerCase() + ".png").toString());
+            ImageView imv = new ImageView();
+            imv.setImage(image);
+            imv.setId(cardNameList.get(i));
+            imv.setFitWidth(81);
+            imv.setFitHeight(120);
+            imv.setOnMouseClicked(this::selectWizard);
+            wizardsGridPane.add(imv, i % 2, i / 2);
         }
     }
 
@@ -168,7 +158,8 @@ public class GUIController extends View implements Initializable {
         this.isInCreate = true;
         openNewStage("start-menu.fxml", "images/start-menuBG.png");
         this.displayWizards();
-        }
+    }
+
     @FXML
     private void switchJoin() {
         this.isInCreate = false;
@@ -181,7 +172,7 @@ public class GUIController extends View implements Initializable {
 
     @FXML
     private void redirectCreateJoin() {
-        if(this.isInCreate)
+        if (this.isInCreate)
             this.createGame();
         else
             this.joinGame();
@@ -290,11 +281,11 @@ public class GUIController extends View implements Initializable {
         //da aggiungere in una label il wait turn
     }
 
-    private void enableActionButtons(){
+    private void enableActionButtons() {
         // da aggiungere controlli
         try {
-            for (String action: directivesParser.getAvailableActions()) {
-                switch (action){
+            for (String action : directivesParser.getAvailableActions()) {
+                switch (action) {
                     case "FillClouds" -> guiGameDisplayer.getFillCloudsButton().setDisable(false);
                     case "PlayAssistantCard" -> guiGameDisplayer.getPlayAssistantCardButton().setDisable(false);
                     case "MoveStudents" -> guiGameDisplayer.getMoveStudentsButton().setDisable(false);
@@ -308,7 +299,7 @@ public class GUIController extends View implements Initializable {
         }
     }
 
-    private void disableAllButtons(){
+    private void disableAllButtons() {
         guiGameDisplayer.getFillCloudsButton().setDisable(true);
         guiGameDisplayer.getPlayAssistantCardButton().setDisable(true);
         guiGameDisplayer.getMoveStudentsButton().setDisable(true);
@@ -317,7 +308,6 @@ public class GUIController extends View implements Initializable {
         guiGameDisplayer.getActivateCharacterCardButton().setDisable(true);
 
     }
-
 
 
     @Override

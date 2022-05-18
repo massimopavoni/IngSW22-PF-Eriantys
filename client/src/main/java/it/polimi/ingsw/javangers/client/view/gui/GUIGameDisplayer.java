@@ -2,6 +2,7 @@ package it.polimi.ingsw.javangers.client.view.gui;
 
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesDispatcher;
 import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
+import it.polimi.ingsw.javangers.client.view.View;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,8 +18,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.awt.*;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,8 +79,8 @@ public class GUIGameDisplayer {
         this.messageAlert = new Alert(Alert.AlertType.INFORMATION);
     }
 
-    private Background displayBackGround(String resource) throws URISyntaxException {
-        Image img = new Image(GUIGameDisplayer.class.getResource(resource).toURI().toString());
+    private Background displayBackGround(String resource) {
+        Image img = new Image(GUIGameDisplayer.class.getResource(resource).toString());
         BackgroundImage bImg = new BackgroundImage(img,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
@@ -103,8 +104,6 @@ public class GUIGameDisplayer {
         } catch (IOException e) {
             //va cambiato
             throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -120,19 +119,13 @@ public class GUIGameDisplayer {
             anchorPane.setBackground(this.displayBackGround(backGroundResource));
             this.popUpStage.setScene(new Scene(root));
             this.popUpStage.initModality(Modality.APPLICATION_MODAL);
-            try {
-                stage.getIcons().add(new Image(GUIGameDisplayer.class.getResource("images/logo-cranio.png").toURI().toString()));
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
+            stage.getIcons().add(new Image(GUIGameDisplayer.class.getResource("images/logo-cranio.png").toString()));
             this.popUpStage.setWidth(width);
             this.popUpStage.setHeight(height);
             this.popUpStage.setResizable(false);
             this.popUpStage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -158,36 +151,30 @@ public class GUIGameDisplayer {
     private void displayCharacterCards() {
         Image image = null;
         for (int i = 0; i < directivesParser.getCharacterCardNames().size(); i++) {
-            try {
-                image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" + directivesParser.getCharacterCardNames().get(i) + ".png").toURI().toString());
-                ImageView imv = new ImageView();
-                imv.setImage(image);
-                imv.setId(directivesParser.getCharacterCardNames().get(i));
-                imv.setFitWidth(109);
-                imv.setFitHeight(160);
-                imv.setOnMouseClicked(this::selectCharacterCard);
-                characterCardsGridPane.add(imv, i, 0);
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
+
+            image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" + directivesParser.getCharacterCardNames().get(i) + ".png").toString());
+            ImageView imv = new ImageView();
+            imv.setImage(image);
+            imv.setId(directivesParser.getCharacterCardNames().get(i));
+            imv.setFitWidth(109);
+            imv.setFitHeight(160);
+            imv.setOnMouseClicked(this::selectCharacterCard);
+            characterCardsGridPane.add(imv, i, 0);
+
         }
     }
 
     private void displayPlayerDashboard() {
         Image image = null;
-        try {
-            image = new Image((GUIGameDisplayer.class.getResource("images/plancia aggiuntiva.png")).toURI().toString());
-            ImageView imv = new ImageView();
-            imv.setImage(image);
-            imv.setFitWidth(366);
-            imv.setFitHeight(202);
-            imv.setX(-90);
-            imv.setY(200);
-            imv.setRotate(-90);
-            this.anchorPane.getChildren().add(imv);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        image = new Image((GUIGameDisplayer.class.getResource("images/plancia aggiuntiva.png")).toString());
+        ImageView imv = new ImageView();
+        imv.setImage(image);
+        imv.setFitWidth(366);
+        imv.setFitHeight(202);
+        imv.setX(-90);
+        imv.setY(200);
+        imv.setRotate(-90);
+        this.anchorPane.getChildren().add(imv);
     }
 
     private void displayArchipelago() {
@@ -196,11 +183,7 @@ public class GUIGameDisplayer {
         double currentRad = 0;
         Image image = null;
         for (int i = 0; i < archipelagoSize; i++) {
-            try {
-                image = new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + ".png").toURI().toString());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
+            image = new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + ".png").toString());
             ImageView imv = new ImageView();
             imv.setId(String.format("island%d", i));
             imv.setImage(image);
@@ -212,6 +195,39 @@ public class GUIGameDisplayer {
             currentRad += deltaDeg;
             this.anchorPane.getChildren().add(imv);
         }
+    }
+
+    private void displayTokens() {
+        Image image = null;
+        int padding = 0;
+
+        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
+            image = new Image(GUIGameDisplayer.class.getResource("images/tokens/" + tokenColor.replace("_", "") + ".png").toString());
+            ImageView imv = new ImageView();
+            Label label;
+            try {
+                if (this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor) != null)
+                    label = new Label(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
+                else
+                    label = new Label("0");
+                label.setLayoutX(460);
+                label.setLayoutY(527+padding);
+                label.setMaxHeight(40);
+                label.setMaxWidth(40);
+                this.anchorPane.getChildren().add(label);
+            } catch (DirectivesParser.DirectivesParserException e){
+                e.printStackTrace();
+            }
+            imv.setImage(image);
+            imv.setFitWidth(30);
+            imv.setFitHeight(30);
+            imv.setX(430);
+            imv.setY(520 + padding);
+            padding += 30;
+            this.anchorPane.getChildren().add(imv);
+        }
+
+
     }
 
     private void selectIsland(MouseEvent mouseEvent) {
@@ -243,6 +259,7 @@ public class GUIGameDisplayer {
             this.displayCloud();
         }
         this.displayArchipelago();
+        this.displayTokens();
     }
 
     private void displayCloud() {
@@ -256,22 +273,18 @@ public class GUIGameDisplayer {
         this.anchorPane.getChildren().add(imv);
     }
 
-    private void displayAvailableAssistantCards() throws URISyntaxException {
+    private void displayAvailableAssistantCards() {
         Image image = null;
         List<String> cardNameList = new ArrayList<>(directivesParser.getDashboardAssistantCards(this.username).keySet());
         for (int i = 0; i < cardNameList.size(); i++) {
-            try {
-                image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + cardNameList.get(i) + ".png").toURI().toString());
-                ImageView imv = new ImageView();
-                imv.setImage(image);
-                imv.setId(cardNameList.get(i));
-                imv.setFitWidth(109);
-                imv.setFitHeight(160);
-                imv.setOnMouseClicked(this::selectAssistantCard);
-                assistantCardsGridPane.add(imv, i % 5, i / 5);
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
+            image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + cardNameList.get(i) + ".png").toString());
+            ImageView imv = new ImageView();
+            imv.setImage(image);
+            imv.setId(cardNameList.get(i));
+            imv.setFitWidth(109);
+            imv.setFitHeight(160);
+            imv.setOnMouseClicked(this::selectAssistantCard);
+            assistantCardsGridPane.add(imv, i % 5, i / 5);
         }
     }
 
@@ -294,11 +307,7 @@ public class GUIGameDisplayer {
     private void playAssistantCard() {
         //va cambiato il bg
         openPopUp("assistantCardsChoice.fxml", 645, 450, "images/assistantCardsChoiceBG.png");
-        try {
-            this.displayAvailableAssistantCards();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        this.displayAvailableAssistantCards();
     }
 
     @FXML
