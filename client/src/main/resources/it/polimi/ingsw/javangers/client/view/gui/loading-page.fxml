@@ -6,11 +6,6 @@
 
 <AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="142.0" layoutY="110.0" text="LOADING...">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
       <Label fx:id="loadingInfo" layoutX="130.0" layoutY="190.0" prefHeight="20.0" prefWidth="258.0">
          <font>
             <Font size="18.0" />
