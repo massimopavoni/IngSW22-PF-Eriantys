@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -24,6 +25,8 @@ import java.util.List;
 
 public class GUIGameDisplayer {
 
+    private final Alert errorAlert;
+    private final Alert messageAlert;
     private final DirectivesParser directivesParser;
     private final DirectivesDispatcher directivesDispatcher;
     private Stage stage;
@@ -62,6 +65,13 @@ public class GUIGameDisplayer {
     private GridPane characterCardsGridPane;
 
 
+    protected GUIGameDisplayer(DirectivesParser directivesParser, DirectivesDispatcher directivesDispatcher, Stage stage) {
+        this.directivesParser = directivesParser;
+        this.directivesDispatcher = directivesDispatcher;
+        this.stage = stage;
+        this.errorAlert = new Alert(Alert.AlertType.ERROR);
+        this.messageAlert = new Alert(Alert.AlertType.INFORMATION);
+    }
 
     private Background displayBackGround(String resource) throws URISyntaxException {
         Image img = new Image(GUIGameDisplayer.class.getResource(resource).toURI().toString());
@@ -71,12 +81,6 @@ public class GUIGameDisplayer {
                 BackgroundPosition.CENTER,
                 BackgroundSize.DEFAULT);
         return new Background(bImg);
-    }
-
-    protected GUIGameDisplayer(DirectivesParser directivesParser,DirectivesDispatcher directivesDispatcher, Stage stage) {
-        this.directivesParser = directivesParser;
-        this.directivesDispatcher = directivesDispatcher;
-        this.stage = stage;
     }
 
     protected void openNewStage(String fxmlFile, String backGroundResource) {
@@ -100,7 +104,7 @@ public class GUIGameDisplayer {
     }
 
 
-    public void openPopUp(String fxmlFile,int width, int height, String backGroundResource) {
+    public void openPopUp(String fxmlFile, int width, int height, String backGroundResource) {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
         fxmlLoader.setController(this);
         Parent root;
@@ -128,9 +132,6 @@ public class GUIGameDisplayer {
     }
 
 
-
-
-
     private void displayCurrentPhase() {
         Pair<String, String> currentPhasePair = this.directivesParser.getCurrentPhase();
         this.currentPhase.setText("Current phase: " + currentPhasePair.getKey() + " => " + currentPhasePair.getValue());
@@ -153,14 +154,14 @@ public class GUIGameDisplayer {
         Image image = null;
         for (int i = 0; i < directivesParser.getCharacterCardNames().size(); i++) {
             try {
-                image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" +directivesParser.getCharacterCardNames().get(i)+".png").toURI().toString());
+                image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" + directivesParser.getCharacterCardNames().get(i) + ".png").toURI().toString());
                 ImageView imv = new ImageView();
                 imv.setImage(image);
                 imv.setId(directivesParser.getCharacterCardNames().get(i));
                 imv.setFitWidth(109);
                 imv.setFitHeight(160);
                 imv.setOnMouseClicked(this::selectCharacterCard);
-                characterCardsGridPane.add(imv,i,0);
+                characterCardsGridPane.add(imv, i, 0);
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
@@ -184,25 +185,45 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void displayArchipelago(){
+    private void displayArchipelago() {
         int archipelagoSize = this.directivesParser.getIslandsSize();
-        double deltaDeg = 2*Math.PI/archipelagoSize;
+        double deltaDeg = 2 * Math.PI / archipelagoSize;
         double currentRad = 0;
         Image image = null;
-        for(int i=0; i<archipelagoSize; i++){
+        for (int i = 0; i < archipelagoSize; i++) {
             try {
-                image = new Image(GUIGameDisplayer.class.getResource("images/islands/island"+Integer.toString(i%3)+".png").toURI().toString());
+                image = new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + ".png").toURI().toString());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
             ImageView imv = new ImageView();
+            imv.setId(String.format("island%d", i));
             imv.setImage(image);
             imv.setFitWidth(80);
             imv.setFitHeight(80);
-            imv.setX(600+260*Math.cos(currentRad));
-            imv.setY(270+130*Math.sin(currentRad));
+            imv.setX(600 + 260 * Math.cos(currentRad));
+            imv.setY(270 + 130 * Math.sin(currentRad));
+            imv.setOnMouseClicked(this::selectIsland);
             currentRad += deltaDeg;
             this.anchorPane.getChildren().add(imv);
+        }
+    }
+
+    private void selectIsland(MouseEvent mouseEvent) {
+        int selectedIsland = Integer.parseInt(((ImageView) mouseEvent.getSource()).getId().split("island")[1]);
+        switch (this.directivesParser.getCurrentPhase().getValue()) {
+            case "Move mother nature" -> {
+                int steps = (selectedIsland - this.directivesParser.getMotherNaturePosition()
+                        + this.directivesParser.getIslandsSize()) % this.directivesParser.getIslandsSize();
+                if (steps < 1 || steps > this.directivesParser.getDashboardLastDiscardedAssistantCard(this.username).getValue().getValue()
+                        + this.directivesParser.getAdditionalMotherNatureSteps()) {
+                    this.errorAlert.setHeaderText("Move mother nature");
+                    this.errorAlert.setContentText("Invalid number of steps");
+                    this.errorAlert.showAndWait();
+                } else {
+                    this.directivesDispatcher.actionMoveMotherNature(this.username, steps);
+                }
+            }
         }
     }
 
@@ -218,20 +239,19 @@ public class GUIGameDisplayer {
     }
 
 
-
     private void displayAvailableAssistantCards() throws URISyntaxException {
         Image image = null;
-        List<String> cardNameList = new ArrayList<> (directivesParser.getDashboardAssistantCards(this.username).keySet());
+        List<String> cardNameList = new ArrayList<>(directivesParser.getDashboardAssistantCards(this.username).keySet());
         for (int i = 0; i < cardNameList.size(); i++) {
             try {
-                image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/"+cardNameList.get(i)+".png").toURI().toString());
+                image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + cardNameList.get(i) + ".png").toURI().toString());
                 ImageView imv = new ImageView();
                 imv.setImage(image);
                 imv.setId(cardNameList.get(i));
                 imv.setFitWidth(109);
                 imv.setFitHeight(160);
                 imv.setOnMouseClicked(this::selectAssistantCard);
-                assistantCardsGridPane.add(imv,i % 5,i/5);
+                assistantCardsGridPane.add(imv, i % 5, i / 5);
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
@@ -239,22 +259,22 @@ public class GUIGameDisplayer {
     }
 
     @FXML
-    private void selectAssistantCard(MouseEvent event){
+    private void selectAssistantCard(MouseEvent event) {
         assistantCardChosen = ((ImageView) event.getSource()).getId();
     }
 
     @FXML
-    private void selectCharacterCard(MouseEvent event){
+    private void selectCharacterCard(MouseEvent event) {
         characterCardChosen = ((ImageView) event.getSource()).getId();
     }
 
     @FXML
-    private void fillClouds(){
+    private void fillClouds() {
         directivesDispatcher.actionFillClouds(this.username);
     }
 
     @FXML
-    private void playAssistantCard(){
+    private void playAssistantCard() {
         //va cambiato il bg
         openPopUp("assistantCardsChoice.fxml", 645, 450, "images/assistantCardsChoiceBG.png");
         try {
@@ -265,45 +285,47 @@ public class GUIGameDisplayer {
     }
 
     @FXML
-    private void playCharacterCard(){
-        openPopUp("characterCardsChoice.fxml", 400, 300,"images/characterCardsChoiceBG.png" );
+    private void playCharacterCard() {
+        openPopUp("characterCardsChoice.fxml", 400, 300, "images/characterCardsChoiceBG.png");
         this.displayCharacterCards();
     }
 
     @FXML
-    private void confirmAssistantCard(){
+    private void confirmAssistantCard() {
         this.popUpStage.close();
         this.directivesDispatcher.actionPlayAssistantCard(this.username, this.assistantCardChosen);
     }
 
 
-
     @FXML
-    private void moveStudents(){
+    private void moveStudents() {
 
     }
 
     @FXML
-    private void moveMotherNature(){
+    private void moveMotherNature() {
+        this.messageAlert.setHeaderText("Move mother nature");
+        this.messageAlert.setContentText(String.format("Choose an island by clicking on it (max distance is %d)",
+                this.directivesParser.getDashboardLastDiscardedAssistantCard(this.username).getValue().getValue()
+                        + this.directivesParser.getAdditionalMotherNatureSteps()));
+        this.messageAlert.showAndWait();
+    }
+
+    @FXML
+    private void chooseCloud() {
 
     }
 
     @FXML
-    private void chooseCloud(){
-
-    }
-
-    @FXML
-    private void activateCharacterCard(){
+    private void activateCharacterCard() {
         this.popUpStage.close();
         //continuare ad implementare
     }
 
 
-
-   protected Button getFillCloudsButton(){
+    protected Button getFillCloudsButton() {
         return fillCloudsButton;
-   }
+    }
 
     protected Button getPlayAssistantCardButton() {
         return playAssistantCardButton;
