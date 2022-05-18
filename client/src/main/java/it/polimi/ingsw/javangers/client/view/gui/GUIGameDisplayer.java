@@ -249,10 +249,10 @@ public class GUIGameDisplayer {
         Image image = new Image((GUIGameDisplayer.class.getResource("images/CloudToAddOnDashboard.png")).toString());;
         ImageView imv = new ImageView();
         imv.setImage(image);
-        imv.setFitWidth(100);
-        imv.setFitHeight(94);
-        imv.setX(570);
-        imv.setY(250);
+        imv.setFitWidth(125);
+        imv.setFitHeight(125);
+        imv.setX(577);
+        imv.setY(251);
         this.anchorPane.getChildren().add(imv);
     }
 
