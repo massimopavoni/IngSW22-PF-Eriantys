@@ -1,4 +1,4 @@
-module it.polimi.ingsw.javangers.client {
+module client {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.logging;
