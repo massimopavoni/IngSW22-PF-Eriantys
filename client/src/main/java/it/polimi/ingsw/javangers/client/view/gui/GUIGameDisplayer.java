@@ -66,6 +66,37 @@ public class GUIGameDisplayer {
     private GridPane characterCardsGridPane;
     @FXML
     private Label yourTurn;
+    @FXML
+    private Label BLUE_UNICORN_0;
+    @FXML
+    private Label PINK_FAIRY_0;
+    @FXML
+    private Label YELLOW_ELF_0;
+    @FXML
+    private Label RED_DRAGON_0;
+    @FXML
+    private Label GREEN_FROG_0;
+    @FXML
+    private Label BLUE_UNICORN_1;
+    @FXML
+    private Label PINK_FAIRY_1;
+    @FXML
+    private Label YELLOW_ELF_1;
+    @FXML
+    private Label RED_DRAGON_1;
+    @FXML
+    private Label GREEN_FROG_1;
+    @FXML
+    private Label PINK_FAIRY_2;
+    @FXML
+    private Label BLUE_UNICORN_2;
+    @FXML
+    private Label YELLOW_ELF_2;
+    @FXML
+    private Label RED_DRAGON_2;
+    @FXML
+    private Label GREEN_FROG_2;
+
 
     public void setYourTurnMessage(String message) {
         this.yourTurn.setText(message);
@@ -210,19 +241,17 @@ public class GUIGameDisplayer {
                     label = new Label(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
                 else
                     label = new Label("0");
-                label.setLayoutX(460);
-                label.setLayoutY(527+padding);
-                label.setMaxHeight(40);
-                label.setMaxWidth(40);
+                label.setLayoutX(462);
+                label.setLayoutY(525+padding);
                 this.anchorPane.getChildren().add(label);
             } catch (DirectivesParser.DirectivesParserException e){
                 e.printStackTrace();
             }
             imv.setImage(image);
-            imv.setFitWidth(30);
-            imv.setFitHeight(30);
-            imv.setX(430);
-            imv.setY(520 + padding);
+            imv.setFitWidth(47);
+            imv.setFitHeight(47);
+            imv.setX(420);
+            imv.setY(510 + padding);
             padding += 30;
             this.anchorPane.getChildren().add(imv);
         }
@@ -248,8 +277,51 @@ public class GUIGameDisplayer {
         }
     }
 
+    private void displayCloudsTokensLabels(){
+        Label label;
+        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
+            try {
+                BLUE_UNICORN_0.setText(this.directivesParser.getCloudTokens(0).get("BLUE_UNICORN") != null ?
+                this.directivesParser.getCloudTokens(0).get("BLUE_UNICORN").toString() : "0");
+                BLUE_UNICORN_1.setText(this.directivesParser.getCloudTokens(1).get("BLUE_UNICORN") != null ?
+                        this.directivesParser.getCloudTokens(1).get("BLUE_UNICORN").toString() : "0");
+                PINK_FAIRY_0.setText(this.directivesParser.getCloudTokens(0).get("PINK_FAIRY") != null ?
+                        this.directivesParser.getCloudTokens(0).get("PINK_FAIRY").toString() : "0");
+                PINK_FAIRY_1.setText(this.directivesParser.getCloudTokens(1).get("PINK_FAIRY") != null ?
+                        this.directivesParser.getCloudTokens(1).get("PINK_FAIRY").toString() : "0");
+                YELLOW_ELF_0.setText(this.directivesParser.getCloudTokens(0).get("YELLOW_ELF") != null ?
+                        this.directivesParser.getCloudTokens(0).get("YELLOW_ELF").toString() : "0");
+                YELLOW_ELF_1.setText(this.directivesParser.getCloudTokens(1).get("YELLOW_ELF") != null ?
+                        this.directivesParser.getCloudTokens(1).get("YELLOW_ELF").toString() : "0");
+                RED_DRAGON_0.setText(this.directivesParser.getCloudTokens(0).get("RED_DRAGON") != null ?
+                        this.directivesParser.getCloudTokens(0).get("RED_DRAGON").toString() : "0");
+                RED_DRAGON_1.setText(this.directivesParser.getCloudTokens(1).get("RED_DRAGON") != null ?
+                        this.directivesParser.getCloudTokens(1).get("RED_DRAGON").toString() : "0");
+                GREEN_FROG_0.setText(this.directivesParser.getCloudTokens(0).get("GREEN_FROG") != null ?
+                        this.directivesParser.getCloudTokens(0).get("GREEN_FROG").toString() : "0");
+                GREEN_FROG_1.setText(this.directivesParser.getCloudTokens(1).get("GREEN_FROG") != null ?
+                        this.directivesParser.getCloudTokens(1).get("GREEN_FROG").toString() : "0");
+                if(this.directivesParser.getExactPlayersNumber()==3){
+                    BLUE_UNICORN_2.setText(this.directivesParser.getCloudTokens(2).get("BLUE_UNICORN") != null ?
+                            this.directivesParser.getCloudTokens(2).get("BLUE_UNICORN").toString() : "0");
+                    PINK_FAIRY_2.setText(this.directivesParser.getCloudTokens(2).get("PINK_FAIRY") != null ?
+                            this.directivesParser.getCloudTokens(2).get("PINK_FAIRY").toString() : "0");
+                    YELLOW_ELF_2.setText(this.directivesParser.getCloudTokens(2).get("YELLOW_ELF") != null ?
+                            this.directivesParser.getCloudTokens(2).get("YELLOW_ELF").toString() : "0");
+                    RED_DRAGON_2.setText(this.directivesParser.getCloudTokens(2).get("RED_DRAGON") != null ?
+                            this.directivesParser.getCloudTokens(2).get("RED_DRAGON").toString() : "0");
+                    GREEN_FROG_2.setText(this.directivesParser.getCloudTokens(2).get("GREEN_FROG") != null ?
+                            this.directivesParser.getCloudTokens(2).get("GREEN_FROG").toString() : "0");
+                }
+            } catch (DirectivesParser.DirectivesParserException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         this.username = username;
+        //this.anchorPane.getChildren().clear();
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         if (!directivesParser.isExpertMode())
@@ -260,6 +332,7 @@ public class GUIGameDisplayer {
         }
         this.displayArchipelago();
         this.displayTokens();
+        this.displayCloudsTokensLabels();
     }
 
     private void displayCloud() {

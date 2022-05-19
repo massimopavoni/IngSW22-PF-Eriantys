@@ -21,6 +21,81 @@
       <Button fx:id="moveMotherNatureButton" layoutX="1118.0" layoutY="353.0" mnemonicParsing="false" onAction="#moveMotherNature" text="Move Mother Nature" />
       <Button fx:id="chooseCloudButton" layoutX="1119.0" layoutY="392.0" mnemonicParsing="false" onAction="#chooseCloud" text="Choose Cloud" />
       <Button fx:id="fillCloudsButton" layoutX="1118.0" layoutY="220.0" mnemonicParsing="false" onAction="#fillClouds" text="Fill Clouds" />
+      <Label fx:id="PINK_FAIRY_0" layoutX="478.0" layoutY="252.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_0" layoutX="516.0" layoutY="281.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_0" layoutX="509.0" layoutY="336.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="GREEN_FROG_0" layoutX="448.0" layoutY="327.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="BLUE_UNICORN_0" layoutX="438.0" layoutY="281.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="PINK_FAIRY_2" layoutX="634.0" layoutY="250.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_2" layoutX="675.0" layoutY="283.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_2" layoutX="666.0" layoutY="340.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="GREEN_FROG_2" layoutX="604.0" layoutY="332.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="BLUE_UNICORN_2" layoutX="593.0" layoutY="285.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="PINK_FAIRY_1" layoutX="782.0" layoutY="250.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_1" layoutX="820.0" layoutY="279.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_1" layoutX="813.0" layoutY="334.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="GREEN_FROG_1" layoutX="752.0" layoutY="325.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="BLUE_UNICORN_1" layoutX="741.0" layoutY="279.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
       <Label fx:id="yourTurn" layoutX="893.0" layoutY="677.0" prefHeight="23.0" prefWidth="367.0">
          <font>
             <Font size="14.0" />
