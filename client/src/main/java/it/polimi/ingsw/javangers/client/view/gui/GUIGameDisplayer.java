@@ -166,7 +166,7 @@ public class GUIGameDisplayer {
 
     private void displayPlayerDashboard() {
         Image image = null;
-        image = new Image((GUIGameDisplayer.class.getResource("images/plancia aggiuntiva.png")).toString());
+        image = new Image((GUIGameDisplayer.class.getResource("images/player-dashboard.png")).toString());
         ImageView imv = new ImageView();
         imv.setImage(image);
         imv.setFitWidth(366);
@@ -263,7 +263,7 @@ public class GUIGameDisplayer {
     }
 
     private void displayCloud() {
-        Image image = new Image((GUIGameDisplayer.class.getResource("images/CloudToAddOnDashboard.png")).toString());;
+        Image image = new Image((GUIGameDisplayer.class.getResource("images/cloud.png")).toString());;
         ImageView imv = new ImageView();
         imv.setImage(image);
         imv.setFitWidth(125);
