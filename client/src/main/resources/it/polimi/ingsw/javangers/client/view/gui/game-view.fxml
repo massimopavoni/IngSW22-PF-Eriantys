@@ -264,17 +264,17 @@
             <Font name="Verdana Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="towerLabelD0" layoutX="835.0" layoutY="594.0">
+      <Label fx:id="towerLabelD0" layoutX="825.0" layoutY="585">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="towerLabelD1" layoutX="765.0" layoutY="50.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="towerLabelD1" layoutX="755.0" layoutY="60.0" prefHeight="23.0" prefWidth="8.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="towerLabelD2" layoutX="83.0" layoutY="150.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="towerLabelD2" layoutX="83.0" layoutY="165.0" prefHeight="23.0" prefWidth="8.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
