@@ -23,7 +23,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </GridPane>
-      <ImageView fitHeight="64.0" fitWidth="148.0" layoutX="127.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="55.0" fitWidth="127.0" layoutX="137.0" layoutY="200.0" onMouseClicked="#activateCharacterCard">
          <image>
             <Image url="@images/confirm-button.png" />
          </image>
