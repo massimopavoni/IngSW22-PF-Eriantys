@@ -18,7 +18,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +36,7 @@ public class GUIGameDisplayer {
     private AnchorPane anchorPane;
     private String assistantCardChosen;
     private String characterCardChosen;
+    private Boolean firstDisplay;
     @FXML
     private Label currentPhase;
     @FXML
@@ -98,6 +98,9 @@ public class GUIGameDisplayer {
     private Label GREEN_FROG_2;
 
 
+
+
+
     public void setYourTurnMessage(String message) {
         this.yourTurn.setText(message);
     }
@@ -108,6 +111,7 @@ public class GUIGameDisplayer {
         this.stage = stage;
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
         this.messageAlert = new Alert(Alert.AlertType.INFORMATION);
+        this.firstDisplay = true;
     }
 
     private Background displayBackGround(String resource) {
@@ -180,10 +184,8 @@ public class GUIGameDisplayer {
     }
 
     private void displayCharacterCards() {
-        Image image = null;
         for (int i = 0; i < directivesParser.getCharacterCardNames().size(); i++) {
-
-            image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" + directivesParser.getCharacterCardNames().get(i) + ".png").toString());
+            Image image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" + directivesParser.getCharacterCardNames().get(i) + ".png").toString());
             ImageView imv = new ImageView();
             imv.setImage(image);
             imv.setId(directivesParser.getCharacterCardNames().get(i));
@@ -228,35 +230,20 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void displayTokens() {
-        Image image = null;
-        int padding = 0;
-
+    private void displayDashboardEntranceTokensLabel0() {
         for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-            image = new Image(GUIGameDisplayer.class.getResource("images/tokens/" + tokenColor.replace("_", "") + ".png").toString());
-            ImageView imv = new ImageView();
             Label label;
             try {
+                label = (Label) this.scene.lookup("#"+ tokenColor +"_D0");
                 if (this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor) != null)
-                    label = new Label(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
-                else
-                    label = new Label("0");
-                label.setLayoutX(462);
-                label.setLayoutY(525+padding);
-                this.anchorPane.getChildren().add(label);
+                    label.setText(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
+                else{
+                    label.setText("0");
+                }
             } catch (DirectivesParser.DirectivesParserException e){
                 e.printStackTrace();
             }
-            imv.setImage(image);
-            imv.setFitWidth(47);
-            imv.setFitHeight(47);
-            imv.setX(420);
-            imv.setY(510 + padding);
-            padding += 30;
-            this.anchorPane.getChildren().add(imv);
         }
-
-
     }
 
     private void selectIsland(MouseEvent mouseEvent) {
@@ -320,18 +307,20 @@ public class GUIGameDisplayer {
     }
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
+        if(firstDisplay){
+            this.firstDisplay = false;
+            if (directivesParser.getExactPlayersNumber() == 3) {
+                this.displayPlayerDashboard();
+                this.displayCloud();
+            }
+            if (!directivesParser.isExpertMode())
+                activateCharacterCardButton.setVisible(false);
+        }
         this.username = username;
-        //this.anchorPane.getChildren().clear();
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
-        if (!directivesParser.isExpertMode())
-            activateCharacterCardButton.setVisible(false);
-        if (directivesParser.getExactPlayersNumber() == 3) {
-            this.displayPlayerDashboard();
-            this.displayCloud();
-        }
         this.displayArchipelago();
-        this.displayTokens();
+        this.displayDashboardEntranceTokensLabel0();
         this.displayCloudsTokensLabels();
     }
 

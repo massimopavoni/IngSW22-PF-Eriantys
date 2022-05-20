@@ -101,5 +101,30 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Label fx:id="GREEN_FROG_D0" layoutX="462.0" layoutY="525.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_D0" layoutX="461.0" layoutY="555.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_D0" layoutX="462.0" layoutY="585.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="PINK_FAIRY_D0" layoutX="462.0" layoutY="615.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="BLUE_UNICORN_D0" layoutX="462.0" layoutY="645.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

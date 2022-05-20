@@ -52,6 +52,7 @@ public class GUIController extends View implements Initializable {
     private GridPane wizardsGridPane;
 
 
+
     /**
      * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
      *
@@ -139,10 +140,9 @@ public class GUIController extends View implements Initializable {
     }
 
     private void displayWizards() {
-        Image image = null;
         List<String> cardNameList = new ArrayList<>(AVAILABLE_WIZARD_TYPES.values());
         for (int i = 0; i < cardNameList.size(); i++) {
-            image = new Image(GUIController.class.getResource("images/wizards/" + cardNameList.get(i).toLowerCase() + ".png").toString());
+            Image image = new Image(GUIController.class.getResource("images/wizards/" + cardNameList.get(i).toLowerCase() + ".png").toString());
             ImageView imv = new ImageView();
             imv.setImage(image);
             imv.setId(cardNameList.get(i));
