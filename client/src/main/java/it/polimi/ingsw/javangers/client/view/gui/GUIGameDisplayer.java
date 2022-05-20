@@ -38,17 +38,13 @@ public class GUIGameDisplayer {
     private String assistantCardChosen;
     private String characterCardChosen;
     private Boolean firstDisplay;
+    private String username;
+    private String opponentUsername;
+    private String leftUsername;
     @FXML
     private Label currentPhase;
     @FXML
     private Label playersOrder;
-    @FXML
-    private Label fxmlUsername1;
-    @FXML
-    private Label fxmlUsername2;
-    @FXML
-    private Label fxmlUsername3;
-    private String username;
     @FXML
     private Button fillCloudsButton;
     @FXML
@@ -141,14 +137,6 @@ public class GUIGameDisplayer {
     private void displayPlayersOrder(String username) throws DirectivesParser.DirectivesParserException {
 
         playersOrder.setText("You are " + username + ", Player's order is: " + directivesParser.getPlayersOrder().toString());
-
-        /* da sistemare non visualizzate in modo corretto
-        fxmlUsername1.setText(username);
-        fxmlUsername2.setText(directivesParser.getDashboardNames().get(1));
-        if(directivesParser.getExactPlayersNumber() == 3)
-            fxmlUsername3.setText(directivesParser.getDashboardNames().get(2));
-
-         */
     }
 
     private void setInvisibleCharacterCardsFrames() {
@@ -182,8 +170,7 @@ public class GUIGameDisplayer {
     }
 
     private void displayPlayerDashboard() {
-        Image image = null;
-        image = new Image((GUIGameDisplayer.class.getResource("images/player-dashboard.png")).toString());
+        Image image = new Image((GUIGameDisplayer.class.getResource("images/player-dashboard.png")).toString());
         ImageView imv = new ImageView();
         imv.setImage(image);
         imv.setFitWidth(366);
@@ -291,6 +278,15 @@ public class GUIGameDisplayer {
     }
 
 
+    private void setOthersUsername(){
+        List<String> othersUsernameList = directivesParser.getDashboardNames();
+        othersUsernameList.remove(this.username);
+        this.opponentUsername = othersUsernameList.get(0);
+        if (this.directivesParser.getExactPlayersNumber() == 3){
+            this.leftUsername = othersUsernameList.get(1);
+        }
+    }
+
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         if (this.firstDisplay) {
             if (directivesParser.getExactPlayersNumber() == 3) {
@@ -299,8 +295,9 @@ public class GUIGameDisplayer {
             }
             if (!directivesParser.isExpertMode())
                 activateCharacterCardButton.setVisible(false);
+            this.username = username;
+            this.setOthersUsername();
         }
-        this.username = username;
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         this.displayArchipelago();
