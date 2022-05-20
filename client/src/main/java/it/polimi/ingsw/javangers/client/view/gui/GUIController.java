@@ -129,7 +129,12 @@ public class GUIController extends View implements Initializable {
 
     @FXML
     protected void selectWizard(MouseEvent event) {
+        setInvisibleWizardFrames();
+        ImageView imv = new ImageView();
+        ImageView frame = new ImageView();
         this.wizardType = ((ImageView) event.getSource()).getId();
+        frame = (ImageView) this.wizardsGridPane.lookup("#frame_"+this.wizardType);
+        frame.setVisible(true);
     }
 
     protected void alertMessage(String headerText, String contentText) {
@@ -139,17 +144,34 @@ public class GUIController extends View implements Initializable {
 
     }
 
+    private void setInvisibleWizardFrames(){
+        List<String> cardNameList = new ArrayList<>(AVAILABLE_WIZARD_TYPES.values());
+        for (String s : cardNameList) {
+            ImageView imv = null;
+            imv = (ImageView) this.wizardsGridPane.lookup("#frame_" + s);
+            imv.setVisible(false);
+        }
+    }
+
     private void displayWizards() {
+        Image frame = new Image(GUIController.class.getResource("images/selection-frame.png").toString());
         List<String> cardNameList = new ArrayList<>(AVAILABLE_WIZARD_TYPES.values());
         for (int i = 0; i < cardNameList.size(); i++) {
             Image image = new Image(GUIController.class.getResource("images/wizards/" + cardNameList.get(i).toLowerCase() + ".png").toString());
             ImageView imv = new ImageView();
+            ImageView frameImv = new ImageView();
             imv.setImage(image);
             imv.setId(cardNameList.get(i));
             imv.setFitWidth(81);
             imv.setFitHeight(120);
             imv.setOnMouseClicked(this::selectWizard);
+            frameImv.setImage(frame);
+            frameImv.setId("frame_"+cardNameList.get(i));
+            frameImv.setFitWidth(90);
+            frameImv.setFitHeight(126);
+            frameImv.setVisible(false);
             wizardsGridPane.add(imv, i % 2, i / 2);
+            wizardsGridPane.add(frameImv, i % 2, i / 2);
         }
     }
 

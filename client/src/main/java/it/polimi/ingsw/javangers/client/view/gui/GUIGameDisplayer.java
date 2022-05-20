@@ -182,18 +182,33 @@ public class GUIGameDisplayer {
 
          */
     }
+    private void setInvisibleCharacterCardsFrames(){
+        List<String> cardNameList = new ArrayList<>(directivesParser.getCharacterCardNames());
+        for (String s : cardNameList) {
+            ImageView imv = null;
+            imv = (ImageView) this.characterCardsGridPane.lookup("#frame_" + s);
+            imv.setVisible(false);
+        }
+    }
 
     private void displayCharacterCards() {
+        Image frame = new Image(GUIController.class.getResource("images/selection-frame.png").toString());
         for (int i = 0; i < directivesParser.getCharacterCardNames().size(); i++) {
             Image image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" + directivesParser.getCharacterCardNames().get(i) + ".png").toString());
             ImageView imv = new ImageView();
+            ImageView frameImv = new ImageView();
             imv.setImage(image);
             imv.setId(directivesParser.getCharacterCardNames().get(i));
             imv.setFitWidth(109);
             imv.setFitHeight(160);
             imv.setOnMouseClicked(this::selectCharacterCard);
+            frameImv.setImage(frame);
+            frameImv.setId("frame_"+directivesParser.getCharacterCardNames().get(i));
+            frameImv.setFitWidth(120);
+            frameImv.setFitHeight(170);
+            frameImv.setVisible(false);
             characterCardsGridPane.add(imv, i, 0);
-
+            characterCardsGridPane.add(frameImv, i, 0);
         }
     }
 
@@ -335,29 +350,56 @@ public class GUIGameDisplayer {
         this.anchorPane.getChildren().add(imv);
     }
 
+    private void setInvisibleAssistantCardsFrames(){
+        List<String> cardNameList = new ArrayList<>(directivesParser.getDashboardAssistantCards(this.username).keySet());
+        for (String s : cardNameList) {
+            ImageView imv = null;
+            imv = (ImageView) this.assistantCardsGridPane.lookup("#frame_" + s);
+            imv.setVisible(false);
+        }
+    }
+
     private void displayAvailableAssistantCards() {
         Image image = null;
+        Image frame = new Image(GUIController.class.getResource("images/selection-frame.png").toString());
         List<String> cardNameList = new ArrayList<>(directivesParser.getDashboardAssistantCards(this.username).keySet());
         for (int i = 0; i < cardNameList.size(); i++) {
             image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + cardNameList.get(i) + ".png").toString());
             ImageView imv = new ImageView();
+            ImageView frameImv = new ImageView();
             imv.setImage(image);
             imv.setId(cardNameList.get(i));
             imv.setFitWidth(109);
             imv.setFitHeight(160);
             imv.setOnMouseClicked(this::selectAssistantCard);
+            frameImv.setImage(frame);
+            frameImv.setId("frame_"+cardNameList.get(i));
+            frameImv.setFitWidth(120);
+            frameImv.setFitHeight(170);
+            frameImv.setVisible(false);
             assistantCardsGridPane.add(imv, i % 5, i / 5);
+            assistantCardsGridPane.add(frameImv, i % 5, i / 5);
         }
     }
 
     @FXML
     private void selectAssistantCard(MouseEvent event) {
-        assistantCardChosen = ((ImageView) event.getSource()).getId();
+        setInvisibleAssistantCardsFrames();
+        ImageView imv = new ImageView();
+        ImageView frame = new ImageView();
+        this.assistantCardChosen = ((ImageView) event.getSource()).getId();
+        frame = (ImageView) this.assistantCardsGridPane.lookup("#frame_"+this.assistantCardChosen);
+        frame.setVisible(true);
     }
 
     @FXML
     private void selectCharacterCard(MouseEvent event) {
-        characterCardChosen = ((ImageView) event.getSource()).getId();
+        setInvisibleCharacterCardsFrames();
+        ImageView imv = new ImageView();
+        ImageView frame = new ImageView();
+        this.characterCardChosen = ((ImageView) event.getSource()).getId();
+        frame = (ImageView) this.characterCardsGridPane.lookup("#frame_"+this.characterCardChosen);
+        frame.setVisible(true);
     }
 
     @FXML
