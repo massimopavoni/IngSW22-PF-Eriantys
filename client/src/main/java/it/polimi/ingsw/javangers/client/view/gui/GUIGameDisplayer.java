@@ -20,6 +20,7 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -42,8 +43,11 @@ public class GUIGameDisplayer {
     private List<String> usernamesList;
     private String opponentUsername;
     private String leftUsername;
+    private boolean threePlayers;
     @FXML
     private Label currentPhase;
+    @FXML
+    private Label youArePlayerLabel;
     @FXML
     private Label playersOrder;
     @FXML
@@ -136,8 +140,8 @@ public class GUIGameDisplayer {
     }
 
     private void displayPlayersOrder(String username) throws DirectivesParser.DirectivesParserException {
-
-        playersOrder.setText("You are " + username + ", Player's order is: " + directivesParser.getPlayersOrder().toString());
+        this.youArePlayerLabel.setText("You are " + username);
+        this.playersOrder.setText("Player's order is: " + directivesParser.getPlayersOrder().toString());
     }
 
     private void setInvisibleCharacterCardsFrames() {
@@ -172,14 +176,8 @@ public class GUIGameDisplayer {
 
     private void displayPlayerDashboard() {
         Image image = new Image((GUIGameDisplayer.class.getResource("images/player-dashboard.png")).toString());
-        ImageView imv = new ImageView();
+        ImageView imv = (ImageView) this.anchorPane.lookup("#thirdDashboard");
         imv.setImage(image);
-        imv.setFitWidth(366);
-        imv.setFitHeight(202);
-        imv.setX(-90);
-        imv.setY(200);
-        imv.setRotate(-90);
-        this.anchorPane.getChildren().add(imv);
     }
 
     private void displayArchipelago() {
@@ -284,7 +282,8 @@ public class GUIGameDisplayer {
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         if (this.firstDisplay) {
-            if (directivesParser.getExactPlayersNumber() == 3) {
+            threePlayers = (directivesParser.getExactPlayersNumber() == 3);
+            if (threePlayers) {
                 this.displayPlayerDashboard();
                 this.displayCloud();
             }
