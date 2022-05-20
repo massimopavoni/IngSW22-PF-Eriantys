@@ -302,8 +302,20 @@ public class GUIGameDisplayer {
         this.displayDashboardHallTokensLabel();
         this.displayCloudsTokensLabels();
         this.disableCloudImageView();
+        this.displayLastDiscardedCards();
         if (this.firstDisplay)
             this.firstDisplay = false;
+    }
+
+    private void displayLastDiscardedCards() {
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            if(this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(i)) != null) {
+                ImageView imageView = (ImageView) this.scene.lookup("#lastDiscardD" + i);
+                Image image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(i)).getKey()+ ".png").toString());
+                imageView.setImage(image);
+            }
+        }
+
     }
 
     private void disableCloudImageView() {
@@ -315,7 +327,7 @@ public class GUIGameDisplayer {
     }
 
     private void displayTowers(){
-        int[][] towerPosition = {{766,550},{710,36},{83,175}};
+        int[][] towerPosition = {{766,550},{710,36},{75,175}};
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             Image image = new Image((GUIGameDisplayer.class.getResource("images/towers/"+this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).
                     getKey().toLowerCase()+"Tower.png")).toString());
