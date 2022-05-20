@@ -39,6 +39,7 @@ public class GUIGameDisplayer {
     private String characterCardChosen;
     private Boolean firstDisplay;
     private String username;
+    private List<String> usernamesList;
     private String opponentUsername;
     private String leftUsername;
     @FXML
@@ -212,34 +213,38 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void displayDashboardEntranceTokensLabel0() {
-        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-            Label label;
-            try {
-                label = (Label) this.scene.lookup("#" + tokenColor + "_D0");
-                if (this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor) != null)
-                    label.setText(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
-                else {
-                    label.setText("0");
+    private void displayDashboardEntranceTokensLabel() {
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
+                Label label;
+                try {
+                    label = (Label) this.scene.lookup("#" + tokenColor + "_D" +i);
+                    if (this.directivesParser.getDashboardEntranceTokens(this.usernamesList.get(i)).get(tokenColor) != null)
+                        label.setText(this.directivesParser.getDashboardEntranceTokens(this.usernamesList.get(i)).get(tokenColor).toString());
+                    else {
+                        label.setText("0");
+                    }
+                } catch (DirectivesParser.DirectivesParserException e) {
+                    e.printStackTrace();
                 }
-            } catch (DirectivesParser.DirectivesParserException e) {
-                e.printStackTrace();
             }
         }
     }
 
-    private void displayDashboardHallTokensLabel0() {
-        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-            Label label;
-            try {
-                label = (Label) this.scene.lookup("#" + tokenColor + "_DH0");
-                if (this.directivesParser.getDashboardHallTokens(this.username).get(tokenColor) != null)
-                    label.setText(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
-                else {
-                    label.setText("0");
+    private void displayDashboardHallTokensLabel() {
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
+                Label label;
+                try {
+                    label = (Label) this.scene.lookup("#" + tokenColor + "_DH"+i);
+                    if (this.directivesParser.getDashboardHallTokens(this.usernamesList.get(i)).get(tokenColor) != null)
+                        label.setText(this.directivesParser.getDashboardEntranceTokens(this.usernamesList.get(i)).get(tokenColor).toString());
+                    else {
+                        label.setText("0");
+                    }
+                } catch (DirectivesParser.DirectivesParserException e) {
+                    e.printStackTrace();
                 }
-            } catch (DirectivesParser.DirectivesParserException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -277,16 +282,6 @@ public class GUIGameDisplayer {
         }
     }
 
-
-    private void setOthersUsername(){
-        List<String> othersUsernameList = directivesParser.getDashboardNames();
-        othersUsernameList.remove(this.username);
-        this.opponentUsername = othersUsernameList.get(0);
-        if (this.directivesParser.getExactPlayersNumber() == 3){
-            this.leftUsername = othersUsernameList.get(1);
-        }
-    }
-
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         if (this.firstDisplay) {
             if (directivesParser.getExactPlayersNumber() == 3) {
@@ -296,14 +291,18 @@ public class GUIGameDisplayer {
             if (!directivesParser.isExpertMode())
                 activateCharacterCardButton.setVisible(false);
             this.username = username;
-            this.setOthersUsername();
+            this.usernamesList = directivesParser.getDashboardNames();
+            this.usernamesList.remove(this.username);
+            this.usernamesList.add(0, this.username);
+            this.displayTowers();
         }
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         this.displayArchipelago();
-        this.displayDashboardEntranceTokensLabel0();
-        this.displayDashboardHallTokensLabel0();
+        this.displayDashboardEntranceTokensLabel();
+        this.displayDashboardHallTokensLabel();
         this.displayCloudsTokensLabels();
+        this.disableCloudImageView();
         if (this.firstDisplay)
             this.firstDisplay = false;
     }
@@ -313,6 +312,32 @@ public class GUIGameDisplayer {
             ImageView imageView;
             imageView = (ImageView) this.scene.lookup("#cloud" + i);
             imageView.setDisable(true);
+        }
+    }
+
+    private void displayTowers(){
+        int[][] towerPosition = {{766,550},{710,36},{83,175}};
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            Image image = new Image((GUIGameDisplayer.class.getResource("images/towers/"+this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).
+                    getKey().toLowerCase()+"Tower.png")).toString());
+            ImageView imageView = new ImageView();
+            imageView.setId("towerD"+i);
+            imageView.setImage(image);
+            if(i == 0) {
+                imageView.setFitWidth(62);
+                imageView.setFitHeight(80);
+            }
+            else {
+                imageView.setFitWidth(45);
+                imageView.setFitHeight(58);
+            }
+            imageView.setX(towerPosition[i][0]);
+            imageView.setY(towerPosition[i][1]);
+            if(i == 2)
+                imageView.setRotate(90);
+            this.anchorPane.getChildren().add(imageView);
+            Label label = (Label) this.scene.lookup("#towerLabelD"+i);
+            label.setText(this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).getValue().toString());
         }
     }
 
@@ -426,8 +451,8 @@ public class GUIGameDisplayer {
             imageView.setDisable(false);
         }
     }
-
-    private void sendChoseCloud(MouseEvent event) {
+    @FXML
+    private void sendChosenCloud(MouseEvent event) {
         int cloudChosen = Integer.parseInt(((ImageView) event.getSource()).getId().split("cloud")[1]);
         this.directivesDispatcher.actionChooseCloud(this.username, cloudChosen);
     }

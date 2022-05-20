@@ -12,7 +12,7 @@
          <font>
             <Font name="Verdana Bold" size="14.0" />
          </font></Label>
-      <Label fx:id="playersOrder" layoutX="8.0" layoutY="47.0" prefHeight="23.0" prefWidth="385.0">
+      <Label fx:id="playersOrder" layoutX="8.0" layoutY="47.0" prefHeight="23.0" prefWidth="385.0" wrapText="true">
          <font>
             <Font name="Verdana Bold" size="14.0" />
          </font></Label>
@@ -152,8 +152,129 @@
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fx:id="cloud0" fitHeight="66.0" fitWidth="61.0" layoutX="448.0" layoutY="275.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud2" fitHeight="66.0" fitWidth="61.0" layoutX="604.0" layoutY="275.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud1" fitHeight="66.0" fitWidth="61.0" layoutX="752.0" layoutY="273.0" pickOnBounds="true" preserveRatio="true" />
+
+      <Label fx:id="BLUE_UNICORN_D1" layoutX="510.0" layoutY="27.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="PINK_FAIRY_D1" layoutX="510.0" layoutY="48.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_D1" layoutX="510.0" layoutY="70.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_D1" layoutX="510.0" layoutY="91.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="GREEN_FROG_D1" layoutX="510.0" layoutY="112.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="BLUE_UNICORN_DH1" layoutX="605.0" layoutY="26.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="PINK_FAIRY_DH1" layoutX="605.0" layoutY="48.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_DH1" layoutX="605.0" layoutY="70.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_DH1" layoutX="605.0" layoutY="91.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="GREEN_FROG_DH1" layoutX="605.0" layoutY="112.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="BLUE_UNICORN_D2" layoutX="16.0" layoutY="395.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="PINK_FAIRY_D2" layoutX="34.0" layoutY="395.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_D2" layoutX="53.0" layoutY="395.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_D2" layoutX="71.0" layoutY="395.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="GREEN_FROG_D2" layoutX="90.0" layoutY="395.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="BLUE_UNICORN_DH2" layoutX="17.0" layoutY="298.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="PINK_FAIRY_DH2" layoutX="35.0" layoutY="298.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_DH2" layoutX="54.0" layoutY="297.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_DH2" layoutX="73.0" layoutY="297.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="GREEN_FROG_DH2" layoutX="91.0" layoutY="297.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+
+      
+      <ImageView fx:id="cloud0" fitHeight="66.0" fitWidth="61.0" layoutX="448.0" layoutY="275.0" onDragDetected="#sendChosenCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud2" fitHeight="66.0" fitWidth="61.0" layoutX="604.0" layoutY="275.0" onDragDetected="#sendChosenCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud1" fitHeight="66.0" fitWidth="61.0" layoutX="752.0" layoutY="273.0" onDragDetected="#sendChosenCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="towerD0" fitHeight="66.0" fitWidth="61.0" layoutX="766.0" layoutY="564.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="towerD1" fitHeight="66.0" fitWidth="74.0" layoutX="745.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="towerD2" fitHeight="66.0" fitWidth="74.0" layoutX="83.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="towerLabelD0" layoutX="835.0" layoutY="594.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="towerLabelD1" layoutX="765.0" layoutY="50.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="towerLabelD2" layoutX="83.0" layoutY="130.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
