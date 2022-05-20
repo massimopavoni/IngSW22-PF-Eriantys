@@ -66,36 +66,7 @@ public class GUIGameDisplayer {
     private GridPane characterCardsGridPane;
     @FXML
     private Label yourTurn;
-    @FXML
-    private Label BLUE_UNICORN_0;
-    @FXML
-    private Label PINK_FAIRY_0;
-    @FXML
-    private Label YELLOW_ELF_0;
-    @FXML
-    private Label RED_DRAGON_0;
-    @FXML
-    private Label GREEN_FROG_0;
-    @FXML
-    private Label BLUE_UNICORN_1;
-    @FXML
-    private Label PINK_FAIRY_1;
-    @FXML
-    private Label YELLOW_ELF_1;
-    @FXML
-    private Label RED_DRAGON_1;
-    @FXML
-    private Label GREEN_FROG_1;
-    @FXML
-    private Label PINK_FAIRY_2;
-    @FXML
-    private Label BLUE_UNICORN_2;
-    @FXML
-    private Label YELLOW_ELF_2;
-    @FXML
-    private Label RED_DRAGON_2;
-    @FXML
-    private Label GREEN_FROG_2;
+
 
 
 
@@ -261,6 +232,22 @@ public class GUIGameDisplayer {
         }
     }
 
+    private void displayDashboardHallTokensLabel0() {
+        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
+            Label label;
+            try {
+                label = (Label) this.scene.lookup("#"+ tokenColor +"_DH0");
+                if (this.directivesParser.getDashboardHallTokens(this.username).get(tokenColor) != null)
+                    label.setText(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
+                else{
+                    label.setText("0");
+                }
+            } catch (DirectivesParser.DirectivesParserException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void selectIsland(MouseEvent mouseEvent) {
         int selectedIsland = Integer.parseInt(((ImageView) mouseEvent.getSource()).getId().split("island")[1]);
         switch (this.directivesParser.getCurrentPhase().getValue()) {
@@ -281,45 +268,19 @@ public class GUIGameDisplayer {
 
     private void displayCloudsTokensLabels(){
         Label label;
-        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-            try {
-                BLUE_UNICORN_0.setText(this.directivesParser.getCloudTokens(0).get("BLUE_UNICORN") != null ?
-                this.directivesParser.getCloudTokens(0).get("BLUE_UNICORN").toString() : "0");
-                BLUE_UNICORN_1.setText(this.directivesParser.getCloudTokens(1).get("BLUE_UNICORN") != null ?
-                        this.directivesParser.getCloudTokens(1).get("BLUE_UNICORN").toString() : "0");
-                PINK_FAIRY_0.setText(this.directivesParser.getCloudTokens(0).get("PINK_FAIRY") != null ?
-                        this.directivesParser.getCloudTokens(0).get("PINK_FAIRY").toString() : "0");
-                PINK_FAIRY_1.setText(this.directivesParser.getCloudTokens(1).get("PINK_FAIRY") != null ?
-                        this.directivesParser.getCloudTokens(1).get("PINK_FAIRY").toString() : "0");
-                YELLOW_ELF_0.setText(this.directivesParser.getCloudTokens(0).get("YELLOW_ELF") != null ?
-                        this.directivesParser.getCloudTokens(0).get("YELLOW_ELF").toString() : "0");
-                YELLOW_ELF_1.setText(this.directivesParser.getCloudTokens(1).get("YELLOW_ELF") != null ?
-                        this.directivesParser.getCloudTokens(1).get("YELLOW_ELF").toString() : "0");
-                RED_DRAGON_0.setText(this.directivesParser.getCloudTokens(0).get("RED_DRAGON") != null ?
-                        this.directivesParser.getCloudTokens(0).get("RED_DRAGON").toString() : "0");
-                RED_DRAGON_1.setText(this.directivesParser.getCloudTokens(1).get("RED_DRAGON") != null ?
-                        this.directivesParser.getCloudTokens(1).get("RED_DRAGON").toString() : "0");
-                GREEN_FROG_0.setText(this.directivesParser.getCloudTokens(0).get("GREEN_FROG") != null ?
-                        this.directivesParser.getCloudTokens(0).get("GREEN_FROG").toString() : "0");
-                GREEN_FROG_1.setText(this.directivesParser.getCloudTokens(1).get("GREEN_FROG") != null ?
-                        this.directivesParser.getCloudTokens(1).get("GREEN_FROG").toString() : "0");
-                if(this.directivesParser.getExactPlayersNumber()==3){
-                    BLUE_UNICORN_2.setText(this.directivesParser.getCloudTokens(2).get("BLUE_UNICORN") != null ?
-                            this.directivesParser.getCloudTokens(2).get("BLUE_UNICORN").toString() : "0");
-                    PINK_FAIRY_2.setText(this.directivesParser.getCloudTokens(2).get("PINK_FAIRY") != null ?
-                            this.directivesParser.getCloudTokens(2).get("PINK_FAIRY").toString() : "0");
-                    YELLOW_ELF_2.setText(this.directivesParser.getCloudTokens(2).get("YELLOW_ELF") != null ?
-                            this.directivesParser.getCloudTokens(2).get("YELLOW_ELF").toString() : "0");
-                    RED_DRAGON_2.setText(this.directivesParser.getCloudTokens(2).get("RED_DRAGON") != null ?
-                            this.directivesParser.getCloudTokens(2).get("RED_DRAGON").toString() : "0");
-                    GREEN_FROG_2.setText(this.directivesParser.getCloudTokens(2).get("GREEN_FROG") != null ?
-                            this.directivesParser.getCloudTokens(2).get("GREEN_FROG").toString() : "0");
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()){
+                try {
+                    label = (Label) this.scene.lookup("#"+ tokenColor +"_C"+ i);
+                    label.setText(this.directivesParser.getCloudTokens(i).get(tokenColor) != null ?
+                            this.directivesParser.getCloudTokens(i).get(tokenColor).toString() : "0");
+                } catch (DirectivesParser.DirectivesParserException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (DirectivesParser.DirectivesParserException e){
-                e.printStackTrace();
             }
         }
     }
+
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         if(firstDisplay){
@@ -336,7 +297,17 @@ public class GUIGameDisplayer {
         this.displayPlayersOrder(username);
         this.displayArchipelago();
         this.displayDashboardEntranceTokensLabel0();
+        this.displayDashboardHallTokensLabel0();
         this.displayCloudsTokensLabels();
+        this.disableCloudImageView();
+
+    }
+    private void disableCloudImageView(){
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            ImageView imageView;
+            imageView = (ImageView) this.scene.lookup("#cloud"+ i);
+            imageView.setDisable(true);
+        }
     }
 
     private void displayCloud() {
@@ -429,7 +400,7 @@ public class GUIGameDisplayer {
 
     @FXML
     private void moveStudents() {
-
+        
     }
 
     @FXML
@@ -443,7 +414,16 @@ public class GUIGameDisplayer {
 
     @FXML
     private void chooseCloud() {
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            ImageView imageView;
+            imageView = (ImageView) this.scene.lookup("#cloud"+ i);
+            imageView.setDisable(false);
+        }
+    }
 
+    private void sendChoseCloud(MouseEvent event){
+        int cloudChosen = Integer.parseInt(((ImageView) event.getSource()).getId().split("cloud")[1]);
+        this.directivesDispatcher.actionChooseCloud(this.username, cloudChosen);
     }
 
     @FXML

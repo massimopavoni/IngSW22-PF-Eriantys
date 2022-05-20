@@ -78,25 +78,6 @@ public class GUIController extends View implements Initializable {
         Platform.runLater(super::updateView);
     }
 
-    /*
-    protected void openNewStage(Button button, String resourceName, int width, int height) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resourceName));
-            fxmlLoader.setController(this);
-            this.root = fxmlLoader.load();
-            this.stage = (Stage) button.getScene().getWindow();
-            this.scene = new Scene(root);
-            this.stage.setScene(scene);
-            this.stage.setWidth(width);
-            this.stage.setHeight(height);
-            this.stage.show();
-        } catch (IOException e) {
-            //va cambiato
-            throw new RuntimeException(e);
-        }
-    }
-
-     */
 
     private Background displayBackGround(String resource) {
         Image img = new Image(GUIGameDisplayer.class.getResource(resource).toString());
