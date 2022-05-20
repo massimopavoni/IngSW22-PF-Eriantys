@@ -29,7 +29,8 @@ public class GUIGameDisplayer {
     private final Alert messageAlert;
     private final DirectivesParser directivesParser;
     private final DirectivesDispatcher directivesDispatcher;
-    private Stage stage;
+    private final Stage stage;
+    private int previousArchipelagoSize;
     private Scene scene;
     private Parent root;
     private Stage popUpStage;
@@ -68,14 +69,6 @@ public class GUIGameDisplayer {
     private Label yourTurn;
 
 
-
-
-
-
-    public void setYourTurnMessage(String message) {
-        this.yourTurn.setText(message);
-    }
-
     protected GUIGameDisplayer(DirectivesParser directivesParser, DirectivesDispatcher directivesDispatcher, Stage stage) {
         this.directivesParser = directivesParser;
         this.directivesDispatcher = directivesDispatcher;
@@ -83,6 +76,10 @@ public class GUIGameDisplayer {
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
         this.messageAlert = new Alert(Alert.AlertType.INFORMATION);
         this.firstDisplay = true;
+    }
+
+    public void setYourTurnMessage(String message) {
+        this.yourTurn.setText(message);
     }
 
     private Background displayBackGround(String resource) {
@@ -153,7 +150,8 @@ public class GUIGameDisplayer {
 
          */
     }
-    private void setInvisibleCharacterCardsFrames(){
+
+    private void setInvisibleCharacterCardsFrames() {
         List<String> cardNameList = new ArrayList<>(directivesParser.getCharacterCardNames());
         for (String s : cardNameList) {
             ImageView imv = null;
@@ -174,7 +172,7 @@ public class GUIGameDisplayer {
             imv.setFitHeight(160);
             imv.setOnMouseClicked(this::selectCharacterCard);
             frameImv.setImage(frame);
-            frameImv.setId("frame_"+directivesParser.getCharacterCardNames().get(i));
+            frameImv.setId("frame_" + directivesParser.getCharacterCardNames().get(i));
             frameImv.setFitWidth(120);
             frameImv.setFitHeight(170);
             frameImv.setVisible(false);
@@ -198,21 +196,32 @@ public class GUIGameDisplayer {
 
     private void displayArchipelago() {
         int archipelagoSize = this.directivesParser.getIslandsSize();
-        double deltaDeg = 2 * Math.PI / archipelagoSize;
+        if (this.firstDisplay) {
+            this.previousArchipelagoSize = archipelagoSize;
+            for (int i = 0; i < archipelagoSize; i++) {
+                ImageView imv = new ImageView();
+                imv.setFitWidth(80);
+                imv.setFitHeight(80);
+                imv.setOnMouseClicked(this::selectIsland);
+                imv.setId(String.format("island%d", i));
+                this.anchorPane.getChildren().add(imv);
+            }
+        } else {
+            for (int i = archipelagoSize; i < previousArchipelagoSize; i++)
+                this.anchorPane.getChildren().remove(this.scene.lookup(String.format("#island%d", i)));
+        }
+        double deltaRad = 2 * Math.PI / archipelagoSize;
         double currentRad = 0;
-        Image image = null;
+        ImageView currentIsland;
         for (int i = 0; i < archipelagoSize; i++) {
-            image = new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + ".png").toString());
-            ImageView imv = new ImageView();
-            imv.setId(String.format("island%d", i));
-            imv.setImage(image);
-            imv.setFitWidth(80);
-            imv.setFitHeight(80);
-            imv.setX(600 + 260 * Math.cos(currentRad));
-            imv.setY(270 + 130 * Math.sin(currentRad));
-            imv.setOnMouseClicked(this::selectIsland);
-            currentRad += deltaDeg;
-            this.anchorPane.getChildren().add(imv);
+            currentIsland = (ImageView) this.scene.lookup(String.format("#island%d", i));
+            currentIsland.setX(595 + 260 * Math.cos(currentRad));
+            currentIsland.setY(280 + 130 * Math.sin(currentRad));
+            currentRad += deltaRad;
+            if (i == this.directivesParser.getMotherNaturePosition())
+                currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island-motherNature.png").toString()));
+            else
+                currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + ".png").toString()));
         }
     }
 
@@ -220,13 +229,13 @@ public class GUIGameDisplayer {
         for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
             Label label;
             try {
-                label = (Label) this.scene.lookup("#"+ tokenColor +"_D0");
+                label = (Label) this.scene.lookup("#" + tokenColor + "_D0");
                 if (this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor) != null)
                     label.setText(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
-                else{
+                else {
                     label.setText("0");
                 }
-            } catch (DirectivesParser.DirectivesParserException e){
+            } catch (DirectivesParser.DirectivesParserException e) {
                 e.printStackTrace();
             }
         }
@@ -236,13 +245,13 @@ public class GUIGameDisplayer {
         for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
             Label label;
             try {
-                label = (Label) this.scene.lookup("#"+ tokenColor +"_DH0");
+                label = (Label) this.scene.lookup("#" + tokenColor + "_DH0");
                 if (this.directivesParser.getDashboardHallTokens(this.username).get(tokenColor) != null)
                     label.setText(this.directivesParser.getDashboardEntranceTokens(this.username).get(tokenColor).toString());
-                else{
+                else {
                     label.setText("0");
                 }
-            } catch (DirectivesParser.DirectivesParserException e){
+            } catch (DirectivesParser.DirectivesParserException e) {
                 e.printStackTrace();
             }
         }
@@ -266,12 +275,12 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void displayCloudsTokensLabels(){
+    private void displayCloudsTokensLabels() {
         Label label;
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()){
+            for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
                 try {
-                    label = (Label) this.scene.lookup("#"+ tokenColor +"_C"+ i);
+                    label = (Label) this.scene.lookup("#" + tokenColor + "_C" + i);
                     label.setText(this.directivesParser.getCloudTokens(i).get(tokenColor) != null ?
                             this.directivesParser.getCloudTokens(i).get(tokenColor).toString() : "0");
                 } catch (DirectivesParser.DirectivesParserException e) {
@@ -283,8 +292,7 @@ public class GUIGameDisplayer {
 
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
-        if(firstDisplay){
-            this.firstDisplay = false;
+        if (this.firstDisplay) {
             if (directivesParser.getExactPlayersNumber() == 3) {
                 this.displayPlayerDashboard();
                 this.displayCloud();
@@ -299,19 +307,20 @@ public class GUIGameDisplayer {
         this.displayDashboardEntranceTokensLabel0();
         this.displayDashboardHallTokensLabel0();
         this.displayCloudsTokensLabels();
-        this.disableCloudImageView();
-
+        if (this.firstDisplay)
+            this.firstDisplay = false;
     }
-    private void disableCloudImageView(){
+
+    private void disableCloudImageView() {
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             ImageView imageView;
-            imageView = (ImageView) this.scene.lookup("#cloud"+ i);
+            imageView = (ImageView) this.scene.lookup("#cloud" + i);
             imageView.setDisable(true);
         }
     }
 
     private void displayCloud() {
-        Image image = new Image((GUIGameDisplayer.class.getResource("images/cloud.png")).toString());;
+        Image image = new Image((GUIGameDisplayer.class.getResource("images/cloud.png")).toString());
         ImageView imv = new ImageView();
         imv.setImage(image);
         imv.setFitWidth(125);
@@ -321,7 +330,7 @@ public class GUIGameDisplayer {
         this.anchorPane.getChildren().add(imv);
     }
 
-    private void setInvisibleAssistantCardsFrames(){
+    private void setInvisibleAssistantCardsFrames() {
         List<String> cardNameList = new ArrayList<>(directivesParser.getDashboardAssistantCards(this.username).keySet());
         for (String s : cardNameList) {
             ImageView imv = null;
@@ -344,7 +353,7 @@ public class GUIGameDisplayer {
             imv.setFitHeight(160);
             imv.setOnMouseClicked(this::selectAssistantCard);
             frameImv.setImage(frame);
-            frameImv.setId("frame_"+cardNameList.get(i));
+            frameImv.setId("frame_" + cardNameList.get(i));
             frameImv.setFitWidth(120);
             frameImv.setFitHeight(170);
             frameImv.setVisible(false);
@@ -359,7 +368,7 @@ public class GUIGameDisplayer {
         ImageView imv = new ImageView();
         ImageView frame = new ImageView();
         this.assistantCardChosen = ((ImageView) event.getSource()).getId();
-        frame = (ImageView) this.assistantCardsGridPane.lookup("#frame_"+this.assistantCardChosen);
+        frame = (ImageView) this.assistantCardsGridPane.lookup("#frame_" + this.assistantCardChosen);
         frame.setVisible(true);
     }
 
@@ -369,7 +378,7 @@ public class GUIGameDisplayer {
         ImageView imv = new ImageView();
         ImageView frame = new ImageView();
         this.characterCardChosen = ((ImageView) event.getSource()).getId();
-        frame = (ImageView) this.characterCardsGridPane.lookup("#frame_"+this.characterCardChosen);
+        frame = (ImageView) this.characterCardsGridPane.lookup("#frame_" + this.characterCardChosen);
         frame.setVisible(true);
     }
 
@@ -400,7 +409,7 @@ public class GUIGameDisplayer {
 
     @FXML
     private void moveStudents() {
-        
+
     }
 
     @FXML
@@ -416,12 +425,12 @@ public class GUIGameDisplayer {
     private void chooseCloud() {
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             ImageView imageView;
-            imageView = (ImageView) this.scene.lookup("#cloud"+ i);
+            imageView = (ImageView) this.scene.lookup("#cloud" + i);
             imageView.setDisable(false);
         }
     }
 
-    private void sendChoseCloud(MouseEvent event){
+    private void sendChoseCloud(MouseEvent event) {
         int cloudChosen = Integer.parseInt(((ImageView) event.getSource()).getId().split("cloud")[1]);
         this.directivesDispatcher.actionChooseCloud(this.username, cloudChosen);
     }
