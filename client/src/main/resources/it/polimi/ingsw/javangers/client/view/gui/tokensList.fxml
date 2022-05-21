@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,9 +19,10 @@
       <Spinner fx:id="yellowSpinner" layoutX="100.0" layoutY="136.0" onScroll="#tokensSpinnersScroll" opacity="0.8" prefHeight="27.0" prefWidth="91.0" />
       <Spinner fx:id="pinkSpinner" layoutX="100.0" layoutY="178.0" onScroll="#tokensSpinnersScroll" opacity="0.8" prefHeight="27.0" prefWidth="91.0" />
       <Spinner fx:id="blueSpinner" layoutX="100.0" layoutY="220.0" onScroll="#tokensSpinnersScroll" opacity="0.8" prefHeight="27.0" prefWidth="91.0" />
-      <TextArea fx:id="tokensListTextArea" editable="false" layoutX="217.0" layoutY="53.0" prefHeight="135.0" prefWidth="157.0">
+      <Label fx:id="tokensListLabel" layoutX="215.0" layoutY="49.0" prefHeight="144.0" prefWidth="164.0" wrapText="true">
          <font>
             <Font size="16.0" />
-         </font></TextArea>
+         </font>
+      </Label>
    </children>
 </AnchorPane>

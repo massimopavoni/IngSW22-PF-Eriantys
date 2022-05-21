@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GUIController extends View implements Initializable {
-
-
     private final Alert errorAlert;
     private final GUIGameDisplayer guiGameDisplayer;
     private boolean isInCreate;
@@ -50,8 +48,6 @@ public class GUIController extends View implements Initializable {
     private Label labelNumberOfPlayers;
     @FXML
     private GridPane wizardsGridPane;
-
-
 
     /**
      * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
@@ -90,7 +86,7 @@ public class GUIController extends View implements Initializable {
     }
 
 
-    protected void openNewStage(String resourceName, String backGroundResource) {
+    private void openNewStage(String resourceName, String backGroundResource) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
             fxmlLoader.setController(this);
@@ -109,7 +105,7 @@ public class GUIController extends View implements Initializable {
     }
 
     @FXML
-    protected void selectWizard(MouseEvent event) {
+    private void selectWizard(MouseEvent event) {
         setInvisibleWizardFrames();
         ImageView imv = new ImageView();
         ImageView frame = new ImageView();
@@ -118,7 +114,7 @@ public class GUIController extends View implements Initializable {
         frame.setVisible(true);
     }
 
-    protected void alertMessage(String headerText, String contentText) {
+    private void alertMessage(String headerText, String contentText) {
         this.errorAlert.setHeaderText(headerText);
         this.errorAlert.setContentText(contentText);
         this.errorAlert.showAndWait();
@@ -184,10 +180,10 @@ public class GUIController extends View implements Initializable {
     @Override
     protected void createGame() {
         if (this.fxmlUsername.getCharacters() == null || this.fxmlExactPlayersNumber.getValue() == null || this.wizardType == null || this.fxmlTowerColor.getValue() == null)
-            alertMessage("Empty field", "Please fill all the fields");
+            this.alertMessage("Empty field", "Please fill all the fields");
         else {
             if (!isValidUsername(fxmlUsername.getCharacters().toString())) {
-                alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+                this.alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
             } else {
                 this.username = this.fxmlUsername.getCharacters().toString();
                 this.exactPlayersNumber = this.fxmlExactPlayersNumber.getValue();
@@ -202,10 +198,10 @@ public class GUIController extends View implements Initializable {
     @Override
     protected void joinGame() {
         if (this.fxmlUsername.getCharacters() == null || wizardType == null || fxmlTowerColor.getValue() == null)
-            alertMessage("Empty field", "Please fill all the fields");
+            this.alertMessage("Empty field", "Please fill all the fields");
         else {
             if (!isValidUsername(this.fxmlUsername.getCharacters().toString()))
-                alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+                this.alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
             else {
                 this.username = this.fxmlUsername.getCharacters().toString();
                 this.towerColor = this.fxmlTowerColor.getValue();
@@ -254,12 +250,12 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void showAbort(String message) {
-        alertMessage(message, "Please create a new game or wait to join a new game");
+        this.alertMessage(message, "Please create a new game or wait to join a new game");
     }
 
     @Override
     protected void showError(String message) {
-        alertMessage(message, "Please retry");
+        this.alertMessage(this.directivesParser.getCurrentPhase().getValue(), message);
     }
 
     @Override
@@ -309,7 +305,6 @@ public class GUIController extends View implements Initializable {
         guiGameDisplayer.getMoveMotherNatureButton().setDisable(true);
         guiGameDisplayer.getChooseCloudButton().setDisable(true);
         guiGameDisplayer.getActivateCharacterCardButton().setDisable(true);
-
     }
 
 
@@ -323,6 +318,4 @@ public class GUIController extends View implements Initializable {
         fxmlExactPlayersNumber.getItems().addAll(MIN_PLAYERS_NUMBER, MAX_PLAYERS_NUMBER);
         fxmlTowerColor.getItems().addAll(AVAILABLE_TOWER_COLORS.values());
     }
-
-
 }

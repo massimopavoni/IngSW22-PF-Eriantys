@@ -26,7 +26,7 @@
       <Button fx:id="playAssistantCardButton" layoutX="1133.0" layoutY="542.0" mnemonicParsing="false" onAction="#playAssistantCard" text="Play Assistant Card" />
       <Button fx:id="activateCharacterCardButton" layoutX="1111.0" layoutY="625.0" mnemonicParsing="false" onAction="#playCharacterCard" text="Activate Character Card" />
       <Button fx:id="moveMotherNatureButton" layoutX="1130.0" layoutY="584.0" mnemonicParsing="false" onAction="#moveMotherNature" text="Move Mother Nature" />
-      <Button fx:id="chooseCloudButton" layoutX="1002.0" layoutY="625.0" mnemonicParsing="false" onAction="#chooseCloud" text="Choose Cloud" />
+      <Button fx:id="chooseCloudButton" layoutX="1002.0" layoutY="625.0" mnemonicParsing="false" onAction="#enableClouds" text="Choose Cloud" />
       <Button fx:id="fillCloudsButton" layoutX="1000.0" layoutY="542.0" mnemonicParsing="false" onAction="#fillClouds" text="Fill Clouds" />
       <Label fx:id="PINK_FAIRY_C0" layoutX="478.0" layoutY="252.0">
          <font>
@@ -208,9 +208,9 @@
             <Font name="Verdana Bold" size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="cloud0" fitHeight="66.0" fitWidth="61.0" layoutX="448.0" layoutY="275.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud2" fitHeight="66.0" fitWidth="61.0" layoutX="604.0" layoutY="275.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud1" fitHeight="66.0" fitWidth="61.0" layoutX="752.0" layoutY="273.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud0" fitHeight="66.0" fitWidth="61.0" layoutX="448.0" layoutY="275.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud2" fitHeight="66.0" fitWidth="61.0" layoutX="604.0" layoutY="275.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud1" fitHeight="66.0" fitWidth="61.0" layoutX="752.0" layoutY="273.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="towerD0" fitHeight="66.0" fitWidth="74.0" layoutX="766.0" layoutY="564.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="towerD1" fitHeight="66.0" fitWidth="74.0" layoutX="745.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="towerD2" fitHeight="66.0" fitWidth="74.0" layoutX="83.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" />
