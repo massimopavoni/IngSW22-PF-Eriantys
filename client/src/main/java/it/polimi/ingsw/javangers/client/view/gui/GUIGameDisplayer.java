@@ -19,8 +19,8 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 public class GUIGameDisplayer {
@@ -40,8 +40,7 @@ public class GUIGameDisplayer {
     private Boolean firstDisplay;
     private String username;
     private List<String> usernamesList;
-    private String opponentUsername;
-    private String leftUsername;
+    private int enlightenedIsland;
     private boolean threePlayers;
     @FXML
     private Label currentPhase;
@@ -186,28 +185,45 @@ public class GUIGameDisplayer {
             this.previousArchipelagoSize = archipelagoSize;
             for (int i = 0; i < archipelagoSize; i++) {
                 ImageView imv = new ImageView();
+                ImageView frameImv = new ImageView();
                 imv.setFitWidth(80);
                 imv.setFitHeight(80);
                 imv.setOnMouseClicked(this::selectIsland);
                 imv.setId(String.format("island%d", i));
+                frameImv.setVisible(false);
+                frameImv.setFitHeight(80);
+                frameImv.setFitWidth(80);
+                frameImv.setId(String.format("frameIsland%d", i));
+                this.anchorPane.getChildren().add(frameImv);
                 this.anchorPane.getChildren().add(imv);
             }
         } else {
-            for (int i = archipelagoSize; i < previousArchipelagoSize; i++)
+            for (int i = archipelagoSize; i < previousArchipelagoSize; i++) {
+                this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
                 this.anchorPane.getChildren().remove(this.scene.lookup(String.format("#island%d", i)));
+                this.anchorPane.getChildren().remove(this.scene.lookup(String.format("#frameIsland%d", i)));
+            }
         }
         double deltaRad = 2 * Math.PI / archipelagoSize;
         double currentRad = 0;
         ImageView currentIsland;
+        ImageView currentFrameIsland;
         for (int i = 0; i < archipelagoSize; i++) {
             currentIsland = (ImageView) this.scene.lookup(String.format("#island%d", i));
+            currentFrameIsland = (ImageView) this.scene.lookup(String.format("#frameIsland%d", i));
             currentIsland.setX(595 + 260 * Math.cos(currentRad));
             currentIsland.setY(280 + 130 * Math.sin(currentRad));
+            currentFrameIsland.setX(595 + 260 * Math.cos(currentRad));
+            currentFrameIsland.setY(280 + 130 * Math.sin(currentRad));
             currentRad += deltaRad;
             if (i == this.directivesParser.getMotherNaturePosition())
                 currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/islandMotherNature.png").toString()));
             else
                 currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + ".png").toString()));
+            if(this.directivesParser.getMotherNaturePosition()==i)
+                currentFrameIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island0-frame.png").toString()));
+            else
+                currentFrameIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + "-frame.png").toString()));
         }
     }
 
@@ -280,6 +296,30 @@ public class GUIGameDisplayer {
         }
     }
 
+    @FXML
+    private void updateEnlightenedIslandButton(MouseEvent event){
+        if(((ImageView) event.getSource()).getId().equals("leftArrow"))
+            this.updateEnlightenedIslandInfo((this.enlightenedIsland + this.directivesParser.getIslandsSize() - 1) % this.directivesParser.getIslandsSize());
+        else
+            this.updateEnlightenedIslandInfo((this.enlightenedIsland + this.directivesParser.getIslandsSize() + 1) % this.directivesParser.getIslandsSize());
+
+    }
+
+    private void updateEnlightenedIslandInfo(int newPosition){
+        if(firstDisplay){
+            ImageView left = (ImageView) this.scene.lookup("#leftArrow");
+            ImageView right = (ImageView) this.scene.lookup("#rightArrow");
+            left.setImage(new Image(GUIGameDisplayer.class.getResource("images/left-arrow.png").toString()));
+            right.setImage(new Image(GUIGameDisplayer.class.getResource("images/right-arrow.png").toString()));
+        }
+        ImageView updateFrameIsland = (ImageView) this.scene.lookup(String.format("#frameIsland%d", this.enlightenedIsland));
+        if(updateFrameIsland!=null)
+            updateFrameIsland.setVisible(false);
+        this.enlightenedIsland = newPosition;
+        updateFrameIsland = (ImageView) this.scene.lookup(String.format("#frameIsland%d", this.enlightenedIsland));
+        updateFrameIsland.setVisible(true);
+    }
+
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         if (this.firstDisplay) {
             threePlayers = (directivesParser.getExactPlayersNumber() == 3);
@@ -298,6 +338,8 @@ public class GUIGameDisplayer {
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         this.displayArchipelago();
+        if(firstDisplay)
+            this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
         this.displayDashboardEntranceTokensLabel();
         this.displayDashboardHallTokensLabel();
         this.displayCloudsTokensLabels();
@@ -437,8 +479,7 @@ public class GUIGameDisplayer {
 
     @FXML
     private void playAssistantCard() {
-        //va cambiato il bg
-        this.openPopUp("assistantCardsChoice.fxml", "images/assistantCardsChoiceBG.png");
+        openPopUp("assistantCardsChoice.fxml", 645, 450, "images/assistantCardsChoiceBG.png");
         this.displayAvailableAssistantCards();
     }
 
