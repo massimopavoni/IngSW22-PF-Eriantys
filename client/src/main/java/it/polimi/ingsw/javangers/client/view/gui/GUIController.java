@@ -264,7 +264,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void closeGame(List<String> winners) {
-
+        this.guiGameDisplayer.displayEndGame(winners);
     }
 
     @Override

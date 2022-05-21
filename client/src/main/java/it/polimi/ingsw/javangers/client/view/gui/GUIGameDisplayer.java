@@ -415,6 +415,21 @@ public class GUIGameDisplayer {
         frame.setVisible(true);
     }
 
+    protected void displayEndGame(List<String> winnersList){
+        Label winnersLabel = (Label) this.scene.lookup("#winnersLabel");
+        Label endGameLabel = (Label) this.scene.lookup("#endGameLabel");
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+                if (winnersList.contains(this.usernamesList.get(i))) {
+                    openPopUp("endgame.fxml", "images/show-winner.png");
+                    winnersList.remove(this.username);
+                }
+                else
+                    openPopUp("endgame.fxml", "images/show-looser.png");
+            winnersLabel.setText(winnersList.toString());
+            endGameLabel.setText(this.directivesParser.getEndGame());
+        }
+    }
+
     @FXML
     private void fillClouds() {
         directivesDispatcher.actionFillClouds(this.username);
