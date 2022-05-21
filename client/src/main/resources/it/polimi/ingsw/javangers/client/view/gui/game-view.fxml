@@ -7,14 +7,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="anchorPane" stylesheets="@css/gameView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <ImageView fx:id="thirdDashboard" fitHeight="202.0" fitWidth="366.0" layoutX="-90.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0" visible="false">
+         <image>
+            <Image url="@images/playerDashboard.png" />
+         </image></ImageView>
       <ImageView fx:id="cloudDiscardCard" layoutX="-5.0" layoutY="567.0" visible="false">
          <image>
             <Image url="@images/assistantCardsCloudBG.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="thirdDashboard" fitHeight="202.0" fitWidth="366.0" layoutX="-90.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0" />
       <Label fx:id="currentPhase" layoutX="8.0" layoutY="13.0" prefHeight="23.0" prefWidth="415.0">
          <font>
             <Font name="Verdana Bold" size="14.0" />
@@ -288,8 +291,23 @@
       <ImageView fx:id="lastDiscardD0" fitHeight="160.0" fitWidth="109.0" layoutX="275.0" layoutY="517.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="lastDiscardD2" fitHeight="132.0" fitWidth="90.0" layoutX="30.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="lastDiscardD1" fitHeight="132.0" fitWidth="90.0" layoutX="800.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="leftArrow" fitHeight="100.0" fitWidth="82.0" layoutX="1002.0" layoutY="273.0" onMouseClicked="#updateEnlightenedIslandButton" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="rightArrow" fitHeight="100.0" fitWidth="82.0" layoutX="1175.0" layoutY="273.0" onMouseClicked="#updateEnlightenedIslandButton" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="leftArrow" fitHeight="50.0" fitWidth="41.0" layoutX="1029.0" layoutY="155.0" onMouseClicked="#updateEnlightenedIslandButton" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="rightArrow" fitHeight="50.0" fitWidth="41.0" layoutX="1108.0" layoutY="155.0" onMouseClicked="#updateEnlightenedIslandButton" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="nameD2" layoutX="21.0" layoutY="120.0" prefWidth="170.0" textAlignment="CENTER">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="nameD0" layoutX="480.0" layoutY="490.0" prefWidth="305.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="nameD1" layoutX="530.0" layoutY="125.0" prefWidth="190.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
       <ImageView fx:id="GREENFROGTD0" fitHeight="30.0" fitWidth="30.0" layoutX="722.0" layoutY="513.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
       <ImageView fx:id="REDDRAGONTD0" fitHeight="30.0" fitWidth="30.0" layoutX="722.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
       <ImageView fx:id="YELLOWELFTD0" fitHeight="30.0" fitWidth="30.0" layoutX="722.0" layoutY="575.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
@@ -330,5 +348,46 @@
             <Image url="@images/teachers/REDDRAGON.png" />
          </image>
       </ImageView>
+      <Label fx:id="GREEN_FROG_info" layoutX="1074.0" layoutY="50.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="RED_DRAGON_info" layoutX="1074.0" layoutY="69.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="YELLOW_ELF_info" layoutX="1074.0" layoutY="88.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="PINK_FAIRY_info" layoutX="1074.0" layoutY="107.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="BLUE_UNICORN_info" layoutX="1074.0" layoutY="126.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="tower_info" fitHeight="40.0" fitWidth="31.0" layoutX="1113.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="towerInfoLabel" layoutX="1152.0" layoutY="67.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="inhibitionToken" fitHeight="30.0" fitWidth="30.0" layoutX="1116.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@images/tokens/inhibitionToken.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="inhibitionTokenLabel" layoutX="1152.0" layoutY="115.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

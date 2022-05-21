@@ -170,11 +170,13 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void displayAdditionalDashboard() {
+    /*private void displayPlayerDashboard() {
         Image image = new Image((GUIGameDisplayer.class.getResource("images/playerDashboard.png")).toString());
         ImageView imv = (ImageView) this.anchorPane.lookup("#thirdDashboard");
         imv.setImage(image);
     }
+
+     */
 
     private void displayArchipelago() {
         int archipelagoSize = this.directivesParser.getIslandsSize();
@@ -310,6 +312,9 @@ public class GUIGameDisplayer {
             ImageView right = (ImageView) this.scene.lookup("#rightArrow");
             left.setImage(new Image(GUIGameDisplayer.class.getResource("images/left-arrow.png").toString()));
             right.setImage(new Image(GUIGameDisplayer.class.getResource("images/right-arrow.png").toString()));
+            if(directivesParser.isExpertMode()){
+                this.scene.lookup("#inhibitionToken").setVisible(true);
+            }
         }
         ImageView updateFrameIsland = (ImageView) this.scene.lookup(String.format("#frameIsland%d", this.enlightenedIsland));
         if (updateFrameIsland != null)
@@ -317,28 +322,54 @@ public class GUIGameDisplayer {
         this.enlightenedIsland = newPosition;
         updateFrameIsland = (ImageView) this.scene.lookup(String.format("#frameIsland%d", this.enlightenedIsland));
         updateFrameIsland.setVisible(true);
+        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
+            try {
+                ((Label)this.scene.lookup(String.format("#%s_info", tokenColor))).setText(this.directivesParser.getIslandTokens(this.enlightenedIsland).get(tokenColor) != null ?
+                        this.directivesParser.getIslandTokens(this.enlightenedIsland).get(tokenColor).toString() : "0");
+            } catch (DirectivesParser.DirectivesParserException e) {
+                e.printStackTrace();
+            }
+        }
+        if(this.directivesParser.getIslandTowers(this.enlightenedIsland).getValue()!=0){
+            ((ImageView)this.scene.lookup("#tower_info")).setImage(new Image(GUIGameDisplayer.class.getResource(
+                    String.format("images/towers/%sTower.png", this.directivesParser.getIslandTowers(this.enlightenedIsland).getKey().toLowerCase())).toString()));
+            this.scene.lookup("#tower_info").setVisible(true);
+            ((Label)this.scene.lookup("#towerInfoLabel")).setText(this.directivesParser.getIslandTowers(this.enlightenedIsland).getValue().toString());
+        }
+        else{
+            this.scene.lookup("#tower_info").setVisible(false);
+            ((Label)this.scene.lookup("#towerInfoLabel")).setText("");
+        }
+        if(this.directivesParser.isExpertMode())
+            ((Label)this.scene.lookup("#inhibitionTokenLabel")).setText(String.format("%d", this.directivesParser.getIslandEnabled(this.enlightenedIsland)));
     }
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         if (this.firstDisplay) {
-            threePlayers = (directivesParser.getExactPlayersNumber() == 3);
-            if (threePlayers) {
-                this.displayAdditionalDashboard();
-                this.displayAdditionalCloud();
-                this.displayCloudDiscardCard();
-            }
-            if (!directivesParser.isExpertMode())
-                activateCharacterCardButton.setVisible(false);
             this.username = username;
             this.usernamesList = directivesParser.getDashboardNames();
             this.usernamesList.remove(this.username);
             this.usernamesList.add(0, this.username);
-            this.displayDashboardTowers();
+            ((Label)this.scene.lookup("#nameD0")).setText(this.username);
+            ((Label)this.scene.lookup("#nameD1")).setText(this.usernamesList.get(1));
+            threePlayers = (directivesParser.getExactPlayersNumber() == 3);
+            if (threePlayers) {
+                //this.displayPlayerDashboard();
+                ((Label) this.scene.lookup("#nameD2")).setText(this.usernamesList.get(2));
+                this.scene.lookup("#thirdDashboard").setVisible(true);
+                this.displayAdditionalCloud();
+                this.scene.lookup("#cloudDiscardCard").setVisible(true);
+                this.scene.lookup("#inhibitionToken").setVisible(true);
+            }
+            if (!directivesParser.isExpertMode())
+                activateCharacterCardButton.setVisible(false);
             this.displayTeachers(); // da mettere direttamente su sceen builder
         }
+        this.displayDashboardTowers();
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         this.displayArchipelago();
+        this.updateEnlightenedIslandInfo(this.enlightenedIsland);
         if (firstDisplay)
             this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
         this.displayDashboardEntranceTokens();
@@ -373,11 +404,6 @@ public class GUIGameDisplayer {
 
     }
 
-    private void displayCloudDiscardCard() {
-        ImageView imageView = (ImageView) this.scene.lookup("#cloudDiscardCard");
-        imageView.setVisible(true);
-    }
-
     private void displayTeachers() {
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             for (String tokenColor: View.AVAILABLE_TOKEN_COLORS.values()) {
@@ -404,23 +430,25 @@ public class GUIGameDisplayer {
     private void displayDashboardTowers() {
         int[][] towerPosition = {{766, 550}, {710, 36}, {75, 175}};
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            Image image = new Image((GUIGameDisplayer.class.getResource("images/towers/" + this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).
-                    getKey().toLowerCase() + "Tower.png")).toString());
-            ImageView imageView = new ImageView();
-            imageView.setId("towerD" + i);
-            imageView.setImage(image);
-            if (i == 0) {
-                imageView.setFitWidth(62);
-                imageView.setFitHeight(80);
-            } else {
-                imageView.setFitWidth(45);
-                imageView.setFitHeight(58);
+            if(firstDisplay) {
+                Image image = new Image((GUIGameDisplayer.class.getResource("images/towers/" + this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).
+                        getKey().toLowerCase() + "Tower.png")).toString());
+                ImageView imageView = new ImageView();
+                imageView.setId("towerD" + i);
+                imageView.setImage(image);
+                if (i == 0) {
+                    imageView.setFitWidth(62);
+                    imageView.setFitHeight(80);
+                } else {
+                    imageView.setFitWidth(45);
+                    imageView.setFitHeight(58);
+                }
+                imageView.setX(towerPosition[i][0]);
+                imageView.setY(towerPosition[i][1]);
+                if (i == 2)
+                    imageView.setRotate(90);
+                this.anchorPane.getChildren().add(imageView);
             }
-            imageView.setX(towerPosition[i][0]);
-            imageView.setY(towerPosition[i][1]);
-            if (i == 2)
-                imageView.setRotate(90);
-            this.anchorPane.getChildren().add(imageView);
             Label label = (Label) this.scene.lookup("#towerLabelD" + i);
             label.setText(this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).getValue().toString());
         }
