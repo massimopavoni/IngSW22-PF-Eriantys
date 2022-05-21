@@ -333,6 +333,8 @@ public class GUIGameDisplayer {
             this.usernamesList.remove(this.username);
             this.usernamesList.add(0, this.username);
             this.displayDashboardTowers();
+            this.displayTeachers(); // da mettere direttamente su sceen builder
+            this.displayCloudDiscardCard();
         }
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
@@ -341,10 +343,50 @@ public class GUIGameDisplayer {
             this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
         this.displayDashboardEntranceTokens();
         this.displayDashboardHallTokens();
+        this.displayDashboardTeachers();
         this.displayCloudsTokensLabels();
         this.displayLastDiscardedCards();
         if (this.firstDisplay)
             this.firstDisplay = false;
+    }
+
+    private void displayDashboardTeachers() {
+        try {
+            Map<String,String> teachers = this.directivesParser.getTeachers();
+            for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+                for (Map.Entry<String,String> teacher : teachers.entrySet()) {
+                    ImageView imageView = (ImageView) this.scene.lookup("#" + teacher.getKey().replace("_", "") + "TD" + i);
+                    if (teacher.getValue().equals(this.username)  && i == 0){
+                        imageView.setVisible(true);
+                        imageView = (ImageView) this.scene.lookup("#" + teacher.getKey().replace("_", "") + "T");
+                        if(imageView.isVisible())
+                            imageView.setVisible(false);
+                    }
+                    else
+                        imageView.setVisible(false);
+
+                }
+            }
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void displayCloudDiscardCard() {
+        ImageView imageView = (ImageView) this.scene.lookup("#cloudDiscardCard");
+        imageView.setVisible(true);
+    }
+
+    private void displayTeachers() {
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            for (String tokenColor: View.AVAILABLE_TOKEN_COLORS.values()) {
+                Image image = new Image(GUIGameDisplayer.class.getResource("images/teachers/" + tokenColor.replace("_", "") +".png").toString());
+                ImageView imageView = (ImageView) this.scene.lookup("#"+tokenColor.replace("_","")+"TD"+i);
+                imageView.setImage(image);
+                imageView.setVisible(false);
+            }
+        }
     }
 
     private void displayLastDiscardedCards() {
@@ -353,6 +395,7 @@ public class GUIGameDisplayer {
                 ImageView imageView = (ImageView) this.scene.lookup("#lastDiscardD" + i);
                 Image image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(i)).getKey() + ".png").toString());
                 imageView.setImage(image);
+
             }
         }
 
