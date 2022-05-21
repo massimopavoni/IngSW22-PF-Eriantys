@@ -325,6 +325,7 @@ public class GUIGameDisplayer {
             if (threePlayers) {
                 this.displayAdditionalDashboard();
                 this.displayAdditionalCloud();
+                this.displayCloudDiscardCard();
             }
             if (!directivesParser.isExpertMode())
                 activateCharacterCardButton.setVisible(false);
@@ -334,7 +335,6 @@ public class GUIGameDisplayer {
             this.usernamesList.add(0, this.username);
             this.displayDashboardTowers();
             this.displayTeachers(); // da mettere direttamente su sceen builder
-            this.displayCloudDiscardCard();
         }
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);

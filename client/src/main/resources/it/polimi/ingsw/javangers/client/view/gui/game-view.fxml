@@ -109,7 +109,7 @@
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="yourTurn" layoutX="893.0" layoutY="677.0" prefHeight="23.0" prefWidth="367.0">
+      <Label fx:id="yourTurn" layoutX="990.0" layoutY="506.0" prefHeight="23.0" prefWidth="273.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
