@@ -28,15 +28,12 @@
             <Font name="Verdana Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="moveStudentsButton" layoutX="1000.0" layoutY="586.0" mnemonicParsing="false" onAction="#moveStudents" prefHeight="25.0" prefWidth="92.0" text="Move Students">
-         <font>
-            <Font size="11.0" />
-         </font></Button>
+      <Button fx:id="moveStudentsButton" layoutX="990.0" layoutY="586.0" mnemonicParsing="false" onAction="#moveStudents" prefHeight="25.0" prefWidth="96.0" text="Move Students" />
       <Button fx:id="playAssistantCardButton" layoutX="1113.0" layoutY="542.0" mnemonicParsing="false" onAction="#playAssistantCard" prefHeight="25.0" prefWidth="148.0" text="Play Assistant Card" />
       <Button fx:id="activateCharacterCardButton" layoutX="1113.0" layoutY="625.0" mnemonicParsing="false" onAction="#playCharacterCard" prefHeight="25.0" prefWidth="148.0" text="Activate Character Card" />
       <Button fx:id="moveMotherNatureButton" layoutX="1113.0" layoutY="586.0" mnemonicParsing="false" onAction="#moveMotherNature" prefHeight="25.0" prefWidth="148.0" text="Move Mother Nature" />
-      <Button fx:id="chooseCloudButton" layoutX="1000.0" layoutY="625.0" mnemonicParsing="false" onAction="#enableClouds" prefHeight="25.0" prefWidth="92.0" text="Choose Cloud" />
-      <Button fx:id="fillCloudsButton" layoutX="1000.0" layoutY="542.0" mnemonicParsing="false" onAction="#fillClouds" prefHeight="25.0" prefWidth="92.0" text="Fill Clouds" />
+      <Button fx:id="chooseCloudButton" layoutX="990.0" layoutY="625.0" mnemonicParsing="false" onAction="#enableClouds" prefHeight="25.0" prefWidth="96.0" text="Choose Cloud" />
+      <Button fx:id="fillCloudsButton" layoutX="990.0" layoutY="542.0" mnemonicParsing="false" onAction="#fillClouds" prefHeight="25.0" prefWidth="96.0" text="Fill Clouds" />
       <Label fx:id="PINK_FAIRY_C0" layoutX="478.0" layoutY="252.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
