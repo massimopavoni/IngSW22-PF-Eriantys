@@ -135,7 +135,7 @@ public class GUIController extends View implements Initializable {
     }
 
     private void displayWizards() {
-        Image frame = new Image(GUIController.class.getResource("images/selection-frame.png").toString());
+        Image frame = new Image(GUIController.class.getResource("images/cardSelectionFrame.png").toString());
         List<String> cardNameList = new ArrayList<>(AVAILABLE_WIZARD_TYPES.values());
         for (int i = 0; i < cardNameList.size(); i++) {
             Image image = new Image(GUIController.class.getResource("images/wizards/" + cardNameList.get(i).toLowerCase() + ".png").toString());
@@ -159,14 +159,14 @@ public class GUIController extends View implements Initializable {
     @FXML
     private void switchCreate() {
         this.isInCreate = true;
-        openNewStage("start-menu.fxml", "images/start-menuBG.png");
+        openNewStage("start-menu.fxml", "images/startMenuBG.png");
         this.displayWizards();
     }
 
     @FXML
     private void switchJoin() {
         this.isInCreate = false;
-        openNewStage("start-menu.fxml", "images/start-menuBG.png");
+        openNewStage("start-menu.fxml", "images/startMenuBG.png");
         this.displayWizards();
         fxmlExactPlayersNumber.setVisible(false);
         fxmlExpertMode.setVisible(false);
@@ -232,7 +232,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void startShow() {
-        guiGameDisplayer.openNewStage("game-view.fxml", "images/game-board.png" );
+        guiGameDisplayer.openNewStage("game-view.fxml", "images/gameBoard.png" );
         try {
             this.guiGameDisplayer.displayGame(this.username);
             this.previousMessageType = MessageType.START;
@@ -315,7 +315,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void returnToMainMenu() {
-        this.openNewStage("create-join.fxml", "images/start-menuBG.png");
+        this.openNewStage("create-join.fxml", "images/startMenuBG.png");
     }
 
     @Override

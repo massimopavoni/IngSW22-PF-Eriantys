@@ -37,7 +37,7 @@
       </GridPane>
       <ImageView fitHeight="52.0" fitWidth="150.0" layoutX="13.0" layoutY="248.0" onMouseClicked="#redirectCreateJoin">
          <image>
-            <Image url="@images/confirm-button.png" />
+            <Image url="@images/confirmButton.png" />
          </image>
       </ImageView>
    </children>
