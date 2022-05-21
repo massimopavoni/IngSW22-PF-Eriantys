@@ -28,7 +28,7 @@
       </GridPane>
       <ImageView fitHeight="43.0" fitWidth="101.0" layoutX="272.0" layoutY="370.0" onMouseClicked="#confirmAssistantCard">
          <image>
-            <Image url="@images/confirm-button.png" />
+            <Image url="@images/confirmButton.png" />
          </image>
       </ImageView>
    </children>

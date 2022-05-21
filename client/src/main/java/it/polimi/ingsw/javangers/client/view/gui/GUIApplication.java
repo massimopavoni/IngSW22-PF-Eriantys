@@ -34,7 +34,7 @@ public class GUIApplication extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 620, 640);
         try {
-            stage.getIcons().add(new Image(GUIApplication.class.getResource("images/logo-cranio.png").toURI().toString()));
+            stage.getIcons().add(new Image(GUIApplication.class.getResource("images/logoCranio.png").toURI().toString()));
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

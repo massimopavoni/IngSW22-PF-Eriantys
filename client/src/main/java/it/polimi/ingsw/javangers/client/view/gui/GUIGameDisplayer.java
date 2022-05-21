@@ -7,12 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -68,6 +67,8 @@ public class GUIGameDisplayer {
     private GridPane characterCardsGridPane;
     @FXML
     private Label yourTurn;
+    @FXML
+    private TextArea tokensListTextArea;
 
 
     protected GUIGameDisplayer(DirectivesParser directivesParser, DirectivesDispatcher directivesDispatcher, Stage stage) {
@@ -112,7 +113,7 @@ public class GUIGameDisplayer {
     }
 
 
-    public void openPopUp(String fxmlFile, int width, int height, String backGroundResource) {
+    public void openPopUp(String fxmlFile, String backGroundResource) {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
         fxmlLoader.setController(this);
         Parent root;
@@ -123,9 +124,8 @@ public class GUIGameDisplayer {
             anchorPane.setBackground(this.displayBackGround(backGroundResource));
             this.popUpStage.setScene(new Scene(root));
             this.popUpStage.initModality(Modality.APPLICATION_MODAL);
-            stage.getIcons().add(new Image(GUIGameDisplayer.class.getResource("images/logo-cranio.png").toString()));
-            this.popUpStage.setWidth(width);
-            this.popUpStage.setHeight(height);
+            stage.getIcons().add(new Image(GUIGameDisplayer.class.getResource("images/logoCranio.png").toString()));
+            this.popUpStage.sizeToScene();
             this.popUpStage.setResizable(false);
             this.popUpStage.show();
         } catch (IOException e) {
@@ -154,7 +154,7 @@ public class GUIGameDisplayer {
     }
 
     private void displayCharacterCards() {
-        Image frame = new Image(GUIController.class.getResource("images/selection-frame.png").toString());
+        Image frame = new Image(GUIController.class.getResource("images/cardSelectionFrame.png").toString());
         for (int i = 0; i < directivesParser.getCharacterCardNames().size(); i++) {
             Image image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" + directivesParser.getCharacterCardNames().get(i) + ".png").toString());
             ImageView imv = new ImageView();
@@ -175,7 +175,7 @@ public class GUIGameDisplayer {
     }
 
     private void displayPlayerDashboard() {
-        Image image = new Image((GUIGameDisplayer.class.getResource("images/player-dashboard.png")).toString());
+        Image image = new Image((GUIGameDisplayer.class.getResource("images/playerDashboard.png")).toString());
         ImageView imv = (ImageView) this.anchorPane.lookup("#thirdDashboard");
         imv.setImage(image);
     }
@@ -205,7 +205,7 @@ public class GUIGameDisplayer {
             currentIsland.setY(280 + 130 * Math.sin(currentRad));
             currentRad += deltaRad;
             if (i == this.directivesParser.getMotherNaturePosition())
-                currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island-motherNature.png").toString()));
+                currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/islandMotherNature.png").toString()));
             else
                 currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + ".png").toString()));
         }
@@ -374,7 +374,7 @@ public class GUIGameDisplayer {
 
     private void displayAvailableAssistantCards() {
         Image image = null;
-        Image frame = new Image(GUIController.class.getResource("images/selection-frame.png").toString());
+        Image frame = new Image(GUIController.class.getResource("images/cardSelectionFrame.png").toString());
         List<String> cardNameList = new ArrayList<>(directivesParser.getDashboardAssistantCards(this.username).keySet());
         for (int i = 0; i < cardNameList.size(); i++) {
             image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + cardNameList.get(i) + ".png").toString());
@@ -415,6 +415,21 @@ public class GUIGameDisplayer {
         frame.setVisible(true);
     }
 
+    protected void displayEndGame(List<String> winnersList){
+        Label winnersLabel = (Label) this.scene.lookup("#winnersLabel");
+        Label endGameLabel = (Label) this.scene.lookup("#endGameLabel");
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+                if (winnersList.contains(this.usernamesList.get(i))) {
+                    openPopUp("endgame.fxml", "images/show-winner.png");
+                    winnersList.remove(this.username);
+                }
+                else
+                    openPopUp("endgame.fxml", "images/show-looser.png");
+            winnersLabel.setText(winnersList.toString());
+            endGameLabel.setText(this.directivesParser.getEndGame());
+        }
+    }
+
     @FXML
     private void fillClouds() {
         directivesDispatcher.actionFillClouds(this.username);
@@ -423,13 +438,13 @@ public class GUIGameDisplayer {
     @FXML
     private void playAssistantCard() {
         //va cambiato il bg
-        openPopUp("assistantCardsChoice.fxml", 645, 450, "images/assistantCardsChoiceBG.png");
+        this.openPopUp("assistantCardsChoice.fxml", "images/assistantCardsChoiceBG.png");
         this.displayAvailableAssistantCards();
     }
 
     @FXML
     private void playCharacterCard() {
-        openPopUp("characterCardsChoice.fxml", 400, 300, "images/characterCardsChoiceBG.png");
+        this.openPopUp("characterCardsChoice.fxml", "images/characterCardsChoiceBG.png");
         this.displayCharacterCards();
     }
 
@@ -442,6 +457,33 @@ public class GUIGameDisplayer {
 
     @FXML
     private void moveStudents() {
+        this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
+        this.tokensListTextArea.setText("Choose the students to move\nfrom your entrance to your hall");
+        this.spinnersInit();
+    }
+
+    private void spinnersInit() {
+        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values().stream()
+                .map(color -> color.split("_")[0].toLowerCase()).toList()) {
+            SpinnerValueFactory<Integer> spinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 14000605);
+            spinnerValueFactory.setValue(0);
+            Spinner<Integer> spinner = (Spinner<Integer>) this.popUpStage.getScene().lookup(String.format("#%sSpinner", tokenColor));
+            spinner.setValueFactory(spinnerValueFactory);
+        }
+    }
+
+    @FXML
+    private void tokensSpinnersScroll(ScrollEvent scrollEvent) {
+        Spinner<Integer> spinner = (Spinner<Integer>) scrollEvent.getSource();
+        if (scrollEvent.getDeltaY() > 0) {
+            spinner.increment();
+        } else if (scrollEvent.getDeltaY() < 0) {
+            spinner.decrement();
+        }
+    }
+
+    @FXML
+    private void tokensListConfirm() {
 
     }
 
@@ -462,6 +504,7 @@ public class GUIGameDisplayer {
             imageView.setDisable(false);
         }
     }
+
     @FXML
     private void sendChosenCloud(MouseEvent event) {
         int cloudChosen = Integer.parseInt(((ImageView) event.getSource()).getId().split("cloud")[1]);
