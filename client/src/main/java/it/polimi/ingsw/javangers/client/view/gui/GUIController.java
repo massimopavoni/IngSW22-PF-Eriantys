@@ -251,7 +251,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void showError(String message) {
-        this.alertMessage(this.directivesParser.getCurrentPhase().getValue(), message);
+        this.alertMessage(message, "Please retry");
     }
 
     @Override
@@ -286,7 +286,7 @@ public class GUIController extends View implements Initializable {
                     case "MoveStudents" -> guiGameDisplayer.getMoveStudentsButton().setDisable(false);
                     case "MoveMotherNature" -> guiGameDisplayer.getMoveMotherNatureButton().setDisable(false);
                     case "ChooseCloud" -> guiGameDisplayer.getChooseCloudButton().setDisable(false);
-                    case "ActivateCharacterCard" -> guiGameDisplayer.getActivateCharacterCardButton().setDisable(false);
+                    case "ActivateCharacterCard" -> guiGameDisplayer.getActivateCharacterCardButton().setDisable(!this.directivesParser.getPlayersEnabledCharacterCard().get(this.username));
                 }
             }
         } catch (DirectivesParser.DirectivesParserException e) {
