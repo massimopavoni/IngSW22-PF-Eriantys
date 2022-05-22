@@ -581,8 +581,8 @@ public class GUIGameDisplayer {
     }
 
     protected void displayEndGame(List<String> winnersList) {
-        Label winnersLabel = (Label) this.scene.lookup("#winnersLabel");
-        Label endGameLabel = (Label) this.scene.lookup("#endGameLabel");
+        Label winnersLabel = (Label) this.popUpStage.getScene().lookup("#winnersLabel");
+        Label endGameLabel = (Label) this.popUpStage.getScene().lookup("#endGameLabel");
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             if (winnersList.contains(this.usernamesList.get(i))) {
                 openPopUp("endgame.fxml", "images/show-winner.png");
