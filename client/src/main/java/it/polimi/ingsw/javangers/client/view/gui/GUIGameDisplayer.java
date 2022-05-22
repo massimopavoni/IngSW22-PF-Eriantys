@@ -559,6 +559,21 @@ public class GUIGameDisplayer {
         frame.setVisible(true);
     }
 
+    private void displayCharacterCardInfo(){
+        ((Label)this.popUpStage.getScene().lookup("#cardCostLabel")).setText(String.format("%d + %d", this.directivesParser.getCharacterCardCost(this.characterCardChosen).getKey(), this.directivesParser.getCharacterCardCost(this.characterCardChosen).getValue()));
+        for(String tokenColor: View.AVAILABLE_TOKEN_COLORS.values()){
+            try {
+                ((Label)this.popUpStage.getScene().lookup(String.format("#%sCardLabel", tokenColor.split("_")[0].toLowerCase()))).setText(this.directivesParser.getCharacterCardTokens(this.characterCardChosen).get(tokenColor) != null ?
+                        this.directivesParser.getCharacterCardTokens(this.characterCardChosen).get(tokenColor).toString() : "0");
+            } catch (DirectivesParser.DirectivesParserException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        ((Label)this.popUpStage.getScene().lookup("#counterLabel")).setText(String.format("%d", this.directivesParser.getCharacterCardMultipurposeCounter(this.characterCardChosen)));
+
+
+    }
+
     @FXML
     private void selectCharacterCard(MouseEvent event) {
         setInvisibleCharacterCardsFrames();
@@ -566,6 +581,7 @@ public class GUIGameDisplayer {
         characterCardChosen = ((ImageView) event.getSource()).getId();
         frame = (ImageView) this.characterCardsGridPane.lookup("#frame_" + characterCardChosen);
         frame.setVisible(true);
+        this.displayCharacterCardInfo();
     }
 
     protected void displayEndGame(List<String> winnersList) {
