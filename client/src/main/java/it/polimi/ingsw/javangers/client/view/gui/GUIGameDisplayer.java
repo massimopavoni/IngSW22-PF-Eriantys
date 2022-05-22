@@ -772,10 +772,14 @@ public class GUIGameDisplayer {
         String id = ((ImageView) event.getSource()).getId();
         if (this.activatedCharacterCard) {
             switch (characterCardChosen) {
-                case "mushroomer" ->
-                        this.directivesDispatcher.activateMushroomer(this.username, View.AVAILABLE_TOKEN_COLORS.get(String.format("%c", id.charAt(0))));
-                case "scoundrel" ->
-                        this.directivesDispatcher.activateScoundrel(this.username, View.AVAILABLE_TOKEN_COLORS.get(String.format("%c", id.charAt(0))));
+                case "mushroomer" -> {
+                    this.directivesDispatcher.activateMushroomer(this.username, View.AVAILABLE_TOKEN_COLORS.get(String.format("%c", id.charAt(0))));
+                    this.activatedCharacterCard = false;
+                }
+                case "scoundrel" -> {
+                    this.directivesDispatcher.activateScoundrel(this.username, View.AVAILABLE_TOKEN_COLORS.get(String.format("%c", id.charAt(0))));
+                    this.activatedCharacterCard = false;
+                }
             }
         }
     }
