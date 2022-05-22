@@ -400,5 +400,10 @@
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
+      <ImageView fx:id="greenIslandView" fitHeight="15.0" fitWidth="15.0" layoutX="1050.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="redIslandView" fitHeight="15.0" fitWidth="15.0" layoutX="1050.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="yellowIslandView" fitHeight="15.0" fitWidth="15.0" layoutX="1050.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="pinkIslandView" fitHeight="15.0" fitWidth="15.0" layoutX="1051.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="blueIslandView" fitHeight="15.0" fitWidth="15.0" layoutX="1051.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

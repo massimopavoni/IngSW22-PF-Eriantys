@@ -208,13 +208,6 @@ public class GUIGameDisplayer {
         }
     }
 
-    /*private void displayPlayerDashboard() {
-        Image image = new Image((GUIGameDisplayer.class.getResource("images/playerDashboard.png")).toString());
-        ImageView imv = (ImageView) this.anchorPane.lookup("#thirdDashboard");
-        imv.setImage(image);
-    }
-
-     */
 
     private void displayArchipelago() {
         int archipelagoSize = this.directivesParser.getIslandsSize();
@@ -296,15 +289,19 @@ public class GUIGameDisplayer {
 
     private void selectIsland(MouseEvent mouseEvent) {
         int selectedIsland = Integer.parseInt(((ImageView) mouseEvent.getSource()).getId().split("island")[1]);
-        if (this.activatedCharacterCard){
+        if (this.activatedCharacterCard) {
             switch (characterCardChosen) {
-                case "herald" -> {
-                    this.directivesDispatcher.activateHerald(this.username, selectedIsland);
+                case "herald" -> this.directivesDispatcher.activateHerald(this.username, selectedIsland);
+                case "herbalist" -> this.directivesDispatcher.activateHerbalist(this.username, selectedIsland);
+                case "monk" -> {
+                    this.updateEnlightenedIslandInfo(selectedIsland);
+                    this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
+                    this.tokensListLabel.setText("Choose one student to move from this card to the selected island");
+                    this.spinnersInit();
                 }
             }
             this.activatedCharacterCard = false;
-        }
-        else {
+        } else {
             switch (this.directivesParser.getCurrentPhase().getValue()) {
                 case "Move mother nature" -> {
                     int steps = (selectedIsland - this.directivesParser.getMotherNaturePosition()
@@ -358,7 +355,7 @@ public class GUIGameDisplayer {
             ImageView right = (ImageView) this.scene.lookup("#rightArrow");
             left.setImage(new Image(GUIGameDisplayer.class.getResource("images/left-arrow.png").toString()));
             right.setImage(new Image(GUIGameDisplayer.class.getResource("images/right-arrow.png").toString()));
-            if(directivesParser.isExpertMode()){
+            if (directivesParser.isExpertMode()) {
                 this.scene.lookup("#inhibitionToken").setVisible(true);
             }
         }
@@ -370,28 +367,27 @@ public class GUIGameDisplayer {
         updateFrameIsland.setVisible(true);
         for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
             try {
-                ((Label)this.scene.lookup(String.format("#%s_info", tokenColor))).setText(this.directivesParser.getIslandTokens(this.enlightenedIsland).get(tokenColor) != null ?
+                ((Label) this.scene.lookup(String.format("#%s_info", tokenColor))).setText(this.directivesParser.getIslandTokens(this.enlightenedIsland).get(tokenColor) != null ?
                         this.directivesParser.getIslandTokens(this.enlightenedIsland).get(tokenColor).toString() : "0");
             } catch (DirectivesParser.DirectivesParserException e) {
                 e.printStackTrace();
             }
         }
-        if(this.directivesParser.getIslandTowers(this.enlightenedIsland).getValue()!=0){
-            ((ImageView)this.scene.lookup("#tower_info")).setImage(new Image(GUIGameDisplayer.class.getResource(
+        if (this.directivesParser.getIslandTowers(this.enlightenedIsland).getValue() != 0) {
+            ((ImageView) this.scene.lookup("#tower_info")).setImage(new Image(GUIGameDisplayer.class.getResource(
                     String.format("images/towers/%sTower.png", this.directivesParser.getIslandTowers(this.enlightenedIsland).getKey().toLowerCase())).toString()));
             this.scene.lookup("#tower_info").setVisible(true);
-            ((Label)this.scene.lookup("#towerInfoLabel")).setText(this.directivesParser.getIslandTowers(this.enlightenedIsland).getValue().toString());
-        }
-        else{
+            ((Label) this.scene.lookup("#towerInfoLabel")).setText(this.directivesParser.getIslandTowers(this.enlightenedIsland).getValue().toString());
+        } else {
             this.scene.lookup("#tower_info").setVisible(false);
-            ((Label)this.scene.lookup("#towerInfoLabel")).setText("");
+            ((Label) this.scene.lookup("#towerInfoLabel")).setText("");
         }
-        if(this.directivesParser.isExpertMode())
-            ((Label)this.scene.lookup("#inhibitionTokenLabel")).setText(String.format("%d", this.directivesParser.getIslandEnabled(this.enlightenedIsland)));
+        if (this.directivesParser.isExpertMode())
+            ((Label) this.scene.lookup("#inhibitionTokenLabel")).setText(String.format("%d", this.directivesParser.getIslandEnabled(this.enlightenedIsland)));
     }
 
-    private void displayCoinsLabels(){
-        for(int i=0; i<this.directivesParser.getExactPlayersNumber(); i++){
+    private void displayCoinsLabels() {
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             ((Label) this.scene.lookup(String.format("#coinsLabelD%d", i))).setText(String.format("%d", this.directivesParser.getDashboardCoins(this.usernamesList.get(i))));
         }
     }
@@ -402,8 +398,8 @@ public class GUIGameDisplayer {
             this.usernamesList = directivesParser.getDashboardNames();
             this.usernamesList.remove(this.username);
             this.usernamesList.add(0, this.username);
-            ((Label)this.scene.lookup("#nameD0")).setText(this.username);
-            ((Label)this.scene.lookup("#nameD1")).setText(this.usernamesList.get(1));
+            ((Label) this.scene.lookup("#nameD0")).setText(this.username);
+            ((Label) this.scene.lookup("#nameD1")).setText(this.usernamesList.get(1));
             threePlayers = (directivesParser.getExactPlayersNumber() == 3);
             if (threePlayers) {
                 //this.displayPlayerDashboard();
@@ -417,7 +413,7 @@ public class GUIGameDisplayer {
                 activateCharacterCardButton.setVisible(false);
             this.displayTeachers(); // da mettere direttamente su sceen builder
         }
-        if(directivesParser.isExpertMode())
+        if (directivesParser.isExpertMode())
             this.displayCoinsLabels();
         this.displayDashboardTowers();
         this.displayCurrentPhase();
@@ -483,7 +479,7 @@ public class GUIGameDisplayer {
     private void displayDashboardTowers() {
         int[][] towerPosition = {{766, 550}, {710, 36}, {75, 175}};
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            if(firstDisplay) {
+            if (firstDisplay) {
                 Image image = new Image((GUIGameDisplayer.class.getResource("images/towers/" + this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).
                         getKey().toLowerCase() + "Tower.png")).toString());
                 ImageView imageView = new ImageView();
@@ -655,10 +651,48 @@ public class GUIGameDisplayer {
     @FXML
     private void tokensListConfirm() {
         ArrayList<String> tokens = new ArrayList<>();
+        int counter = 0;
         for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
             Spinner<Integer> spinner = (Spinner<Integer>) this.popUpStage.getScene().lookup(
                     String.format("#%sSpinner", tokenColor.split("_")[0].toLowerCase()));
             tokens.addAll(Collections.nCopies(spinner.getValue(), tokenColor));
+        }
+        if (this.activatedCharacterCard) {
+            switch (characterCardChosen) {
+                case "jester" -> {
+                    if (this.tokensList == null) {
+                        this.tokensList = tokens;
+                        this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
+                        this.tokensListLabel.setText("Take up the same number of students from this card");
+                        this.spinnersInit();
+                    } else {
+                        this.directivesDispatcher.activateJester(this.username, this.tokensList, tokens);
+                        this.activatedCharacterCard = false;
+                        this.tokensList = null;
+                    }
+                }
+                case "monk" -> {
+                    this.directivesDispatcher.activateMonk(this.username, tokens, this.enlightenedIsland);
+                    this.activatedCharacterCard = false;
+                }
+                case "bard" -> {
+                    if (this.tokensList == null) {
+                        this.tokensList = tokens;
+                        this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
+                        this.tokensListLabel.setText("Take up the same number of students from your entrance");
+                        this.spinnersInit();
+                    } else {
+                        this.directivesDispatcher.activateBard(this.username, this.tokensList, tokens);
+                        this.activatedCharacterCard = false;
+                        this.tokensList = null;
+                    }
+                }
+                case "queen" -> {
+                    this.directivesDispatcher.activateQueen(this.username, tokens);
+                    this.activatedCharacterCard = false;
+                }
+            }
+
         }
         switch (this.directivesParser.getCurrentPhase().getValue()) {
             case "Move students" -> {
@@ -695,6 +729,7 @@ public class GUIGameDisplayer {
         this.popUpStage.close();
     }
 
+
     @FXML
     private void moveMotherNature() {
         this.showMessageAlert("Move mother nature", String.format("Choose an island by clicking on it (max distance is %d)",
@@ -718,11 +753,26 @@ public class GUIGameDisplayer {
     @FXML
     private void activateCharacterCard() {
         this.popUpStage.close();
-        this.activatedCharacterCard = true;
-        try {
-            EFFECT_METHOD_MAPPINGS.get(characterCardChosen).invoke(this);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+        if (this.characterCardChosen != null) {
+            this.activatedCharacterCard = true;
+            try {
+                EFFECT_METHOD_MAPPINGS.get(this.characterCardChosen).invoke(this);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @FXML
+    private void selectTokenColor(MouseEvent event) {
+        String id = ((ImageView) event.getSource()).getId();
+        if (this.activatedCharacterCard) {
+            switch (characterCardChosen) {
+                case "mushroomer" ->
+                        this.directivesDispatcher.activateMushroomer(this.username, View.AVAILABLE_TOKEN_COLORS.get(String.format("%c", id.charAt(0))));
+                case "scoundrel" ->
+                        this.directivesDispatcher.activateScoundrel(this.username, View.AVAILABLE_TOKEN_COLORS.get(String.format("%c", id.charAt(0))));
+            }
         }
     }
 
@@ -731,27 +781,63 @@ public class GUIGameDisplayer {
     }
 
     private void mailman() {
-        this.directivesDispatcher.activateMailman(username);
+        this.directivesDispatcher.activateMailman(this.username);
     }
 
     private void centaur() {
-        this.directivesDispatcher.activateCentaur(username);
+        this.directivesDispatcher.activateCentaur(this.username);
     }
 
     private void knight() {
-        this.directivesDispatcher.activateKnight(username);
+        this.directivesDispatcher.activateKnight(this.username);
     }
 
     private void herald() {
         this.showMessageAlert("Activate character card: herald", "Choose an island by clicking on it");
     }
-    private void herbalist() {}
-    private void mushroomer(){}
-    private void scoundrel(){}
-    private void monk(){}
-    private void queen(){}
-    private void jester(){}
-    private void bard(){}
+
+    private void herbalist() {
+        this.showMessageAlert("Activate character card: herbalist", "Choose an island by clicking on it");
+    }
+
+    private void mushroomer() {
+        this.showMessageAlert("Activate character card: mushroomer", "Choose a color by clicking on island info panel");
+
+    }
+
+    private void scoundrel() {
+        this.showMessageAlert("Activate character card: scoundrel", "Choose a color by clicking on island info panel");
+    }
+
+    private void monk() {
+        this.showMessageAlert("Activate character card: monk", "Choose an island by clicking on it and move one student");
+    }
+
+    private void queen() {
+        this.showMessageAlert("Activate character card: queen", "Choose one student from this card and move it in your hall");
+        this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
+        this.tokensListLabel.setText("Take up to one students from this card");
+        this.spinnersInit();
+        this.tokensList = null;
+    }
+
+    private void jester() {
+        this.showMessageAlert("Activate character card: jester", "Swap students from this card to your entrance");
+        this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
+        this.tokensListLabel.setText("Take up to " + this.directivesParser.getCharacterCardMultipurposeCounter("jester") +
+                " students from your entrance and swap them with as many students of this card");
+        this.spinnersInit();
+        this.tokensList = null;
+    }
+
+    private void bard() {
+        this.showMessageAlert("Activate character card: bard", "Swap students from your hall to your entrance");
+        this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
+        this.tokensListLabel.setText("Take up to " + this.directivesParser.getCharacterCardMultipurposeCounter("bard") +
+                " students from your hall and swap them with as many students of your entrance");
+        this.spinnersInit();
+        this.tokensList = null;
+    }
 
     protected Button getFillCloudsButton() {
         return fillCloudsButton;
