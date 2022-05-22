@@ -97,7 +97,6 @@ public class GUIGameDisplayer {
         this.stage = stage;
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
         this.messageAlert = new Alert(Alert.AlertType.INFORMATION);
-        this.firstDisplay = true;
         this.activatedCharacterCard = false;
     }
 
@@ -141,6 +140,7 @@ public class GUIGameDisplayer {
             this.anchorPane.setBackground(this.displayBackGround(backGroundResource));
             this.stage.hide();
             this.stage.show();
+            this.firstDisplay=true;
         } catch (IOException e) {
             //va cambiato
             throw new RuntimeException(e);
