@@ -140,7 +140,7 @@ public class GUIGameDisplayer {
             this.anchorPane.setBackground(this.displayBackGround(backGroundResource));
             this.stage.hide();
             this.stage.show();
-            this.firstDisplay=true;
+            this.firstDisplay = true;
         } catch (IOException e) {
             //va cambiato
             throw new RuntimeException(e);
@@ -167,8 +167,9 @@ public class GUIGameDisplayer {
             e.printStackTrace();
         }
     }
-    protected void closePopUp(){
-        if(this.popUpStage != null)
+
+    protected void closePopUp() {
+        if (this.popUpStage != null)
             this.popUpStage.close();
     }
 
@@ -294,11 +295,11 @@ public class GUIGameDisplayer {
         int selectedIsland = Integer.parseInt(((ImageView) mouseEvent.getSource()).getId().split("island")[1]);
         if (this.activatedCharacterCard) {
             switch (characterCardChosen) {
-                case "herald" ->{
+                case "herald" -> {
                     this.directivesDispatcher.activateHerald(this.username, selectedIsland);
                     this.activatedCharacterCard = false;
                 }
-                case "herbalist" ->{
+                case "herbalist" -> {
                     this.directivesDispatcher.activateHerbalist(this.username, selectedIsland);
                     this.activatedCharacterCard = false;
                 }
@@ -558,17 +559,17 @@ public class GUIGameDisplayer {
         frame.setVisible(true);
     }
 
-    private void displayCharacterCardInfo(){
-        ((Label)this.popUpStage.getScene().lookup("#cardCostLabel")).setText(String.format("%d + %d", this.directivesParser.getCharacterCardCost(this.characterCardChosen).getKey(), this.directivesParser.getCharacterCardCost(this.characterCardChosen).getValue()));
-        for(String tokenColor: View.AVAILABLE_TOKEN_COLORS.values()){
+    private void displayCharacterCardInfo() {
+        ((Label) this.popUpStage.getScene().lookup("#cardCostLabel")).setText(String.format("%d + %d", this.directivesParser.getCharacterCardCost(this.characterCardChosen).getKey(), this.directivesParser.getCharacterCardCost(this.characterCardChosen).getValue()));
+        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
             try {
-                ((Label)this.popUpStage.getScene().lookup(String.format("#%sCardLabel", tokenColor.split("_")[0].toLowerCase()))).setText(this.directivesParser.getCharacterCardTokens(this.characterCardChosen).get(tokenColor) != null ?
+                ((Label) this.popUpStage.getScene().lookup(String.format("#%sCardLabel", tokenColor.split("_")[0].toLowerCase()))).setText(this.directivesParser.getCharacterCardTokens(this.characterCardChosen).get(tokenColor) != null ?
                         this.directivesParser.getCharacterCardTokens(this.characterCardChosen).get(tokenColor).toString() : "0");
             } catch (DirectivesParser.DirectivesParserException e) {
                 throw new RuntimeException(e);
             }
         }
-        ((Label)this.popUpStage.getScene().lookup("#counterLabel")).setText(String.format("%d", this.directivesParser.getCharacterCardMultipurposeCounter(this.characterCardChosen)));
+        ((Label) this.popUpStage.getScene().lookup("#counterLabel")).setText(String.format("%d", this.directivesParser.getCharacterCardMultipurposeCounter(this.characterCardChosen)));
 
 
     }
@@ -696,36 +697,36 @@ public class GUIGameDisplayer {
                     this.activatedCharacterCard = false;
                 }
             }
-
-        }
-        switch (this.directivesParser.getCurrentPhase().getValue()) {
-            case "Move students" -> {
-                int studentsPerCloud = this.directivesParser.getStudentsPerCloud();
-                if (this.tokensList == null) {
-                    this.tokensList = tokens;
-                    if (this.tokensList.size() > studentsPerCloud) {
-                        this.showErrorAlert("Move students", String.format("You have to move exactly %d students from entrance to hall and/or islands",
-                                studentsPerCloud));
-                        this.tokensList = null;
-                    } else if (this.tokensList.size() == studentsPerCloud) {
-                        this.directivesDispatcher.actionMoveStudents(this.username, this.tokensList, new HashMap<>());
-                        this.tokensList = null;
-                    }
-                } else {
-                    if (this.tokensMap == null)
-                        this.tokensMap = new HashMap<>();
-                    this.tokensMap.put(this.enlightenedIsland, tokens);
-                    int totalTokens = this.tokensList.size() +
-                            this.tokensMap.values().stream().mapToInt(List::size).sum();
-                    if (totalTokens > studentsPerCloud) {
-                        this.showErrorAlert("Move students", String.format("You have to move exactly %d students from entrance to hall and/or islands",
-                                studentsPerCloud));
-                        this.tokensList = null;
-                        this.tokensMap = null;
-                    } else if (totalTokens == studentsPerCloud) {
-                        this.directivesDispatcher.actionMoveStudents(this.username, this.tokensList, this.tokensMap);
-                        this.tokensList = null;
-                        this.tokensMap = null;
+        } else {
+            switch (this.directivesParser.getCurrentPhase().getValue()) {
+                case "Move students" -> {
+                    int studentsPerCloud = this.directivesParser.getStudentsPerCloud();
+                    if (this.tokensList == null) {
+                        this.tokensList = tokens;
+                        if (this.tokensList.size() > studentsPerCloud) {
+                            this.showErrorAlert("Move students", String.format("You have to move exactly %d students from entrance to hall and/or islands",
+                                    studentsPerCloud));
+                            this.tokensList = null;
+                        } else if (this.tokensList.size() == studentsPerCloud) {
+                            this.directivesDispatcher.actionMoveStudents(this.username, this.tokensList, new HashMap<>());
+                            this.tokensList = null;
+                        }
+                    } else {
+                        if (this.tokensMap == null)
+                            this.tokensMap = new HashMap<>();
+                        this.tokensMap.put(this.enlightenedIsland, tokens);
+                        int totalTokens = this.tokensList.size() +
+                                this.tokensMap.values().stream().mapToInt(List::size).sum();
+                        if (totalTokens > studentsPerCloud) {
+                            this.showErrorAlert("Move students", String.format("You have to move exactly %d students from entrance to hall and/or islands",
+                                    studentsPerCloud));
+                            this.tokensList = null;
+                            this.tokensMap = null;
+                        } else if (totalTokens == studentsPerCloud) {
+                            this.directivesDispatcher.actionMoveStudents(this.username, this.tokensList, this.tokensMap);
+                            this.tokensList = null;
+                            this.tokensMap = null;
+                        }
                     }
                 }
             }
