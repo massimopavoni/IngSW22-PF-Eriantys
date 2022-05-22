@@ -5,14 +5,13 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -21,9 +20,13 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class GUIGameDisplayer {
+    private static final Map<String, String> TOKEN_COLORS_LABELS =
+            View.AVAILABLE_TOKEN_COLORS.values().stream().collect(Collectors.toMap(
+                    (String color) -> color.split("_")[0].toLowerCase(), color -> color));
     private static final Map<String, Method> EFFECT_METHOD_MAPPINGS;
 
     static {
@@ -43,32 +46,50 @@ public class GUIGameDisplayer {
         EFFECT_METHOD_MAPPINGS = Collections.unmodifiableMap(effectMethodMappings);
     }
 
-    private final Alert errorAlert;
-
-    private final Alert messageAlert;
     private final DirectivesParser directivesParser;
     private final DirectivesDispatcher directivesDispatcher;
+    private final Image cranioLogo;
+    private final Map<String, Image> towersImages;
+    private final Image[] islandFramesImages;
+    private final Image[] islandsImages;
+    private final Map<String, Image> assistantCardsImages;
+    private final Map<String, Image> characterCardsImages;
+    private final Alert errorAlert;
+    private final Alert messageAlert;
     private final Stage stage;
-    private int previousArchipelagoSize;
     private Scene scene;
     private Stage popUpStage;
-    private AnchorPane anchorPane;
-    private String assistantCardChosen;
-    private String characterCardChosen;
-    private Boolean firstDisplay;
     private String username;
+    private Boolean firstDisplay;
     private List<String> usernamesList;
+    private boolean moveStudentsToHall;
+    private boolean activatedCharacterCard;
+    private int previousArchipelagoSize;
     private int enlightenedIsland;
-    private boolean threePlayers;
+    private String chosenAssistantCard;
+    private String chosenCharacterCard;
     private List<String> tokensList;
     private Map<Integer, List<String>> tokensMap;
-    private boolean activatedCharacterCard;
     @FXML
     private Label currentPhase;
     @FXML
     private Label youArePlayerLabel;
     @FXML
     private Label playersOrder;
+    @FXML
+    private Label dashboardName0;
+    @FXML
+    private Label dashboardName1;
+    @FXML
+    private Label dashboardName2;
+    @FXML
+    private ImageView thirdDashboard;
+    @FXML
+    private ImageView thirdDiscardCloud;
+    @FXML
+    private Label yourTurn;
+    @FXML
+    private Label tokensListLabel;
     @FXML
     private Button fillCloudsButton;
     @FXML
@@ -82,14 +103,17 @@ public class GUIGameDisplayer {
     @FXML
     private Button activateCharacterCardButton;
     @FXML
-    private GridPane assistantCardsGridPane;
+    private GridPane assistantCardsGrid;
     @FXML
-    private GridPane characterCardsGridPane;
+    private GridPane characterCardsGrid;
     @FXML
-    private Label yourTurn;
+    private ImageView islandTowerView;
     @FXML
-    private Label tokensListLabel;
-
+    private Label islandTowersLabel;
+    @FXML
+    private ImageView inhibitionTokenView;
+    @FXML
+    private Label inhibitionTokenLabel;
 
     protected GUIGameDisplayer(DirectivesParser directivesParser, DirectivesDispatcher directivesDispatcher, Stage stage) {
         this.directivesParser = directivesParser;
@@ -99,67 +123,60 @@ public class GUIGameDisplayer {
         this.messageAlert = new Alert(Alert.AlertType.INFORMATION);
         this.firstDisplay = true;
         this.activatedCharacterCard = false;
+        this.cranioLogo = new Image(String.valueOf(GUIGameDisplayer.class.getResource("images/cranioLogo.png")));
+        this.islandFramesImages = new Image[3];
+        this.islandsImages = new Image[4];
+        for (int i = 0; i < 3; i++) {
+            this.islandFramesImages[i] = new Image(String.valueOf(
+                    GUIGameDisplayer.class.getResource(String.format("images/islands/islandFrame%d.png", i))));
+            this.islandsImages[i] = new Image(String.valueOf(
+                    GUIGameDisplayer.class.getResource(String.format("images/islands/island%d.png", i))));
+        }
+        this.islandsImages[3] = new Image(String.valueOf(
+                GUIGameDisplayer.class.getResource("images/islands/islandMotherNature.png")));
+        this.towersImages = new HashMap<>();
+        this.assistantCardsImages = new HashMap<>();
+        this.characterCardsImages = new HashMap<>();
     }
 
-    private void showErrorAlert(String headerText, String contentText) {
-        this.errorAlert.setHeaderText(headerText);
-        this.errorAlert.setContentText(contentText);
+    private void showErrorAlert(String header, String content) {
+        this.errorAlert.setHeaderText(header);
+        this.errorAlert.setContentText(content);
         this.errorAlert.showAndWait();
-
     }
 
-    private void showMessageAlert(String headerText, String contentText) {
-        this.messageAlert.setHeaderText(headerText);
-        this.messageAlert.setContentText(contentText);
+    private void showMessageAlert(String header, String content) {
+        this.messageAlert.setHeaderText(header);
+        this.messageAlert.setContentText(content);
         this.messageAlert.showAndWait();
-
     }
 
     public void setYourTurnMessage(String message) {
         this.yourTurn.setText(message);
     }
 
-    private Background displayBackGround(String resource) {
-        Image img = new Image(GUIGameDisplayer.class.getResource(resource).toString());
-        BackgroundImage bImg = new BackgroundImage(img,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                BackgroundSize.DEFAULT);
-        return new Background(bImg);
-    }
-
-    protected void openNewStage(String fxmlFile, String backGroundResource) {
+    protected void open() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("gameView.fxml"));
             fxmlLoader.setController(this);
-            Parent root = fxmlLoader.load();
-            this.scene = new Scene(root);
-            this.stage.setScene(scene);
+            this.scene = new Scene(fxmlLoader.load());
+            this.stage.setScene(this.scene);
             this.stage.sizeToScene();
-            this.anchorPane = fxmlLoader.getRoot();
-            this.anchorPane.setBackground(this.displayBackGround(backGroundResource));
             this.stage.hide();
             this.stage.show();
         } catch (IOException e) {
-            //va cambiato
             throw new RuntimeException(e);
         }
     }
 
-
-    public void openPopUp(String fxmlFile, String backgroundResource) {
+    public void openPopUp(String fxmlFile) {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
         fxmlLoader.setController(this);
-        Parent root;
         this.popUpStage = new Stage();
         try {
-            root = fxmlLoader.load();
-            this.anchorPane = fxmlLoader.getRoot();
-            anchorPane.setBackground(this.displayBackGround(backgroundResource));
-            this.popUpStage.setScene(new Scene(root));
+            this.popUpStage.setScene(new Scene(fxmlLoader.load()));
             this.popUpStage.initModality(Modality.APPLICATION_MODAL);
-            stage.getIcons().add(new Image(GUIGameDisplayer.class.getResource("images/logoCranio.png").toString()));
+            this.popUpStage.getIcons().add(this.cranioLogo);
             this.popUpStage.sizeToScene();
             this.popUpStage.setResizable(false);
             this.popUpStage.show();
@@ -168,79 +185,28 @@ public class GUIGameDisplayer {
         }
     }
 
-
     private void displayCurrentPhase() {
         Pair<String, String> currentPhasePair = this.directivesParser.getCurrentPhase();
-        this.currentPhase.setText("Current phase: " + currentPhasePair.getKey() + " => " + currentPhasePair.getValue());
+        this.currentPhase.setText(String.format("Current phase: %s => %s",
+                currentPhasePair.getKey(), currentPhasePair.getValue()));
     }
 
     private void displayPlayersOrder(String username) throws DirectivesParser.DirectivesParserException {
-        this.youArePlayerLabel.setText("You are " + username);
-        this.playersOrder.setText("Player's order is: " + directivesParser.getPlayersOrder().toString());
+        this.youArePlayerLabel.setText(String.format("You are %s", username));
+        this.playersOrder.setText(String.format("Player's order: %s",
+                String.join(", ", this.directivesParser.getPlayersOrder())));
     }
-
-    private void setInvisibleCharacterCardsFrames() {
-        List<String> cardNameList = new ArrayList<>(directivesParser.getCharacterCardNames());
-        for (String s : cardNameList) {
-            ImageView imv = null;
-            imv = (ImageView) this.characterCardsGridPane.lookup("#frame_" + s);
-            imv.setVisible(false);
-        }
-    }
-
-    private void displayCharacterCards() {
-        Image frame = new Image(GUIController.class.getResource("images/cardSelectionFrame.png").toString());
-        for (int i = 0; i < directivesParser.getCharacterCardNames().size(); i++) {
-            Image image = new Image(GUIGameDisplayer.class.getResource("images/characterCards/" + directivesParser.getCharacterCardNames().get(i) + ".png").toString());
-            ImageView imv = new ImageView();
-            ImageView frameImv = new ImageView();
-            imv.setImage(image);
-            imv.setId(directivesParser.getCharacterCardNames().get(i));
-            imv.setFitWidth(109);
-            imv.setFitHeight(160);
-            imv.setOnMouseClicked(this::selectCharacterCard);
-            frameImv.setImage(frame);
-            frameImv.setId("frame_" + directivesParser.getCharacterCardNames().get(i));
-            frameImv.setFitWidth(120);
-            frameImv.setFitHeight(170);
-            frameImv.setVisible(false);
-            characterCardsGridPane.add(imv, i, 0);
-            characterCardsGridPane.add(frameImv, i, 0);
-        }
-    }
-
-    /*private void displayPlayerDashboard() {
-        Image image = new Image((GUIGameDisplayer.class.getResource("images/playerDashboard.png")).toString());
-        ImageView imv = (ImageView) this.anchorPane.lookup("#thirdDashboard");
-        imv.setImage(image);
-    }
-
-     */
 
     private void displayArchipelago() {
         int archipelagoSize = this.directivesParser.getIslandsSize();
-        if (this.firstDisplay) {
+        if (archipelagoSize < this.previousArchipelagoSize) {
+            for (int i = archipelagoSize; i < this.previousArchipelagoSize; i++) {
+                this.scene.lookup(String.format("#island%d", i)).setVisible(false);
+                this.scene.lookup(String.format("#islandFrame%d", i)).setVisible(false);
+            }
             this.previousArchipelagoSize = archipelagoSize;
-            for (int i = 0; i < archipelagoSize; i++) {
-                ImageView imv = new ImageView();
-                ImageView frameImv = new ImageView();
-                imv.setFitWidth(80);
-                imv.setFitHeight(80);
-                imv.setOnMouseClicked(this::selectIsland);
-                imv.setId(String.format("island%d", i));
-                frameImv.setVisible(false);
-                frameImv.setFitHeight(80);
-                frameImv.setFitWidth(80);
-                frameImv.setId(String.format("frameIsland%d", i));
-                this.anchorPane.getChildren().add(frameImv);
-                this.anchorPane.getChildren().add(imv);
-            }
-        } else {
-            for (int i = archipelagoSize; i < previousArchipelagoSize; i++) {
+            if (this.enlightenedIsland >= archipelagoSize)
                 this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
-                this.anchorPane.getChildren().remove(this.scene.lookup(String.format("#island%d", i)));
-                this.anchorPane.getChildren().remove(this.scene.lookup(String.format("#frameIsland%d", i)));
-            }
         }
         double deltaRad = 2 * Math.PI / archipelagoSize;
         double currentRad = 0;
@@ -248,32 +214,28 @@ public class GUIGameDisplayer {
         ImageView currentFrameIsland;
         for (int i = 0; i < archipelagoSize; i++) {
             currentIsland = (ImageView) this.scene.lookup(String.format("#island%d", i));
-            currentFrameIsland = (ImageView) this.scene.lookup(String.format("#frameIsland%d", i));
-            currentIsland.setX(595 + 260 * Math.cos(currentRad));
-            currentIsland.setY(280 + 130 * Math.sin(currentRad));
-            currentFrameIsland.setX(595 + 260 * Math.cos(currentRad));
-            currentFrameIsland.setY(280 + 130 * Math.sin(currentRad));
+            currentFrameIsland = (ImageView) this.scene.lookup(String.format("#islandFrame%d", i));
+            currentIsland.setLayoutX(595 + 260 * Math.cos(currentRad));
+            currentIsland.setLayoutY(280 + 130 * Math.sin(currentRad));
+            currentFrameIsland.setLayoutX(595 + 260 * Math.cos(currentRad));
+            currentFrameIsland.setLayoutY(280 + 130 * Math.sin(currentRad));
             currentRad += deltaRad;
-            if (i == this.directivesParser.getMotherNaturePosition())
-                currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/islandMotherNature.png").toString()));
-            else
-                currentIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + ".png").toString()));
-            if (this.directivesParser.getMotherNaturePosition() == i)
-                currentFrameIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island0-frame.png").toString()));
-            else
-                currentFrameIsland.setImage(new Image(GUIGameDisplayer.class.getResource("images/islands/island" + i % 3 + "-frame.png").toString()));
+            if (i == this.directivesParser.getMotherNaturePosition()) {
+                currentFrameIsland.setImage(this.islandFramesImages[0]);
+                currentIsland.setImage(this.islandsImages[3]);
+            } else {
+                currentFrameIsland.setImage(this.islandFramesImages[i % 3]);
+                currentIsland.setImage(this.islandsImages[i % 3]);
+            }
         }
     }
 
     private void displayDashboardEntranceTokens() {
+        Map<String, Integer> entranceTokens;
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             try {
-                Map<String, Integer> entranceTokens = this.directivesParser.getDashboardEntranceTokens(this.usernamesList.get(i));
-                for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-                    Label label = (Label) this.scene.lookup(String.format("#%s_D%d", tokenColor, i));
-                    Integer number = entranceTokens.get(tokenColor);
-                    label.setText(number != null ? number.toString() : "0");
-                }
+                entranceTokens = this.directivesParser.getDashboardEntranceTokens(this.usernamesList.get(i));
+                this.displayTokensLabels(String.format("DashboardEntranceLabel%d", i), entranceTokens);
             } catch (DirectivesParser.DirectivesParserException e) {
                 e.printStackTrace();
             }
@@ -281,31 +243,28 @@ public class GUIGameDisplayer {
     }
 
     private void displayDashboardHallTokens() {
+        Map<String, Integer> hallTokens;
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             try {
-                Map<String, Integer> hallTokens = this.directivesParser.getDashboardHallTokens(this.usernamesList.get(i));
-                for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-                    Label label = (Label) this.scene.lookup(String.format("#%s_DH%d", tokenColor, i));
-                    Integer number = hallTokens.get(tokenColor);
-                    label.setText(number != null ? number.toString() : "0");
-                }
+                hallTokens = this.directivesParser.getDashboardHallTokens(this.usernamesList.get(i));
+                this.displayTokensLabels(String.format("DashboardHallLabel%d", i), hallTokens);
             } catch (DirectivesParser.DirectivesParserException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    @FXML
     private void selectIsland(MouseEvent mouseEvent) {
         int selectedIsland = Integer.parseInt(((ImageView) mouseEvent.getSource()).getId().split("island")[1]);
-        if (this.activatedCharacterCard){
-            switch (characterCardChosen) {
+        if (this.activatedCharacterCard) {
+            switch (this.chosenCharacterCard) {
                 case "herald" -> {
                     this.directivesDispatcher.activateHerald(this.username, selectedIsland);
                 }
             }
             this.activatedCharacterCard = false;
-        }
-        else {
+        } else {
             switch (this.directivesParser.getCurrentPhase().getValue()) {
                 case "Move mother nature" -> {
                     int steps = (selectedIsland - this.directivesParser.getMotherNaturePosition()
@@ -318,107 +277,109 @@ public class GUIGameDisplayer {
                     }
                 }
                 case "Move students" -> {
-                    if (this.tokensList != null) {
-                        this.updateEnlightenedIslandInfo(selectedIsland);
-                        this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
-                        this.tokensListLabel.setText("Choose some students to move from your entrance to the selected island");
-                        this.spinnersInit();
-                    }
+                    this.updateEnlightenedIslandInfo(selectedIsland);
+                    this.openPopUp("tokensList.fxml");
+                    this.tokensListLabel.setText("Choose some students to move from your entrance to the selected island");
+                    this.spinnersInit();
+                    this.moveStudentsToHall = false;
                 }
             }
         }
     }
 
     private void displayCloudsTokensLabels() {
-        Label label;
+        Map<String, Integer> cloudTokens;
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-                try {
-                    label = (Label) this.scene.lookup("#" + tokenColor + "_C" + i);
-                    label.setText(this.directivesParser.getCloudTokens(i).get(tokenColor) != null ?
-                            this.directivesParser.getCloudTokens(i).get(tokenColor).toString() : "0");
-                } catch (DirectivesParser.DirectivesParserException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                cloudTokens = this.directivesParser.getCloudTokens(i);
+                this.displayTokensLabels(String.format("CloudLabel%d", i), cloudTokens);
+            } catch (DirectivesParser.DirectivesParserException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
     @FXML
-    private void updateEnlightenedIslandButton(MouseEvent event) {
+    private void selectEnlightenedIsland(MouseEvent event) {
         if (((ImageView) event.getSource()).getId().equals("leftArrow"))
             this.updateEnlightenedIslandInfo((this.enlightenedIsland + this.directivesParser.getIslandsSize() - 1) % this.directivesParser.getIslandsSize());
         else
             this.updateEnlightenedIslandInfo((this.enlightenedIsland + this.directivesParser.getIslandsSize() + 1) % this.directivesParser.getIslandsSize());
-
     }
 
     private void updateEnlightenedIslandInfo(int newPosition) {
-        if (firstDisplay) {
-            ImageView left = (ImageView) this.scene.lookup("#leftArrow");
-            ImageView right = (ImageView) this.scene.lookup("#rightArrow");
-            left.setImage(new Image(GUIGameDisplayer.class.getResource("images/left-arrow.png").toString()));
-            right.setImage(new Image(GUIGameDisplayer.class.getResource("images/right-arrow.png").toString()));
-            if(directivesParser.isExpertMode()){
-                this.scene.lookup("#inhibitionToken").setVisible(true);
-            }
+        if (this.directivesParser.isExpertMode()) {
+            if (this.firstDisplay)
+                this.inhibitionTokenView.setVisible(true);
+            else
+                this.inhibitionTokenLabel.setText(String.valueOf(
+                        this.directivesParser.getIslandEnabled(this.enlightenedIsland)));
         }
-        ImageView updateFrameIsland = (ImageView) this.scene.lookup(String.format("#frameIsland%d", this.enlightenedIsland));
+        ImageView updateFrameIsland = (ImageView) this.scene.lookup(String.format("#islandFrame%d", this.enlightenedIsland));
         if (updateFrameIsland != null)
             updateFrameIsland.setVisible(false);
         this.enlightenedIsland = newPosition;
-        updateFrameIsland = (ImageView) this.scene.lookup(String.format("#frameIsland%d", this.enlightenedIsland));
+        updateFrameIsland = (ImageView) this.scene.lookup(String.format("#islandFrame%d", this.enlightenedIsland));
         updateFrameIsland.setVisible(true);
-        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-            try {
-                ((Label)this.scene.lookup(String.format("#%s_info", tokenColor))).setText(this.directivesParser.getIslandTokens(this.enlightenedIsland).get(tokenColor) != null ?
-                        this.directivesParser.getIslandTokens(this.enlightenedIsland).get(tokenColor).toString() : "0");
-            } catch (DirectivesParser.DirectivesParserException e) {
-                e.printStackTrace();
-            }
+        try {
+            Map<String, Integer> islandTokens = this.directivesParser.getIslandTokens(this.enlightenedIsland);
+            this.displayTokensLabels("IslandLabel", islandTokens);
+        } catch (DirectivesParser.DirectivesParserException e) {
+            e.printStackTrace();
         }
-        if(this.directivesParser.getIslandTowers(this.enlightenedIsland).getValue()!=0){
-            ((ImageView)this.scene.lookup("#tower_info")).setImage(new Image(GUIGameDisplayer.class.getResource(
-                    String.format("images/towers/%sTower.png", this.directivesParser.getIslandTowers(this.enlightenedIsland).getKey().toLowerCase())).toString()));
-            this.scene.lookup("#tower_info").setVisible(true);
-            ((Label)this.scene.lookup("#towerInfoLabel")).setText(this.directivesParser.getIslandTowers(this.enlightenedIsland).getValue().toString());
+        Pair<String, Integer> islandTowers = this.directivesParser.getIslandTowers(this.enlightenedIsland);
+        if (islandTowers.getValue() != 0) {
+            this.islandTowerView.setImage(this.towersImages.get(islandTowers.getKey()));
+            this.islandTowerView.setVisible(true);
+            this.islandTowersLabel.setText(islandTowers.getValue().toString());
+        } else {
+            this.islandTowerView.setVisible(false);
+            this.islandTowersLabel.setText("");
         }
-        else{
-            this.scene.lookup("#tower_info").setVisible(false);
-            ((Label)this.scene.lookup("#towerInfoLabel")).setText("");
-        }
-        if(this.directivesParser.isExpertMode())
-            ((Label)this.scene.lookup("#inhibitionTokenLabel")).setText(String.format("%d", this.directivesParser.getIslandEnabled(this.enlightenedIsland)));
+    }
+
+    private void displayTokensLabels(String selector, Map<String, Integer> tokens) {
+        GUIGameDisplayer.TOKEN_COLORS_LABELS
+                .forEach((label, color) -> ((Label) this.scene.lookup(String.format("#%s%s", label, selector))).setText(
+                        tokens.get(color) != null ? tokens.get(color).toString() : "0"));
     }
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         if (this.firstDisplay) {
             this.username = username;
+            View.AVAILABLE_TOWER_COLORS.values().forEach(color -> this.towersImages.put(color,
+                    new Image(String.valueOf(GUIGameDisplayer.class.getResource(
+                            String.format("images/towers/%sTower.png", color.toLowerCase()))))));
+            this.directivesParser.getDashboardAssistantCards(this.username).keySet()
+                    .forEach(card -> this.assistantCardsImages.put(card, new Image(String.valueOf(
+                            GUIGameDisplayer.class.getResource(String.format("images/assistantCards/%s.png", card))))));
+            this.directivesParser.getCharacterCardNames().forEach(card -> this.characterCardsImages.put(card, new Image(
+                    String.valueOf(GUIGameDisplayer.class.getResource(String.format("images/characterCards/%s.png", card))))));
             this.usernamesList = directivesParser.getDashboardNames();
             this.usernamesList.remove(this.username);
             this.usernamesList.add(0, this.username);
-            ((Label)this.scene.lookup("#nameD0")).setText(this.username);
-            ((Label)this.scene.lookup("#nameD1")).setText(this.usernamesList.get(1));
-            threePlayers = (directivesParser.getExactPlayersNumber() == 3);
+            this.dashboardName0.setText(this.username);
+            this.dashboardName1.setText(this.usernamesList.get(1));
+            boolean threePlayers = (directivesParser.getExactPlayersNumber() == 3);
             if (threePlayers) {
-                //this.displayPlayerDashboard();
-                ((Label) this.scene.lookup("#nameD2")).setText(this.usernamesList.get(2));
-                this.scene.lookup("#thirdDashboard").setVisible(true);
-                this.displayAdditionalCloud();
-                this.scene.lookup("#cloudDiscardCard").setVisible(true);
-                this.scene.lookup("#inhibitionToken").setVisible(true);
+                this.scene.lookup("#cloud2").setVisible(true);
+                this.dashboardName2.setText(this.usernamesList.get(2));
+                this.thirdDashboard.setVisible(true);
+                this.thirdDiscardCloud.setVisible(true);
             }
             if (!directivesParser.isExpertMode())
                 activateCharacterCardButton.setVisible(false);
-            this.displayTeachers(); // da mettere direttamente su sceen builder
+            this.usernamesList = directivesParser.getDashboardNames();
+            this.usernamesList.remove(this.username);
+            this.usernamesList.add(0, this.username);
+            this.previousArchipelagoSize = this.directivesParser.getIslandsSize();
+            this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
         }
         this.displayDashboardTowers();
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
         this.displayArchipelago();
         this.updateEnlightenedIslandInfo(this.enlightenedIsland);
-        if (firstDisplay)
-            this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
         this.displayDashboardEntranceTokens();
         this.displayDashboardHallTokens();
         this.displayDashboardTeachers();
@@ -431,182 +392,142 @@ public class GUIGameDisplayer {
     private void displayDashboardTeachers() {
         try {
             Map<String, String> teachers = this.directivesParser.getTeachers();
+            ImageView teacherView;
             for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-                for (Map.Entry<String, String> teacher : teachers.entrySet()) {
-                    ImageView imageView = (ImageView) this.scene.lookup("#" + teacher.getKey().replace("_", "") + "TD" + i);
-                    if (teacher.getValue().equals(this.usernamesList.get(i))) {
-                        imageView.setVisible(true);
-                        imageView = (ImageView) this.scene.lookup("#" + teacher.getKey().replace("_", "") + "T");
-                        if (imageView.isVisible())
-                            imageView.setVisible(false);
+                for (Map.Entry<String, String> label : GUIGameDisplayer.TOKEN_COLORS_LABELS.entrySet()) {
+                    teacherView = (ImageView) this.scene.lookup(
+                            String.format("#%sDashboardTeacher%d", label.getKey(), i));
+                    if (teachers.get(label.getValue()).equals(this.usernamesList.get(i))) {
+                        teacherView.setVisible(true);
+                        teacherView = (ImageView) this.scene.lookup(String.format("#%sTeacher", label.getKey()));
+                        if (teacherView.isVisible())
+                            teacherView.setVisible(false);
                     } else
-                        imageView.setVisible(false);
-
+                        teacherView.setVisible(false);
                 }
             }
         } catch (DirectivesParser.DirectivesParserException e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    private void displayTeachers() {
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
-                Image image = new Image(GUIGameDisplayer.class.getResource("images/teachers/" + tokenColor.replace("_", "") + ".png").toString());
-                ImageView imageView = (ImageView) this.scene.lookup("#" + tokenColor.replace("_", "") + "TD" + i);
-                imageView.setImage(image);
-                imageView.setVisible(false);
-            }
-        }
     }
 
     private void displayLastDiscardedCards() {
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            if (this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(i)) != null) {
-                ImageView imageView = (ImageView) this.scene.lookup("#lastDiscardD" + i);
-                Image image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(i)).getKey() + ".png").toString());
-                imageView.setImage(image);
-
-            }
+            Map.Entry<String, Pair<Integer, Integer>> lastDiscard =
+                    this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(i));
+            if (lastDiscard != null)
+                ((ImageView) this.scene.lookup(String.format("#lastDiscard%d", i))).setImage(
+                        this.assistantCardsImages.get(lastDiscard.getKey()));
         }
-
     }
 
     private void displayDashboardTowers() {
-        int[][] towerPosition = {{766, 550}, {710, 36}, {75, 175}};
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            if(firstDisplay) {
-                Image image = new Image((GUIGameDisplayer.class.getResource("images/towers/" + this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).
-                        getKey().toLowerCase() + "Tower.png")).toString());
-                ImageView imageView = new ImageView();
-                imageView.setId("towerD" + i);
-                imageView.setImage(image);
-                if (i == 0) {
-                    imageView.setFitWidth(62);
-                    imageView.setFitHeight(80);
-                } else {
-                    imageView.setFitWidth(45);
-                    imageView.setFitHeight(58);
-                }
-                imageView.setX(towerPosition[i][0]);
-                imageView.setY(towerPosition[i][1]);
-                if (i == 2)
-                    imageView.setRotate(90);
-                this.anchorPane.getChildren().add(imageView);
+            if (this.firstDisplay) {
+                ImageView towerView = (ImageView) this.scene.lookup(String.format("#tower%d", i));
+                towerView.setImage(this.towersImages.get(
+                        this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).getKey()));
             }
-            Label label = (Label) this.scene.lookup("#towerLabelD" + i);
-            label.setText(this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).getValue().toString());
-        }
-    }
-
-    private void displayAdditionalCloud() {
-        Image image = new Image((GUIGameDisplayer.class.getResource("images/cloud.png")).toString());
-        ImageView imv = new ImageView();
-        imv.setImage(image);
-        imv.setFitWidth(125);
-        imv.setFitHeight(125);
-        imv.setX(577);
-        imv.setY(251);
-        this.anchorPane.getChildren().add(imv);
-    }
-
-    private void setInvisibleAssistantCardsFrames() {
-        List<String> cardNameList = new ArrayList<>(directivesParser.getDashboardAssistantCards(this.username).keySet());
-        ImageView imv;
-        for (String s : cardNameList) {
-            imv = (ImageView) this.assistantCardsGridPane.lookup("#frame_" + s);
-            imv.setVisible(false);
+            ((Label) this.scene.lookup("#towerLabel" + i)).setText(
+                    this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).getValue().toString());
         }
     }
 
     private void displayAvailableAssistantCards() {
-        Image image = null;
-        Image frame = new Image(GUIController.class.getResource("images/cardSelectionFrame.png").toString());
-        List<String> cardNameList = new ArrayList<>(directivesParser.getDashboardAssistantCards(this.username).keySet());
-        for (int i = 0; i < cardNameList.size(); i++) {
-            image = new Image(GUIGameDisplayer.class.getResource("images/assistantCards/" + cardNameList.get(i) + ".png").toString());
-            ImageView imv = new ImageView();
-            ImageView frameImv = new ImageView();
-            imv.setImage(image);
-            imv.setId(cardNameList.get(i));
-            imv.setFitWidth(109);
-            imv.setFitHeight(160);
-            imv.setOnMouseClicked(this::selectAssistantCard);
-            frameImv.setImage(frame);
-            frameImv.setId("frame_" + cardNameList.get(i));
-            frameImv.setFitWidth(120);
-            frameImv.setFitHeight(170);
-            frameImv.setVisible(false);
-            assistantCardsGridPane.add(imv, i % 5, i / 5);
-            assistantCardsGridPane.add(frameImv, i % 5, i / 5);
+        this.chosenAssistantCard = null;
+        List<String> cardNamesList = new ArrayList<>(
+                this.directivesParser.getDashboardAssistantCards(this.username).keySet());
+        ImageView assistantCardView;
+        for (int i = 0; i < cardNamesList.size(); i++) {
+            assistantCardView = (ImageView) this.assistantCardsGrid.getChildren().get(i * 2);
+            assistantCardView.setId(cardNamesList.get(i));
+            assistantCardView.setImage(this.assistantCardsImages.get(cardNamesList.get(i)));
+            this.assistantCardsGrid.getChildren().get(i * 2 + 1).setId(String.format("%sFrame", cardNamesList.get(i)));
+        }
+        for (int i = cardNamesList.size() * 2; i < this.assistantCardsGrid.getChildren().size(); i += 2)
+            this.assistantCardsGrid.getChildren().get(i).setVisible(false);
+    }
+
+    private void displayAvailableCharacterCards() {
+        this.chosenCharacterCard = null;
+        List<String> cardNamesList = this.directivesParser.getCharacterCardNames();
+        ImageView characterCardView;
+        for (int i = 0; i < cardNamesList.size(); i++) {
+            characterCardView = (ImageView) this.characterCardsGrid.getChildren().get(i * 2);
+            characterCardView.setId(cardNamesList.get(i));
+            characterCardView.setImage(this.characterCardsImages.get(cardNamesList.get(i)));
+            this.characterCardsGrid.getChildren().get(i * 2 + 1).setId(String.format("%sFrame", cardNamesList.get(i)));
         }
     }
 
     @FXML
     private void selectAssistantCard(MouseEvent event) {
-        setInvisibleAssistantCardsFrames();
-        ImageView frame;
-        this.assistantCardChosen = ((ImageView) event.getSource()).getId();
-        frame = (ImageView) this.assistantCardsGridPane.lookup("#frame_" + this.assistantCardChosen);
-        frame.setVisible(true);
+        if (this.chosenAssistantCard != null)
+            this.assistantCardsGrid.lookup(
+                    String.format("#%sFrame", this.chosenAssistantCard)).setVisible(false);
+        this.chosenAssistantCard = ((ImageView) event.getSource()).getId();
+        this.assistantCardsGrid.lookup(
+                String.format("#%sFrame", this.chosenAssistantCard)).setVisible(true);
     }
 
     @FXML
     private void selectCharacterCard(MouseEvent event) {
-        setInvisibleCharacterCardsFrames();
-        ImageView frame;
-        characterCardChosen = ((ImageView) event.getSource()).getId();
-        frame = (ImageView) this.characterCardsGridPane.lookup("#frame_" + characterCardChosen);
-        frame.setVisible(true);
+        if (this.chosenCharacterCard != null)
+            this.characterCardsGrid.lookup(
+                    String.format("#%sFrame", this.chosenCharacterCard)).setVisible(false);
+        this.chosenCharacterCard = ((ImageView) event.getSource()).getId();
+        this.characterCardsGrid.lookup(
+                String.format("#%sFrame", this.chosenCharacterCard)).setVisible(true);
     }
 
-    protected void displayEndGame(List<String> winnersList) {
-        Label winnersLabel = (Label) this.scene.lookup("#winnersLabel");
-        Label endGameLabel = (Label) this.scene.lookup("#endGameLabel");
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            if (winnersList.contains(this.usernamesList.get(i))) {
-                openPopUp("endgame.fxml", "images/show-winner.png");
-                winnersList.remove(this.username);
-            } else
-                openPopUp("endgame.fxml", "images/show-looser.png");
-            winnersLabel.setText(winnersList.toString());
-            endGameLabel.setText(this.directivesParser.getEndGame());
-        }
+    protected void displayEndgame(List<String> winnersList) {
+        this.openPopUp(winnersList.contains(this.username) ? "winningEndgame.fxml" : "losingEndgame.fxml");
+        ((Label) this.popUpStage.getScene().lookup("#winnersLabel"))
+                .setText(String.format("Winners: %s", String.join(", ", winnersList)));
+        ((Label) this.popUpStage.getScene().lookup("#endgameLabel"))
+                .setText(View.POSSIBLE_ENDGAMES.get(this.directivesParser.getEndGame()));
+        this.popUpStage.hide();
+        this.popUpStage.showAndWait();
     }
 
     @FXML
     private void fillClouds() {
-        directivesDispatcher.actionFillClouds(this.username);
+        this.directivesDispatcher.actionFillClouds(this.username);
     }
 
     @FXML
     private void playAssistantCard() {
-        openPopUp("assistantCardsChoice.fxml", "images/assistantCardsChoiceBG.png");
+        this.openPopUp("assistantCardsChoice.fxml");
         this.displayAvailableAssistantCards();
     }
 
     @FXML
     private void playCharacterCard() {
-        this.openPopUp("characterCardsChoice.fxml", "images/characterCardsChoiceBG.png");
-        this.displayCharacterCards();
+        this.openPopUp("characterCardsChoice.fxml");
+        this.displayAvailableCharacterCards();
     }
 
     @FXML
     private void confirmAssistantCard() {
         this.popUpStage.close();
-        this.directivesDispatcher.actionPlayAssistantCard(this.username, this.assistantCardChosen);
+        this.directivesDispatcher.actionPlayAssistantCard(this.username, this.chosenAssistantCard);
     }
 
+    @FXML
+    private void moveStudentsToHall() {
+        if (this.directivesParser.getCurrentPhase().getValue().equals("Move students")) {
+            this.openPopUp("tokensList.fxml");
+            this.tokensListLabel.setText("Choose some students to move from your entrance to your hall");
+            this.spinnersInit();
+            this.moveStudentsToHall = true;
+        }
+    }
 
     @FXML
     private void moveStudents() {
-        this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
-        this.tokensListLabel.setText("Choose some students to move from your entrance to your hall " +
-                "(or click on islands move students to those)");
-        this.spinnersInit();
-        this.tokensList = null;
-        this.tokensMap = null;
+        this.showMessageAlert("Move students", String.format(
+                "You must move exactly %s students form your entrance to your hall or on some islands",
+                this.directivesParser.getStudentsPerCloud()));
     }
 
     private void spinnersInit() {
@@ -640,24 +561,32 @@ public class GUIGameDisplayer {
         switch (this.directivesParser.getCurrentPhase().getValue()) {
             case "Move students" -> {
                 int studentsPerCloud = this.directivesParser.getStudentsPerCloud();
-                if (this.tokensList == null) {
+                if (this.tokensList == null)
+                    this.tokensList = new ArrayList<>();
+                if (this.tokensMap == null)
+                    this.tokensMap = new HashMap<>();
+                if (this.moveStudentsToHall) {
                     this.tokensList = tokens;
-                    if (this.tokensList.size() > studentsPerCloud) {
-                        this.showErrorAlert("Move students", String.format("You have to move exactly %d students from entrance to hall and/or islands",
+                    int totalTokens = this.tokensList.size() +
+                            this.tokensMap.values().stream().mapToInt(List::size).sum();
+                    if (totalTokens > studentsPerCloud) {
+                        this.showErrorAlert("Move students", String.format(
+                                "You have to move exactly %d students from entrance to hall and/or islands",
                                 studentsPerCloud));
                         this.tokensList = null;
-                    } else if (this.tokensList.size() == studentsPerCloud) {
-                        this.directivesDispatcher.actionMoveStudents(this.username, this.tokensList, new HashMap<>());
+                        this.tokensMap = null;
+                    } else if (totalTokens == studentsPerCloud) {
+                        this.directivesDispatcher.actionMoveStudents(this.username, this.tokensList, this.tokensMap);
                         this.tokensList = null;
+                        this.tokensMap = null;
                     }
                 } else {
-                    if (this.tokensMap == null)
-                        this.tokensMap = new HashMap<>();
                     this.tokensMap.put(this.enlightenedIsland, tokens);
                     int totalTokens = this.tokensList.size() +
                             this.tokensMap.values().stream().mapToInt(List::size).sum();
                     if (totalTokens > studentsPerCloud) {
-                        this.showErrorAlert("Move students", String.format("You have to move exactly %d students from entrance to hall and/or islands",
+                        this.showErrorAlert("Move students", String.format(
+                                "You have to move exactly %d students from entrance to hall and/or islands",
                                 studentsPerCloud));
                         this.tokensList = null;
                         this.tokensMap = null;
@@ -697,7 +626,7 @@ public class GUIGameDisplayer {
         this.popUpStage.close();
         this.activatedCharacterCard = true;
         try {
-            EFFECT_METHOD_MAPPINGS.get(characterCardChosen).invoke(this);
+            GUIGameDisplayer.EFFECT_METHOD_MAPPINGS.get(this.chosenCharacterCard).invoke(this);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -708,49 +637,63 @@ public class GUIGameDisplayer {
     }
 
     private void mailman() {
-        this.directivesDispatcher.activateMailman(username);
+        this.directivesDispatcher.activateMailman(this.username);
     }
 
     private void centaur() {
-        this.directivesDispatcher.activateCentaur(username);
+        this.directivesDispatcher.activateCentaur(this.username);
     }
 
     private void knight() {
-        this.directivesDispatcher.activateKnight(username);
+        this.directivesDispatcher.activateKnight(this.username);
     }
 
     private void herald() {
         this.showMessageAlert("Activate character card: herald", "Choose an island by clicking on it");
     }
-    private void herbalist() {}
-    private void mushroomer(){}
-    private void scoundrel(){}
-    private void monk(){}
-    private void queen(){}
-    private void jester(){}
-    private void bard(){}
+
+    private void herbalist() {
+    }
+
+    private void mushroomer() {
+    }
+
+    private void scoundrel() {
+    }
+
+    private void monk() {
+    }
+
+    private void queen() {
+    }
+
+    private void jester() {
+    }
+
+    private void bard() {
+    }
 
     protected Button getFillCloudsButton() {
-        return fillCloudsButton;
+        return this.fillCloudsButton;
     }
 
     protected Button getPlayAssistantCardButton() {
-        return playAssistantCardButton;
+        return this.playAssistantCardButton;
     }
 
     protected Button getMoveStudentsButton() {
-        return moveStudentsButton;
+        return this.moveStudentsButton;
     }
 
     protected Button getMoveMotherNatureButton() {
-        return moveMotherNatureButton;
+        return this.moveMotherNatureButton;
     }
 
     protected Button getChooseCloudButton() {
-        return chooseCloudButton;
+        return this.chooseCloudButton;
     }
 
     protected Button getActivateCharacterCardButton() {
-        return activateCharacterCardButton;
+        return this.activateCharacterCardButton;
     }
 }

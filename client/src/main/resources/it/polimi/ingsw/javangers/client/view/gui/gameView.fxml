@@ -13,12 +13,12 @@
          <image>
             <Image url="@images/playerDashboard.png" />
          </image></ImageView>
-      <ImageView fx:id="cloudDiscardCard" layoutX="-5.0" layoutY="567.0" visible="false">
+      <ImageView fx:id="thirdDiscardCloud" layoutX="-5.0" layoutY="567.0" visible="false">
          <image>
-            <Image url="@images/assistantCardsCloudBG.png" />
+            <Image url="@images/assistantCardCloud.png" />
          </image>
       </ImageView>
-      <Label fx:id="currentPhase" layoutX="8.0" layoutY="13.0" prefHeight="23.0" prefWidth="415.0">
+      <Label fx:id="currentPhase" layoutX="8.0" layoutY="13.0" prefHeight="25.0" prefWidth="386.0">
          <font>
             <Font name="Verdana Bold" size="14.0" />
          </font></Label>
@@ -31,363 +31,460 @@
             <Font name="Verdana Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="moveStudentsButton" layoutX="990.0" layoutY="586.0" mnemonicParsing="false" onAction="#moveStudents" prefHeight="25.0" prefWidth="96.0" text="Move Students" />
-      <Button fx:id="playAssistantCardButton" layoutX="1113.0" layoutY="542.0" mnemonicParsing="false" onAction="#playAssistantCard" prefHeight="25.0" prefWidth="148.0" text="Play Assistant Card" />
-      <Button fx:id="activateCharacterCardButton" layoutX="1113.0" layoutY="625.0" mnemonicParsing="false" onAction="#playCharacterCard" prefHeight="25.0" prefWidth="148.0" text="Activate Character Card" />
-      <Button fx:id="moveMotherNatureButton" layoutX="1113.0" layoutY="586.0" mnemonicParsing="false" onAction="#moveMotherNature" prefHeight="25.0" prefWidth="148.0" text="Move Mother Nature" />
-      <Button fx:id="chooseCloudButton" layoutX="990.0" layoutY="625.0" mnemonicParsing="false" onAction="#enableClouds" prefHeight="25.0" prefWidth="96.0" text="Choose Cloud" />
-      <Button fx:id="fillCloudsButton" layoutX="990.0" layoutY="542.0" mnemonicParsing="false" onAction="#fillClouds" prefHeight="25.0" prefWidth="96.0" text="Fill Clouds" />
-      <Label fx:id="PINK_FAIRY_C0" layoutX="478.0" layoutY="252.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="YELLOW_ELF_C0" layoutX="516.0" layoutY="281.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="RED_DRAGON_C0" layoutX="509.0" layoutY="336.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="GREEN_FROG_C0" layoutX="448.0" layoutY="327.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="BLUE_UNICORN_C0" layoutX="438.0" layoutY="281.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="PINK_FAIRY_C2" layoutX="634.0" layoutY="250.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="YELLOW_ELF_C2" layoutX="675.0" layoutY="283.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="RED_DRAGON_C2" layoutX="666.0" layoutY="340.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="GREEN_FROG_C2" layoutX="604.0" layoutY="332.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="BLUE_UNICORN_C2" layoutX="593.0" layoutY="285.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="PINK_FAIRY_C1" layoutX="782.0" layoutY="250.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="YELLOW_ELF_C1" layoutX="820.0" layoutY="279.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="RED_DRAGON_C1" layoutX="813.0" layoutY="334.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="GREEN_FROG_C1" layoutX="752.0" layoutY="325.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="BLUE_UNICORN_C1" layoutX="741.0" layoutY="279.0">
-         <font>
-            <Font name="Verdana Bold" size="18.0" />
-         </font>
-      </Label>
       <Label fx:id="yourTurn" layoutX="990.0" layoutY="506.0" prefHeight="23.0" prefWidth="273.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="GREEN_FROG_D0" layoutX="462.0" layoutY="524.0">
+      <Button fx:id="moveStudentsButton" layoutX="940.0" layoutY="585.0" mnemonicParsing="false" onAction="#moveStudents" prefHeight="25.0" prefWidth="120.0" text="Move students">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <Button fx:id="playAssistantCardButton" layoutX="1080.0" layoutY="540.0" mnemonicParsing="false" onAction="#playAssistantCard" prefHeight="25.0" prefWidth="180.0" text="Play assistant card">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <Button fx:id="activateCharacterCardButton" layoutX="1080.0" layoutY="630.0" mnemonicParsing="false" onAction="#playCharacterCard" prefHeight="25.0" prefWidth="180.0" text="Activate character card">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <Button fx:id="moveMotherNatureButton" layoutX="1080.0" layoutY="585.0" mnemonicParsing="false" onAction="#moveMotherNature" prefHeight="25.0" prefWidth="180.0" text="Move mother nature">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <Button fx:id="chooseCloudButton" layoutX="940.0" layoutY="630.0" mnemonicParsing="false" onAction="#enableClouds" prefHeight="25.0" prefWidth="120.0" text="Choose cloud">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <Button fx:id="fillCloudsButton" layoutX="940.0" layoutY="540.0" mnemonicParsing="false" onAction="#fillClouds" prefHeight="25.0" prefWidth="120.0" text="Fill clouds">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <Label fx:id="pinkCloudLabel0" layoutX="478.0" layoutY="252.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="RED_DRAGON_D0" layoutX="462.0" layoutY="555.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="yellowCloudLabel0" layoutX="516.0" layoutY="281.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="YELLOW_ELF_D0" layoutX="462.0" layoutY="585.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="redCloudLabel0" layoutX="509.0" layoutY="336.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="PINK_FAIRY_D0" layoutX="462.0" layoutY="616.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="greenCloudLabel0" layoutX="448.0" layoutY="327.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="BLUE_UNICORN_D0" layoutX="462.0" layoutY="649.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="blueCloudLabel0" layoutX="438.0" layoutY="281.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="GREEN_FROG_DH0" layoutX="610.0" layoutY="524.0" prefHeight="26.0" prefWidth="11.0">
+      <Label fx:id="pinkCloudLabel2" layoutX="634.0" layoutY="250.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="RED_DRAGON_DH0" layoutX="610.0" layoutY="555.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="yellowCloudLabel2" layoutX="675.0" layoutY="283.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="YELLOW_ELF_DH0" layoutX="610.0" layoutY="585.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="redCloudLabel2" layoutX="666.0" layoutY="340.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="PINK_FAIRY_DH0" layoutX="610.0" layoutY="617.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="greenCloudLabel2" layoutX="604.0" layoutY="332.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="BLUE_UNICORN_DH0" layoutX="610.0" layoutY="649.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="blueCloudLabel2" layoutX="593.0" layoutY="285.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="BLUE_UNICORN_D1" layoutX="512.0" layoutY="25.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="PINK_FAIRY_D1" layoutX="512.0" layoutY="46.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="YELLOW_ELF_D1" layoutX="512.0" layoutY="68.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="RED_DRAGON_D1" layoutX="512.0" layoutY="89.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="GREEN_FROG_D1" layoutX="512.0" layoutY="110.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="BLUE_UNICORN_DH1" layoutX="607.0" layoutY="25.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="PINK_FAIRY_DH1" layoutX="607.0" layoutY="47.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="YELLOW_ELF_DH1" layoutX="607.0" layoutY="68.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="RED_DRAGON_DH1" layoutX="607.0" layoutY="89.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="GREEN_FROG_DH1" layoutX="607.0" layoutY="110.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="cloud0" fitHeight="66.0" fitWidth="61.0" layoutX="448.0" layoutY="275.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud2" fitHeight="66.0" fitWidth="61.0" layoutX="604.0" layoutY="275.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud1" fitHeight="66.0" fitWidth="61.0" layoutX="752.0" layoutY="273.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="towerD0" fitHeight="66.0" fitWidth="74.0" layoutX="766.0" layoutY="564.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="towerD1" fitHeight="66.0" fitWidth="74.0" layoutX="745.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="towerD2" fitHeight="66.0" fitWidth="74.0" layoutX="83.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="BLUE_UNICORN_D2" layoutX="37.0" layoutY="414.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="PINK_FAIRY_D2" layoutX="58.0" layoutY="414.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="YELLOW_ELF_D2" layoutX="80.0" layoutY="414.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="RED_DRAGON_D2" layoutX="101.0" layoutY="414.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="GREEN_FROG_D2" layoutX="123.0" layoutY="414.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="BLUE_UNICORN_DH2" layoutX="37.0" layoutY="313.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="PINK_FAIRY_DH2" layoutX="58.0" layoutY="313.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="YELLOW_ELF_DH2" layoutX="80.0" layoutY="313.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="RED_DRAGON_DH2" layoutX="101.0" layoutY="313.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="GREEN_FROG_DH2" layoutX="123.0" layoutY="313.0">
-         <font>
-            <Font name="Verdana Bold" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="towerLabelD0" layoutX="825.0" layoutY="585">
+      <Label fx:id="pinkCloudLabel1" layoutX="782.0" layoutY="250.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="towerLabelD1" layoutX="755.0" layoutY="60.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="yellowCloudLabel1" layoutX="820.0" layoutY="279.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="towerLabelD2" layoutX="83.0" layoutY="165.0" prefHeight="23.0" prefWidth="8.0">
+      <Label fx:id="redCloudLabel1" layoutX="813.0" layoutY="334.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fx:id="lastDiscardD0" fitHeight="160.0" fitWidth="109.0" layoutX="275.0" layoutY="517.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="lastDiscardD2" fitHeight="132.0" fitWidth="90.0" layoutX="30.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="lastDiscardD1" fitHeight="132.0" fitWidth="90.0" layoutX="800.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="leftArrow" fitHeight="50.0" fitWidth="41.0" layoutX="1029.0" layoutY="155.0" onMouseClicked="#updateEnlightenedIslandButton" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="rightArrow" fitHeight="50.0" fitWidth="41.0" layoutX="1108.0" layoutY="155.0" onMouseClicked="#updateEnlightenedIslandButton" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="nameD2" layoutX="21.0" layoutY="120.0" prefWidth="170.0" textAlignment="CENTER">
+      <Label fx:id="greenCloudLabel1" layoutX="752.0" layoutY="325.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="blueCloudLabel1" layoutX="741.0" layoutY="279.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="greenDashboardEntranceLabel0" layoutX="462.0" layoutY="524.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="redDashboardEntranceLabel0" layoutX="462.0" layoutY="555.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="yellowDashboardEntranceLabel0" layoutX="462.0" layoutY="585.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="pinkDashboardEntranceLabel0" layoutX="462.0" layoutY="616.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="blueDashboardEntranceLabel0" layoutX="462.0" layoutY="649.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="greenDashboardHallLabel0" layoutX="610.0" layoutY="524.0" prefHeight="26.0" prefWidth="11.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="redDashboardHallLabel0" layoutX="610.0" layoutY="555.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="yellowDashboardHallLabel0" layoutX="610.0" layoutY="585.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="pinkDashboardHallLabel0" layoutX="610.0" layoutY="617.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="blueDashboardHallLabel0" layoutX="610.0" layoutY="649.0" prefHeight="23.0" prefWidth="8.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="blueDashboardEntranceLabel1" layoutX="512.0" layoutY="25.0">
          <font>
             <Font name="Verdana Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="nameD0" layoutX="480.0" layoutY="490.0" prefWidth="305.0">
+      <Label fx:id="pinkDashboardEntranceLabel1" layoutX="512.0" layoutY="46.0">
          <font>
-            <Font name="Verdana Bold" size="18.0" />
+            <Font name="Verdana Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="nameD1" layoutX="530.0" layoutY="125.0" prefWidth="190.0">
+      <Label fx:id="yellowDashboardEntranceLabel1" layoutX="512.0" layoutY="68.0">
          <font>
-            <Font name="Verdana Bold" size="18.0" />
+            <Font name="Verdana Bold" size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="GREENFROGTD0" fitHeight="30.0" fitWidth="30.0" layoutX="722.0" layoutY="513.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="REDDRAGONTD0" fitHeight="30.0" fitWidth="30.0" layoutX="722.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="YELLOWELFTD0" fitHeight="30.0" fitWidth="30.0" layoutX="722.0" layoutY="575.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="PINKFAIRYTD0" fitHeight="30.0" fitWidth="30.0" layoutX="722.0" layoutY="608.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="BLUEUNICORNTD0" fitHeight="30.0" fitWidth="30.0" layoutX="722.0" layoutY="638.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="GREENFROGTD1" fitHeight="20.0" fitWidth="20.0" layoutX="687.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="REDDRAGONTD1" fitHeight="20.0" fitWidth="20.0" layoutX="687.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="YELLOWELFTD1" fitHeight="20.0" fitWidth="20.0" layoutX="687.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="PINKFAIRYTD1" fitHeight="20.0" fitWidth="20.0" layoutX="687.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="BLUEUNICORNTD1" fitHeight="20.0" fitWidth="20.0" layoutX="687.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-      <ImageView fx:id="GREENFROGTD2" fitHeight="20.0" fitWidth="20.0" layoutX="111.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="REDDRAGONTD2" fitHeight="20.0" fitWidth="20.0" layoutX="91.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="YELLOWELFTD2" fitHeight="20.0" fitWidth="20.0" layoutX="69.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="PINKFAIRYTD2" fitHeight="20.0" fitWidth="20.0" layoutX="49.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="BLUEUNICORNTD2" fitHeight="20.0" fitWidth="20.0" layoutX="24.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="BLUEUNICORNT" fitHeight="25.0" fitWidth="25.0" layoutX="1097.0" layoutY="382.0">
+      <Label fx:id="redDashboardEntranceLabel1" layoutX="512.0" layoutY="89.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="greenDashboardEntranceLabel1" layoutX="512.0" layoutY="110.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="blueDashboardHallLabel1" layoutX="607.0" layoutY="25.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="pinkDashboardHallLabel1" layoutX="607.0" layoutY="47.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="yellowDashboardHallLabel1" layoutX="607.0" layoutY="68.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="redDashboardHallLabel1" layoutX="607.0" layoutY="89.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="greenDashboardHallLabel1" layoutX="607.0" layoutY="110.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="blueDashboardEntranceLabel2" layoutX="37.0" layoutY="414.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="pinkDashboardEntranceLabel2" layoutX="58.0" layoutY="414.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="yellowDashboardEntranceLabel2" layoutX="80.0" layoutY="414.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="redDashboardEntranceLabel2" layoutX="101.0" layoutY="414.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="greenDashboardEntranceLabel2" layoutX="123.0" layoutY="414.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="blueDashboardHallLabel2" layoutX="37.0" layoutY="313.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="pinkDashboardHallLabel2" layoutX="58.0" layoutY="313.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="yellowDashboardHallLabel2" layoutX="80.0" layoutY="313.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="redDashboardHallLabel2" layoutX="101.0" layoutY="313.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="greenDashboardHallLabel2" layoutX="123.0" layoutY="313.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="178.0" fitWidth="238.0" layoutX="486.0" layoutY="510.0" onMouseClicked="#moveStudentsToHall" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud0" fitHeight="125.0" fitWidth="125.0" layoutX="424.0" layoutY="246.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud2" fitHeight="125.0" fitWidth="125.0" layoutX="577.0" layoutY="251.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@images/teachers/BLUEUNICORN.png" />
+            <Image url="@images/cloud.png" />
+         </image></ImageView>
+      <ImageView fx:id="cloud1" fitHeight="125.0" fitWidth="125.0" layoutX="724.0" layoutY="248.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="tower0" fitHeight="80.0" fitWidth="62.0" layoutX="764.0" layoutY="561.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="tower1" fitHeight="58.0" fitWidth="45.0" layoutX="714.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="tower2" fitHeight="58.0" fitWidth="45.0" layoutX="65.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
+      <Label fx:id="towerLabel0" layoutX="820.0" layoutY="583.0" prefHeight="24.0" prefWidth="40.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="towerLabel1" layoutX="753.0" layoutY="69.0" prefHeight="23.0" prefWidth="40.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="towerLabel2" layoutX="82.0" layoutY="167.0" prefHeight="23.0" prefWidth="40.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="lastDiscard0" fitHeight="160.0" fitWidth="109.0" layoutX="275.0" layoutY="517.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="lastDiscard2" fitHeight="132.0" fitWidth="90.0" layoutX="30.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="lastDiscard1" fitHeight="132.0" fitWidth="90.0" layoutX="795.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="leftArrow" fitHeight="50.0" fitWidth="41.0" layoutX="1029.0" layoutY="155.0" onMouseClicked="#selectEnlightenedIsland" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/leftArrow.png" />
+         </image></ImageView>
+      <ImageView fx:id="rightArrow" fitHeight="50.0" fitWidth="41.0" layoutX="1108.0" layoutY="155.0" onMouseClicked="#selectEnlightenedIsland" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/rightArrow.png" />
+         </image></ImageView>
+       <Label fx:id="dashboardName2" layoutX="21.0" layoutY="120.0" prefWidth="170.0" textAlignment="CENTER">
+           <font>
+               <Font name="Verdana Bold" size="16.0" />
+           </font>
+       </Label>
+       <Label fx:id="dashboardName0" layoutX="480.0" layoutY="490.0" prefWidth="305.0">
+           <font>
+               <Font name="Verdana Bold" size="18.0" />
+           </font>
+       </Label>
+       <Label fx:id="dashboardName1" layoutX="530.0" layoutY="125.0" prefWidth="190.0">
+           <font>
+               <Font name="Verdana Bold" size="18.0" />
+           </font>
+       </Label>
+      <ImageView fx:id="greenDashboardTeacher0" fitHeight="30.0" fitWidth="30.0" layoutX="728.0" layoutY="519.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/greenFrog.png" />
+         </image></ImageView>
+      <ImageView fx:id="redDashboardTeacher0" fitHeight="30.0" fitWidth="30.0" layoutX="728.0" layoutY="552.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/redDragon.png" />
+         </image></ImageView>
+      <ImageView fx:id="yellowDashboardTeacher0" fitHeight="30.0" fitWidth="30.0" layoutX="728.0" layoutY="585.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/yellowElf.png" />
+         </image></ImageView>
+      <ImageView fx:id="pinkDashboardTeacher0" fitHeight="30.0" fitWidth="30.0" layoutX="728.0" layoutY="616.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/pinkFairy.png" />
+         </image></ImageView>
+      <ImageView fx:id="blueDashboardTeacher0" fitHeight="30.0" fitWidth="30.0" layoutX="728.0" layoutY="648.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/blueUnicorn.png" />
+         </image></ImageView>
+      <ImageView fx:id="greenDashboardTeacher1" fitHeight="20.0" fitWidth="20.0" layoutX="691.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/greenFrog.png" />
+         </image></ImageView>
+      <ImageView fx:id="redDashboardTeacher1" fitHeight="20.0" fitWidth="20.0" layoutX="691.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/redDragon.png" />
+         </image></ImageView>
+      <ImageView fx:id="yellowDashboardTeacher1" fitHeight="20.0" fitWidth="20.0" layoutX="691.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/yellowElf.png" />
+         </image></ImageView>
+      <ImageView fx:id="pinkDashboardTeacher1" fitHeight="20.0" fitWidth="20.0" layoutX="691.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/pinkFairy.png" />
+         </image></ImageView>
+      <ImageView fx:id="blueDashboardTeacher1" fitHeight="20.0" fitWidth="20.0" layoutX="691.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+         <image>
+            <Image url="@images/teachers/blueUnicorn.png" />
+         </image></ImageView>
+      <ImageView fx:id="greenDashboardTeacher2" fitHeight="20.0" fitWidth="20.0" layoutX="116.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@images/teachers/greenFrog.png" />
+         </image></ImageView>
+      <ImageView fx:id="redDashboardTeacher2" fitHeight="20.0" fitWidth="20.0" layoutX="94.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@images/teachers/redDragon.png" />
+         </image></ImageView>
+      <ImageView fx:id="yellowDashboardTeacher2" fitHeight="20.0" fitWidth="20.0" layoutX="73.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@images/teachers/yellowElf.png" />
+         </image></ImageView>
+      <ImageView fx:id="pinkDashboardTeacher2" fitHeight="20.0" fitWidth="20.0" layoutX="52.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@images/teachers/pinkFairy.png" />
+         </image></ImageView>
+      <ImageView fx:id="blueDashboardTeacher2" fitHeight="20.0" fitWidth="20.0" layoutX="31.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@images/teachers/blueUnicorn.png" />
+         </image></ImageView>
+      <ImageView fx:id="blueTeacher" fitHeight="25.0" fitWidth="25.0" layoutX="1096.0" layoutY="383.0">
+         <image>
+            <Image url="@images/teachers/blueUnicorn.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="GREENFROGT" fitHeight="25.0" fitWidth="25.0" layoutX="1110.0" layoutY="405.0">
+      <ImageView fx:id="greenTeacher" fitHeight="25.0" fitWidth="25.0" layoutX="1103.0" layoutY="408.0">
          <image>
-            <Image url="@images/teachers/GREENFROG.png" />
+            <Image url="@images/teachers/greenFrog.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="PINKFAIRYT" fitHeight="25.0" fitWidth="25.0" layoutX="1118.0" layoutY="370.0">
+      <ImageView fx:id="pinkTeacher" fitHeight="25.0" fitWidth="25.0" layoutX="1118.0" layoutY="370.0">
          <image>
-            <Image url="@images/teachers/PINKFAIRY.png" />
+            <Image url="@images/teachers/pinkFairy.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="YELLOWELFT" fitHeight="25.0" fitWidth="25.0" layoutX="1142.0" layoutY="383.0">
+      <ImageView fx:id="yellowTeacher" fitHeight="25.0" fitWidth="25.0" layoutX="1140.0" layoutY="383.0">
          <image>
-            <Image url="@images/teachers/YELLOWELF.png" />
+            <Image url="@images/teachers/yellowElf.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="REDDRAGONT" fitHeight="25.0" fitWidth="25.0" layoutX="1136.0" layoutY="410.0">
+      <ImageView fx:id="redTeacher" fitHeight="25.0" fitWidth="25.0" layoutX="1134.0" layoutY="408.0">
          <image>
-            <Image url="@images/teachers/REDDRAGON.png" />
+            <Image url="@images/teachers/redDragon.png" />
          </image>
       </ImageView>
-      <Label fx:id="GREEN_FROG_info" layoutX="1074.0" layoutY="50.0">
+      <Label fx:id="greenIslandLabel" layoutX="1074.0" layoutY="50.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="RED_DRAGON_info" layoutX="1074.0" layoutY="69.0">
+      <Label fx:id="redIslandLabel" layoutX="1074.0" layoutY="69.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="YELLOW_ELF_info" layoutX="1074.0" layoutY="88.0">
+      <Label fx:id="yellowIslandLabel" layoutX="1074.0" layoutY="88.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="PINK_FAIRY_info" layoutX="1074.0" layoutY="107.0">
+      <Label fx:id="pinkIslandLabel" layoutX="1074.0" layoutY="107.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="BLUE_UNICORN_info" layoutX="1074.0" layoutY="126.0">
+      <Label fx:id="blueIslandLabel" layoutX="1074.0" layoutY="126.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fx:id="tower_info" fitHeight="40.0" fitWidth="31.0" layoutX="1113.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="towerInfoLabel" layoutX="1152.0" layoutY="67.0">
+      <ImageView fx:id="islandTowerView" fitHeight="50.0" fitWidth="39.0" layoutX="1110.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="islandTowersLabel" layoutX="1149.0" layoutY="67.0" prefWidth="40.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fx:id="inhibitionToken" fitHeight="30.0" fitWidth="30.0" layoutX="1116.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="inhibitionTokenView" fitHeight="40.0" fitWidth="40.0" layoutX="1112.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/tokens/inhibitionToken.png" />
          </image>
       </ImageView>
-      <Label fx:id="inhibitionTokenLabel" layoutX="1152.0" layoutY="115.0">
+      <Label fx:id="inhibitionTokenLabel" layoutX="1152.0" layoutY="116.0" prefWidth="40.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
+      <ImageView fx:id="islandFrame0" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame1" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame2" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame3" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame4" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame5" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame6" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame7" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame8" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame9" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame10" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="islandFrame11" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="island0" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island1" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island2" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island3" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island4" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island5" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island6" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island7" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island8" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island9" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island10" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="island11" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
