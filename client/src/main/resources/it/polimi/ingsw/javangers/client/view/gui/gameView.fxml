@@ -22,11 +22,7 @@
          <font>
             <Font name="Verdana Bold" size="14.0" />
          </font></Label>
-      <Label fx:id="youArePlayerLabel" layoutX="8.0" layoutY="47.0" prefHeight="23.0" prefWidth="385.0" wrapText="true">
-         <font>
-            <Font name="Verdana Bold" size="14.0" />
-         </font></Label>
-      <Label fx:id="playersOrder" layoutX="8.0" layoutY="80.0" prefHeight="23.0" prefWidth="385.0" wrapText="true">
+      <Label fx:id="playersOrder" layoutX="8.0" layoutY="47.0" prefHeight="23.0" prefWidth="385.0" wrapText="true">
          <font>
             <Font name="Verdana Bold" size="14.0" />
          </font>
@@ -385,6 +381,21 @@
          </image>
       </ImageView>
       <Label fx:id="inhibitionTokenLabel" layoutX="1152.0" layoutY="115.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="coinsLabelD1" layoutX="437.0" layoutY="105.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="coinsLabelD2" layoutX="204.0" layoutY="205.0">
+         <font>
+            <Font name="Verdana Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="coinsLabelD0" layoutX="906.0" layoutY="615.0">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
