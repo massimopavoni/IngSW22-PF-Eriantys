@@ -306,6 +306,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void returnToMainMenu() {
+        this.guiGameDisplayer.closePopUp();
         this.openNewStage("create-join.fxml", "images/startMenuBG.png");
     }
 

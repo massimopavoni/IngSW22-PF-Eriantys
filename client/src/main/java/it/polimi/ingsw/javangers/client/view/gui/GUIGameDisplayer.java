@@ -167,7 +167,10 @@ public class GUIGameDisplayer {
             e.printStackTrace();
         }
     }
-
+    protected void closePopUp(){
+        if(this.popUpStage != null)
+            this.popUpStage.close();
+    }
 
     private void displayCurrentPhase() {
         Pair<String, String> currentPhasePair = this.directivesParser.getCurrentPhase();
@@ -660,6 +663,7 @@ public class GUIGameDisplayer {
             switch (characterCardChosen) {
                 case "jester" -> {
                     if (this.tokensList == null) {
+                        this.popUpStage.close();
                         this.tokensList = tokens;
                         this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
                         this.tokensListLabel.setText("Take up the same number of students from this card");
@@ -676,6 +680,7 @@ public class GUIGameDisplayer {
                 }
                 case "bard" -> {
                     if (this.tokensList == null) {
+                        this.popUpStage.close();
                         this.tokensList = tokens;
                         this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
                         this.tokensListLabel.setText("Take up the same number of students from your entrance");
