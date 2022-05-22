@@ -175,7 +175,6 @@ public class GUIGameDisplayer {
     }
 
     private void displayPlayersOrder(String username) throws DirectivesParser.DirectivesParserException {
-        this.youArePlayerLabel.setText("You are " + username);
         this.playersOrder.setText("Player's order is: " + directivesParser.getPlayersOrder().toString());
     }
 
@@ -391,6 +390,12 @@ public class GUIGameDisplayer {
             ((Label)this.scene.lookup("#inhibitionTokenLabel")).setText(String.format("%d", this.directivesParser.getIslandEnabled(this.enlightenedIsland)));
     }
 
+    private void displayCoinsLabels(){
+        for(int i=0; i<this.directivesParser.getExactPlayersNumber(); i++){
+            ((Label) this.scene.lookup(String.format("#coinsLabelD%d", i))).setText(String.format("%d", this.directivesParser.getDashboardCoins(this.usernamesList.get(i))));
+        }
+    }
+
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
         if (this.firstDisplay) {
             this.username = username;
@@ -412,6 +417,8 @@ public class GUIGameDisplayer {
                 activateCharacterCardButton.setVisible(false);
             this.displayTeachers(); // da mettere direttamente su sceen builder
         }
+        if(directivesParser.isExpertMode())
+            this.displayCoinsLabels();
         this.displayDashboardTowers();
         this.displayCurrentPhase();
         this.displayPlayersOrder(username);
