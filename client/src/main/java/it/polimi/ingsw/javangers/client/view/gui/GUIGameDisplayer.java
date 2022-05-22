@@ -786,18 +786,22 @@ public class GUIGameDisplayer {
 
     private void innkeeper() {
         this.directivesDispatcher.activateInnkeeper(this.username);
+        this.activatedCharacterCard = false;
     }
 
     private void mailman() {
         this.directivesDispatcher.activateMailman(this.username);
+        this.activatedCharacterCard = false;
     }
 
     private void centaur() {
         this.directivesDispatcher.activateCentaur(this.username);
+        this.activatedCharacterCard = false;
     }
 
     private void knight() {
         this.directivesDispatcher.activateKnight(this.username);
+        this.activatedCharacterCard = false;
     }
 
     private void herald() {
