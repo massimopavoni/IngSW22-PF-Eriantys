@@ -214,7 +214,7 @@
          </font>
       </Label>
       <ImageView fx:id="cloud0" fitHeight="66.0" fitWidth="61.0" layoutX="448.0" layoutY="275.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud2" fitHeight="66.0" fitWidth="61.0" layoutX="604.0" layoutY="275.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud2" fitHeight="125.0" fitWidth="125.0" layoutX="577.0" layoutY="251.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="cloud1" fitHeight="66.0" fitWidth="61.0" layoutX="752.0" layoutY="273.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="towerD0" fitHeight="66.0" fitWidth="74.0" layoutX="766.0" layoutY="564.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="towerD1" fitHeight="66.0" fitWidth="74.0" layoutX="745.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />

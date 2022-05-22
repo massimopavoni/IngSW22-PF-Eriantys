@@ -505,13 +505,8 @@ public class GUIGameDisplayer {
 
     private void displayAdditionalCloud() {
         Image image = new Image((GUIGameDisplayer.class.getResource("images/cloud.png")).toString());
-        ImageView imv = new ImageView();
+        ImageView imv = (ImageView) this.scene.lookup("#cloud2");
         imv.setImage(image);
-        imv.setFitWidth(125);
-        imv.setFitHeight(125);
-        imv.setX(577);
-        imv.setY(251);
-        this.anchorPane.getChildren().add(imv);
     }
 
     private void setInvisibleAssistantCardsFrames() {
