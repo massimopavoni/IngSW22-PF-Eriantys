@@ -291,8 +291,14 @@ public class GUIGameDisplayer {
         int selectedIsland = Integer.parseInt(((ImageView) mouseEvent.getSource()).getId().split("island")[1]);
         if (this.activatedCharacterCard) {
             switch (characterCardChosen) {
-                case "herald" -> this.directivesDispatcher.activateHerald(this.username, selectedIsland);
-                case "herbalist" -> this.directivesDispatcher.activateHerbalist(this.username, selectedIsland);
+                case "herald" ->{
+                    this.directivesDispatcher.activateHerald(this.username, selectedIsland);
+                    this.activatedCharacterCard = false;
+                }
+                case "herbalist" ->{
+                    this.directivesDispatcher.activateHerbalist(this.username, selectedIsland);
+                    this.activatedCharacterCard = false;
+                }
                 case "monk" -> {
                     this.updateEnlightenedIslandInfo(selectedIsland);
                     this.openPopUp("tokensList.fxml", "images/tokensListBG.png");
@@ -300,7 +306,6 @@ public class GUIGameDisplayer {
                     this.spinnersInit();
                 }
             }
-            this.activatedCharacterCard = false;
         } else {
             switch (this.directivesParser.getCurrentPhase().getValue()) {
                 case "Move mother nature" -> {
@@ -646,7 +651,6 @@ public class GUIGameDisplayer {
     @FXML
     private void tokensListConfirm() {
         ArrayList<String> tokens = new ArrayList<>();
-        int counter = 0;
         for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values()) {
             Spinner<Integer> spinner = (Spinner<Integer>) this.popUpStage.getScene().lookup(
                     String.format("#%sSpinner", tokenColor.split("_")[0].toLowerCase()));
