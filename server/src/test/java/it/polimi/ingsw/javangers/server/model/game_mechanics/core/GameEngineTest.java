@@ -208,6 +208,22 @@ class GameEngineTest {
     }
 
     @Test
+    @DisplayName("Test changeTeachersPower for updating same owner data on teacher with no students in hall")
+    void changeTeachersPower_updateCurrentOwnerZeroStudents(){
+        PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
+        neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
+        gameEngine.changeTeachersPower("Neo");
+        assertAll(
+                () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
+                () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber()),
+                () -> neoDashboard.getHall().extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON)),
+                () -> gameEngine.changeTeachersPower("Neo"),
+                () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
+                () -> assertEquals(0, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber())
+        );
+    }
+
+    @Test
     @DisplayName("Test changeTeachersPower for leaving current owner after others' changes")
     void changeTeachersPower_leaveUnchanged() {
         PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
