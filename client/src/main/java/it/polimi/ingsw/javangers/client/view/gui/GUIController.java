@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 public class GUIController extends View implements Initializable {
     private final Stage stage;
     private final GUIGameDisplayer guiGameDisplayer;
-    private static final Object endgameCloseWaitingLock = new Object();
     private final Alert errorAlert;
     @FXML
     private ChoiceBox<String> towerColorChoice;
@@ -249,6 +248,7 @@ public class GUIController extends View implements Initializable {
 
     @Override
     protected void returnToMainMenu() {
+        this.guiGameDisplayer.closePopUp();
         this.openNewStage("createJoin.fxml");
     }
 
