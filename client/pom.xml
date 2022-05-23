@@ -11,6 +11,10 @@
     <artifactId>Eriantys-Client</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-alpha.69</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.8.2</junit.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
