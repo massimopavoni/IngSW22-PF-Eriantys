@@ -1,7 +1,7 @@
 # **IngSW22-PF-Eriantys**
 
-[![Release](https://img.shields.io/badge/release-v1.0.0--alpha.9-red)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
-[![Server](https://img.shields.io/badge/server-v1.0.9-blue)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
+[![Release](https://img.shields.io/badge/release-v1.0.0--alpha.11-red)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
+[![Server](https://img.shields.io/badge/server-v1.0.11-blue)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
 [![Client](https://img.shields.io/badge/client-none-lightgray)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
 [![Java JDK](https://img.shields.io/badge/java%20jdk-17-brightgreen)](https://docs.oracle.com/en/java/javase/17/)
 [![License](https://img.shields.io/badge/license-GPL--3.0-orange)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/blob/master/LICENSE)

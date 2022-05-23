@@ -20,3 +20,5 @@ sonarqube-scan.sh
 # ignore generated JavaDoc sources
 /JavaDoc/Eriantys-Server/*
 /JavaDoc/Eriantys-Client/*
+# ignore executables
+/executables/*

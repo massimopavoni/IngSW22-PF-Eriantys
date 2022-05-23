@@ -208,6 +208,22 @@ class GameEngineTest {
     }
 
     @Test
+    @DisplayName("Test changeTeachersPower for updating same owner data on teacher with no students in hall")
+    void changeTeachersPower_updateCurrentOwnerZeroStudents() {
+        PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
+        neoDashboard.getHall().addTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON));
+        gameEngine.changeTeachersPower("Neo");
+        assertAll(
+                () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
+                () -> assertEquals(2, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber()),
+                () -> neoDashboard.getHall().extractTokens(Arrays.asList(TokenColor.RED_DRAGON, TokenColor.RED_DRAGON)),
+                () -> gameEngine.changeTeachersPower("Neo"),
+                () -> assertEquals("Neo", gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerUsername()),
+                () -> assertEquals(0, gameEngine.getGameState().getTeachers().get(TokenColor.RED_DRAGON).getOwnerStudentsNumber())
+        );
+    }
+
+    @Test
     @DisplayName("Test changeTeachersPower for leaving current owner after others' changes")
     void changeTeachersPower_leaveUnchanged() {
         PlayerDashboard neoDashboard = gameEngine.getGameState().getPlayerDashboards().get("Neo");
@@ -405,6 +421,25 @@ class GameEngineTest {
         assertAll(
                 () -> assertEquals(TowerColor.WHITE, archipelago.getIslands().get(0).getTowers().getValue0()),
                 () -> assertEquals(1, archipelago.getIslands().get(0).getTowers().getValue1())
+        );
+    }
+
+    @Test
+    @DisplayName("Test changeIslandPower for correct number of towers on dashboards")
+    void changeIslandPower_correctDashboardTowers() {
+        Archipelago archipelago = gameEngine.getGameState().getArchipelago();
+        Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
+        teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
+        teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
+        archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 2));
+        archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
+        archipelago.setMotherNaturePosition(0);
+        gameEngine.changeIslandPower(0, "Neo");
+        assertAll(
+                () -> assertEquals(TowerColor.WHITE, archipelago.getIslands().get(0).getTowers().getValue0()),
+                () -> assertEquals(2, archipelago.getIslands().get(0).getTowers().getValue1()),
+                () -> assertEquals(6, gameEngine.getGameState().getPlayerDashboards().get("Trinity").getTowers().getValue1()),
+                () -> assertEquals(10, gameEngine.getGameState().getPlayerDashboards().get("Neo").getTowers().getValue1())
         );
     }
 

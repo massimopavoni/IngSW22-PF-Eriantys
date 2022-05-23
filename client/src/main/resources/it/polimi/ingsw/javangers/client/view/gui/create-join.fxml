@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17">
-    <children>
-      <Label fx:id="welcomeText" layoutX="279.0" layoutY="287.0" />
-      <MenuButton fx:id="create_join_MenuBotton" layoutX="215.0" layoutY="95.0" mnemonicParsing="false" text="What do you want to do?">
-        <items>
-          <MenuItem mnemonicParsing="false" onAction="#switchToCreateMenu" text="Create a new game" />
-          <MenuItem mnemonicParsing="false" onAction="#joinGame" text="Join a game" />
-        </items>
-      </MenuButton>
-    </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="300.0" fitWidth="400.0">
+         <image>
+            <Image url="@images/choiche.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="60.0" fitWidth="152.0" layoutX="221.0" layoutY="194.0" onMouseClicked="#switchJoin" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="53.0" fitWidth="152.0" layoutX="26.0" layoutY="195.0" onMouseClicked="#switchCreate" pickOnBounds="true" preserveRatio="true" />
+   </children>
 </AnchorPane>
