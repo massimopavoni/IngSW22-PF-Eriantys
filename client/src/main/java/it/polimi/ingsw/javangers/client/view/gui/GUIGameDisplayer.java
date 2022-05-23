@@ -670,14 +670,16 @@ public class GUIGameDisplayer {
                         this.tokensListLabel.setText("Take up the same number of students from this card");
                         this.spinnersInit();
                     } else {
-                        this.directivesDispatcher.activateJester(this.username, this.tokensList, tokens);
+                        this.directivesDispatcher.activateJester(this.username, tokens, this.tokensList);
                         this.activatedCharacterCard = false;
                         this.tokensList = null;
+                        this.popUpStage.close();
                     }
                 }
                 case "monk" -> {
                     this.directivesDispatcher.activateMonk(this.username, tokens, this.enlightenedIsland);
                     this.activatedCharacterCard = false;
+                    this.popUpStage.close();
                 }
                 case "bard" -> {
                     if (this.tokensList == null) {
@@ -690,11 +692,13 @@ public class GUIGameDisplayer {
                         this.directivesDispatcher.activateBard(this.username, this.tokensList, tokens);
                         this.activatedCharacterCard = false;
                         this.tokensList = null;
+                        this.popUpStage.close();
                     }
                 }
                 case "queen" -> {
                     this.directivesDispatcher.activateQueen(this.username, tokens);
                     this.activatedCharacterCard = false;
+                    this.popUpStage.close();
                 }
             }
         } else {
@@ -730,8 +734,9 @@ public class GUIGameDisplayer {
                     }
                 }
             }
+            this.popUpStage.close();
         }
-        this.popUpStage.close();
+        //this.popUpStage.close();
     }
 
 
