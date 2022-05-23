@@ -247,7 +247,8 @@ public class CLIGamePrinter {
         this.printDashboardCoins(username);
         this.printTowers(this.directivesParser.getDashboardTowers(username), "  ");
         this.printDashboardCardsBack(username);
-        this.printDashboardAssistantCards(username);
+        if (username.equals(playerUsername))
+            this.printDashboardAssistantCards(username);
         System.out.printf("%n  %sEntrance:%s %s", CLIConstants.ANSI_BRIGHT_WHITE, CLIConstants.ANSI_RESET,
                 this.formatColorCounts(this.directivesParser.getDashboardEntranceTokens(username)));
         System.out.printf("%n  %sHall:%s%s %s%n", CLIConstants.ANSI_BRIGHT_WHITE, CLIConstants.ANSI_RESET, " ".repeat(4),
