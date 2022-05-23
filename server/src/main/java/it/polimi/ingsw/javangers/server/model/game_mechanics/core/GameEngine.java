@@ -413,11 +413,15 @@ public class GameEngine {
 
         // Get towers number based on remaining towers on winner dashboard
         int towersNumber = Math.min(
-                selectedIslandTowers.getValue0().equals(TowerColor.NONE) ? 1 : selectedIslandTowers.getValue1(),
+                selectedIslandTowers.getValue0() == TowerColor.NONE ? 1 : selectedIslandTowers.getValue1(),
                 winnerDashboard.getTowers().getValue1());
 
-        // Update island and dashboard towers
+        // Update island and dashboards towers
         TowerColor winnerTowerColor = winnerDashboard.getTowers().getValue0();
+        this.gameState.getPlayerDashboards().values().stream()
+                .filter(dashboard -> dashboard.getTowers().getValue0() == selectedIslandTowers.getValue0()).findFirst()
+                .ifPresent(playerDashboard -> playerDashboard.setTowersNumber(
+                        playerDashboard.getTowers().getValue1() + selectedIslandTowers.getValue1()));
         selectedIsland.setTowers(new Pair<>(winnerTowerColor, towersNumber));
         winnerDashboard.setTowersNumber(winnerDashboard.getTowers().getValue1() - towersNumber);
 
