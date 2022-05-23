@@ -317,9 +317,11 @@ public class GUIGameDisplayer {
     @FXML
     private void selectEnlightenedIsland(MouseEvent event) {
         if (((ImageView) event.getSource()).getId().equals("leftArrow"))
-            this.updateEnlightenedIslandInfo((this.enlightenedIsland + this.directivesParser.getIslandsSize() - 1) % this.directivesParser.getIslandsSize());
+            this.updateEnlightenedIslandInfo((this.enlightenedIsland +
+                    this.directivesParser.getIslandsSize() - 1) % this.directivesParser.getIslandsSize());
         else
-            this.updateEnlightenedIslandInfo((this.enlightenedIsland + this.directivesParser.getIslandsSize() + 1) % this.directivesParser.getIslandsSize());
+            this.updateEnlightenedIslandInfo((this.enlightenedIsland +
+                    this.directivesParser.getIslandsSize() + 1) % this.directivesParser.getIslandsSize());
     }
 
     private void updateEnlightenedIslandInfo(int newPosition) {
@@ -360,10 +362,9 @@ public class GUIGameDisplayer {
     }
 
     private void displayCoinsLabels() {
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++)
             ((Label) this.scene.lookup(String.format("#coinsLabel%d", i)))
                     .setText(String.format("%d", this.directivesParser.getDashboardCoins(this.usernamesList.get(i))));
-        }
     }
 
     protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
@@ -382,8 +383,7 @@ public class GUIGameDisplayer {
             this.usernamesList.add(0, this.username);
             this.dashboardName0.setText(this.username);
             this.dashboardName1.setText(this.usernamesList.get(1));
-            boolean threePlayers = (directivesParser.getExactPlayersNumber() == 3);
-            if (threePlayers) {
+            if (directivesParser.getExactPlayersNumber() == 3) {
                 this.scene.lookup("#cloud2").setVisible(true);
                 this.dashboardName2.setText(this.usernamesList.get(2));
                 this.thirdDashboard.setVisible(true);
@@ -610,13 +610,16 @@ public class GUIGameDisplayer {
                         this.tokensListLabel.setText("Take up the same number of students from this card");
                         this.spinnersInit();
                     } else {
-                        this.directivesDispatcher.activateJester(this.username, this.tokensList, tokens);
+                        this.directivesDispatcher.activateJester(this.username, tokens, this.tokensList);
                         this.activatedCharacterCard = false;
+                        this.tokensList = null;
+                        this.popUpStage.close();
                     }
                 }
                 case "monk" -> {
                     this.directivesDispatcher.activateMonk(this.username, tokens, this.enlightenedIsland);
                     this.activatedCharacterCard = false;
+                    this.popUpStage.close();
                 }
                 case "bard" -> {
                     if (this.tokensList == null) {
@@ -628,11 +631,14 @@ public class GUIGameDisplayer {
                     } else {
                         this.directivesDispatcher.activateBard(this.username, this.tokensList, tokens);
                         this.activatedCharacterCard = false;
+                        this.tokensList = null;
+                        this.popUpStage.close();
                     }
                 }
                 case "queen" -> {
                     this.directivesDispatcher.activateQueen(this.username, tokens);
                     this.activatedCharacterCard = false;
+                    this.popUpStage.close();
                 }
             }
         } else {
@@ -671,8 +677,8 @@ public class GUIGameDisplayer {
                     this.tokensMap = null;
                 }
             }
+            this.popUpStage.close();
         }
-        this.popUpStage.close();
     }
 
 
