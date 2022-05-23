@@ -325,9 +325,12 @@ public class GameEngine {
      */
     private void updateTeachersPower() {
         Map<String, PlayerDashboard> playerDashboards = this.gameState.getPlayerDashboards();
-        this.gameState.getTeachers().entrySet().stream().filter(entry -> !entry.getValue().getOwnerUsername().isEmpty())
-                .forEach(entry -> entry.getValue().setOwner(entry.getValue().getOwnerUsername(),
-                        playerDashboards.get(entry.getValue().getOwnerUsername()).getHall().getColorCounts().get(entry.getKey())));
+        for (Map.Entry<TokenColor, Teacher> teacher : this.gameState.getTeachers().entrySet().stream()
+                .filter(entry -> !entry.getValue().getOwnerUsername().isEmpty()).toList()) {
+            Map<TokenColor, Integer> hallTokens = playerDashboards.get(teacher.getValue().getOwnerUsername()).getHall().getColorCounts();
+            teacher.getValue().setOwner(teacher.getValue().getOwnerUsername(),
+                    hallTokens.get(teacher.getKey()) != null ? hallTokens.get(teacher.getKey()) : 0);
+        }
     }
 
     /**
