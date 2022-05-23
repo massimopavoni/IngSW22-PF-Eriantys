@@ -451,7 +451,7 @@ public class CLIActionsExecutor {
             if (!availableTokenColors.contains(tokenColor))
                 System.out.printf("> Invalid input, choose a student color (%s): ", availableTokenColorsString);
         }
-        this.directivesDispatcher.activateMushroomer(username, tokenColor);
+        this.directivesDispatcher.activateMushroomer(username, View.AVAILABLE_TOKEN_COLORS.get(tokenColor));
     }
 
     /**
@@ -471,7 +471,7 @@ public class CLIActionsExecutor {
             if (!availableTokenColors.contains(tokenColor))
                 System.out.printf("> Invalid input, choose a student color (%s): ", availableTokenColorsString);
         }
-        this.directivesDispatcher.activateScoundrel(username, tokenColor);
+        this.directivesDispatcher.activateScoundrel(username, View.AVAILABLE_TOKEN_COLORS.get(tokenColor));
     }
 
     /**
