@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" styleClass="anchorPane" stylesheets="@css/tokensList.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="50.0" fitWidth="117.0" layoutX="238.0" layoutY="206.0" onMouseClicked="#tokensListConfirm" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/confirmButton.png" />
+         </image>
+      </ImageView>
+      <Spinner fx:id="greenSpinner" layoutX="100.0" layoutY="51.0" onScroll="#tokensSpinnersScroll" opacity="0.8" prefHeight="27.0" prefWidth="91.0" />
+      <Spinner fx:id="redSpinner" layoutX="100.0" layoutY="93.0" onScroll="#tokensSpinnersScroll" opacity="0.8" prefHeight="27.0" prefWidth="91.0" />
+      <Spinner fx:id="yellowSpinner" layoutX="100.0" layoutY="136.0" onScroll="#tokensSpinnersScroll" opacity="0.8" prefHeight="27.0" prefWidth="91.0" />
+      <Spinner fx:id="pinkSpinner" layoutX="100.0" layoutY="178.0" onScroll="#tokensSpinnersScroll" opacity="0.8" prefHeight="27.0" prefWidth="91.0" />
+      <Spinner fx:id="blueSpinner" layoutX="100.0" layoutY="220.0" onScroll="#tokensSpinnersScroll" opacity="0.8" prefHeight="27.0" prefWidth="91.0" />
+      <Label fx:id="tokensListLabel" layoutX="215.0" layoutY="49.0" prefHeight="144.0" prefWidth="164.0" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

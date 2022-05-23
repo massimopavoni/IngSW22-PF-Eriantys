@@ -28,13 +28,13 @@ public class GUIApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("create-join.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("createJoin.fxml"));
         GUIController controller = new GUIController(directivesDispatcher, directivesParser, stage);
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 620, 640);
         try {
-            stage.getIcons().add(new Image(GUIApplication.class.getResource("images/logo-cranio.png").toURI().toString()));
+            stage.getIcons().add(new Image(GUIApplication.class.getResource("images/cranioLogo.png").toURI().toString()));
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
