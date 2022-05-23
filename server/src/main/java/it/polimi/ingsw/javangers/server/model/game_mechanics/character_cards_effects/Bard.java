@@ -57,6 +57,7 @@ public class Bard implements EffectStrategy {
         PlayerDashboard playerDashboard = gameEngine.getGameState().getPlayerDashboards().get(username);
         playerDashboard.getHall().addTokens(playerDashboard.getEntrance().extractTokens(tokensFromEntrance));
         playerDashboard.getEntrance().addTokens(playerDashboard.getHall().extractTokens(tokensFromHall));
+        gameEngine.changeTeachersPower(username);
     }
     //endregion
 }
