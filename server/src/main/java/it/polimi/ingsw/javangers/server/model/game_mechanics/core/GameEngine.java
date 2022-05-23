@@ -388,7 +388,8 @@ public class GameEngine {
                 .filter(entry -> selectedIslandTokenContainer.getTokens().contains(entry.getKey()) &&
                         entry.getKey() != this.forbiddenColor && !(entry.getValue().getOwnerUsername()).equals(""))
                 .forEach(entry -> playersPower.put(entry.getValue().getOwnerUsername(),
-                        selectedIslandTokenContainer.getColorCounts().get(entry.getKey())));
+                        playersPower.get(entry.getValue().getOwnerUsername()) +
+                                selectedIslandTokenContainer.getColorCounts().get(entry.getKey())));
 
         // Add initial values from placed towers
         if (this.enabledIslandTowers) {
