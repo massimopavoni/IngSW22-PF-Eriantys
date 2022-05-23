@@ -206,17 +206,25 @@ public class CLIGamePrinter {
     }
 
     /**
-     * Print dashboard assistant cards' information.
+     * Print dashboard last discarded assistant card.
      *
      * @param username client player username
      */
-    private void printDashboardAssistantCards(String username) {
+    private void printDashboardLastDiscard(String username) {
         Map.Entry<String, Pair<Integer, Integer>> lastDiscardedAssistantCard =
                 this.directivesParser.getDashboardLastDiscardedAssistantCard(username);
         if (lastDiscardedAssistantCard != null) {
             System.out.printf("%n  %sLast discarded assistant card:%s %s", CLIConstants.ANSI_BRIGHT_WHITE,
                     CLIConstants.ANSI_RESET, this.formatAssistantCard(lastDiscardedAssistantCard));
         }
+    }
+
+    /**
+     * Print dashboard assistant cards' information.
+     *
+     * @param username client player username
+     */
+    private void printDashboardAssistantCards(String username) {
         Map<String, Pair<Integer, Integer>> assistantCards = this.directivesParser.getDashboardAssistantCards(username);
         if (!assistantCards.isEmpty()) {
             List<String> assistantCardNames = assistantCards.keySet().stream().toList();
@@ -247,6 +255,7 @@ public class CLIGamePrinter {
         this.printDashboardCoins(username);
         this.printTowers(this.directivesParser.getDashboardTowers(username), "  ");
         this.printDashboardCardsBack(username);
+        this.printDashboardLastDiscard(username);
         if (username.equals(playerUsername))
             this.printDashboardAssistantCards(username);
         System.out.printf("%n  %sEntrance:%s %s", CLIConstants.ANSI_BRIGHT_WHITE, CLIConstants.ANSI_RESET,
