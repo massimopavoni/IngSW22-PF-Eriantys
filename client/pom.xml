@@ -11,55 +11,6 @@
     <artifactId>Eriantys-Client</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-alpha.69</version>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.8.2</junit.version>
-        <packaging.type>APP_IMAGE</packaging.type>
-    </properties>
-    <profiles>
-        <profile>
-            <id>app-image</id>
-            <properties>
-                <packaging.type>APP_IMAGE</packaging.type>
-            </properties>
-        </profile>
-        <profile>
-            <id>exe</id>
-            <properties>
-                <packaging.type>EXE</packaging.type>
-            </properties>
-        </profile>
-        <profile>
-            <id>msi</id>
-            <properties>
-                <packaging.type>MSI</packaging.type>
-            </properties>
-        </profile>
-        <profile>
-            <id>rpm</id>
-            <properties>
-                <packaging.type>RPM</packaging.type>
-            </properties>
-        </profile>
-        <profile>
-            <id>deb</id>
-            <properties>
-                <packaging.type>DEB</packaging.type>
-            </properties>
-        </profile>
-        <profile>
-            <id>pkg</id>
-            <properties>
-                <packaging.type>PKG</packaging.type>
-            </properties>
-        </profile>
-        <profile>
-            <id>dmg</id>
-            <properties>
-                <packaging.type>DMG</packaging.type>
-            </properties>
-        </profile>
-    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
