@@ -6,7 +6,7 @@
     <parent>
         <artifactId>proj-ingsw-javangers</artifactId>
         <groupId>it.polimi.ingsw</groupId>
-        <version>1.0.0-alpha.12</version>
+        <version>1.0.0-alpha.13</version>
     </parent>
     <artifactId>Eriantys-Client</artifactId>
     <packaging>jar</packaging>

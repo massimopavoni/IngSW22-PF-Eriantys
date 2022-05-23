@@ -395,9 +395,10 @@ class GameEngineTest {
         Archipelago archipelago = gameEngine.getGameState().getArchipelago();
         Map<TokenColor, Teacher> teachers = gameEngine.getGameState().getTeachers();
         teachers.get(TokenColor.RED_DRAGON).setOwner("Neo", 2);
+        teachers.get(TokenColor.YELLOW_ELF).setOwner("Trinity", 2);
         teachers.get(TokenColor.BLUE_UNICORN).setOwner("Trinity", 2);
         archipelago.getIslands().get(0).setTowers(new Pair<>(TowerColor.BLACK, 1));
-        archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.YELLOW_ELF, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
+        archipelago.getIslands().get(0).getTokenContainer().addTokens(Arrays.asList(TokenColor.YELLOW_ELF, TokenColor.RED_DRAGON, TokenColor.BLUE_UNICORN, TokenColor.BLUE_UNICORN));
         archipelago.setMotherNaturePosition(0);
         gameEngine.changeIslandPower(0, "Neo");
         assertAll(
