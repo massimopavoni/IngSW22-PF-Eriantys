@@ -6,11 +6,11 @@
     <parent>
         <artifactId>proj-ingsw-javangers</artifactId>
         <groupId>it.polimi.ingsw</groupId>
-        <version>1.0.0-alpha.10</version>
+        <version>1.0.0-alpha.11</version>
     </parent>
     <artifactId>Eriantys-Server</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
