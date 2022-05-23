@@ -60,7 +60,7 @@ public class GUIGameDisplayer {
     private Scene scene;
     private Stage popUpStage;
     private String username;
-    private Boolean firstDisplay;
+    private boolean firstDisplay;
     private List<String> usernamesList;
     private boolean moveStudentsToHall;
     private boolean activatedCharacterCard;
@@ -114,6 +114,12 @@ public class GUIGameDisplayer {
     private ImageView inhibitionTokenView;
     @FXML
     private Label inhibitionTokenLabel;
+    @FXML
+    private ImageView coinView0;
+    @FXML
+    private ImageView coinView1;
+    @FXML
+    private ImageView coinView2;
 
     protected GUIGameDisplayer(DirectivesParser directivesParser, DirectivesDispatcher directivesDispatcher, Stage stage) {
         this.directivesParser = directivesParser;
@@ -363,7 +369,7 @@ public class GUIGameDisplayer {
 
     private void displayCoinsLabels() {
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++)
-            ((Label) this.scene.lookup(String.format("#coinsLabel%d", i)))
+            ((Label) this.scene.lookup(String.format("#coinLabel%d", i)))
                     .setText(String.format("%d", this.directivesParser.getDashboardCoins(this.usernamesList.get(i))));
     }
 
@@ -383,20 +389,28 @@ public class GUIGameDisplayer {
             this.usernamesList.add(0, this.username);
             this.dashboardName0.setText(this.username);
             this.dashboardName1.setText(this.usernamesList.get(1));
-            if (this.directivesParser.getExactPlayersNumber() == 3) {
+            boolean threePlayers = this.directivesParser.getExactPlayersNumber() == 3;
+            if (threePlayers) {
                 this.scene.lookup("#cloud2").setVisible(true);
                 this.dashboardName2.setText(this.usernamesList.get(2));
                 this.thirdDashboard.setVisible(true);
                 this.thirdDiscardCloud.setVisible(true);
             }
-            if (!directivesParser.isExpertMode())
-                activateCharacterCardButton.setVisible(false);
+            if (directivesParser.isExpertMode()) {
+                activateCharacterCardButton.setVisible(true);
+                this.coinView0.setVisible(true);
+                this.coinView1.setVisible(true);
+                if (threePlayers)
+                    this.coinView2.setVisible(true);
+            }
             this.usernamesList = directivesParser.getDashboardNames();
             this.usernamesList.remove(this.username);
             this.usernamesList.add(0, this.username);
             this.previousArchipelagoSize = this.directivesParser.getIslandsSize();
             this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
         }
+        ((Label) this.scene.lookup("#studentsBagLabel")).setText(String.valueOf(
+                this.directivesParser.getStudentsBagTokens().values().stream().mapToInt(Integer::intValue).sum()));
         if (directivesParser.isExpertMode())
             this.displayCoinsLabels();
         this.displayDashboardTowers();
