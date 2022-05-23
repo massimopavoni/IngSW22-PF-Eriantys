@@ -383,7 +383,7 @@ public class GUIGameDisplayer {
             this.usernamesList.add(0, this.username);
             this.dashboardName0.setText(this.username);
             this.dashboardName1.setText(this.usernamesList.get(1));
-            if (directivesParser.getExactPlayersNumber() == 3) {
+            if (this.directivesParser.getExactPlayersNumber() == 3) {
                 this.scene.lookup("#cloud2").setVisible(true);
                 this.dashboardName2.setText(this.usernamesList.get(2));
                 this.thirdDashboard.setVisible(true);
@@ -439,9 +439,12 @@ public class GUIGameDisplayer {
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
             Map.Entry<String, Pair<Integer, Integer>> lastDiscard =
                     this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(i));
-            if (lastDiscard != null)
+            if (lastDiscard != null) {
+                if (this.directivesParser.getDashboardDiscardedAssistantCards(this.usernamesList.get(i)).size() == 1)
+                    this.scene.lookup(String.format("#lastDiscardShadow%d", i)).setVisible(true);
                 ((ImageView) this.scene.lookup(String.format("#lastDiscard%d", i))).setImage(
                         this.assistantCardsImages.get(lastDiscard.getKey()));
+            }
         }
     }
 
