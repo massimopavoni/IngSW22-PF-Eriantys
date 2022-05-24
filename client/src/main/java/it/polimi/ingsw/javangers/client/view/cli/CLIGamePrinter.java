@@ -73,7 +73,7 @@ public class CLIGamePrinter {
         this.printClouds();
         this.printSeparator();
 
-        List<String> playerDashboards = this.directivesParser.getDashboardNames();
+        List<String> playerDashboards = this.directivesParser.getDashboardUsernames();
         playerDashboards.remove(username);
         playerDashboards.add(0, username);
         for (String player : playerDashboards)

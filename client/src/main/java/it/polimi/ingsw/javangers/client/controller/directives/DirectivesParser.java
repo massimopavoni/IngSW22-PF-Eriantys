@@ -478,11 +478,11 @@ public class DirectivesParser {
     }
 
     /**
-     * Get dashboard names.
+     * Get dashboard usernames.
      *
-     * @return dashboard names
+     * @return dashboard usernames
      */
-    public List<String> getDashboardNames() {
+    public List<String> getDashboardUsernames() {
         return this.getJSONFieldNames("dashboards");
     }
 

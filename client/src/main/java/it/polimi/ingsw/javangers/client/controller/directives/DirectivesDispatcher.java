@@ -326,10 +326,10 @@ public class DirectivesDispatcher {
      * Dispatch jester character card directive.
      *
      * @param username           player username
-     * @param tokensFromEntrance list of tokens from entrance
      * @param tokensToEntrance   list of tokens to entrance
+     * @param tokensFromEntrance list of tokens from entrance
      */
-    public void activateJester(String username, List<String> tokensFromEntrance, List<String> tokensToEntrance) {
+    public void activateJester(String username, List<String> tokensToEntrance, List<String> tokensFromEntrance) {
         ObjectNode argsJSON = this.jsonMapper.createObjectNode();
         Map<String, String> jesterMappings = this.directivesEffectsMappings.get("jester");
         ArrayNode tokensFromEntranceJSON = this.jsonMapper.createArrayNode();

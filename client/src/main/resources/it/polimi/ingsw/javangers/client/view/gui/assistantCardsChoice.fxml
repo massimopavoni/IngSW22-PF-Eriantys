@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="645.0" styleClass="anchorPane" stylesheets="@css/assistantCardsChoice.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="645.0" styleClass="anchorPane" stylesheets="@css/assistantCardsChoice.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane fx:id="assistantCardsGrid" hgap="10.0" layoutX="20.0" layoutY="25.0" prefHeight="350.0" prefWidth="605.0" vgap="10.0">
         <columnConstraints>

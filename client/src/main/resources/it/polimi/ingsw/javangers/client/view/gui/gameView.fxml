@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="anchorPane" stylesheets="@css/gameView.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="anchorPane" stylesheets="@css/gameView.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="thirdDashboard" fitHeight="202.0" fitWidth="366.0" layoutX="-90.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0" visible="false">
          <image>
             <Image url="@images/playerDashboard.png" />
          </image></ImageView>
-      <Label fx:id="currentPhase" layoutX="8.0" layoutY="13.0" prefHeight="25.0" prefWidth="386.0">
+      <Label fx:id="currentPhase" layoutX="8.0" layoutY="13.0" prefHeight="25.0" prefWidth="385.0">
          <font>
             <Font name="Verdana Bold" size="14.0" />
          </font></Label>
@@ -35,7 +35,7 @@
          <font>
             <Font size="12.0" />
          </font></Button>
-      <Button fx:id="activateCharacterCardButton" layoutX="1080.0" layoutY="630.0" mnemonicParsing="false" onAction="#playCharacterCard" prefHeight="25.0" prefWidth="180.0" text="Activate character card" visible="false">
+      <Button fx:id="activateCharacterCardButton" layoutX="1080.0" layoutY="630.0" mnemonicParsing="false" onAction="#activateCharacterCard" prefHeight="25.0" prefWidth="180.0" text="Activate character card" visible="false">
          <font>
             <Font size="12.0" />
          </font></Button>
@@ -43,7 +43,7 @@
          <font>
             <Font size="12.0" />
          </font></Button>
-      <Button fx:id="chooseCloudButton" layoutX="940.0" layoutY="630.0" mnemonicParsing="false" onAction="#enableClouds" prefHeight="25.0" prefWidth="120.0" text="Choose cloud">
+      <Button fx:id="chooseCloudButton" layoutX="940.0" layoutY="630.0" mnemonicParsing="false" onAction="#chooseCloud" prefHeight="25.0" prefWidth="120.0" text="Choose cloud">
          <font>
             <Font size="12.0" />
          </font></Button>
@@ -277,12 +277,12 @@
          </font>
       </Label>
       <ImageView fitHeight="178.0" fitWidth="238.0" layoutX="486.0" layoutY="510.0" onMouseClicked="#moveStudentsToHall" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud0" fitHeight="125.0" fitWidth="125.0" layoutX="424.0" layoutY="246.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud2" fitHeight="125.0" fitWidth="125.0" layoutX="577.0" layoutY="251.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="cloud0" fitHeight="125.0" fitWidth="125.0" layoutX="424.0" layoutY="246.0" onMouseClicked="#selectCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud2" fitHeight="125.0" fitWidth="125.0" layoutX="577.0" layoutY="251.0" onMouseClicked="#selectCloud" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/cloud.png" />
          </image></ImageView>
-      <ImageView fx:id="cloud1" fitHeight="125.0" fitWidth="125.0" layoutX="724.0" layoutY="248.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud1" fitHeight="125.0" fitWidth="125.0" layoutX="724.0" layoutY="248.0" onMouseClicked="#selectCloud" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tower0" fitHeight="80.0" fitWidth="62.0" layoutX="764.0" layoutY="561.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tower1" fitHeight="58.0" fitWidth="45.0" layoutX="714.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tower2" fitHeight="58.0" fitWidth="45.0" layoutX="65.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
@@ -332,17 +332,17 @@
          <image>
             <Image url="@images/rightArrow.png" />
          </image></ImageView>
-       <Label fx:id="dashboardName2" layoutX="21.0" layoutY="120.0" prefWidth="170.0" textAlignment="CENTER">
+       <Label fx:id="dashboardUsernameSide" alignment="CENTER" layoutX="15.0" layoutY="120.0" prefHeight="21.0" prefWidth="155.0" textAlignment="CENTER">
            <font>
                <Font name="Verdana Bold" size="16.0" />
            </font>
        </Label>
-       <Label fx:id="dashboardName0" layoutX="480.0" layoutY="490.0" prefWidth="305.0">
+       <Label fx:id="dashboardUsernameMain" alignment="CENTER" layoutX="480.0" layoutY="497.0" prefWidth="305.0" textAlignment="CENTER">
            <font>
                <Font name="Verdana Bold" size="18.0" />
            </font>
        </Label>
-       <Label fx:id="dashboardName1" layoutX="530.0" layoutY="125.0" prefWidth="190.0">
+       <Label fx:id="dashboardUsernameOpposite" alignment="CENTER" layoutX="530.0" layoutY="124.0" prefWidth="190.0" textAlignment="CENTER">
            <font>
                <Font name="Verdana Bold" size="18.0" />
            </font>
@@ -497,7 +497,7 @@
       <ImageView fx:id="island9" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="island10" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="island11" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="coinView0" fitHeight="50.0" fitWidth="50.0" layoutX="809.0" layoutY="467.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinViewMain" fitHeight="50.0" fitWidth="50.0" layoutX="809.0" layoutY="467.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/tokens/coin.png" />
          </image>
@@ -507,7 +507,7 @@
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fx:id="coinView1" fitHeight="40.0" fitWidth="40.0" layoutX="742.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinViewOpposite" fitHeight="40.0" fitWidth="40.0" layoutX="742.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/tokens/coin.png" />
          </image>
@@ -517,7 +517,7 @@
             <Font name="Verdana Bold" size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="coinView2" fitHeight="40.0" fitWidth="40.0" layoutX="128.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinViewSide" fitHeight="40.0" fitWidth="40.0" layoutX="128.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/tokens/coin.png" />
          </image>

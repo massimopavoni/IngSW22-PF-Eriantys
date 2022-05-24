@@ -20,24 +20,54 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Class representing the gui view, and acting as main controller for JavaFX application.
+ */
 public class GUIController extends View implements Initializable {
+    /**
+     * Main application stage.
+     */
     private final Stage stage;
+    /**
+     * Secondary controller for main game scene.
+     */
     private final GUIGameDisplayer guiGameDisplayer;
+    /**
+     * Alert dialog for errors.
+     */
     private final Alert errorAlert;
+    /**
+     * Tower color ChoiceBox.
+     */
     @FXML
     private ChoiceBox<String> towerColorChoice;
+    /**
+     * Exact players number ChoiceBox.
+     */
     @FXML
     private ChoiceBox<Integer> exactPlayersNumberChoice;
+    /**
+     * Create vs join flag.
+     */
     private boolean isInCreate;
+    /**
+     * Username TextField.
+     */
     @FXML
     private TextField usernameField;
-    @FXML
-    private CheckBox expertModeCheck;
+    /**
+     * Exact players number Label.
+     */
     @FXML
     private Label exactPlayersNumberLabel;
+    /**
+     * Expert mode CheckBox.
+     */
+    @FXML
+    private CheckBox expertModeCheck;
 
     /**
-     * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
+     * Constructor for gui view, initializing directives dispatcher and parser, application stage, application controls and secondary controller.
      *
      * @param directivesDispatcher directives dispatcher instance
      * @param directivesParser     directives parser instance
@@ -51,83 +81,30 @@ public class GUIController extends View implements Initializable {
         this.guiGameDisplayer = new GUIGameDisplayer(directivesParser, directivesDispatcher, this.stage);
     }
 
+    /**
+     * Method for view start (not implemented as it is not used for gui).
+     *
+     * @param args arguments
+     */
     @Override
     public void main(String[] args) {
-
+        // Not used in gui view
     }
 
-    @Override
-    public void updateView() {
-        Platform.runLater(super::updateView);
-    }
-
-
-    private void openNewStage(String resourceName) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
-            fxmlLoader.setController(this);
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            this.stage.setScene(scene);
-            this.stage.sizeToScene();
-            this.stage.hide();
-            this.stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @FXML
-    private void selectWizard(MouseEvent event) {
-        if (this.wizardType != null)
-            this.stage.getScene().lookup(String.format("#%sFrame",
-                    this.wizardType.toLowerCase())).setVisible(false);
-        this.wizardType = ((Node) event.getSource()).getId().toUpperCase();
-        this.stage.getScene().lookup(String.format("#%sFrame",
-                this.wizardType.toLowerCase())).setVisible(true);
-    }
-
-    private void alertMessage(String headerText, String contentText) {
-        this.errorAlert.setHeaderText(headerText);
-        this.errorAlert.setContentText(contentText);
-        this.errorAlert.showAndWait();
-    }
-
-    @FXML
-    private void switchCreate() {
-        this.wizardType = null;
-        this.isInCreate = true;
-        this.openNewStage("startMenu.fxml");
-    }
-
-    @FXML
-    private void switchJoin() {
-        this.wizardType = null;
-        this.isInCreate = false;
-        this.openNewStage("startMenu.fxml");
-        this.exactPlayersNumberLabel.setVisible(false);
-        this.exactPlayersNumberChoice.setVisible(false);
-        this.expertModeCheck.setVisible(false);
-    }
-
-    @FXML
-    private void confirmCreateJoin() {
-        if (this.isInCreate)
-            this.createGame();
-        else
-            this.joinGame();
-    }
-
+    /**
+     * Method for game creation.
+     */
     @Override
     protected void createGame() {
         if (this.usernameField.getCharacters() == null ||
                 this.towerColorChoice.getValue() == null ||
                 this.wizardType == null ||
                 this.exactPlayersNumberChoice.getValue() == null)
-            this.alertMessage("Empty field", "Please fill all the fields");
+            this.showErrorAlert("Empty field", "Please provide all required information.");
         else {
             if (!View.isValidUsername(this.usernameField.getCharacters().toString())) {
-                this.alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+                this.showErrorAlert("Invalid username",
+                        "Please use a valid username\n(min 4/max 32 characters, alphanumeric + underscores).");
             } else {
                 this.username = this.usernameField.getCharacters().toString();
                 this.towerColor = this.towerColorChoice.getValue().toUpperCase();
@@ -140,15 +117,19 @@ public class GUIController extends View implements Initializable {
         }
     }
 
+    /**
+     * Method for game joining.
+     */
     @Override
     protected void joinGame() {
         if (this.usernameField.getCharacters() == null ||
                 this.towerColorChoice.getValue() == null ||
                 this.wizardType == null)
-            this.alertMessage("Empty field", "Please fill all the fields");
+            this.showErrorAlert("Empty field", "Please provide all required information.");
         else {
             if (!View.isValidUsername(this.usernameField.getCharacters().toString()))
-                this.alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+                this.showErrorAlert("Invalid username",
+                        "Please write a correct username\n(min 4/max 32 characters, alphanumeric + underscores).");
             else {
                 this.username = this.usernameField.getCharacters().toString();
                 this.towerColor = this.towerColorChoice.getValue().toUpperCase();
@@ -158,103 +139,238 @@ public class GUIController extends View implements Initializable {
         }
     }
 
+    /**
+     * Method for game start wait loading.
+     */
     @Override
-    @FXML
     protected void waitForStart() {
-        openNewStage("loading.fxml");
+        this.openNewStage("loading.fxml");
     }
 
+    /**
+     * Method for game start call.
+     */
     @Override
     protected void startGame() {
         this.directivesDispatcher.startGame(this.username);
     }
 
+    /**
+     * Method for first game show.
+     */
     @Override
     protected void startShow() {
-        guiGameDisplayer.open();
+        this.guiGameDisplayer.open();
         try {
             this.guiGameDisplayer.displayGame(this.username);
             this.previousMessageType = MessageType.START;
         } catch (DirectivesParser.DirectivesParserException e) {
-            throw new RuntimeException(e);
+            throw new ViewException(e.getMessage(), e);
         }
-
     }
 
+    /**
+     * Method for update game show.
+     */
     @Override
     protected void updateGame() {
         try {
             this.guiGameDisplayer.displayGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
-            throw new RuntimeException(e);
+            throw new ViewException(e.getMessage(), e);
         }
     }
 
+    /**
+     * Method for abort message show.
+     *
+     * @param message abort message
+     */
     @Override
     protected void showAbort(String message) {
-        this.alertMessage(message, "Please create a new game or wait to join a new game");
+        this.showErrorAlert(message, "Please create a new game or wait to join a new game");
     }
 
+    /**
+     * Method for error message show.
+     *
+     * @param message error message
+     */
     @Override
     protected void showError(String message) {
-        this.alertMessage(message, "Please retry");
+        this.showErrorAlert(message, "Please retry");
     }
 
+    /**
+     * Method for closing endgame show.
+     *
+     * @param winners winners list
+     */
     @Override
     protected void closeGame(List<String> winners) {
         this.guiGameDisplayer.displayEndgame(winners);
     }
 
+    /**
+     * Method for enabling player actions.
+     */
     @Override
     protected void enableActions() {
         this.disableAllButtons();
         this.enableActionButtons();
-        this.guiGameDisplayer.setYourTurnMessage("It's your turn!");
+        this.guiGameDisplayer.setYourTurnMessage("It's your turn");
         this.previousMessageType = MessageType.ACTION;
     }
 
+    /**
+     * Method for waiting turn and not allowing player actions.
+     */
     @Override
     protected void waitTurn() {
         this.disableAllButtons();
-        this.guiGameDisplayer.setYourTurnMessage("Wait your turn!");
+        this.guiGameDisplayer.setYourTurnMessage("Wait your turn");
     }
 
-    private void enableActionButtons() {
-        try {
-            for (String action : directivesParser.getAvailableActions()) {
-                switch (action) {
-                    case "FillClouds" -> guiGameDisplayer.getFillCloudsButton().setDisable(false);
-                    case "PlayAssistantCard" -> guiGameDisplayer.getPlayAssistantCardButton().setDisable(false);
-                    case "MoveStudents" -> guiGameDisplayer.getMoveStudentsButton().setDisable(false);
-                    case "MoveMotherNature" -> guiGameDisplayer.getMoveMotherNatureButton().setDisable(false);
-                    case "ChooseCloud" -> guiGameDisplayer.getChooseCloudButton().setDisable(false);
-                    case "ActivateCharacterCard" -> guiGameDisplayer.getActivateCharacterCardButton()
-                            .setDisable(!this.directivesParser.getPlayersEnabledCharacterCard().get(this.username));
-                }
-            }
-        } catch (DirectivesParser.DirectivesParserException e) {
-            throw new ViewException(e.getMessage());
-        }
-    }
-
-    private void disableAllButtons() {
-        guiGameDisplayer.getFillCloudsButton().setDisable(true);
-        guiGameDisplayer.getPlayAssistantCardButton().setDisable(true);
-        guiGameDisplayer.getMoveStudentsButton().setDisable(true);
-        guiGameDisplayer.getMoveMotherNatureButton().setDisable(true);
-        guiGameDisplayer.getChooseCloudButton().setDisable(true);
-        guiGameDisplayer.getActivateCharacterCardButton().setDisable(true);
-    }
-
+    /**
+     * Method for returning to main menu.
+     */
     @Override
     protected void returnToMainMenu() {
-        this.guiGameDisplayer.closePopUp();
         this.openNewStage("createJoin.fxml");
     }
 
+    /**
+     * Main view method override for JavaFX main thread.
+     */
+    @Override
+    public void updateView() {
+        Platform.runLater(super::updateView);
+    }
+
+    /**
+     * Method for opening new stage in application.
+     *
+     * @param resourceName fxml file resource to load
+     */
+    private void openNewStage(String resourceName) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
+            fxmlLoader.setController(this);
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            this.stage.setScene(scene);
+            this.stage.sizeToScene();
+            this.stage.hide();
+            this.stage.show();
+        } catch (IOException e) {
+            throw new ViewException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Show error alert message.
+     *
+     * @param header  header text
+     * @param content content text
+     */
+    private void showErrorAlert(String header, String content) {
+        this.errorAlert.setHeaderText(header);
+        this.errorAlert.setContentText(content);
+        this.errorAlert.showAndWait();
+    }
+
+    /**
+     * Enable action button for player, depending on available actions for current phase.
+     */
+    private void enableActionButtons() {
+        try {
+            for (String action : this.directivesParser.getAvailableActions()) {
+                switch (action) {
+                    case "FillClouds" -> this.guiGameDisplayer.getFillCloudsButton().setDisable(false);
+                    case "PlayAssistantCard" -> this.guiGameDisplayer.getPlayAssistantCardButton().setDisable(false);
+                    case "MoveStudents" -> this.guiGameDisplayer.getMoveStudentsButton().setDisable(false);
+                    case "MoveMotherNature" -> this.guiGameDisplayer.getMoveMotherNatureButton().setDisable(false);
+                    case "ChooseCloud" -> this.guiGameDisplayer.getChooseCloudButton().setDisable(false);
+                    case "ActivateCharacterCard" -> this.guiGameDisplayer.getActivateCharacterCardButton()
+                            .setDisable(!this.directivesParser.getPlayersEnabledCharacterCard().get(this.username));
+                    default -> throw new ViewException(String.format("Unknown action: %s", action));
+                }
+            }
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new ViewException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Disable all action buttons.
+     */
+    private void disableAllButtons() {
+        this.guiGameDisplayer.getFillCloudsButton().setDisable(true);
+        this.guiGameDisplayer.getPlayAssistantCardButton().setDisable(true);
+        this.guiGameDisplayer.getMoveStudentsButton().setDisable(true);
+        this.guiGameDisplayer.getMoveMotherNatureButton().setDisable(true);
+        this.guiGameDisplayer.getChooseCloudButton().setDisable(true);
+        this.guiGameDisplayer.getActivateCharacterCardButton().setDisable(true);
+    }
+
+    /**
+     * Controller initialize method.
+     *
+     * @param url            url location
+     * @param resourceBundle resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.towerColorChoice.getItems().addAll(View.TOWER_COLORS_MAPPINGS.values());
         this.exactPlayersNumberChoice.getItems().addAll(MIN_PLAYERS_NUMBER, MAX_PLAYERS_NUMBER);
+    }
+
+    /**
+     * Show game create menu event.
+     */
+    @FXML
+    private void switchCreate() {
+        this.wizardType = null;
+        this.isInCreate = true;
+        this.openNewStage("startMenu.fxml");
+    }
+
+    /**
+     * Show game join menu event.
+     */
+    @FXML
+    private void switchJoin() {
+        this.wizardType = null;
+        this.isInCreate = false;
+        this.openNewStage("startMenu.fxml");
+        this.exactPlayersNumberLabel.setVisible(false);
+        this.exactPlayersNumberChoice.setVisible(false);
+        this.expertModeCheck.setVisible(false);
+    }
+
+    /**
+     * Select wizard event.
+     *
+     * @param event mouse click event
+     */
+    @FXML
+    private void selectWizard(MouseEvent event) {
+        if (this.wizardType != null)
+            this.stage.getScene().lookup(String.format("#%sFrame",
+                    this.wizardType.toLowerCase())).setVisible(false);
+        this.wizardType = ((Node) event.getSource()).getId().toUpperCase();
+        this.stage.getScene().lookup(String.format("#%sFrame",
+                this.wizardType.toLowerCase())).setVisible(true);
+    }
+
+    /**
+     * Confirm create/join event.
+     */
+    @FXML
+    private void confirmCreateJoin() {
+        if (this.isInCreate)
+            this.createGame();
+        else
+            this.joinGame();
     }
 }
