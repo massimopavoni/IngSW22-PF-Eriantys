@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="anchorPane" stylesheets="@css/losingEndgame.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="winnersLabel" alignment="CENTER" layoutX="15.0" layoutY="170.0" prefHeight="23.0" prefWidth="370.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="endgameLabel" alignment="CENTER" layoutX="15.0" layoutY="210.0" prefHeight="70.0" prefWidth="370.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

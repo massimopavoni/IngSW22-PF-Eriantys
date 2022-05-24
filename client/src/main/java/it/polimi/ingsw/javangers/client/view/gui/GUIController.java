@@ -8,55 +8,66 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Class representing the gui view, and acting as main controller for JavaFX application.
+ */
 public class GUIController extends View implements Initializable {
-
-
-    private final Alert errorAlert;
+    /**
+     * Main application stage.
+     */
+    private final Stage stage;
+    /**
+     * Secondary controller for main game scene.
+     */
     private final GUIGameDisplayer guiGameDisplayer;
+    /**
+     * Alert dialog for errors.
+     */
+    private final Alert errorAlert;
+    /**
+     * Tower color ChoiceBox.
+     */
+    @FXML
+    private ChoiceBox<String> towerColorChoice;
+    /**
+     * Exact players number ChoiceBox.
+     */
+    @FXML
+    private ChoiceBox<Integer> exactPlayersNumberChoice;
+    /**
+     * Create vs join flag.
+     */
     private boolean isInCreate;
+    /**
+     * Username TextField.
+     */
     @FXML
-    //non deve essere final
-    private ChoiceBox<Integer> fxmlExactPlayersNumber;
+    private TextField usernameField;
+    /**
+     * Exact players number Label.
+     */
     @FXML
-    //non deve essere final
-    private ChoiceBox<String> fxmlTowerColor;
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    private Label exactPlayersNumberLabel;
+    /**
+     * Expert mode CheckBox.
+     */
     @FXML
-    private TextField fxmlUsername;
-    @FXML
-    private CheckBox fxmlExpertMode;
-    @FXML
-    private Label errorMessage;
-    @FXML
-    private Label loadingInfo;
-    @FXML
-    private Label labelNumberOfPlayers;
-    @FXML
-    private GridPane wizardsGridPane;
-
-
-
+    private CheckBox expertModeCheck;
 
     /**
-     * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
+     * Constructor for gui view, initializing directives dispatcher and parser, application stage, application controls and secondary controller.
      *
      * @param directivesDispatcher directives dispatcher instance
      * @param directivesParser     directives parser instance
@@ -64,269 +75,302 @@ public class GUIController extends View implements Initializable {
     protected GUIController(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser, Stage stage) {
         super(directivesDispatcher, directivesParser);
         this.stage = stage;
-        this.fxmlExactPlayersNumber = new ChoiceBox<>();
-        this.fxmlTowerColor = new ChoiceBox<>();
+        this.towerColorChoice = new ChoiceBox<>();
+        this.exactPlayersNumberChoice = new ChoiceBox<>();
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
-        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser,directivesDispatcher, this.stage);
+        this.guiGameDisplayer = new GUIGameDisplayer(directivesParser, directivesDispatcher, this.stage);
     }
 
+    /**
+     * Method for view start (not implemented as it is not used for gui).
+     *
+     * @param args arguments
+     */
     @Override
     public void main(String[] args) {
-
+        // Not used in gui view
     }
 
-    @Override
-    public void updateView() {
-        Platform.runLater(super::updateView);
-    }
-
-    /*
-    protected void openNewStage(Button button, String resourceName, int width, int height) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(resourceName));
-            fxmlLoader.setController(this);
-            this.root = fxmlLoader.load();
-            this.stage = (Stage) button.getScene().getWindow();
-            this.scene = new Scene(root);
-            this.stage.setScene(scene);
-            this.stage.setWidth(width);
-            this.stage.setHeight(height);
-            this.stage.show();
-        } catch (IOException e) {
-            //va cambiato
-            throw new RuntimeException(e);
-        }
-    }
-
+    /**
+     * Method for game creation.
      */
-
-    private Background displayBackGround(String resource) throws URISyntaxException {
-        Image img = new Image(GUIGameDisplayer.class.getResource(resource).toURI().toString());
-        BackgroundImage bImg = new BackgroundImage(img,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                BackgroundSize.DEFAULT);
-        return new Background(bImg);
-    }
-
-
-    protected void openNewStage(String resourceName, String backGroundResource) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
-            fxmlLoader.setController(this);
-            this.root = fxmlLoader.load();
-            this.scene = new Scene(root);
-            this.stage.setScene(scene);
-            this.stage.sizeToScene();
-            AnchorPane anchorPane = fxmlLoader.getRoot();
-            anchorPane.setBackground(this.displayBackGround(backGroundResource));
-            this.stage.hide();
-            this.stage.show();
-        } catch (IOException e) {
-            //va cambiato
-            throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @FXML
-    protected void selectWizard(MouseEvent event) {
-        this.wizardType = ((ImageView) event.getSource()).getId();
-    }
-
-    protected void alertMessage(String headerText, String contentText) {
-        this.errorAlert.setHeaderText(headerText);
-        this.errorAlert.setContentText(contentText);
-        this.errorAlert.showAndWait();
-
-    }
-
-    private void displayWizards(){
-        Image image = null;
-        List<String> cardNameList = new ArrayList<> (AVAILABLE_WIZARD_TYPES.values());
-        for (int i = 0; i < cardNameList.size(); i++) {
-            try {
-                image = new Image(GUIController.class.getResource("images/wizards/"+cardNameList.get(i).toLowerCase()+".png").toURI().toString());
-                ImageView imv = new ImageView();
-                imv.setImage(image);
-                imv.setId(cardNameList.get(i));
-                imv.setFitWidth(81);
-                imv.setFitHeight(120);
-                imv.setOnMouseClicked(this::selectWizard);
-                wizardsGridPane.add(imv,i % 2,i/2);
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    @FXML
-    private void switchCreate() {
-        this.isInCreate = true;
-        openNewStage("start-menu.fxml", "images/start-menuBG.png");
-        this.displayWizards();
-        }
-    @FXML
-    private void switchJoin() {
-        this.isInCreate = false;
-        openNewStage("start-menu.fxml", "images/start-menuBG.png");
-        this.displayWizards();
-        fxmlExactPlayersNumber.setVisible(false);
-        fxmlExpertMode.setVisible(false);
-        labelNumberOfPlayers.setVisible(false);
-    }
-
-    @FXML
-    private void redirectCreateJoin() {
-        if(this.isInCreate)
-            this.createGame();
-        else
-            this.joinGame();
-    }
-
     @Override
     protected void createGame() {
-        if (this.fxmlUsername.getCharacters() == null || this.fxmlExactPlayersNumber.getValue() == null || this.wizardType == null || this.fxmlTowerColor.getValue() == null)
-            alertMessage("Empty field", "Please fill all the fields");
+        if (this.usernameField.getCharacters() == null ||
+                this.towerColorChoice.getValue() == null ||
+                this.wizardType == null ||
+                this.exactPlayersNumberChoice.getValue() == null)
+            this.showErrorAlert("Empty field", "Please provide all required information.");
         else {
-            if (!isValidUsername(fxmlUsername.getCharacters().toString())) {
-                alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+            if (!View.isValidUsername(this.usernameField.getCharacters().toString())) {
+                this.showErrorAlert("Invalid username",
+                        "Please use a valid username\n(min 4/max 32 characters, alphanumeric + underscores).");
             } else {
-                this.username = this.fxmlUsername.getCharacters().toString();
-                this.exactPlayersNumber = this.fxmlExactPlayersNumber.getValue();
-                this.expertMode = this.fxmlExpertMode.isSelected();
-                this.towerColor = this.fxmlTowerColor.getValue();
-                this.directivesDispatcher.createGame(this.username, this.exactPlayersNumber, this.expertMode, this.wizardType, this.towerColor);
+                this.username = this.usernameField.getCharacters().toString();
+                this.towerColor = this.towerColorChoice.getValue().toUpperCase();
+                this.exactPlayersNumber = this.exactPlayersNumberChoice.getValue();
+                this.expertMode = this.expertModeCheck.isSelected();
+                this.directivesDispatcher.createGame(this.username, this.exactPlayersNumber,
+                        this.expertMode, this.wizardType, this.towerColor);
                 this.previousMessageType = MessageType.CREATE;
             }
         }
     }
 
+    /**
+     * Method for game joining.
+     */
     @Override
     protected void joinGame() {
-        if (this.fxmlUsername.getCharacters() == null || wizardType == null || fxmlTowerColor.getValue() == null)
-            alertMessage("Empty field", "Please fill all the fields");
+        if (this.usernameField.getCharacters() == null ||
+                this.towerColorChoice.getValue() == null ||
+                this.wizardType == null)
+            this.showErrorAlert("Empty field", "Please provide all required information.");
         else {
-            if (!isValidUsername(this.fxmlUsername.getCharacters().toString()))
-                alertMessage("Invalid username", "Please write a correct username\n(min4/max32 characters, alphanumeric + underscores)");
+            if (!View.isValidUsername(this.usernameField.getCharacters().toString()))
+                this.showErrorAlert("Invalid username",
+                        "Please write a correct username\n(min 4/max 32 characters, alphanumeric + underscores).");
             else {
-                this.username = this.fxmlUsername.getCharacters().toString();
-                this.towerColor = this.fxmlTowerColor.getValue();
+                this.username = this.usernameField.getCharacters().toString();
+                this.towerColor = this.towerColorChoice.getValue().toUpperCase();
                 this.directivesDispatcher.addPlayer(this.username, this.wizardType, this.towerColor);
                 this.previousMessageType = MessageType.PLAYER;
             }
         }
     }
 
+    /**
+     * Method for game start wait loading.
+     */
     @Override
-    @FXML
     protected void waitForStart() {
-        openNewStage("loading-page.fxml", "images/loading.gif");
-        this.loadingInfo.setText("Waiting start game");
-
-        //questa funzione viene chiamata dalla view che è sbloccata dal parser
-        //visualizzare schermata attendo nuovi player
+        this.openNewStage("loading.fxml");
     }
 
+    /**
+     * Method for game start call.
+     */
     @Override
     protected void startGame() {
         this.directivesDispatcher.startGame(this.username);
     }
 
+    /**
+     * Method for first game show.
+     */
     @Override
     protected void startShow() {
-        guiGameDisplayer.openNewStage("game-view.fxml", "images/gameboardv2.png" );
+        this.guiGameDisplayer.open();
         try {
             this.guiGameDisplayer.displayGame(this.username);
             this.previousMessageType = MessageType.START;
         } catch (DirectivesParser.DirectivesParserException e) {
-            throw new RuntimeException(e);
+            throw new ViewException(e.getMessage(), e);
         }
-
     }
 
+    /**
+     * Method for update game show.
+     */
     @Override
     protected void updateGame() {
-        //forse da completare
         try {
             this.guiGameDisplayer.displayGame(this.username);
         } catch (DirectivesParser.DirectivesParserException e) {
-            throw new RuntimeException(e);
+            throw new ViewException(e.getMessage(), e);
         }
     }
 
+    /**
+     * Method for abort message show.
+     *
+     * @param message abort message
+     */
     @Override
     protected void showAbort(String message) {
-        alertMessage(message, "Please create a new game or wait to join a new game");
+        this.showErrorAlert(message, "Please create a new game or wait to join a new game");
     }
 
+    /**
+     * Method for error message show.
+     *
+     * @param message error message
+     */
     @Override
     protected void showError(String message) {
-        alertMessage(message, "Please retry");
+        this.showErrorAlert(message, "Please retry");
     }
 
+    /**
+     * Method for closing endgame show.
+     *
+     * @param winners winners list
+     */
     @Override
     protected void closeGame(List<String> winners) {
-
+        this.guiGameDisplayer.displayEndgame(winners);
     }
 
+    /**
+     * Method for enabling player actions.
+     */
     @Override
     protected void enableActions() {
         this.disableAllButtons();
         this.enableActionButtons();
+        this.guiGameDisplayer.setYourTurnMessage("It's your turn");
         this.previousMessageType = MessageType.ACTION;
-        //forse da continuare
-        //aggiungere è il tuo turno
     }
 
+    /**
+     * Method for waiting turn and not allowing player actions.
+     */
     @Override
     protected void waitTurn() {
         this.disableAllButtons();
-        //da aggiungere in una label il wait turn
+        this.guiGameDisplayer.setYourTurnMessage("Wait your turn");
     }
 
-    private void enableActionButtons(){
-        // da aggiungere controlli
+    /**
+     * Method for returning to main menu.
+     */
+    @Override
+    protected void returnToMainMenu() {
+        this.openNewStage("createJoin.fxml");
+    }
+
+    /**
+     * Main view method override for JavaFX main thread.
+     */
+    @Override
+    public void updateView() {
+        Platform.runLater(super::updateView);
+    }
+
+    /**
+     * Method for opening new stage in application.
+     *
+     * @param resourceName fxml file resource to load
+     */
+    private void openNewStage(String resourceName) {
         try {
-            for (String action: directivesParser.getAvailableActions()) {
-                switch (action){
-                    case "FillClouds" -> guiGameDisplayer.getFillCloudsButton().setDisable(false);
-                    case "PlayAssistantCard" -> guiGameDisplayer.getPlayAssistantCardButton().setDisable(false);
-                    case "MoveStudents" -> guiGameDisplayer.getMoveStudentsButton().setDisable(false);
-                    case "MoveMotherNature" -> guiGameDisplayer.getMoveMotherNatureButton().setDisable(false);
-                    case "ChooseCloud" -> guiGameDisplayer.getChooseCloudButton().setDisable(false);
-                    case "ActivateCharacterCard" -> guiGameDisplayer.getActivateCharacterCardButton().setDisable(false);
-                }
-            }
-        } catch (DirectivesParser.DirectivesParserException e) {
-            throw new ViewException(e.getMessage());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
+            fxmlLoader.setController(this);
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            this.stage.setScene(scene);
+            this.stage.sizeToScene();
+            this.stage.hide();
+            this.stage.show();
+        } catch (IOException e) {
+            throw new ViewException(e.getMessage(), e);
         }
     }
 
-    private void disableAllButtons(){
-        guiGameDisplayer.getFillCloudsButton().setDisable(true);
-        guiGameDisplayer.getPlayAssistantCardButton().setDisable(true);
-        guiGameDisplayer.getMoveStudentsButton().setDisable(true);
-        guiGameDisplayer.getMoveMotherNatureButton().setDisable(true);
-        guiGameDisplayer.getChooseCloudButton().setDisable(true);
-        guiGameDisplayer.getActivateCharacterCardButton().setDisable(true);
-
+    /**
+     * Show error alert message.
+     *
+     * @param header  header text
+     * @param content content text
+     */
+    private void showErrorAlert(String header, String content) {
+        this.errorAlert.setHeaderText(header);
+        this.errorAlert.setContentText(content);
+        this.errorAlert.showAndWait();
     }
 
-
-
-    @Override
-    protected void returnToMainMenu() {
-        this.openNewStage("create-join.fxml", "images/start-menuBG.png");
+    /**
+     * Enable action button for player, depending on available actions for current phase.
+     */
+    private void enableActionButtons() {
+        try {
+            for (String action : this.directivesParser.getAvailableActions()) {
+                switch (action) {
+                    case "FillClouds" -> this.guiGameDisplayer.getFillCloudsButton().setDisable(false);
+                    case "PlayAssistantCard" -> this.guiGameDisplayer.getPlayAssistantCardButton().setDisable(false);
+                    case "MoveStudents" -> this.guiGameDisplayer.getMoveStudentsButton().setDisable(false);
+                    case "MoveMotherNature" -> this.guiGameDisplayer.getMoveMotherNatureButton().setDisable(false);
+                    case "ChooseCloud" -> this.guiGameDisplayer.getChooseCloudButton().setDisable(false);
+                    case "ActivateCharacterCard" -> this.guiGameDisplayer.getActivateCharacterCardButton()
+                            .setDisable(!this.directivesParser.getPlayersEnabledCharacterCard().get(this.username));
+                    default -> throw new ViewException(String.format("Unknown action: %s", action));
+                }
+            }
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new ViewException(e.getMessage(), e);
+        }
     }
 
+    /**
+     * Disable all action buttons.
+     */
+    private void disableAllButtons() {
+        this.guiGameDisplayer.getFillCloudsButton().setDisable(true);
+        this.guiGameDisplayer.getPlayAssistantCardButton().setDisable(true);
+        this.guiGameDisplayer.getMoveStudentsButton().setDisable(true);
+        this.guiGameDisplayer.getMoveMotherNatureButton().setDisable(true);
+        this.guiGameDisplayer.getChooseCloudButton().setDisable(true);
+        this.guiGameDisplayer.getActivateCharacterCardButton().setDisable(true);
+    }
+
+    /**
+     * Controller initialize method.
+     *
+     * @param url            url location
+     * @param resourceBundle resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        fxmlExactPlayersNumber.getItems().addAll(MIN_PLAYERS_NUMBER, MAX_PLAYERS_NUMBER);
-        fxmlTowerColor.getItems().addAll(AVAILABLE_TOWER_COLORS.values());
+        this.towerColorChoice.getItems().addAll(View.TOWER_COLORS_MAPPINGS.values());
+        this.exactPlayersNumberChoice.getItems().addAll(MIN_PLAYERS_NUMBER, MAX_PLAYERS_NUMBER);
     }
 
+    /**
+     * Show game create menu event.
+     */
+    @FXML
+    private void switchCreate() {
+        this.wizardType = null;
+        this.isInCreate = true;
+        this.openNewStage("startMenu.fxml");
+    }
 
+    /**
+     * Show game join menu event.
+     */
+    @FXML
+    private void switchJoin() {
+        this.wizardType = null;
+        this.isInCreate = false;
+        this.openNewStage("startMenu.fxml");
+        this.exactPlayersNumberLabel.setVisible(false);
+        this.exactPlayersNumberChoice.setVisible(false);
+        this.expertModeCheck.setVisible(false);
+    }
+
+    /**
+     * Select wizard event.
+     *
+     * @param event mouse click event
+     */
+    @FXML
+    private void selectWizard(MouseEvent event) {
+        if (this.wizardType != null)
+            this.stage.getScene().lookup(String.format("#%sFrame",
+                    this.wizardType.toLowerCase())).setVisible(false);
+        this.wizardType = ((Node) event.getSource()).getId().toUpperCase();
+        this.stage.getScene().lookup(String.format("#%sFrame",
+                this.wizardType.toLowerCase())).setVisible(true);
+    }
+
+    /**
+     * Confirm create/join event.
+     */
+    @FXML
+    private void confirmCreateJoin() {
+        if (this.isInCreate)
+            this.createGame();
+        else
+            this.joinGame();
+    }
 }

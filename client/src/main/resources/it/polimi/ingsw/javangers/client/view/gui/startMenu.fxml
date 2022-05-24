@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="440.0" styleClass="anchorPane" stylesheets="@css/startMenu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="17.0" layoutY="24.0" text="Username" />
+      <TextField fx:id="usernameField" layoutX="18.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label layoutX="18.0" layoutY="85.0" text="Tower color" />
+      <ChoiceBox fx:id="towerColorChoice" layoutX="18.0" layoutY="102.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label fx:id="exactPlayersNumberLabel" layoutX="20.0" layoutY="154.0" text="Number of players" />
+      <ChoiceBox fx:id="exactPlayersNumberChoice" layoutX="18.0" layoutY="171.0" prefWidth="150.0" />
+      <CheckBox fx:id="expertModeCheck" layoutX="18.0" layoutY="220.0" mnemonicParsing="false" text="Expert Mode" />
+      <Label layoutX="288.0" layoutY="15.0" text="Wizard" />
+      <GridPane hgap="10.0" layoutX="213.0" layoutY="30.0" prefHeight="270.0" prefWidth="192.0" vgap="10.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <ImageView fx:id="druid" fitHeight="120.0" fitWidth="81.0" onMouseClicked="#selectWizard" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@images/wizards/druid.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="druidFrame" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@images/cardSelectionFrame.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="king" fitHeight="120.0" fitWidth="81.0" onMouseClicked="#selectWizard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@images/wizards/king.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="kingFrame" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@images/cardSelectionFrame.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="witch" fitHeight="120.0" fitWidth="81.0" onMouseClicked="#selectWizard" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@images/wizards/witch.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="witchFrame" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@images/cardSelectionFrame.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="sensei" fitHeight="120.0" fitWidth="81.0" onMouseClicked="#selectWizard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@images/wizards/sensei.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="senseiFrame" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@images/cardSelectionFrame.png" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
+      <ImageView fitHeight="52.0" fitWidth="150.0" layoutX="13.0" layoutY="248.0" onMouseClicked="#confirmCreateJoin">
+         <image>
+            <Image url="@images/confirmButton.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
