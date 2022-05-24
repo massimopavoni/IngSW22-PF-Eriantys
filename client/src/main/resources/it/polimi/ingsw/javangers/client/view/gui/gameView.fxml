@@ -35,7 +35,7 @@
          <font>
             <Font size="12.0" />
          </font></Button>
-      <Button fx:id="activateCharacterCardButton" layoutX="1080.0" layoutY="630.0" mnemonicParsing="false" onAction="#playCharacterCard" prefHeight="25.0" prefWidth="180.0" text="Activate character card" visible="false">
+      <Button fx:id="activateCharacterCardButton" layoutX="1080.0" layoutY="630.0" mnemonicParsing="false" onAction="#activateCharacterCard" prefHeight="25.0" prefWidth="180.0" text="Activate character card" visible="false">
          <font>
             <Font size="12.0" />
          </font></Button>
@@ -43,7 +43,7 @@
          <font>
             <Font size="12.0" />
          </font></Button>
-      <Button fx:id="chooseCloudButton" layoutX="940.0" layoutY="630.0" mnemonicParsing="false" onAction="#enableClouds" prefHeight="25.0" prefWidth="120.0" text="Choose cloud">
+      <Button fx:id="chooseCloudButton" layoutX="940.0" layoutY="630.0" mnemonicParsing="false" onAction="#chooseCloud" prefHeight="25.0" prefWidth="120.0" text="Choose cloud">
          <font>
             <Font size="12.0" />
          </font></Button>
@@ -277,12 +277,12 @@
          </font>
       </Label>
       <ImageView fitHeight="178.0" fitWidth="238.0" layoutX="486.0" layoutY="510.0" onMouseClicked="#moveStudentsToHall" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud0" fitHeight="125.0" fitWidth="125.0" layoutX="424.0" layoutY="246.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="cloud2" fitHeight="125.0" fitWidth="125.0" layoutX="577.0" layoutY="251.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="cloud0" fitHeight="125.0" fitWidth="125.0" layoutX="424.0" layoutY="246.0" onMouseClicked="#selectCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud2" fitHeight="125.0" fitWidth="125.0" layoutX="577.0" layoutY="251.0" onMouseClicked="#selectCloud" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/cloud.png" />
          </image></ImageView>
-      <ImageView fx:id="cloud1" fitHeight="125.0" fitWidth="125.0" layoutX="724.0" layoutY="248.0" onMouseClicked="#chooseCloud" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cloud1" fitHeight="125.0" fitWidth="125.0" layoutX="724.0" layoutY="248.0" onMouseClicked="#selectCloud" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tower0" fitHeight="80.0" fitWidth="62.0" layoutX="764.0" layoutY="561.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tower1" fitHeight="58.0" fitWidth="45.0" layoutX="714.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tower2" fitHeight="58.0" fitWidth="45.0" layoutX="65.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />

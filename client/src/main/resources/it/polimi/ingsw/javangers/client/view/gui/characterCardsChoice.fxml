@@ -45,7 +45,7 @@
             </ImageView>
          </children>
       </GridPane>
-      <ImageView fitHeight="55.0" fitWidth="127.0" layoutX="290.0" layoutY="226.0" onMouseClicked="#activateCharacterCard">
+      <ImageView fitHeight="55.0" fitWidth="127.0" layoutX="290.0" layoutY="226.0" onMouseClicked="#confirmCharacterCard">
          <image>
             <Image url="@images/confirmButton.png" />
          </image>

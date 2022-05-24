@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" styleClass="anchorPane" stylesheets="@css/tokensList.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="50.0" fitWidth="117.0" layoutX="238.0" layoutY="206.0" onMouseClicked="#tokensListConfirm" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="50.0" fitWidth="117.0" layoutX="238.0" layoutY="206.0" onMouseClicked="#confirmTokensList" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/confirmButton.png" />
          </image>

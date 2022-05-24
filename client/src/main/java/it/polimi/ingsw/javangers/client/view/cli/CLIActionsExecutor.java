@@ -533,7 +533,7 @@ public class CLIActionsExecutor {
      * @param username player username
      */
     private void jester(String username) {
-        System.out.printf("> Tokens from entrance. %s", TOKENS_LIST_MESSAGE);
+        System.out.printf("> Tokens to entrance. %s", TOKENS_LIST_MESSAGE);
         List<String> tokensToEntrance = null;
         List<String> tokensFromEntrance = null;
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("jester");
