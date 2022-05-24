@@ -332,17 +332,17 @@
          <image>
             <Image url="@images/rightArrow.png" />
          </image></ImageView>
-       <Label fx:id="dashboardName2" alignment="CENTER" layoutX="15.0" layoutY="120.0" prefHeight="21.0" prefWidth="155.0" textAlignment="CENTER">
+       <Label fx:id="dashboardUsernameSide" alignment="CENTER" layoutX="15.0" layoutY="120.0" prefHeight="21.0" prefWidth="155.0" textAlignment="CENTER">
            <font>
                <Font name="Verdana Bold" size="16.0" />
            </font>
        </Label>
-       <Label fx:id="dashboardName0" alignment="CENTER" layoutX="480.0" layoutY="497.0" prefWidth="305.0" textAlignment="CENTER">
+       <Label fx:id="dashboardUsernameMain" alignment="CENTER" layoutX="480.0" layoutY="497.0" prefWidth="305.0" textAlignment="CENTER">
            <font>
                <Font name="Verdana Bold" size="18.0" />
            </font>
        </Label>
-       <Label fx:id="dashboardName1" alignment="CENTER" layoutX="530.0" layoutY="124.0" prefWidth="190.0" textAlignment="CENTER">
+       <Label fx:id="dashboardUsernameOpposite" alignment="CENTER" layoutX="530.0" layoutY="124.0" prefWidth="190.0" textAlignment="CENTER">
            <font>
                <Font name="Verdana Bold" size="18.0" />
            </font>

@@ -66,7 +66,7 @@ public abstract class View {
      * Mappings for possible endgames.
      */
     public static final Map<String, String> POSSIBLE_ENDGAMES = Map.of(
-            "ALL_TOWERS", "Player placed all of their towers",
+            "ALL_TOWERS", "Player placed all their towers",
             "FEW_ISLANDS", "Archipelago was reduced to too few islands",
             "EMPTY_BAG", "Students bag was emptied",
             "NO_ASSISTANTS", "No assistant cards left"
@@ -125,7 +125,7 @@ public abstract class View {
     protected String towerColor;
 
     /**
-     * Constructor for view, initializing directives dispatcher and parser, view and starting main thread.
+     * Constructor for view, initializing directives dispatcher and parser.
      *
      * @param directivesDispatcher directives dispatcher instance
      * @param directivesParser     directives parser instance

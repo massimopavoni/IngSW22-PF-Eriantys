@@ -534,27 +534,27 @@ public class CLIActionsExecutor {
      */
     private void jester(String username) {
         System.out.printf("> Tokens from entrance. %s", TOKENS_LIST_MESSAGE);
-        List<String> tokensFromEntrance = null;
         List<String> tokensToEntrance = null;
+        List<String> tokensFromEntrance = null;
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("jester");
         String choice;
-        while (tokensFromEntrance == null) {
+        while (tokensToEntrance == null) {
             choice = CLIActionsExecutor.input.nextLine().toLowerCase();
-            tokensFromEntrance = this.parseTokensList(choice);
-            if (tokensFromEntrance.size() > maxStudents) {
-                System.out.printf("> Invalid input, tokens from entrance. %s", TOKENS_LIST_MESSAGE);
-                tokensFromEntrance = null;
+            tokensToEntrance = this.parseTokensList(choice);
+            if (tokensToEntrance.size() > maxStudents) {
+                System.out.printf("> Invalid input, tokens to entrance. %s", TOKENS_LIST_MESSAGE);
+                tokensToEntrance = null;
             } else {
-                System.out.printf("> Tokens to entrance. %s", TOKENS_LIST_MESSAGE);
+                System.out.printf("> Tokens from entrance. %s", TOKENS_LIST_MESSAGE);
                 choice = CLIActionsExecutor.input.nextLine().toLowerCase();
-                tokensToEntrance = this.parseTokensList(choice);
-                if (tokensToEntrance.size() > maxStudents || tokensToEntrance.size() != tokensFromEntrance.size()) {
-                    System.out.printf("> Invalid input, tokens from entrance. %s", TOKENS_LIST_MESSAGE);
-                    tokensFromEntrance = null;
+                tokensFromEntrance = this.parseTokensList(choice);
+                if (tokensFromEntrance.size() > maxStudents || tokensFromEntrance.size() != tokensToEntrance.size()) {
+                    System.out.printf("> Invalid input, tokens to entrance. %s", TOKENS_LIST_MESSAGE);
+                    tokensToEntrance = null;
                 }
             }
         }
-        this.directivesDispatcher.activateJester(username, tokensFromEntrance, tokensToEntrance);
+        this.directivesDispatcher.activateJester(username, tokensToEntrance, tokensFromEntrance);
     }
 
     /**
