@@ -188,6 +188,21 @@ public class GUIGameDisplayer {
     @FXML
     private Label dashboardUsernameSide;
     /**
+     * Main dashboard token image view.
+     */
+    @FXML
+    private ImageView coinViewMain;
+    /**
+     * Opposite dashboard token image view.
+     */
+    @FXML
+    private ImageView coinViewOpposite;
+    /**
+     * Side dashboard token image view.
+     */
+    @FXML
+    private ImageView coinViewSide;
+    /**
      * Third dashboard image view.
      */
     @FXML
@@ -207,37 +222,75 @@ public class GUIGameDisplayer {
      */
     @FXML
     private Label tokensListLabel;
+    /**
+     * Fill clouds button.
+     */
     @FXML
     private Button fillCloudsButton;
+    /**
+     * Play assistant card button.
+     */
     @FXML
     private Button playAssistantCardButton;
+    /**
+     * Move students button.
+     */
     @FXML
     private Button moveStudentsButton;
+    /**
+     * Move mother nature button.
+     */
     @FXML
     private Button moveMotherNatureButton;
+    /**
+     * Choose cloud button.
+     */
     @FXML
     private Button chooseCloudButton;
+    /**
+     * Activate character card button.
+     */
     @FXML
     private Button activateCharacterCardButton;
+    /**
+     * Assistant cards grid pane.
+     */
     @FXML
     private GridPane assistantCardsGrid;
+    /**
+     * Character cards grid pane.
+     */
     @FXML
     private GridPane characterCardsGrid;
+    /**
+     * Island info tower image view.
+     */
     @FXML
     private ImageView islandTowerView;
+    /**
+     * Island info tower label.
+     */
     @FXML
     private Label islandTowersLabel;
+    /**
+     * Island info inhibition token image view.
+     */
     @FXML
     private ImageView inhibitionTokenView;
+    /**
+     * Island info inhibition token label.
+     */
     @FXML
     private Label inhibitionTokenLabel;
-    @FXML
-    private ImageView coinView0;
-    @FXML
-    private ImageView coinView1;
-    @FXML
-    private ImageView coinView2;
 
+    /**
+     * Constructor for main game view controller, initializing directives parser and dispatcher, application stage, alerts,
+     * boolean flags and eagerly loaded logo, islands and island frames images.
+     *
+     * @param directivesParser     directives parser instance
+     * @param directivesDispatcher directives dispatcher instance
+     * @param stage                application stage
+     */
     protected GUIGameDisplayer(DirectivesParser directivesParser, DirectivesDispatcher directivesDispatcher, Stage stage) {
         this.directivesParser = directivesParser;
         this.directivesDispatcher = directivesDispatcher;
@@ -261,6 +314,24 @@ public class GUIGameDisplayer {
         this.characterCardsImages = new HashMap<>();
     }
 
+    /**
+     * Open main game view window scene.
+     */
+    protected void open() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("gameView.fxml"));
+            fxmlLoader.setController(this);
+            this.scene = new Scene(fxmlLoader.load());
+            this.stage.setScene(this.scene);
+            this.stage.sizeToScene();
+            this.stage.hide();
+            this.stage.show();
+            this.firstDisplay = true;
+        } catch (IOException e) {
+            throw new View.ViewException(e.getMessage(), e);
+        }
+    }
+
     private void showErrorAlert(String header, String content) {
         this.errorAlert.setHeaderText(header);
         this.errorAlert.setContentText(content);
@@ -277,21 +348,6 @@ public class GUIGameDisplayer {
         this.yourTurn.setText(message);
     }
 
-    protected void open() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("gameView.fxml"));
-            fxmlLoader.setController(this);
-            this.scene = new Scene(fxmlLoader.load());
-            this.stage.setScene(this.scene);
-            this.stage.sizeToScene();
-            this.stage.hide();
-            this.stage.show();
-            this.firstDisplay = true;
-        } catch (IOException e) {
-            throw new View.ViewException(e.getMessage(), e);
-        }
-    }
-
     public void openPopUp(String fxmlFile) {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
         fxmlLoader.setController(this);
@@ -306,11 +362,6 @@ public class GUIGameDisplayer {
         } catch (IOException e) {
             throw new View.ViewException(e.getMessage(), e);
         }
-    }
-
-    protected void closePopUp() {
-        if (this.popUpStage != null)
-            this.popUpStage.close();
     }
 
     private void displayCurrentPhase() {
@@ -538,10 +589,10 @@ public class GUIGameDisplayer {
             }
             if (directivesParser.isExpertMode()) {
                 activateCharacterCardButton.setVisible(true);
-                this.coinView0.setVisible(true);
-                this.coinView1.setVisible(true);
+                this.coinViewMain.setVisible(true);
+                this.coinViewOpposite.setVisible(true);
                 if (threePlayers)
-                    this.coinView2.setVisible(true);
+                    this.coinViewSide.setVisible(true);
             }
             this.previousArchipelagoSize = this.directivesParser.getIslandsSize();
             this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
@@ -833,10 +884,10 @@ public class GUIGameDisplayer {
             this.tokensList = new ArrayList<>();
         if (this.tokensMap == null)
             this.tokensMap = new HashMap<>();
-        int totalTokens = this.tokensList.size() +
-                this.tokensMap.values().stream().mapToInt(List::size).sum();
         if (this.moveStudentsToHall) {
             this.tokensList = tokens;
+            int totalTokens = this.tokensList.size() +
+                    this.tokensMap.values().stream().mapToInt(List::size).sum();
             if (totalTokens > studentsPerCloud) {
                 this.showErrorAlert("Move students", String.format(
                         "You have to move exactly %d students from entrance to hall and/or islands.",
@@ -850,6 +901,8 @@ public class GUIGameDisplayer {
             }
         } else {
             this.tokensMap.put(this.enlightenedIsland, tokens);
+            int totalTokens = this.tokensList.size() +
+                    this.tokensMap.values().stream().mapToInt(List::size).sum();
             if (totalTokens > studentsPerCloud) {
                 this.showErrorAlert("Move students", String.format(
                         "You have to move exactly %d students from entrance to hall and/or islands.",
@@ -917,7 +970,7 @@ public class GUIGameDisplayer {
     @FXML
     private void selectTokenColor(MouseEvent event) {
         String color = View.AVAILABLE_TOKEN_COLORS.get(
-                ((ImageView) event.getSource()).getId().substring(0,1));
+                ((ImageView) event.getSource()).getId().substring(0, 1));
         if (this.activatedCharacterCard) {
             switch (chosenCharacterCard) {
                 case "mushroomer" -> {

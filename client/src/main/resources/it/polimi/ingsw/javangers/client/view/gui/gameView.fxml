@@ -497,7 +497,7 @@
       <ImageView fx:id="island9" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="island10" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="island11" fitHeight="80.0" fitWidth="80.0" layoutX="600.0" layoutY="400.0" onMouseClicked="#selectIsland" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="coinView0" fitHeight="50.0" fitWidth="50.0" layoutX="809.0" layoutY="467.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinViewMain" fitHeight="50.0" fitWidth="50.0" layoutX="809.0" layoutY="467.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/tokens/coin.png" />
          </image>
@@ -507,7 +507,7 @@
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fx:id="coinView1" fitHeight="40.0" fitWidth="40.0" layoutX="742.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinViewOpposite" fitHeight="40.0" fitWidth="40.0" layoutX="742.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/tokens/coin.png" />
          </image>
@@ -517,7 +517,7 @@
             <Font name="Verdana Bold" size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="coinView2" fitHeight="40.0" fitWidth="40.0" layoutX="128.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinViewSide" fitHeight="40.0" fitWidth="40.0" layoutX="128.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/tokens/coin.png" />
          </image>
