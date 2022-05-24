@@ -820,7 +820,7 @@ public class GUIGameDisplayer {
     }
 
     private void handleMonk(int multipurposeCounter, List<String> tokens) {
-        if (this.tokensList.size() > multipurposeCounter) {
+        if (tokens.size() > multipurposeCounter) {
             this.showErrorAlert("Monk", String.format(
                     "You must choose up to %d token%s to move from the monk card to the selected island.",
                     multipurposeCounter, multipurposeCounter == 1 ? "" : "s"));
@@ -878,7 +878,7 @@ public class GUIGameDisplayer {
     }
 
     private void handleQueen(int multipurposeCounter, List<String> tokens) {
-        if (this.tokensList.size() > multipurposeCounter) {
+        if (tokens.size() > multipurposeCounter) {
             this.showErrorAlert("Queen", String.format(
                     "You must choose up to %d token%s to move from the queen card to your hall.",
                     multipurposeCounter, multipurposeCounter == 1 ? "" : "s"));
