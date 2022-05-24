@@ -481,12 +481,13 @@ public class CLIActionsExecutor {
      */
     private void monk(String username) {
         System.out.print("> Select an island: ");
-        List<String> studentsToIsland = new ArrayList<>();
+        List<String> studentsToIsland = null;
         int islandsSize = this.directivesParser.getIslandsSize();
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("monk");
         int islandIndex = -1;
         String choice;
-        while (islandIndex < 0 || islandIndex >= islandsSize || studentsToIsland.size() != maxStudents) {
+        while (islandIndex < 0 || islandIndex >= islandsSize ||
+                studentsToIsland == null) {
             choice = CLIActionsExecutor.input.nextLine().strip();
             try {
                 islandIndex = Integer.parseInt(choice) - 1;
@@ -495,10 +496,11 @@ public class CLIActionsExecutor {
                 System.out.printf("> %s", TOKENS_LIST_MESSAGE);
                 choice = CLIActionsExecutor.input.nextLine().toLowerCase();
                 studentsToIsland = this.parseTokensList(choice);
-                if (studentsToIsland.size() != maxStudents)
+                if (studentsToIsland.size() > maxStudents)
                     throw new NumberFormatException();
             } catch (NumberFormatException e) {
                 System.out.print("> Invalid input, select an island: ");
+                studentsToIsland = null;
             }
         }
         this.directivesDispatcher.activateMonk(username, studentsToIsland, islandIndex);
@@ -511,14 +513,15 @@ public class CLIActionsExecutor {
      */
     private void queen(String username) {
         System.out.printf("> %s", TOKENS_LIST_MESSAGE);
-        List<String> studentsToHall = new ArrayList<>();
+        List<String> studentsToHall = null;
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("queen");
         String choice;
-        while (studentsToHall.size() != maxStudents) {
+        while (studentsToHall == null) {
             choice = CLIActionsExecutor.input.nextLine().toLowerCase();
             studentsToHall = this.parseTokensList(choice);
-            if (studentsToHall.size() != maxStudents) {
+            if (studentsToHall.size() > maxStudents) {
                 System.out.printf("> Invalid input. %s", TOKENS_LIST_MESSAGE);
+                studentsToHall = null;
             }
         }
         this.directivesDispatcher.activateQueen(username, studentsToHall);
@@ -531,21 +534,24 @@ public class CLIActionsExecutor {
      */
     private void jester(String username) {
         System.out.printf("> Tokens from entrance. %s", TOKENS_LIST_MESSAGE);
-        List<String> tokensFromEntrance = new ArrayList<>();
-        List<String> tokensToEntrance = new ArrayList<>();
+        List<String> tokensFromEntrance = null;
+        List<String> tokensToEntrance = null;
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("jester");
         String choice;
-        while (tokensFromEntrance.size() != maxStudents && tokensToEntrance.size() != maxStudents) {
+        while (tokensFromEntrance == null) {
             choice = CLIActionsExecutor.input.nextLine().toLowerCase();
             tokensFromEntrance = this.parseTokensList(choice);
-            if (tokensFromEntrance.size() != maxStudents) {
+            if (tokensFromEntrance.size() > maxStudents) {
                 System.out.printf("> Invalid input, tokens from entrance. %s", TOKENS_LIST_MESSAGE);
+                tokensFromEntrance = null;
             } else {
                 System.out.printf("> Tokens to entrance. %s", TOKENS_LIST_MESSAGE);
                 choice = CLIActionsExecutor.input.nextLine().toLowerCase();
                 tokensToEntrance = this.parseTokensList(choice);
-                if (tokensToEntrance.size() != maxStudents)
+                if (tokensToEntrance.size() > maxStudents || tokensToEntrance.size() != tokensFromEntrance.size()) {
                     System.out.printf("> Invalid input, tokens from entrance. %s", TOKENS_LIST_MESSAGE);
+                    tokensFromEntrance = null;
+                }
             }
         }
         this.directivesDispatcher.activateJester(username, tokensFromEntrance, tokensToEntrance);
@@ -558,21 +564,24 @@ public class CLIActionsExecutor {
      */
     private void bard(String username) {
         System.out.printf("> Tokens from hall. %s", TOKENS_LIST_MESSAGE);
-        List<String> tokensFromHall = new ArrayList<>();
-        List<String> tokensFromEntrance = new ArrayList<>();
+        List<String> tokensFromHall = null;
+        List<String> tokensFromEntrance = null;
         int maxStudents = this.directivesParser.getCharacterCardMultipurposeCounter("bard");
         String choice;
-        while (tokensFromHall.size() != maxStudents && tokensFromEntrance.size() != maxStudents) {
+        while (tokensFromHall == null) {
             choice = CLIActionsExecutor.input.nextLine().toLowerCase();
             tokensFromHall = this.parseTokensList(choice);
-            if (tokensFromHall.size() != maxStudents) {
+            if (tokensFromHall.size() > maxStudents) {
                 System.out.printf("> Invalid input, tokens from hall. %s", TOKENS_LIST_MESSAGE);
+                tokensFromHall = null;
             } else {
                 System.out.printf("> Tokens from entrance. %s", TOKENS_LIST_MESSAGE);
                 choice = CLIActionsExecutor.input.nextLine().toLowerCase();
                 tokensFromEntrance = this.parseTokensList(choice);
-                if (tokensFromEntrance.size() != maxStudents)
+                if (tokensFromEntrance.size() > maxStudents || tokensFromEntrance.size() != tokensFromHall.size()) {
                     System.out.printf("> Invalid input, tokens from hall. %s", TOKENS_LIST_MESSAGE);
+                    tokensFromHall = null;
+                }
             }
         }
         this.directivesDispatcher.activateBard(username, tokensFromHall, tokensFromEntrance);
