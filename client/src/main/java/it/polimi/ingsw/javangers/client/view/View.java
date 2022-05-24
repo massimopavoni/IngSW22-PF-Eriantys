@@ -312,6 +312,7 @@ public abstract class View {
                 if (!this.winners.isEmpty()) {
                     this.closeGame(this.winners);
                     this.returnToMainMenu();
+                    this.reset();
                 } else {
                     this.continueGame();
                 }

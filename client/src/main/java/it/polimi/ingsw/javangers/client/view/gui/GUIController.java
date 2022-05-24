@@ -160,7 +160,7 @@ public class GUIController extends View implements Initializable {
      */
     @Override
     protected void startShow() {
-        guiGameDisplayer.open();
+        this.guiGameDisplayer.open();
         try {
             this.guiGameDisplayer.displayGame(this.username);
             this.previousMessageType = MessageType.START;
@@ -270,12 +270,12 @@ public class GUIController extends View implements Initializable {
     /**
      * Show error alert message.
      *
-     * @param headerText  header
-     * @param contentText content
+     * @param header  header text
+     * @param content content text
      */
-    private void showErrorAlert(String headerText, String contentText) {
-        this.errorAlert.setHeaderText(headerText);
-        this.errorAlert.setContentText(contentText);
+    private void showErrorAlert(String header, String content) {
+        this.errorAlert.setHeaderText(header);
+        this.errorAlert.setContentText(content);
         this.errorAlert.showAndWait();
     }
 

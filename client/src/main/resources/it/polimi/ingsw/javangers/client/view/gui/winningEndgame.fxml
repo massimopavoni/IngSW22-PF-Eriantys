@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="anchorPane" stylesheets="@css/winningEndgame.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="anchorPane" stylesheets="@css/winningEndgame.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="winnersLabel" alignment="CENTER" layoutX="15.0" layoutY="170.0" prefHeight="23.0" prefWidth="370.0" textAlignment="CENTER" wrapText="true">
          <font>

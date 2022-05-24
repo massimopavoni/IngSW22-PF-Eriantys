@@ -145,7 +145,7 @@ public class GUIGameDisplayer {
     /**
      * Currently enlightened island index.
      */
-    private int enlightenedIsland;
+    private int enlightenedIslandIndex;
     /**
      * Currently chosen assistant card.
      */
@@ -285,7 +285,7 @@ public class GUIGameDisplayer {
 
     /**
      * Constructor for main game view controller, initializing directives parser and dispatcher, application stage, alerts,
-     * boolean flags and eagerly loaded logo, islands and island frames images.
+     * boolean flags and eagerly loaded logo, towers, islands and island frames images.
      *
      * @param directivesParser     directives parser instance
      * @param directivesDispatcher directives dispatcher instance
@@ -299,6 +299,10 @@ public class GUIGameDisplayer {
         this.messageAlert = new Alert(Alert.AlertType.INFORMATION);
         this.activatedCharacterCard = false;
         this.cranioLogo = new Image(String.valueOf(GUIGameDisplayer.class.getResource("images/cranioLogo.png")));
+        this.towersImages = new HashMap<>();
+        View.AVAILABLE_TOWER_COLORS.values().forEach(color -> this.towersImages.put(color,
+                new Image(String.valueOf(GUIGameDisplayer.class.getResource(
+                        String.format("images/towers/%sTower.png", color.toLowerCase()))))));
         this.islandFramesImages = new Image[3];
         this.islandsImages = new Image[4];
         for (int i = 0; i < 3; i++) {
@@ -309,7 +313,6 @@ public class GUIGameDisplayer {
         }
         this.islandsImages[3] = new Image(String.valueOf(
                 GUIGameDisplayer.class.getResource("images/islands/islandMotherNature.png")));
-        this.towersImages = new HashMap<>();
         this.assistantCardsImages = new HashMap<>();
         this.characterCardsImages = new HashMap<>();
     }
@@ -332,22 +335,10 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void showErrorAlert(String header, String content) {
-        this.errorAlert.setHeaderText(header);
-        this.errorAlert.setContentText(content);
-        this.errorAlert.showAndWait();
-    }
-
-    private void showMessageAlert(String header, String content) {
-        this.messageAlert.setHeaderText(header);
-        this.messageAlert.setContentText(content);
-        this.messageAlert.showAndWait();
-    }
-
-    public void setYourTurnMessage(String message) {
-        this.yourTurn.setText(message);
-    }
-
+    /**
+     * Open focused popup window on top of main game view window.
+     * @param fxmlFile fxml resource file
+     */
     public void openPopUp(String fxmlFile) {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource(fxmlFile));
         fxmlLoader.setController(this);
@@ -363,6 +354,88 @@ public class GUIGameDisplayer {
         } catch (IOException e) {
             throw new View.ViewException(e.getMessage(), e);
         }
+    }
+
+    /**
+     * Show error alert message.
+     *
+     * @param header  header text
+     * @param content content text
+     */
+    private void showErrorAlert(String header, String content) {
+        this.errorAlert.setHeaderText(header);
+        this.errorAlert.setContentText(content);
+        this.errorAlert.showAndWait();
+    }
+
+    /**
+     * Show information alert message.
+     *
+     * @param header  header text
+     * @param content content text
+     */
+    private void showMessageAlert(String header, String content) {
+        this.messageAlert.setHeaderText(header);
+        this.messageAlert.setContentText(content);
+        this.messageAlert.showAndWait();
+    }
+
+    /**
+     * Display game information.
+     *
+     * @param username player username
+     * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
+     */
+    protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
+        if (this.firstDisplay) {
+            this.username = username;
+            this.directivesParser.getDashboardAssistantCards(this.username).keySet()
+                    .forEach(card -> this.assistantCardsImages.put(card, new Image(String.valueOf(
+                            GUIGameDisplayer.class.getResource(String.format("images/assistantCards/%s.png", card))))));
+            this.directivesParser.getCharacterCardNames().forEach(card -> this.characterCardsImages.put(card, new Image(
+                    String.valueOf(GUIGameDisplayer.class.getResource(String.format("images/characterCards/%s.png", card))))));
+            this.usernamesList = directivesParser.getDashboardUsernames();
+            this.usernamesList.remove(this.username);
+            this.usernamesList.add(0, this.username);
+            this.dashboardUsernameMain.setText(this.username);
+            this.dashboardUsernameOpposite.setText(this.usernamesList.get(1));
+            boolean threePlayers = this.directivesParser.getExactPlayersNumber() == 3;
+            if (threePlayers) {
+                this.thirdDashboard.setVisible(true);
+                this.thirdDiscardCloud.setVisible(true);
+                this.dashboardUsernameSide.setText(this.usernamesList.get(2));
+                this.scene.lookup("#cloud2").setVisible(true);
+            }
+            if (this.directivesParser.isExpertMode()) {
+                activateCharacterCardButton.setVisible(true);
+                this.coinViewMain.setVisible(true);
+                this.coinViewOpposite.setVisible(true);
+                if (threePlayers)
+                    this.coinViewSide.setVisible(true);
+            }
+            this.previousArchipelagoSize = this.directivesParser.getIslandsSize();
+            this.enlightenedIslandIndex = this.directivesParser.getMotherNaturePosition();
+        }
+        this.displayCurrentPhase();
+        this.displayPlayersOrder();
+        ((Label) this.scene.lookup("#studentsBagLabel")).setText(String.valueOf(
+                this.directivesParser.getStudentsBagTokens().values().stream().mapToInt(Integer::intValue).sum()));
+        this.displayArchipelago();
+        this.updateEnlightenedIslandInfo(this.enlightenedIslandIndex);
+        this.displayCloudsTokensLabels();
+        this.displayDashboardTowers();
+        this.displayDashboardEntranceTokens();
+        this.displayDashboardHallTokens();
+        this.displayDashboardTeachers();
+        this.displayLastDiscardedCards();
+        if (this.directivesParser.isExpertMode())
+            this.displayCoinsLabels();
+        if (this.firstDisplay)
+            this.firstDisplay = false;
+    }
+
+    public void setYourTurnMessage(String message) {
+        this.yourTurn.setText(message);
     }
 
     private void displayCurrentPhase() {
@@ -384,8 +457,8 @@ public class GUIGameDisplayer {
                 this.scene.lookup(String.format(ISLAND_FRAME_SELECTOR, i)).setVisible(false);
             }
             this.previousArchipelagoSize = archipelagoSize;
-            if (this.enlightenedIsland >= archipelagoSize)
-                this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
+            if (this.enlightenedIslandIndex >= archipelagoSize)
+                this.enlightenedIslandIndex = this.directivesParser.getMotherNaturePosition();
         }
         double deltaRad = 2 * Math.PI / archipelagoSize;
         double currentRad = 0;
@@ -465,7 +538,7 @@ public class GUIGameDisplayer {
                 this.updateEnlightenedIslandInfo(selectedIsland);
                 this.openPopUp(TOKENS_LIST_FXML);
                 if (this.tokensMap != null)
-                    this.tokensMap.put(this.enlightenedIsland, Collections.emptyList());
+                    this.tokensMap.put(this.enlightenedIslandIndex, Collections.emptyList());
                 int permittedStudentsNumber = Math.max(0, this.directivesParser.getStudentsPerCloud()
                         - (this.tokensList == null ? 0 : this.tokensList.size())
                         - (this.tokensMap == null ? 0 : this.tokensMap.values().stream().mapToInt(List::size).sum()));
@@ -517,33 +590,35 @@ public class GUIGameDisplayer {
     @FXML
     private void selectEnlightenedIsland(MouseEvent event) {
         if (((ImageView) event.getSource()).getId().equals("leftArrow"))
-            this.updateEnlightenedIslandInfo((this.enlightenedIsland +
+            this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex +
                     this.directivesParser.getIslandsSize() - 1) % this.directivesParser.getIslandsSize());
         else
-            this.updateEnlightenedIslandInfo((this.enlightenedIsland + 1)
+            this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex + 1)
                     % this.directivesParser.getIslandsSize());
     }
 
     private void updateEnlightenedIslandInfo(int newPosition) {
-        ImageView updateFrameIsland = (ImageView) this.scene.lookup(String.format(ISLAND_FRAME_SELECTOR, this.enlightenedIsland));
+        ImageView updateFrameIsland = (ImageView) this.scene.lookup(
+                String.format(ISLAND_FRAME_SELECTOR, this.enlightenedIslandIndex));
         updateFrameIsland.setVisible(false);
-        this.enlightenedIsland = newPosition;
-        updateFrameIsland = (ImageView) this.scene.lookup(String.format(ISLAND_FRAME_SELECTOR, this.enlightenedIsland));
+        this.enlightenedIslandIndex = newPosition;
+        updateFrameIsland = (ImageView) this.scene.lookup(
+                String.format(ISLAND_FRAME_SELECTOR, this.enlightenedIslandIndex));
         updateFrameIsland.setVisible(true);
         if (this.directivesParser.isExpertMode()) {
             if (this.firstDisplay)
                 this.inhibitionTokenView.setVisible(true);
             else
                 this.inhibitionTokenLabel.setText(String.valueOf(
-                        this.directivesParser.getIslandEnabled(this.enlightenedIsland)));
+                        this.directivesParser.getIslandEnabled(this.enlightenedIslandIndex)));
         }
         try {
-            Map<String, Integer> islandTokens = this.directivesParser.getIslandTokens(this.enlightenedIsland);
+            Map<String, Integer> islandTokens = this.directivesParser.getIslandTokens(this.enlightenedIslandIndex);
             this.displayTokensLabels("IslandLabel", islandTokens);
         } catch (DirectivesParser.DirectivesParserException e) {
             throw new View.ViewException(e.getMessage(), e);
         }
-        Pair<String, Integer> islandTowers = this.directivesParser.getIslandTowers(this.enlightenedIsland);
+        Pair<String, Integer> islandTowers = this.directivesParser.getIslandTowers(this.enlightenedIslandIndex);
         if (islandTowers.getValue() != 0) {
             this.islandTowerView.setImage(this.towersImages.get(islandTowers.getKey()));
             this.islandTowerView.setVisible(true);
@@ -564,57 +639,6 @@ public class GUIGameDisplayer {
         for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++)
             ((Label) this.scene.lookup(String.format("#coinLabel%d", i)))
                     .setText(String.format("%d", this.directivesParser.getDashboardCoins(this.usernamesList.get(i))));
-    }
-
-    protected void displayGame(String username) throws DirectivesParser.DirectivesParserException {
-        if (this.firstDisplay) {
-            this.username = username;
-            View.AVAILABLE_TOWER_COLORS.values().forEach(color -> this.towersImages.put(color,
-                    new Image(String.valueOf(GUIGameDisplayer.class.getResource(
-                            String.format("images/towers/%sTower.png", color.toLowerCase()))))));
-            this.directivesParser.getDashboardAssistantCards(this.username).keySet()
-                    .forEach(card -> this.assistantCardsImages.put(card, new Image(String.valueOf(
-                            GUIGameDisplayer.class.getResource(String.format("images/assistantCards/%s.png", card))))));
-            this.directivesParser.getCharacterCardNames().forEach(card -> this.characterCardsImages.put(card, new Image(
-                    String.valueOf(GUIGameDisplayer.class.getResource(String.format("images/characterCards/%s.png", card))))));
-            this.usernamesList = directivesParser.getDashboardUsernames();
-            this.usernamesList.remove(this.username);
-            this.usernamesList.add(0, this.username);
-            this.dashboardUsernameMain.setText(this.username);
-            this.dashboardUsernameOpposite.setText(this.usernamesList.get(1));
-            boolean threePlayers = this.directivesParser.getExactPlayersNumber() == 3;
-            if (threePlayers) {
-                this.thirdDashboard.setVisible(true);
-                this.thirdDiscardCloud.setVisible(true);
-                this.dashboardUsernameSide.setText(this.usernamesList.get(2));
-                this.scene.lookup("#cloud2").setVisible(true);
-            }
-            if (directivesParser.isExpertMode()) {
-                activateCharacterCardButton.setVisible(true);
-                this.coinViewMain.setVisible(true);
-                this.coinViewOpposite.setVisible(true);
-                if (threePlayers)
-                    this.coinViewSide.setVisible(true);
-            }
-            this.previousArchipelagoSize = this.directivesParser.getIslandsSize();
-            this.updateEnlightenedIslandInfo(this.directivesParser.getMotherNaturePosition());
-        }
-        this.displayCurrentPhase();
-        this.displayPlayersOrder();
-        ((Label) this.scene.lookup("#studentsBagLabel")).setText(String.valueOf(
-                this.directivesParser.getStudentsBagTokens().values().stream().mapToInt(Integer::intValue).sum()));
-        this.updateEnlightenedIslandInfo(this.enlightenedIsland);
-        this.displayArchipelago();
-        this.displayCloudsTokensLabels();
-        this.displayDashboardTowers();
-        this.displayDashboardEntranceTokens();
-        this.displayDashboardHallTokens();
-        this.displayDashboardTeachers();
-        this.displayLastDiscardedCards();
-        if (directivesParser.isExpertMode())
-            this.displayCoinsLabels();
-        if (this.firstDisplay)
-            this.firstDisplay = false;
     }
 
     private void displayDashboardTeachers() {
@@ -825,7 +849,7 @@ public class GUIGameDisplayer {
                     "You must choose up to %d token%s to move from the monk card to the selected island.",
                     multipurposeCounter, multipurposeCounter == 1 ? "" : "s"));
         } else {
-            this.directivesDispatcher.activateMonk(this.username, tokens, this.enlightenedIsland);
+            this.directivesDispatcher.activateMonk(this.username, tokens, this.enlightenedIslandIndex);
         }
         this.activatedCharacterCard = false;
         this.popUpStage.close();
@@ -911,7 +935,7 @@ public class GUIGameDisplayer {
                 this.tokensMap = null;
             }
         } else {
-            this.tokensMap.put(this.enlightenedIsland, tokens);
+            this.tokensMap.put(this.enlightenedIslandIndex, tokens);
             int totalTokens = this.tokensList.size() +
                     this.tokensMap.values().stream().mapToInt(List::size).sum();
             if (totalTokens > studentsPerCloud) {
