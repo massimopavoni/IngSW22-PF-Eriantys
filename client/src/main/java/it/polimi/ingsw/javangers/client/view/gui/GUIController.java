@@ -40,12 +40,12 @@ public class GUIController extends View implements Initializable {
      * Tower color ChoiceBox.
      */
     @FXML
-    private ChoiceBox<String> towerColorChoice;
+    private final ChoiceBox<String> towerColorChoice;
     /**
      * Exact players number ChoiceBox.
      */
     @FXML
-    private ChoiceBox<Integer> exactPlayersNumberChoice;
+    private final ChoiceBox<Integer> exactPlayersNumberChoice;
     /**
      * Create vs join flag.
      */
@@ -286,14 +286,14 @@ public class GUIController extends View implements Initializable {
         try {
             for (String action : this.directivesParser.getAvailableActions()) {
                 switch (action) {
-                    case "FillClouds" -> this.guiGameDisplayer.getFillCloudsButton().setDisable(false);
-                    case "PlayAssistantCard" -> this.guiGameDisplayer.getPlayAssistantCardButton().setDisable(false);
-                    case "MoveStudents" -> this.guiGameDisplayer.getMoveStudentsButton().setDisable(false);
-                    case "MoveMotherNature" -> this.guiGameDisplayer.getMoveMotherNatureButton().setDisable(false);
-                    case "ChooseCloud" -> this.guiGameDisplayer.getChooseCloudButton().setDisable(false);
-                    case "ActivateCharacterCard" -> this.guiGameDisplayer.getActivateCharacterCardButton()
-                            .setDisable(!this.directivesParser.getPlayersEnabledCharacterCard().get(this.username));
-                    default -> throw new ViewException(String.format("Unknown action: %s", action));
+                    case "FillClouds" -> this.guiGameDisplayer.setDisableFillClouds(false);
+                    case "PlayAssistantCard" -> this.guiGameDisplayer.setDisablePlayAssistantCard(false);
+                    case "MoveStudents" -> this.guiGameDisplayer.setDisableMoveStudents(false);
+                    case "MoveMotherNature" -> this.guiGameDisplayer.setDisableMoveMotherNature(false);
+                    case "ChooseCloud" -> this.guiGameDisplayer.setDisableChooseCloud(false);
+                    case "ActivateCharacterCard" -> this.guiGameDisplayer.setDisableActivateCharacterCard(
+                            !this.directivesParser.getPlayersEnabledCharacterCard().get(this.username));
+                    default -> throw new ViewException(String.format("Unknown action button: %s", action));
                 }
             }
         } catch (DirectivesParser.DirectivesParserException e) {
@@ -305,12 +305,12 @@ public class GUIController extends View implements Initializable {
      * Disable all action buttons.
      */
     private void disableAllButtons() {
-        this.guiGameDisplayer.getFillCloudsButton().setDisable(true);
-        this.guiGameDisplayer.getPlayAssistantCardButton().setDisable(true);
-        this.guiGameDisplayer.getMoveStudentsButton().setDisable(true);
-        this.guiGameDisplayer.getMoveMotherNatureButton().setDisable(true);
-        this.guiGameDisplayer.getChooseCloudButton().setDisable(true);
-        this.guiGameDisplayer.getActivateCharacterCardButton().setDisable(true);
+        this.guiGameDisplayer.setDisableFillClouds(true);
+        this.guiGameDisplayer.setDisablePlayAssistantCard(true);
+        this.guiGameDisplayer.setDisableMoveStudents(true);
+        this.guiGameDisplayer.setDisableMoveMotherNature(true);
+        this.guiGameDisplayer.setDisableChooseCloud(true);
+        this.guiGameDisplayer.setDisableActivateCharacterCard(true);
     }
 
     /**

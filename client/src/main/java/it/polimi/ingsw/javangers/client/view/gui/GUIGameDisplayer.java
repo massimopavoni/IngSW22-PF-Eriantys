@@ -5,6 +5,7 @@ import it.polimi.ingsw.javangers.client.controller.directives.DirectivesParser;
 import it.polimi.ingsw.javangers.client.view.View;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -318,6 +319,60 @@ public class GUIGameDisplayer {
     }
 
     /**
+     * Set disable fill clouds button for external primary view controller usage.
+     *
+     * @param disable disable
+     */
+    protected void setDisableFillClouds(boolean disable) {
+        this.fillCloudsButton.setDisable(disable);
+    }
+
+    /**
+     * Set disable play assistant card button for external primary view controller usage.
+     *
+     * @param disable disable
+     */
+    protected void setDisablePlayAssistantCard(boolean disable) {
+        this.playAssistantCardButton.setDisable(disable);
+    }
+
+    /**
+     * Set disable move students button for external primary view controller usage.
+     *
+     * @param disable disable
+     */
+    protected void setDisableMoveStudents(boolean disable) {
+        this.moveStudentsButton.setDisable(disable);
+    }
+
+    /**
+     * Set disable move mother nature button for external primary view controller usage.
+     *
+     * @param disable disable
+     */
+    protected void setDisableMoveMotherNature(boolean disable) {
+        this.moveMotherNatureButton.setDisable(disable);
+    }
+
+    /**
+     * Set disable choose cloud button for external primary view controller usage.
+     *
+     * @param disable disable
+     */
+    protected void setDisableChooseCloud(boolean disable) {
+        this.chooseCloudButton.setDisable(disable);
+    }
+
+    /**
+     * Set disable activate character card button for external primary view controller usage.
+     *
+     * @param disable disable
+     */
+    protected void setDisableActivateCharacterCard(boolean disable) {
+        this.activateCharacterCardButton.setDisable(disable);
+    }
+
+    /**
      * Open main game view window scene.
      */
     protected void open() {
@@ -337,6 +392,7 @@ public class GUIGameDisplayer {
 
     /**
      * Open focused popup window on top of main game view window.
+     *
      * @param fxmlFile fxml resource file
      */
     public void openPopUp(String fxmlFile) {
@@ -423,32 +479,54 @@ public class GUIGameDisplayer {
         this.displayArchipelago();
         this.updateEnlightenedIslandInfo(this.enlightenedIslandIndex);
         this.displayCloudsTokensLabels();
-        this.displayDashboardTowers();
-        this.displayDashboardEntranceTokens();
-        this.displayDashboardHallTokens();
-        this.displayDashboardTeachers();
-        this.displayLastDiscardedCards();
+        try {
+            Map<String, String> teachers = this.directivesParser.getTeachers();
+            for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+                this.displayDashboardTowers(i);
+                this.displayDashboardTokens(i);
+                this.displayDashboardTeachers(teachers, i);
+                this.displayDashboardLastDiscard(i);
+            }
+        } catch (DirectivesParser.DirectivesParserException e) {
+            throw new View.ViewException(e.getMessage(), e);
+        }
         if (this.directivesParser.isExpertMode())
-            this.displayCoinsLabels();
+            this.displayDashboardCoins();
         if (this.firstDisplay)
             this.firstDisplay = false;
     }
 
+    /**
+     * Set turn message above buttons.
+     *
+     * @param message message
+     */
     public void setYourTurnMessage(String message) {
         this.yourTurn.setText(message);
     }
 
+    /**
+     * Display current phase information.
+     */
     private void displayCurrentPhase() {
         Pair<String, String> currentPhasePair = this.directivesParser.getCurrentPhase();
         this.currentPhase.setText(String.format("Current phase: %s => %s",
                 currentPhasePair.getKey(), currentPhasePair.getValue()));
     }
 
+    /**
+     * Display current players order information.
+     *
+     * @throws DirectivesParser.DirectivesParserException if there was an error while retrieving game information from parser
+     */
     private void displayPlayersOrder() throws DirectivesParser.DirectivesParserException {
         this.playersOrder.setText(String.format("Player's order: %s",
                 String.join(", ", this.directivesParser.getPlayersOrder())));
     }
 
+    /**
+     * Display archipelago islands formation and information.
+     */
     private void displayArchipelago() {
         int archipelagoSize = this.directivesParser.getIslandsSize();
         if (archipelagoSize < this.previousArchipelagoSize) {
@@ -482,126 +560,28 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void displayDashboardEntranceTokens() {
-        Map<String, Integer> entranceTokens;
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            try {
-                entranceTokens = this.directivesParser.getDashboardEntranceTokens(this.usernamesList.get(i));
-                this.displayTokensLabels(String.format("DashboardEntranceLabel%d", i), entranceTokens);
-            } catch (DirectivesParser.DirectivesParserException e) {
-                throw new View.ViewException(e.getMessage(), e);
-            }
-        }
+    /**
+     * Display tokens from list on selected labels.
+     *
+     * @param selector scene selector
+     * @param tokens   tokens list
+     */
+    private void displayTokensLabels(String selector, Map<String, Integer> tokens) {
+        GUIGameDisplayer.TOKEN_COLORS_LABELS
+                .forEach((label, color) -> ((Label) this.scene.lookup(String.format("#%s%s", label, selector))).setText(
+                        tokens.get(color) != null ? tokens.get(color).toString() : "0"));
     }
 
-    private void displayDashboardHallTokens() {
-        Map<String, Integer> hallTokens;
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            try {
-                hallTokens = this.directivesParser.getDashboardHallTokens(this.usernamesList.get(i));
-                this.displayTokensLabels(String.format("DashboardHallLabel%d", i), hallTokens);
-            } catch (DirectivesParser.DirectivesParserException e) {
-                throw new View.ViewException(e.getMessage(), e);
-            }
-        }
-    }
-
-    private void handleCharacterCardSelectIsland(int selectedIsland) {
-        switch (this.chosenCharacterCard) {
-            case "monk" -> {
-                this.updateEnlightenedIslandInfo(selectedIsland);
-                this.openPopUp(TOKENS_LIST_FXML);
-                int multipurposeCounter = this.directivesParser
-                        .getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
-                this.tokensListLabel.setText(String.format(
-                        "Choose up to %d student%s to move from the monk card to the selected island.",
-                        multipurposeCounter, multipurposeCounter == 1 ? "" : "s"));
-                this.spinnersInit();
-            }
-            case "herald" -> {
-                this.directivesDispatcher.activateHerald(this.username, selectedIsland);
-                this.activatedCharacterCard = false;
-            }
-            case "herbalist" -> {
-                this.directivesDispatcher.activateHerbalist(this.username, selectedIsland);
-                this.activatedCharacterCard = false;
-            }
-            default -> {
-                // Do nothing for other character cards
-            }
-        }
-    }
-
-    private void handlePhaseSelectIsland(int selectedIsland) {
-        switch (this.directivesParser.getCurrentPhase().getValue()) {
-            case "Move students" -> {
-                this.updateEnlightenedIslandInfo(selectedIsland);
-                this.openPopUp(TOKENS_LIST_FXML);
-                if (this.tokensMap != null)
-                    this.tokensMap.put(this.enlightenedIslandIndex, Collections.emptyList());
-                int permittedStudentsNumber = Math.max(0, this.directivesParser.getStudentsPerCloud()
-                        - (this.tokensList == null ? 0 : this.tokensList.size())
-                        - (this.tokensMap == null ? 0 : this.tokensMap.values().stream().mapToInt(List::size).sum()));
-                this.tokensListLabel.setText(String.format(
-                        "Choose up to %d student%s to move from your entrance to the selected island.",
-                        permittedStudentsNumber, permittedStudentsNumber == 1 ? "" : "s"));
-                this.spinnersInit();
-                this.moveStudentsToHall = false;
-            }
-            case "Move mother nature" -> {
-                int steps = (selectedIsland - this.directivesParser.getMotherNaturePosition()
-                        + this.directivesParser.getIslandsSize()) % this.directivesParser.getIslandsSize();
-                if (steps < 1 || steps > this.directivesParser
-                        .getDashboardLastDiscardedAssistantCard(this.username).getValue().getValue()
-                        + this.directivesParser.getAdditionalMotherNatureSteps()) {
-                    this.showErrorAlert("Move mother nature", "Invalid number of steps.");
-                } else {
-                    this.directivesDispatcher.actionMoveMotherNature(this.username, steps);
-                }
-            }
-            default -> {
-                // Do nothing for other phases
-            }
-        }
-    }
-
-    @FXML
-    private void selectIsland(MouseEvent mouseEvent) {
-        int selectedIsland = Integer.parseInt(((ImageView) mouseEvent.getSource()).getId().split("island")[1]);
-        if (this.activatedCharacterCard) {
-            this.handleCharacterCardSelectIsland(selectedIsland);
-        } else {
-            this.handlePhaseSelectIsland(selectedIsland);
-        }
-    }
-
-    private void displayCloudsTokensLabels() {
-        Map<String, Integer> cloudTokens;
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            try {
-                cloudTokens = this.directivesParser.getCloudTokens(i);
-                this.displayTokensLabels(String.format("CloudLabel%d", i), cloudTokens);
-            } catch (DirectivesParser.DirectivesParserException e) {
-                throw new View.ViewException(e.getMessage(), e);
-            }
-        }
-    }
-
-    @FXML
-    private void selectEnlightenedIsland(MouseEvent event) {
-        if (((ImageView) event.getSource()).getId().equals("leftArrow"))
-            this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex +
-                    this.directivesParser.getIslandsSize() - 1) % this.directivesParser.getIslandsSize());
-        else
-            this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex + 1)
-                    % this.directivesParser.getIslandsSize());
-    }
-
-    private void updateEnlightenedIslandInfo(int newPosition) {
+    /**
+     * Enlighten new island and update information shown.
+     *
+     * @param index new island index
+     */
+    private void updateEnlightenedIslandInfo(int index) {
         ImageView updateFrameIsland = (ImageView) this.scene.lookup(
                 String.format(ISLAND_FRAME_SELECTOR, this.enlightenedIslandIndex));
         updateFrameIsland.setVisible(false);
-        this.enlightenedIslandIndex = newPosition;
+        this.enlightenedIslandIndex = index;
         updateFrameIsland = (ImageView) this.scene.lookup(
                 String.format(ISLAND_FRAME_SELECTOR, this.enlightenedIslandIndex));
         updateFrameIsland.setVisible(true);
@@ -629,65 +609,118 @@ public class GUIGameDisplayer {
         }
     }
 
-    private void displayTokensLabels(String selector, Map<String, Integer> tokens) {
-        GUIGameDisplayer.TOKEN_COLORS_LABELS
-                .forEach((label, color) -> ((Label) this.scene.lookup(String.format("#%s%s", label, selector))).setText(
-                        tokens.get(color) != null ? tokens.get(color).toString() : "0"));
-    }
-
-    private void displayCoinsLabels() {
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++)
-            ((Label) this.scene.lookup(String.format("#coinLabel%d", i)))
-                    .setText(String.format("%d", this.directivesParser.getDashboardCoins(this.usernamesList.get(i))));
-    }
-
-    private void displayDashboardTeachers() {
-        try {
-            Map<String, String> teachers = this.directivesParser.getTeachers();
-            ImageView teacherView;
-            for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-                for (Map.Entry<String, String> label : GUIGameDisplayer.TOKEN_COLORS_LABELS.entrySet()) {
-                    teacherView = (ImageView) this.scene.lookup(
-                            String.format("#%sDashboardTeacher%d", label.getKey(), i));
-                    if (teachers.get(label.getValue()).equals(this.usernamesList.get(i))) {
-                        teacherView.setVisible(true);
-                        teacherView = (ImageView) this.scene.lookup(String.format("#%sTeacher", label.getKey()));
-                        if (teacherView.isVisible())
-                            teacherView.setVisible(false);
-                    } else
-                        teacherView.setVisible(false);
-                }
+    /**
+     * Display tokens on clouds.
+     */
+    private void displayCloudsTokensLabels() {
+        Map<String, Integer> cloudTokens;
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
+            try {
+                cloudTokens = this.directivesParser.getCloudTokens(i);
+                this.displayTokensLabels(String.format("CloudLabel%d", i), cloudTokens);
+            } catch (DirectivesParser.DirectivesParserException e) {
+                throw new View.ViewException(e.getMessage(), e);
             }
+        }
+    }
+
+    /**
+     * Display towers on specified dashboard.
+     *
+     * @param index selector index for dashboard information
+     */
+    private void displayDashboardTowers(int index) {
+        if (this.firstDisplay) {
+            ImageView towerView = (ImageView) this.scene.lookup(String.format("#tower%d", index));
+            towerView.setImage(this.towersImages.get(
+                    this.directivesParser.getDashboardTowers(this.usernamesList.get(index)).getKey()));
+        }
+        ((Label) this.scene.lookup(String.format("#towerLabel%d", index))).setText(
+                this.directivesParser.getDashboardTowers(this.usernamesList.get(index)).getValue().toString());
+    }
+
+    /**
+     * Display tokens on specified dashboard.
+     *
+     * @param index selector index for dashboard information
+     */
+    private void displayDashboardTokens(int index) {
+        Map<String, Integer> entranceTokens;
+        Map<String, Integer> hallTokens;
+        try {
+            entranceTokens = this.directivesParser.getDashboardEntranceTokens(this.usernamesList.get(index));
+            hallTokens = this.directivesParser.getDashboardHallTokens(this.usernamesList.get(index));
+            this.displayTokensLabels(String.format("DashboardEntranceLabel%d", index), entranceTokens);
+            this.displayTokensLabels(String.format("DashboardHallLabel%d", index), hallTokens);
         } catch (DirectivesParser.DirectivesParserException e) {
             throw new View.ViewException(e.getMessage(), e);
         }
     }
 
-    private void displayLastDiscardedCards() {
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            Map.Entry<String, Pair<Integer, Integer>> lastDiscard =
-                    this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(i));
-            if (lastDiscard != null) {
-                if (this.directivesParser.getDashboardDiscardedAssistantCards(this.usernamesList.get(i)).size() == 1)
-                    this.scene.lookup(String.format("#lastDiscardShadow%d", i)).setVisible(true);
-                ((ImageView) this.scene.lookup(String.format("#lastDiscard%d", i))).setImage(
-                        this.assistantCardsImages.get(lastDiscard.getKey()));
-            }
+    /**
+     * Display teachers on specified dashboard.
+     *
+     * @param teachers teachers list
+     * @param index    selector index for dashboard information
+     */
+    private void displayDashboardTeachers(Map<String, String> teachers, int index) {
+        ImageView teacherView;
+        for (Map.Entry<String, String> label : GUIGameDisplayer.TOKEN_COLORS_LABELS.entrySet()) {
+            teacherView = (ImageView) this.scene.lookup(
+                    String.format("#%sDashboardTeacher%d", label.getKey(), index));
+            if (teachers.get(label.getValue()).equals(this.usernamesList.get(index))) {
+                teacherView.setVisible(true);
+                teacherView = (ImageView) this.scene.lookup(String.format("#%sTeacher", label.getKey()));
+                if (teacherView.isVisible())
+                    teacherView.setVisible(false);
+            } else
+                teacherView.setVisible(false);
         }
     }
 
-    private void displayDashboardTowers() {
-        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++) {
-            if (this.firstDisplay) {
-                ImageView towerView = (ImageView) this.scene.lookup(String.format("#tower%d", i));
-                towerView.setImage(this.towersImages.get(
-                        this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).getKey()));
-            }
-            ((Label) this.scene.lookup("#towerLabel" + i)).setText(
-                    this.directivesParser.getDashboardTowers(this.usernamesList.get(i)).getValue().toString());
+    /**
+     * Display last discarded assistant cards on specified dashboard.
+     *
+     * @param index selector index for dashboard information
+     */
+    private void displayDashboardLastDiscard(int index) {
+        Map.Entry<String, Pair<Integer, Integer>> lastDiscard =
+                this.directivesParser.getDashboardLastDiscardedAssistantCard(this.usernamesList.get(index));
+        if (lastDiscard != null) {
+            if (this.directivesParser.getDashboardDiscardedAssistantCards(this.usernamesList.get(index)).size() == 1)
+                this.scene.lookup(String.format("#lastDiscardShadow%d", index)).setVisible(true);
+            ((ImageView) this.scene.lookup(String.format("#lastDiscard%d", index))).setImage(
+                    this.assistantCardsImages.get(lastDiscard.getKey()));
         }
     }
 
+    /**
+     * Display coins on dashboards.
+     */
+    private void displayDashboardCoins() {
+        for (int i = 0; i < this.directivesParser.getExactPlayersNumber(); i++)
+            ((Label) this.scene.lookup(String.format("#coinLabel%d", i)))
+                    .setText(String.format("%d", this.directivesParser.getDashboardCoins(this.usernamesList.get(i))));
+    }
+
+    /**
+     * Display endgame window with winners and endgame information.
+     *
+     * @param winnersList list of winners
+     */
+    protected void displayEndgame(List<String> winnersList) {
+        this.openPopUp(winnersList.contains(this.username) ? "winningEndgame.fxml" : "losingEndgame.fxml");
+        ((Label) this.popUpStage.getScene().lookup("#winnersLabel"))
+                .setText(String.format("Winners: %s", String.join(", ", winnersList)));
+        ((Label) this.popUpStage.getScene().lookup("#endgameLabel"))
+                .setText(View.POSSIBLE_ENDGAMES.get(this.directivesParser.getEndGame()));
+        this.popUpStage.hide();
+        this.popUpStage.showAndWait();
+    }
+
+    /**
+     * Display available assistant cards in popup window.
+     */
     private void displayAvailableAssistantCards() {
         this.chosenAssistantCard = null;
         List<String> cardNamesList = new ArrayList<>(
@@ -703,6 +736,9 @@ public class GUIGameDisplayer {
             this.assistantCardsGrid.getChildren().get(i).setVisible(false);
     }
 
+    /**
+     * Display available character cards in popup window.
+     */
     private void displayAvailableCharacterCards() {
         this.chosenCharacterCard = null;
         List<String> cardNamesList = this.directivesParser.getCharacterCardNames();
@@ -715,16 +751,9 @@ public class GUIGameDisplayer {
         }
     }
 
-    @FXML
-    private void selectAssistantCard(MouseEvent event) {
-        if (this.chosenAssistantCard != null)
-            this.assistantCardsGrid.lookup(
-                    String.format(CARD_FRAME_SELECTOR, this.chosenAssistantCard)).setVisible(false);
-        this.chosenAssistantCard = ((ImageView) event.getSource()).getId();
-        this.assistantCardsGrid.lookup(
-                String.format(CARD_FRAME_SELECTOR, this.chosenAssistantCard)).setVisible(true);
-    }
-
+    /**
+     * Display currently chosen character card information.
+     */
     private void displayCharacterCardInfo() {
         Pair<Integer, Integer> cardCost = this.directivesParser.getCharacterCardCost(this.chosenCharacterCard);
         ((Label) this.popUpStage.getScene().lookup("#cardCostLabel"))
@@ -742,95 +771,11 @@ public class GUIGameDisplayer {
                 String.format("%d", this.directivesParser.getCharacterCardMultipurposeCounter(this.chosenCharacterCard)));
     }
 
-    @FXML
-    private void selectCharacterCard(MouseEvent event) {
-        if (this.chosenCharacterCard != null)
-            this.characterCardsGrid.lookup(
-                    String.format(CARD_FRAME_SELECTOR, this.chosenCharacterCard)).setVisible(false);
-        this.chosenCharacterCard = ((ImageView) event.getSource()).getId();
-        this.characterCardsGrid.lookup(
-                String.format(CARD_FRAME_SELECTOR, this.chosenCharacterCard)).setVisible(true);
-        this.displayCharacterCardInfo();
-    }
-
-    protected void displayEndgame(List<String> winnersList) {
-        this.openPopUp(winnersList.contains(this.username) ? "winningEndgame.fxml" : "losingEndgame.fxml");
-        ((Label) this.popUpStage.getScene().lookup("#winnersLabel"))
-                .setText(String.format("Winners: %s", String.join(", ", winnersList)));
-        ((Label) this.popUpStage.getScene().lookup("#endgameLabel"))
-                .setText(View.POSSIBLE_ENDGAMES.get(this.directivesParser.getEndGame()));
-        this.popUpStage.hide();
-        this.popUpStage.showAndWait();
-    }
-
-    @FXML
-    private void fillClouds() {
-        this.directivesDispatcher.actionFillClouds(this.username);
-    }
-
-    @FXML
-    private void playAssistantCard() {
-        this.openPopUp("assistantCardsChoice.fxml");
-        this.displayAvailableAssistantCards();
-    }
-
-    @FXML
-    private void activateCharacterCard() {
-        this.openPopUp("characterCardsChoice.fxml");
-        this.displayAvailableCharacterCards();
-    }
-
-    @FXML
-    private void confirmAssistantCard() {
-        this.popUpStage.close();
-        this.directivesDispatcher.actionPlayAssistantCard(this.username, this.chosenAssistantCard);
-    }
-
-    @FXML
-    private void moveStudentsToHall() {
-        if (this.directivesParser.getCurrentPhase().getValue().equals("Move students")) {
-            this.tokensList = null;
-            this.openPopUp(TOKENS_LIST_FXML);
-            int allowedStudentsNumber = Math.max(0, this.directivesParser.getStudentsPerCloud()
-                    - (this.tokensList == null ? 0 : this.tokensList.size())
-                    - (this.tokensMap == null ? 0 : this.tokensMap.values().stream().mapToInt(List::size).sum()));
-            this.tokensListLabel.setText(String.format(
-                    "Choose up to %d student%s to move from your entrance to your hall.",
-                    allowedStudentsNumber, allowedStudentsNumber == 1 ? "" : "s"));
-            this.spinnersInit();
-            this.moveStudentsToHall = true;
-        }
-    }
-
-    @FXML
-    private void moveStudents() {
-        this.showMessageAlert("Move students", String.format(
-                "You must move exactly %s students from your entrance to your hall or/and on some islands.",
-                this.directivesParser.getStudentsPerCloud()));
-        this.activatedCharacterCard = false;
-        this.tokensMap = null;
-    }
-
-    private void spinnersInit() {
-        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values().stream()
-                .map(color -> color.split("_")[0].toLowerCase()).toList()) {
-            SpinnerValueFactory<Integer> spinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 14000605);
-            spinnerValueFactory.setValue(0);
-            Spinner<Integer> spinner = (Spinner<Integer>) this.popUpStage.getScene().lookup(String.format("#%sSpinner", tokenColor));
-            spinner.setValueFactory(spinnerValueFactory);
-        }
-    }
-
-    @FXML
-    private void tokensSpinnersScroll(ScrollEvent scrollEvent) {
-        Spinner<Integer> spinner = (Spinner<Integer>) scrollEvent.getSource();
-        if (scrollEvent.getDeltaY() > 0) {
-            spinner.increment();
-        } else if (scrollEvent.getDeltaY() < 0) {
-            spinner.decrement();
-        }
-    }
-
+    /**
+     * Handle click on tokens list confirm button with activate character card action.
+     *
+     * @param tokens list of tokens
+     */
     private void handleCharacterCardConfirmTokensList(List<String> tokens) {
         int multipurposeCounter = this.directivesParser.getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
         switch (this.chosenCharacterCard) {
@@ -843,6 +788,12 @@ public class GUIGameDisplayer {
         }
     }
 
+    /**
+     * Handle monk character card.
+     *
+     * @param multipurposeCounter card's multipurpose counter
+     * @param tokens              list of tokens
+     */
     private void handleMonk(int multipurposeCounter, List<String> tokens) {
         if (tokens.size() > multipurposeCounter) {
             this.showErrorAlert("Monk", String.format(
@@ -855,6 +806,12 @@ public class GUIGameDisplayer {
         this.popUpStage.close();
     }
 
+    /**
+     * Handle jester character card.
+     *
+     * @param multipurposeCounter card's multipurpose counter
+     * @param tokens              list of tokens
+     */
     private void handleJester(int multipurposeCounter, List<String> tokens) {
         if (this.tokensList == null) {
             this.popUpStage.close();
@@ -878,6 +835,12 @@ public class GUIGameDisplayer {
         }
     }
 
+    /**
+     * Handle bard character card.
+     *
+     * @param multipurposeCounter card's multipurpose counter
+     * @param tokens              list of tokens
+     */
     private void handleBard(int multipurposeCounter, List<String> tokens) {
         if (this.tokensList == null) {
             this.popUpStage.close();
@@ -901,6 +864,12 @@ public class GUIGameDisplayer {
         }
     }
 
+    /**
+     * Handle queen character card.
+     *
+     * @param multipurposeCounter card's multipurpose counter
+     * @param tokens              list of tokens
+     */
     private void handleQueen(int multipurposeCounter, List<String> tokens) {
         if (tokens.size() > multipurposeCounter) {
             this.showErrorAlert("Queen", String.format(
@@ -913,6 +882,11 @@ public class GUIGameDisplayer {
         this.popUpStage.close();
     }
 
+    /**
+     * Handle click on tokens list confirm button with move students action.
+     *
+     * @param tokens list of tokens
+     */
     private void handleMoveStudentsConfirmTokensList(List<String> tokens) {
         int studentsPerCloud = this.directivesParser.getStudentsPerCloud();
         if (this.tokensList == null)
@@ -952,6 +926,368 @@ public class GUIGameDisplayer {
         this.popUpStage.close();
     }
 
+    /**
+     * Handle click on island with activate character card action.
+     *
+     * @param selectedIsland selected island index
+     */
+    private void handleCharacterCardSelectIsland(int selectedIsland) {
+        switch (this.chosenCharacterCard) {
+            case "monk" -> {
+                this.updateEnlightenedIslandInfo(selectedIsland);
+                this.openPopUp(TOKENS_LIST_FXML);
+                int multipurposeCounter = this.directivesParser
+                        .getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
+                this.tokensListLabel.setText(String.format(
+                        "Choose up to %d student%s to move from the monk card to the selected island.",
+                        multipurposeCounter, multipurposeCounter == 1 ? "" : "s"));
+                this.spinnersInit();
+            }
+            case "herald" -> {
+                this.directivesDispatcher.activateHerald(this.username, selectedIsland);
+                this.activatedCharacterCard = false;
+            }
+            case "herbalist" -> {
+                this.directivesDispatcher.activateHerbalist(this.username, selectedIsland);
+                this.activatedCharacterCard = false;
+            }
+            default -> {
+                // Do nothing for other character cards
+            }
+        }
+    }
+
+    /**
+     * Handle click on island with move students or move mother nature action.
+     *
+     * @param selectedIsland selected island index
+     */
+    private void handlePhaseSelectIsland(int selectedIsland) {
+        switch (this.directivesParser.getCurrentPhase().getValue()) {
+            case "Move students" -> {
+                this.updateEnlightenedIslandInfo(selectedIsland);
+                this.openPopUp(TOKENS_LIST_FXML);
+                if (this.tokensMap != null)
+                    this.tokensMap.put(this.enlightenedIslandIndex, Collections.emptyList());
+                int permittedStudentsNumber = Math.max(0, this.directivesParser.getStudentsPerCloud()
+                        - (this.tokensList == null ? 0 : this.tokensList.size())
+                        - (this.tokensMap == null ? 0 : this.tokensMap.values().stream().mapToInt(List::size).sum()));
+                this.tokensListLabel.setText(String.format(
+                        "Choose up to %d student%s to move from your entrance to the selected island.",
+                        permittedStudentsNumber, permittedStudentsNumber == 1 ? "" : "s"));
+                this.spinnersInit();
+                this.moveStudentsToHall = false;
+            }
+            case "Move mother nature" -> {
+                int steps = (selectedIsland - this.directivesParser.getMotherNaturePosition()
+                        + this.directivesParser.getIslandsSize()) % this.directivesParser.getIslandsSize();
+                if (steps < 1 || steps > this.directivesParser
+                        .getDashboardLastDiscardedAssistantCard(this.username).getValue().getValue()
+                        + this.directivesParser.getAdditionalMotherNatureSteps()) {
+                    this.showErrorAlert("Move mother nature", "Invalid number of steps.");
+                } else {
+                    this.directivesDispatcher.actionMoveMotherNature(this.username, steps);
+                }
+            }
+            default -> {
+                // Do nothing for other phases
+            }
+        }
+    }
+
+    /**
+     * Method invoked upon innkeeper card selection confirmation.
+     */
+    private void innkeeper() {
+        this.directivesDispatcher.activateInnkeeper(this.username);
+        this.activatedCharacterCard = false;
+    }
+
+    /**
+     * Method invoked upon mailman card selection confirmation.
+     */
+    private void mailman() {
+        this.directivesDispatcher.activateMailman(this.username);
+        this.activatedCharacterCard = false;
+    }
+
+    /**
+     * Method invoked upon centaur card selection confirmation.
+     */
+    private void centaur() {
+        this.directivesDispatcher.activateCentaur(this.username);
+        this.activatedCharacterCard = false;
+    }
+
+    /**
+     * Method invoked upon knight card selection confirmation.
+     */
+    private void knight() {
+        this.directivesDispatcher.activateKnight(this.username);
+        this.activatedCharacterCard = false;
+    }
+
+    /**
+     * Method invoked upon herald card selection confirmation.
+     */
+    private void herald() {
+        this.showMessageAlert("Activate character card: herald",
+                "Choose an island by clicking on it.");
+    }
+
+    /**
+     * Method invoked upon herbalist card selection confirmation.
+     */
+    private void herbalist() {
+        this.showMessageAlert("Activate character card: herbalist",
+                "Choose an island by clicking on it.");
+    }
+
+    /**
+     * Method invoked upon mushroomer card selection confirmation.
+     */
+    private void mushroomer() {
+        this.showMessageAlert("Activate character card: mushroomer",
+                "Choose a color by clicking on island info panel tokens.");
+
+    }
+
+    /**
+     * Method invoked upon scoundrel card selection confirmation.
+     */
+    private void scoundrel() {
+        this.showMessageAlert("Activate character card: scoundrel",
+                "Choose a color by clicking on island info panel tokens.");
+    }
+
+    /**
+     * Method invoked upon monk card selection confirmation.
+     */
+    private void monk() {
+        this.showMessageAlert("Activate character card: monk",
+                "Choose an island by clicking on it.");
+    }
+
+    /**
+     * Method invoked upon jester card selection confirmation.
+     */
+    private void jester() {
+        this.openPopUp(TOKENS_LIST_FXML);
+        int multipurposeCounter = this.directivesParser.getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
+        this.tokensListLabel.setText(String.format(
+                "Choose up to %d student%s to move from the jester card to your entrance.",
+                multipurposeCounter, multipurposeCounter == 1 ? "s" : ""));
+        this.spinnersInit();
+        this.tokensList = null;
+    }
+
+    /**
+     * Method invoked upon bard card selection confirmation.
+     */
+    private void bard() {
+        this.openPopUp(TOKENS_LIST_FXML);
+        int multipurposeCounter = this.directivesParser.getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
+        this.tokensListLabel.setText(String.format(
+                "Choose up to %d student%s to move from your hall to your entrance.",
+                multipurposeCounter, multipurposeCounter == 1 ? "s" : ""));
+        this.spinnersInit();
+        this.tokensList = null;
+    }
+
+    /**
+     * Method invoked upon queen card selection confirmation.
+     */
+    private void queen() {
+        this.openPopUp(TOKENS_LIST_FXML);
+        int multipurposeCounter = this.directivesParser.getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
+        this.tokensListLabel.setText(String.format(
+                "Choose up to %d student%s to move from the queen card to your hall.",
+                multipurposeCounter, multipurposeCounter == 1 ? "s" : ""));
+        this.spinnersInit();
+        this.tokensList = null;
+    }
+
+    /**
+     * Init spinners for tokens list creation in popup window.
+     */
+    private void spinnersInit() {
+        for (String tokenColor : View.AVAILABLE_TOKEN_COLORS.values().stream()
+                .map(color -> color.split("_")[0].toLowerCase()).toList()) {
+            SpinnerValueFactory<Integer> spinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 14000605);
+            spinnerValueFactory.setValue(0);
+            Spinner<Integer> spinner = (Spinner<Integer>) this.popUpStage.getScene().lookup(String.format("#%sSpinner", tokenColor));
+            spinner.setValueFactory(spinnerValueFactory);
+        }
+    }
+
+    /**
+     * Fill clouds button click event.
+     */
+    @FXML
+    private void fillClouds() {
+        this.directivesDispatcher.actionFillClouds(this.username);
+    }
+
+    /**
+     * Play assistant card button click event.
+     */
+    @FXML
+    private void playAssistantCard() {
+        this.openPopUp("assistantCardsChoice.fxml");
+        this.displayAvailableAssistantCards();
+    }
+
+    /**
+     * Assistant card image view click event.
+     *
+     * @param event mouse event
+     */
+    @FXML
+    private void selectAssistantCard(MouseEvent event) {
+        if (this.chosenAssistantCard != null)
+            this.assistantCardsGrid.lookup(
+                    String.format(CARD_FRAME_SELECTOR, this.chosenAssistantCard)).setVisible(false);
+        this.chosenAssistantCard = ((ImageView) event.getSource()).getId();
+        this.assistantCardsGrid.lookup(
+                String.format(CARD_FRAME_SELECTOR, this.chosenAssistantCard)).setVisible(true);
+    }
+
+    /**
+     * Play assistant card confirmation button click event.
+     */
+    @FXML
+    private void confirmAssistantCard() {
+        this.popUpStage.close();
+        this.directivesDispatcher.actionPlayAssistantCard(this.username, this.chosenAssistantCard);
+    }
+
+    /**
+     * Move student button click event.
+     */
+    @FXML
+    private void moveStudents() {
+        this.showMessageAlert("Move students", String.format(
+                "You must move exactly %s students from your entrance to your hall or/and on some islands.",
+                this.directivesParser.getStudentsPerCloud()));
+        this.activatedCharacterCard = false;
+        this.tokensMap = null;
+    }
+
+    /**
+     * Hall image view click event.
+     */
+    @FXML
+    private void moveStudentsToHall() {
+        if (this.directivesParser.getCurrentPhase().getValue().equals("Move students")
+                && this.directivesParser.getCurrentPlayer().equals(this.username)) {
+            this.tokensList = null;
+            this.openPopUp(TOKENS_LIST_FXML);
+            int allowedStudentsNumber = Math.max(0, this.directivesParser.getStudentsPerCloud()
+                    - (this.tokensList == null ? 0 : this.tokensList.size())
+                    - (this.tokensMap == null ? 0 : this.tokensMap.values().stream().mapToInt(List::size).sum()));
+            this.tokensListLabel.setText(String.format(
+                    "Choose up to %d student%s to move from your entrance to your hall.",
+                    allowedStudentsNumber, allowedStudentsNumber == 1 ? "" : "s"));
+            this.spinnersInit();
+            this.moveStudentsToHall = true;
+            this.activatedCharacterCard = false;
+        }
+    }
+
+    /**
+     * Move mother nature button click event.
+     */
+    @FXML
+    private void moveMotherNature() {
+        this.showMessageAlert("Move mother nature",
+                String.format("Choose an island by clicking on it (your maximum number of steps for current turn is %d).",
+                        this.directivesParser.getDashboardLastDiscardedAssistantCard(this.username).getValue().getValue()
+                                + this.directivesParser.getAdditionalMotherNatureSteps()));
+        this.activatedCharacterCard = false;
+    }
+
+    /**
+     * Choose cloud button click event.
+     */
+    @FXML
+    private void chooseCloud() {
+        this.showMessageAlert("Choose cloud", "Choose a cloud by clicking on it.");
+        this.activatedCharacterCard = false;
+    }
+
+    /**
+     * Cloud image view click event.
+     *
+     * @param event mouse event
+     */
+    @FXML
+    private void selectCloud(MouseEvent event) {
+        if (this.directivesParser.getCurrentPhase().getValue().equals("Choose cloud")
+                && this.directivesParser.getCurrentPlayer().equals(this.username)) {
+            int chosenCloud = Integer.parseInt(((ImageView) event.getSource()).getId().split("cloud")[1]);
+            this.directivesDispatcher.actionChooseCloud(this.username, chosenCloud);
+        }
+    }
+
+    /**
+     * Activate character card button click event.
+     */
+    @FXML
+    private void activateCharacterCard() {
+        this.openPopUp("characterCardsChoice.fxml");
+        this.displayAvailableCharacterCards();
+    }
+
+    /**
+     * Character card image view click event.
+     *
+     * @param event mouse event
+     */
+    @FXML
+    private void selectCharacterCard(MouseEvent event) {
+        if (this.chosenCharacterCard != null)
+            this.characterCardsGrid.lookup(
+                    String.format(CARD_FRAME_SELECTOR, this.chosenCharacterCard)).setVisible(false);
+        this.chosenCharacterCard = ((ImageView) event.getSource()).getId();
+        this.characterCardsGrid.lookup(
+                String.format(CARD_FRAME_SELECTOR, this.chosenCharacterCard)).setVisible(true);
+        this.displayCharacterCardInfo();
+    }
+
+    /**
+     * Activate character card confirmation button click event.
+     */
+    @FXML
+    private void confirmCharacterCard() {
+        this.popUpStage.close();
+        if (this.chosenCharacterCard != null) {
+            this.activatedCharacterCard = true;
+            try {
+                GUIGameDisplayer.EFFECT_METHOD_MAPPINGS.get(this.chosenCharacterCard).invoke(this);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new View.ViewException(e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * Tokens list spinners scroll event.
+     *
+     * @param event scroll event
+     */
+    @FXML
+    private void tokensSpinnersScroll(ScrollEvent event) {
+        Spinner<Integer> spinner = (Spinner<Integer>) event.getSource();
+        if (event.getDeltaY() > 0) {
+            spinner.increment();
+        } else if (event.getDeltaY() < 0) {
+            spinner.decrement();
+        }
+    }
+
+    /**
+     * Tokens list confirmation button click event.
+     */
     @FXML
     private void confirmTokensList() {
         ArrayList<String> tokens = new ArrayList<>();
@@ -967,43 +1303,45 @@ public class GUIGameDisplayer {
         }
     }
 
-
+    /**
+     * Island image view click event.
+     *
+     * @param event mouse event
+     */
     @FXML
-    private void moveMotherNature() {
-        this.showMessageAlert("Move mother nature",
-                String.format("Choose an island by clicking on it (your maximum number of steps for current turn is %d).",
-                        this.directivesParser.getDashboardLastDiscardedAssistantCard(this.username).getValue().getValue()
-                                + this.directivesParser.getAdditionalMotherNatureSteps()));
-        this.activatedCharacterCard = false;
-    }
-
-    @FXML
-    private void chooseCloud() {
-        this.showMessageAlert("Choose cloud", "Choose a cloud by clicking on it.");
-        this.activatedCharacterCard = false;
-    }
-
-    @FXML
-    private void selectCloud(MouseEvent event) {
-        if (this.directivesParser.getCurrentPhase().getValue().equals("Choose cloud")) {
-            int chosenCloud = Integer.parseInt(((ImageView) event.getSource()).getId().split("cloud")[1]);
-            this.directivesDispatcher.actionChooseCloud(this.username, chosenCloud);
-        }
-    }
-
-    @FXML
-    private void confirmCharacterCard() {
-        this.popUpStage.close();
-        if (this.chosenCharacterCard != null) {
-            this.activatedCharacterCard = true;
-            try {
-                GUIGameDisplayer.EFFECT_METHOD_MAPPINGS.get(this.chosenCharacterCard).invoke(this);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new View.ViewException(e.getMessage(), e);
+    private void selectIsland(MouseEvent event) {
+        if (this.directivesParser.getCurrentPlayer().equals(this.username)) {
+            int selectedIsland = Integer.parseInt(((ImageView) event.getSource()).getId().split("island")[1]);
+            if (this.activatedCharacterCard) {
+                this.handleCharacterCardSelectIsland(selectedIsland);
+            } else {
+                this.handlePhaseSelectIsland(selectedIsland);
             }
         }
     }
 
+    /**
+     * Enlightened island arrow image view click event.
+     *
+     * @param event mouse event
+     */
+    @FXML
+    private void selectEnlightenedIsland(MouseEvent event) {
+        String source = ((Node) event.getSource()).getId();
+        switch (source) {
+            case "leftArrow" -> this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex +
+                    this.directivesParser.getIslandsSize() - 1) % this.directivesParser.getIslandsSize());
+            case "rightArrow" -> this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex + 1)
+                    % this.directivesParser.getIslandsSize());
+            default -> throw new View.ViewException("Invalid source for select enlightened island.");
+        }
+    }
+
+    /**
+     * Enlightened island information token image view click event.
+     *
+     * @param event mouse event
+     */
     @FXML
     private void selectTokenColor(MouseEvent event) {
         String color = View.AVAILABLE_TOKEN_COLORS.get(
@@ -1023,105 +1361,5 @@ public class GUIGameDisplayer {
                 }
             }
         }
-    }
-
-    private void innkeeper() {
-        this.directivesDispatcher.activateInnkeeper(this.username);
-        this.activatedCharacterCard = false;
-    }
-
-    private void mailman() {
-        this.directivesDispatcher.activateMailman(this.username);
-        this.activatedCharacterCard = false;
-    }
-
-    private void centaur() {
-        this.directivesDispatcher.activateCentaur(this.username);
-        this.activatedCharacterCard = false;
-    }
-
-    private void knight() {
-        this.directivesDispatcher.activateKnight(this.username);
-        this.activatedCharacterCard = false;
-    }
-
-    private void herald() {
-        this.showMessageAlert("Activate character card: herald",
-                "Choose an island by clicking on it.");
-    }
-
-    private void herbalist() {
-        this.showMessageAlert("Activate character card: herbalist",
-                "Choose an island by clicking on it.");
-    }
-
-    private void mushroomer() {
-        this.showMessageAlert("Activate character card: mushroomer",
-                "Choose a color by clicking on island info panel tokens.");
-
-    }
-
-    private void scoundrel() {
-        this.showMessageAlert("Activate character card: scoundrel",
-                "Choose a color by clicking on island info panel tokens.");
-    }
-
-    private void monk() {
-        this.showMessageAlert("Activate character card: monk",
-                "Choose an island by clicking on it.");
-    }
-
-    private void queen() {
-        this.openPopUp(TOKENS_LIST_FXML);
-        int multipurposeCounter = this.directivesParser.getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
-        this.tokensListLabel.setText(String.format(
-                "Choose up to %d student%s to move from the queen card to your hall.",
-                multipurposeCounter, multipurposeCounter == 1 ? "s" : ""));
-        this.spinnersInit();
-        this.tokensList = null;
-    }
-
-    private void jester() {
-        this.openPopUp(TOKENS_LIST_FXML);
-        int multipurposeCounter = this.directivesParser.getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
-        this.tokensListLabel.setText(String.format(
-                "Choose up to %d student%s to move from the jester card to your entrance.",
-                multipurposeCounter, multipurposeCounter == 1 ? "s" : ""));
-        this.spinnersInit();
-        this.tokensList = null;
-    }
-
-    private void bard() {
-        this.openPopUp(TOKENS_LIST_FXML);
-        int multipurposeCounter = this.directivesParser.getCharacterCardMultipurposeCounter(this.chosenCharacterCard);
-        this.tokensListLabel.setText(String.format(
-                "Choose up to %d student%s to move from your hall to your entrance.",
-                multipurposeCounter, multipurposeCounter == 1 ? "s" : ""));
-        this.spinnersInit();
-        this.tokensList = null;
-    }
-
-    protected Button getFillCloudsButton() {
-        return this.fillCloudsButton;
-    }
-
-    protected Button getPlayAssistantCardButton() {
-        return this.playAssistantCardButton;
-    }
-
-    protected Button getMoveStudentsButton() {
-        return this.moveStudentsButton;
-    }
-
-    protected Button getMoveMotherNatureButton() {
-        return this.moveMotherNatureButton;
-    }
-
-    protected Button getChooseCloudButton() {
-        return this.chooseCloudButton;
-    }
-
-    protected Button getActivateCharacterCardButton() {
-        return this.activateCharacterCardButton;
     }
 }
