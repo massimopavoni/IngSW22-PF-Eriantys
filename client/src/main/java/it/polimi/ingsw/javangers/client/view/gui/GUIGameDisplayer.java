@@ -416,6 +416,14 @@ public class GUIGameDisplayer {
     }
 
     /**
+     * Close popup window.
+     */
+    public void closePopUp() {
+        if (this.popUpStage != null)
+            this.popUpStage.close();
+    }
+
+    /**
      * Show error alert message.
      *
      * @param header  header text
