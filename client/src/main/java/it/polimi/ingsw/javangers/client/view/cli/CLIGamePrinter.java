@@ -97,6 +97,9 @@ public class CLIGamePrinter {
         this.printSeparator();
     }
 
+    /**
+     * Print cli separator line.
+     */
     private void printSeparator() {
         System.out.printf("%n%s%s%n", CLIConstants.ANSI_BRIGHT_WHITE, "-".repeat(64));
     }

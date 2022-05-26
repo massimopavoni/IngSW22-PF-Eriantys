@@ -26,6 +26,9 @@ public class CLIActionsExecutor {
      * Map for methods corresponding to character cards effects.
      */
     private static final Map<String, Method> EFFECT_METHOD_MAPPINGS;
+    /**
+     * Token color print literal.
+     */
     private static final String TOKEN_LITERAL = "%s%s%s";
     /**
      * Message for requesting a tokens list from the user.
@@ -320,6 +323,7 @@ public class CLIActionsExecutor {
      * Execute activate character card action.
      *
      * @param username player username
+     * @throws CLIActionsExecutorException if method reflection invocation fails
      */
     private void activateCharacterCard(String username) throws CLIActionsExecutorException {
         List<String> characterCardNames = this.directivesParser.getCharacterCardNames();

@@ -71,6 +71,7 @@ public class GUIController extends View implements Initializable {
      *
      * @param directivesDispatcher directives dispatcher instance
      * @param directivesParser     directives parser instance
+     * @param stage                application stage
      */
     protected GUIController(DirectivesDispatcher directivesDispatcher, DirectivesParser directivesParser, Stage stage) {
         super(directivesDispatcher, directivesParser);

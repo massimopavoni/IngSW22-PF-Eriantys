@@ -215,6 +215,8 @@ public abstract class View {
 
     /**
      * Method called to show the game end.
+     *
+     * @param winners list of winners
      */
     protected abstract void closeGame(List<String> winners);
 

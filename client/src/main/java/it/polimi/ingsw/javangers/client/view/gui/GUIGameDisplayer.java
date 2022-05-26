@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
@@ -380,6 +382,7 @@ public class GUIGameDisplayer {
             FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("gameView.fxml"));
             fxmlLoader.setController(this);
             this.scene = new Scene(fxmlLoader.load());
+            this.scene.setOnKeyReleased(this::sceneKeyReleased);
             this.stage.setScene(this.scene);
             this.stage.sizeToScene();
             this.stage.hide();
@@ -1334,6 +1337,22 @@ public class GUIGameDisplayer {
             case "rightArrow" -> this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex + 1)
                     % this.directivesParser.getIslandsSize());
             default -> throw new View.ViewException("Invalid source for select enlightened island.");
+        }
+    }
+
+    /**
+     * Scene key released event.
+     *
+     * @param event key event
+     */
+    @FXML
+    private void sceneKeyReleased(KeyEvent event) {
+        if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.A) {
+            this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex +
+                    this.directivesParser.getIslandsSize() - 1) % this.directivesParser.getIslandsSize());
+        } else if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.D) {
+            this.updateEnlightenedIslandInfo((this.enlightenedIslandIndex + 1)
+                    % this.directivesParser.getIslandsSize());
         }
     }
 
