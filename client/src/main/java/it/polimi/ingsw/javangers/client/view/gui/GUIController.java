@@ -40,12 +40,12 @@ public class GUIController extends View implements Initializable {
      * Tower color ChoiceBox.
      */
     @FXML
-    private final ChoiceBox<String> towerColorChoice;
+    private ChoiceBox<String> towerColorChoice;
     /**
      * Exact players number ChoiceBox.
      */
     @FXML
-    private final ChoiceBox<Integer> exactPlayersNumberChoice;
+    private ChoiceBox<Integer> exactPlayersNumberChoice;
     /**
      * Create vs join flag.
      */
