@@ -357,7 +357,7 @@ public class GameEngine {
 
             // Make changes based on island winners
             // "There can be only one (one, one, one)"
-            PlayerDashboard winnerDashboard = this.gameState.getPlayerDashboards().get(islandWinners.get(0));
+            PlayerDashboard winnerDashboard = this.gameState.getPlayerDashboards().get(islandWinners.getFirst());
             if (islandWinners.size() == 1 && selectedIsland.getTowers().getValue0() != winnerDashboard.getTowers().getValue0()) {
                 this.updateIslandData(selectedIslandIndex, winnerDashboard);
             }
@@ -386,7 +386,7 @@ public class GameEngine {
         // Add island number of students only if player is corresponding teacher's owner
         this.gameState.getTeachers().entrySet().stream()
                 .filter(entry -> selectedIslandTokenContainer.getTokens().contains(entry.getKey()) &&
-                        entry.getKey() != this.forbiddenColor && !(entry.getValue().getOwnerUsername()).equals(""))
+                        entry.getKey() != this.forbiddenColor && !(entry.getValue().getOwnerUsername()).isEmpty())
                 .forEach(entry -> playersPower.put(entry.getValue().getOwnerUsername(),
                         playersPower.get(entry.getValue().getOwnerUsername()) +
                                 selectedIslandTokenContainer.getColorCounts().get(entry.getKey())));

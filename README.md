@@ -1,10 +1,10 @@
 # **IngSW22-PF-Eriantys**
 
-[![Release](https://img.shields.io/badge/release-v1.0.0-blue)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
-[![Server](https://img.shields.io/badge/server-v1.0.12-blue)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
-[![Client](https://img.shields.io/badge/client-v1.0.0-blue)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
-[![Java JDK](https://img.shields.io/badge/java%20jdk-17-brightgreen)](https://docs.oracle.com/en/java/javase/17/)
-[![License](https://img.shields.io/badge/license-GPL--3.0-orange)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/blob/master/LICENSE)
+[![Release](https://img.shields.io/badge/release-v1.1.0-blue)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
+[![Server](https://img.shields.io/badge/server-v1.1.0-blue)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
+[![Client](https://img.shields.io/badge/client-v1.1.0-blue)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/releases)
+[![Java JDK](https://img.shields.io/badge/java%20jdk-21-brightgreen)](https://docs.oracle.com/en/java/javase/21/)
+[![License](https://img.shields.io/badge/license-GPL--2.0-orange)](https://github.com/massimopavoni/IngSW22-PF-Eriantys/blob/master/LICENSE)
 
 Repository for **Software Engineering** exam final test.
 

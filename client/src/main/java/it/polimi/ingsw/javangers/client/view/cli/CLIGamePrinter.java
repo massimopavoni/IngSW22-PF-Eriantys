@@ -75,7 +75,7 @@ public class CLIGamePrinter {
 
         List<String> playerDashboards = this.directivesParser.getDashboardUsernames();
         playerDashboards.remove(username);
-        playerDashboards.add(0, username);
+        playerDashboards.addFirst(username);
         for (String player : playerDashboards)
             this.printPlayerDashboard(player, username);
         this.printSeparator();
@@ -238,7 +238,7 @@ public class CLIGamePrinter {
                 assistantCardsGroups.get(i / 5).put(assistantCardNames.get(i), assistantCards.get(assistantCardNames.get(i)));
             }
             System.out.printf("%n  %sAssistant cards:%s %s", CLIConstants.ANSI_BRIGHT_WHITE, CLIConstants.ANSI_RESET,
-                    assistantCardsGroups.get(0).entrySet().stream().map(this::formatAssistantCard)
+                    assistantCardsGroups.getFirst().entrySet().stream().map(this::formatAssistantCard)
                             .collect(Collectors.joining(", ")));
             for (int i = 1; i < assistantCardsGroups.size(); i++)
                 System.out.printf("%n  %s %s", " ".repeat(16), assistantCardsGroups.get(i).entrySet().stream()
@@ -362,7 +362,7 @@ public class CLIGamePrinter {
                     CLIConstants.ANSI_BRIGHT_YELLOW, cardCost.getKey(), cardCost.getValue(), CLIConstants.ANSI_BRIGHT_WHITE,
                     " ".repeat(4), CLIConstants.ANSI_BRIGHT_CYAN,
                     this.directivesParser.getCharacterCardMultipurposeCounter(cardName),
-                    cardTokens.size() < 1 ? CLIConstants.ANSI_RESET : String.format("%n%s%sTokens: %s%s", " ".repeat(4),
+                    cardTokens.isEmpty() ? CLIConstants.ANSI_RESET : String.format("%n%s%sTokens: %s%s", " ".repeat(4),
                             CLIConstants.ANSI_BRIGHT_WHITE, this.formatColorCounts(cardTokens), CLIConstants.ANSI_RESET));
         }
     }

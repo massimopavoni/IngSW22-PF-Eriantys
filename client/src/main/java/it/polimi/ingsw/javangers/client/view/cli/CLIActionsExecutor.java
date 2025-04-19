@@ -141,7 +141,7 @@ public class CLIActionsExecutor {
                 System.out.printf("- %s%s [%d]%s%n", CLIConstants.ANSI_BRIGHT_WHITE,
                         actionNameArgs.stream().skip(1).map(s ->
                                         " " + s.substring(0, 1).toLowerCase() + s.substring(1))
-                                .reduce(actionNameArgs.get(0), String::concat),
+                                .reduce(actionNameArgs.getFirst(), String::concat),
                         i + 1, CLIConstants.ANSI_RESET);
             }
             System.out.print("> ");
